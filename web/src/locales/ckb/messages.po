@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ه} other {#ه}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {سەرچاوە زیادکرا (١ پۆست هاوردەکرا)} other {سەرچاوە زیادکرا (# پۆست هاوردەکران)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {سەرچاوە زیادکرا (# پۆست هاوردەکرا)} other {سەرچاوە زیادکرا (# پۆست هاوردەکران)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {١ ڕۆژ} other {# ڕۆژ}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# ڕۆژ} other {# ڕۆژ}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "لە {from} بۆ {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {١ کاتژمێر} other {# کاتژمێر}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# کاتژمێر} other {# کاتژمێر}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {١ خولەک} other {# خولەک}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# خولەک} other {# خولەک}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {# سەرنجی دیکە لەسەر ئەم بڵاوکراوەیە پیشان بدە} other {# سەرنجی دیکە لەسەر ئەم بڵاوکراوەیە پیشان بدە}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {١ چرکە} other {# چرکە}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# چرکە} other {# چرکە}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} لە {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# بڕگە} other {# بڕگە}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# وەڵام} other {# وەڵامی زیاتر}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# وەڵام} other {+# وەڵامی زیاتر}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {١ وەڵام} other {# وەڵامی زیاتر}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,7 +2369,7 @@ msgstr "پاسکی"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "پشتڕاستکردنەوەی کلیلی تێپەڕبوون سەرکەوتوو نەبوو. تکایە دووبارە هەوڵ بدەرەوە."
+msgstr "پشتڕاستکردنەوەی پاسکی سەرکەوتوو نەبوو. تکایە دووبارە هەوڵ بدەرەوە."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
@@ -2489,7 +2489,7 @@ msgstr "هەژمارەکانت لەم سێرڤەرەدا دووبارە بەست
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "پاسکیەکانت لەسەر ئەم ڕاژەیە دووبارە تۆمار بکە"
+msgstr "پاسکییەکانت لەسەر ئەم ڕاژەیە دووبارە تۆمار بکە"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -3462,7 +3462,7 @@ msgstr "پێشکەوتنی بارکردن"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "کلیلی تێپەڕبوونەکەت بەکاربهێنە"
+msgstr "پاسکییەکەت بەکاربهێنە"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

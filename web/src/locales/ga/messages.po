@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#sea} other {#sea}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Foinse curtha leis (1 phostáil iompórtáilte)} two {Foinse curtha leis (# phostáil iompórtáilte)} few {Foinse curtha leis (# phostáil iompórtáilte)} many {Foinse curtha leis (# bpostáil iompórtáilte)} other {Foinse curtha leis (# postáil iompórtáilte)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Foinse curtha leis (# phostáil iompórtáilte)} two {Foinse curtha leis (# phostáil iompórtáilte)} few {Foinse curtha leis (# phostáil iompórtáilte)} many {Foinse curtha leis (# bpostáil iompórtáilte)} other {Foinse curtha leis (# postáil iompórtáilte)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 lá} two {# lá} few {# lá} many {# lá} other {# lá}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# lá} two {# lá} few {# lá} many {# lá} other {# lá}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} go {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 uair} two {# uair} few {# huaire} many {# n-uair} other {# uair}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# uair} two {# uair} few {# huaire} many {# n-uair} other {# uair}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 nóiméad} two {# nóiméad} few {# nóiméid} many {# nóiméad} other {# nóiméad}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# nóiméad} two {# nóiméad} few {# nóiméid} many {# nóiméad} other {# nóiméad}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Taispeáin # trácht eile ar an bpostáil seo} two {Taispeáin # thrácht eile ar an bpostáil seo} few {Taispeáin # thrácht eile ar an bpostáil seo} many {Taispeáin # dtrácht eile ar an bpostáil seo} other {Taispeáin # trácht eile ar an bpostáil seo}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 soicind} two {# shoicind} few {# shoicind} many {# soicind} other {# soicind}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# soicind} two {# shoicind} few {# shoicind} many {# soicind} other {# soicind}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} as {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# mhír} two {# mhír} few {# mhír} many {# mír} other {# mír}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# fhreagra} two {# fhreagraí eile} few {# fhreagraí eile} many {# bhfreagraí eile} other {# freagraí eile}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# fhreagra} two {+# fhreagra eile} few {+# fhreagraí eile} many {+# bhfreagra eile} other {+# freagraí eile}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 fhreagra} two {# fhreagraí eile} few {# fhreagraí eile} many {# bhfreagraí eile} other {# freagraí eile}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,7 +2369,7 @@ msgstr "Pasluiche"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Theip ar fhíorú na heochrach rochtana. Bain triail eile as."
+msgstr "Theip ar fhíorú an phasluiche. Bain triail eile as."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
@@ -2489,7 +2489,7 @@ msgstr "Athnasc do chuntais ar an bhfreastalaí seo"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Athchláraigh do heochracha rochtana ar an bhfreastalaí seo"
+msgstr "Athchláraigh do phasluichí ar an bhfreastalaí seo"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -3206,7 +3206,7 @@ msgstr "Níor freagraíodh an t-iarratas micreafóin"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Níor freagraíodh an t-iarratas pasluí"
+msgstr "Níor freagraíodh an t-iarratas pasluiche"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Ní bheidh an duine in ann an fotha seo a fheiceáil níos mó."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Níl cead ag an aip seo do phasluí a úsáid. Ceadaigh é i Socruithe, faoi Ceadanna."
+msgstr "Níl cead ag an aip seo do phasluiche a úsáid. Ceadaigh é i Socruithe, faoi Ceadanna."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3462,7 +3462,7 @@ msgstr "Dul chun cinn an uaslódála"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Úsáid d'eochair rochtana"
+msgstr "Úsáid do phasluiche"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

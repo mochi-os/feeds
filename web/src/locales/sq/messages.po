@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#javë} other {#javë}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Burimi u shtua (1 postim u importua)} other {Burimi u shtua (# postime u importuan)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Burimi u shtua (# postim u importua)} other {Burimi u shtua (# postime u importuan)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 ditë} other {# ditë}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# ditë} other {# ditë}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "nga {from} deri në {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 orë} other {# orë}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# orë} other {# orë}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 minutë} other {# minuta}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# minutë} other {# minuta}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Shfaq # koment tjetër për këtë postim} other {Shfaq # komente të tjera për këtë postim}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 sekondë} other {# sekonda}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# sekondë} other {# sekonda}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} nga {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# artikull} other {# artikuj}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# përgjigje} other {# përgjigje të tjera}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# përgjigje} other {+# përgjigje të tjera}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 përgjigje} other {# përgjigje të tjera}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,7 +2369,7 @@ msgstr "Kyç"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Verifikimi i çelësit të hyrjes dështoi. Ju lutemi provoni përsëri."
+msgstr "Verifikimi i kyçit dështoi. Ju lutemi provoni përsëri."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
@@ -2489,7 +2489,7 @@ msgstr "Rilinkoni llogaritë tuaja në këtë server"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Riregjistroni çelësat tuaj të hyrjes në këtë server"
+msgstr "Riregjistroni kyçet tuaj në këtë server"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -2713,7 +2713,7 @@ msgstr "Revoko"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "Anulo aksesin"
+msgstr "Revoko aksesin"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
@@ -3462,7 +3462,7 @@ msgstr "Ecuria e ngarkimit"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Përdorni çelësin tuaj të hyrjes"
+msgstr "Përdorni kyçin tuaj"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

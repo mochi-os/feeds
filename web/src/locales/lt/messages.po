@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#sav} other {#sav}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Šaltinis pridėtas (1 įrašas importuotas)} few {Šaltinis pridėtas (# įrašai importuoti)} many {Šaltinis pridėtas (# įrašų importuota)} other {Šaltinis pridėtas (# įrašų importuota)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Šaltinis pridėtas (# įrašas importuotas)} few {Šaltinis pridėtas (# įrašai importuoti)} many {Šaltinis pridėtas (# įrašų importuota)} other {Šaltinis pridėtas (# įrašų importuota)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 diena} few {# dienos} many {# dienų} other {# dienų}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# diena} few {# dienos} many {# dienų} other {# dienų}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "nuo {from} iki {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 valanda} few {# valandos} many {# valandų} other {# valandų}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# valanda} few {# valandos} many {# valandų} other {# valandų}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 minutė} few {# minutės} many {# minučių} other {# minučių}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# minutė} few {# minutės} many {# minučių} other {# minučių}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Rodyti dar # šio įrašo komentarą} few {Rodyti dar # šio įrašo komentarus} many {Rodyti dar # šio įrašo komentaro} other {Rodyti dar # šio įrašo komentarų}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 sekundė} few {# sekundės} many {# sekundžių} other {# sekundžių}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# sekundė} few {# sekundės} many {# sekundžių} other {# sekundžių}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} iš {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# elementas} few {# elementai} many {# elemento} other {# elementų}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# atsakymas} few {# daugiau atsakymų} many {# daugiau atsakymų} other {# daugiau atsakymų}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# atsakymas} few {+# daugiau atsakymų} many {+# daugiau atsakymų} other {+# daugiau atsakymų}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 atsakymas} few {# daugiau atsakymų} many {# daugiau atsakymų} other {# daugiau atsakymų}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2377,7 +2377,7 @@ msgstr "Slaptarakčiai"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Slaptaraktai šioje naršyklėje nepasiekiami"
+msgstr "Slaptarakčiai šioje naršyklėje nepasiekiami"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2489,7 +2489,7 @@ msgstr "Iš naujo susiekite paskyras šiame serveryje"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Iš naujo užregistruokite prieigos raktus šiame serveryje"
+msgstr "Iš naujo užregistruokite slaptarakčius šiame serveryje"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -2709,15 +2709,15 @@ msgstr "Bandyti dar kartą"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke"
-msgstr "Atšaukti"
+msgstr "Panaikinti"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "Atšaukti prieigą"
+msgstr "Panaikinti prieigą"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
-msgstr "Atšaukti RSS prieigą?"
+msgstr "Panaikinti RSS prieigą?"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -3415,7 +3415,7 @@ msgstr "Neperskaityta"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe"
-msgstr "Atšaukti prenumeratą"
+msgstr "Atsisakyti prenumeratos"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed"

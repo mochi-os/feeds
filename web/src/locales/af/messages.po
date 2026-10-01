@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#w} other {#w}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Bron bygevoeg (1 plasing ingevoer)} other {Bron bygevoeg (# plasings ingevoer)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Bron bygevoeg (# plasing ingevoer)} other {Bron bygevoeg (# plasings ingevoer)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 dag} other {# dae}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# dag} other {# dae}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} tot {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 uur} other {# ure}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# uur} other {# ure}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 minuut} other {# minute}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# minuut} other {# minute}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Wys # ander kommentaar op hierdie plasing} other {Wys # ander kommentare op hierdie plasing}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 sekonde} other {# sekondes}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# sekonde} other {# sekondes}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} van {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# item} other {# items}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# antwoord} other {# meer antwoorde}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# antwoord} other {+# meer antwoorde}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 antwoord} other {# meer antwoorde}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,15 +2369,15 @@ msgstr "Toegangsleutel"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Wagsleutel-verifikasie het misluk. Probeer asseblief weer."
+msgstr "Toegangsleutelverifikasie het misluk. Probeer asseblief weer."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
-msgstr "Wagwoordsleutels"
+msgstr "Toegangsleutels"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Passkeys is nie in hierdie blaaier beskikbaar nie"
+msgstr "Toegangsleutels is nie in hierdie blaaier beskikbaar nie"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2489,7 +2489,7 @@ msgstr "Koppel jou rekeninge op hierdie bediener weer"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Herregistreer jou wagwoordsleutels op hierdie bediener"
+msgstr "Herregistreer jou toegangsleutels op hierdie bediener"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -3206,7 +3206,7 @@ msgstr "Die mikrofoonversoek is nie beantwoord nie"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Die passkey-versoek is nie beantwoord nie"
+msgstr "Die toegangsleutelversoek is nie beantwoord nie"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Hulle kan nie meer hierdie feed sien nie."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Hierdie toepassing mag nie jou passkey gebruik nie. Laat dit toe in Instellings, onder Toestemmings."
+msgstr "Hierdie toepassing mag nie jou toegangsleutel gebruik nie. Laat dit toe in Instellings, onder Toestemmings."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3462,7 +3462,7 @@ msgstr "Oplaaivordering"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Gebruik jou wagsleutel"
+msgstr "Gebruik jou toegangsleutel"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

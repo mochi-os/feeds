@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#näd} other {#näd}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Allikas lisatud (1 postitus imporditud)} other {Allikas lisatud (# postitust imporditud)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Allikas lisatud (# postitus imporditud)} other {Allikas lisatud (# postitust imporditud)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 päev} other {# päeva}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# päev} other {# päeva}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} kuni {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 tund} other {# tundi}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# tund} other {# tundi}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 minut} other {# minutit}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# minut} other {# minutit}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Näita veel # kommentaari sellele postitusele} other {Näita veel # kommentaari sellele postitusele}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 sekund} other {# sekundit}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# sekund} other {# sekundit}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} / {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# üksus} other {# üksust}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# vastus} other {# veel vastust}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# vastus} other {+# veel vastust}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 vastus} other {# veel vastust}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2709,15 +2709,15 @@ msgstr "Proovi uuesti"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke"
-msgstr "Tühista"
+msgstr "Võta ära"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "Tühista juurdepääs"
+msgstr "Eemalda juurdepääs"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
-msgstr "Kas tühistada RSS-i juurdepääs?"
+msgstr "Kas võtta RSS-i juurdepääs ära?"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -3415,7 +3415,7 @@ msgstr "Lugemata"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe"
-msgstr "Tühista tellimus"
+msgstr "Loobu tellimusest"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed"

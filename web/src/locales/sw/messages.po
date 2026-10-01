@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#wk} other {#wk}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Chanzo kimeongezwa (chapisho 1 limeingizwa)} other {Chanzo kimeongezwa (machapisho # yameingizwa)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Chanzo kimeongezwa (chapisho # limeingizwa)} other {Chanzo kimeongezwa (machapisho # yameingizwa)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {siku 1} other {siku #}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {siku #} other {siku #}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} hadi {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {saa 1} other {saa #}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {saa #} other {saa #}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {dakika 1} other {dakika #}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {dakika #} other {dakika #}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Onyesha maoni # mengine kwenye chapisho hili} other {Onyesha maoni # mengine kwenye chapisho hili}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {sekunde 1} other {sekunde #}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {sekunde #} other {sekunde #}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} kati ya {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {kipengee #} other {vipengee #}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {jibu #} other {majibu # zaidi}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {Jibu #} other {+# majibu zaidi}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {jibu 1} other {majibu # zaidi}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,15 +2369,15 @@ msgstr "Pasiki"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Uthibitishaji wa ufunguo umeshindwa. Tafadhali jaribu tena."
+msgstr "Uthibitishaji wa pasiki umeshindwa. Tafadhali jaribu tena."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
-msgstr "Passkey"
+msgstr "Pasiki"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Passkey hazipatikani kwenye kivinjari hiki"
+msgstr "Pasiki hazipatikani kwenye kivinjari hiki"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2489,7 +2489,7 @@ msgstr "Unganisha tena akaunti zako kwenye seva hii"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Sajili upya funguo zako za ufikiaji kwenye seva hii"
+msgstr "Sajili upya pasiki zako kwenye seva hii"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -3206,7 +3206,7 @@ msgstr "Ombi la maikrofoni halikujibiwa"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Ombi la passkey halikujibiwa"
+msgstr "Ombi la pasiki halikujibiwa"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Hataweza kuona mlisho huu tena."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Programu hii hairuhusiwi kutumia passkey yako. Iruhusu katika Mipangilio, chini ya Ruhusa."
+msgstr "Programu hii hairuhusiwi kutumia pasiki yako. Iruhusu katika Mipangilio, chini ya Ruhusa."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3462,7 +3462,7 @@ msgstr "Maendeleo ya upakiaji"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Tumia ufunguo wako"
+msgstr "Tumia pasiki yako"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

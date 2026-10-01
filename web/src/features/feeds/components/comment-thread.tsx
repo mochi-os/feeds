@@ -187,7 +187,7 @@ export function CommentThread({
               {totalDescendants > 1 && <Plus className='size-4' />}
               <Plural
                 value={totalDescendants}
-                one='1 reply'
+                one='# reply'
                 other='# more replies'
               />
             </span>

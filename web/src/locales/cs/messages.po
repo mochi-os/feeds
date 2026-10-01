@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#týd} other {#týd}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Zdroj přidán (importován 1 příspěvek)} few {Zdroj přidán (importovány # příspěvky)} many {Zdroj přidán (importovány # příspěvky)} other {Zdroj přidán (importováno # příspěvků)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Zdroj přidán (importován # příspěvek)} few {Zdroj přidán (importovány # příspěvky)} many {Zdroj přidán (importovány # příspěvky)} other {Zdroj přidán (importováno # příspěvků)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 den} few {# dny} many {# dne} other {# dní}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# den} few {# dny} many {# dne} other {# dní}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} až {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 hodina} few {# hodiny} many {# hodiny} other {# hodin}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# hodina} few {# hodiny} many {# hodiny} other {# hodin}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 minuta} few {# minuty} many {# minuty} other {# minut}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# minuta} few {# minuty} many {# minuty} other {# minut}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Zobrazit # další komentář k tomuto příspěvku} few {Zobrazit # další komentáře k tomuto příspěvku} many {Zobrazit # dalšího komentáře k tomuto příspěvku} other {Zobrazit # dalších komentářů k tomuto příspěvku}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 sekunda} few {# sekundy} many {# sekundy} other {# sekund}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# sekunda} few {# sekundy} many {# sekundy} other {# sekund}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} z {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# položka} few {# položky} other {# položek}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# odpověď} few {# dalších odpovědí} other {# dalších odpovědí}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# odpověď} few {+# dalších odpovědí} other {+# dalších odpovědí}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 odpověď} few {# dalších odpovědí} other {# dalších odpovědí}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2377,7 +2377,7 @@ msgstr "Přístupové klíče"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Passkeys nejsou v tomto prohlížeči k dispozici"
+msgstr "Přístupové klíče nejsou v tomto prohlížeči k dispozici"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2713,7 +2713,7 @@ msgstr "Odvolat"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "Zrušit přístup"
+msgstr "Odvolat přístup"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
@@ -3206,7 +3206,7 @@ msgstr "Požadavek na mikrofon zůstal bez odpovědi"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Požadavek na passkey zůstal bez odpovědi"
+msgstr "Požadavek na přístupový klíč zůstal bez odpovědi"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Už neuvidí tento kanál."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Tato aplikace nemá povolení používat váš passkey. Povolte ji v Nastavení v části Oprávnění."
+msgstr "Tato aplikace nemá povolení používat váš přístupový klíč. Povolte ji v Nastavení v části Oprávnění."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3415,7 +3415,7 @@ msgstr "Nepřečtené"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe"
-msgstr "Zrušit odběr"
+msgstr "Odhlásit odběr"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed"
@@ -3424,7 +3424,7 @@ msgstr "Zrušit odběr kanálu"
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed?"
-msgstr "Zrušit odběr kanálu?"
+msgstr "Odhlásit odběr kanálu?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx

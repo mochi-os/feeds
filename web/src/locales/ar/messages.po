@@ -101,11 +101,11 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#أ} other {#أ}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, zero {تمت إضافة المصدر (تم استيراد # منشور)} one {تمت إضافة المصدر (تم استيراد منشور واحد)} two {تمت إضافة المصدر (تم استيراد # منشور)} few {تمت إضافة المصدر (تم استيراد # منشور)} many {تمت إضافة المصدر (تم استيراد # منشور)} other {تمت إضافة المصدر (تم استيراد # منشور)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
+msgid "{d, plural, one {# day} other {# days}}"
 msgstr "{d, plural, zero {# أيام} one {يوم واحد} two {# أيام} few {# أيام} many {# أيام} other {# أيام}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -124,11 +124,11 @@ msgid "{from} to {to}"
 msgstr "{from} إلى {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
 msgstr "{h, plural, zero {# ساعات} one {ساعة واحدة} two {# ساعات} few {# ساعات} many {# ساعات} other {# ساعات}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
 msgstr "{m, plural, zero {# دقائق} one {دقيقة واحدة} two {# دقائق} few {# دقائق} many {# دقائق} other {# دقائق}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
@@ -140,7 +140,7 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, zero {لا تعليقات أخرى على هذا المنشور} one {إظهار تعليق آخر واحد على هذا المنشور} two {إظهار تعليقين آخرين على هذا المنشور} few {إظهار # تعليقات أخرى على هذا المنشور} many {إظهار # تعليقًا آخر على هذا المنشور} other {إظهار # تعليقات أخرى على هذا المنشور}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
 msgstr "{seconds, plural, zero {# ثوان} one {ثانية واحدة} two {# ثوان} few {# ثوان} many {# ثوان} other {# ثوان}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} من {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, zero {لا عناصر} one {عنصر واحد} two {عنصران} few {# عناصر} many {# عنصرًا} other {# عنصر}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, zero {# ردود إضافية} one {رد واحد} two {# ردود إضافية} few {# ردود إضافية} many {# ردود إضافية} other {# ردود إضافية}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, zero {+# ردود إضافية} one {رد واحد} two {+# ردود إضافية} few {+# ردود إضافية} many {+# ردود إضافية} other {+# ردود إضافية}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, zero {# ردود إضافية} one {رد واحد} two {# ردود إضافية} few {# ردود إضافية} many {# ردود إضافية} other {# ردود إضافية}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2709,15 +2709,15 @@ msgstr "إعادة المحاولة"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke"
-msgstr "إلغاء"
+msgstr "إبطال"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "إلغاء الوصول"
+msgstr "إبطال الوصول"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
-msgstr "إلغاء وصول RSS؟"
+msgstr "إبطال وصول RSS؟"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -3415,7 +3415,7 @@ msgstr "غير المقروءة"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe"
-msgstr "إلغاء الاشتراك"
+msgstr "إنهاء الاشتراك"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed"
@@ -3424,7 +3424,7 @@ msgstr "إلغاء الاشتراك من التغذية"
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed?"
-msgstr "إلغاء الاشتراك في التغذية؟"
+msgstr "إنهاء الاشتراك في التغذية؟"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx

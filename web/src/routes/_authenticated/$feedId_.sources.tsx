@@ -279,17 +279,17 @@ function credibilityHue(credibility: number): number {
 
 function formatInterval(seconds: number): string {
   if (seconds < 60)
-    return plural(seconds, { one: '1 second', other: '# seconds' })
+    return plural(seconds, { one: '# second', other: '# seconds' })
   if (seconds < 3600) {
     const m = Math.round(seconds / 60)
-    return plural(m, { one: '1 minute', other: '# minutes' })
+    return plural(m, { one: '# minute', other: '# minutes' })
   }
   if (seconds < 86400) {
     const h = Math.round(seconds / 3600)
-    return plural(h, { one: '1 hour', other: '# hours' })
+    return plural(h, { one: '# hour', other: '# hours' })
   }
   const d = Math.round(seconds / 86400)
-  return plural(d, { one: '1 day', other: '# days' })
+  return plural(d, { one: '# day', other: '# days' })
 }
 
 interface SourcesPanelProps {
@@ -600,7 +600,7 @@ function AddSourceDialog({
       const msg =
         count > 0
           ? plural(count, {
-              one: 'Source added (1 post imported)',
+              one: 'Source added (# post imported)',
               other: 'Source added (# posts imported)',
             })
           : t`Source added`

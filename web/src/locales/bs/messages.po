@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#sedm} other {#sedm}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Izvor dodan (1 post uvezen)} few {Izvor dodan (# posta uvezena)} other {Izvor dodan (# postova uvezeno)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Izvor dodan (# post uvezen)} few {Izvor dodan (# posta uvezena)} other {Izvor dodan (# postova uvezeno)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 dan} few {# dana} other {# dana}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# dan} few {# dana} other {# dana}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} do {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 sat} few {# sata} other {# sati}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# sat} few {# sata} other {# sati}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 minuta} few {# minute} other {# minuta}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# minuta} few {# minute} other {# minuta}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Prikaži još # komentar na ovoj objavi} few {Prikaži još # komentara na ovoj objavi} other {Prikaži još # komentara na ovoj objavi}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 sekunda} few {# sekunde} other {# sekundi}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# sekunda} few {# sekunde} other {# sekundi}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} od {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# stavka} few {# stavke} other {# stavki}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# odgovor} few {# više odgovora} other {# više odgovora}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# odgovor} few {+# više odgovora} other {+# više odgovora}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 odgovor} few {# više odgovora} other {# više odgovora}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2377,7 +2377,7 @@ msgstr "Pristupni ključevi"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Passkeys nisu dostupni u ovom pregledniku"
+msgstr "Pristupni ključevi nisu dostupni u ovom pregledniku"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -3206,7 +3206,7 @@ msgstr "Na zahtjev za mikrofon nije odgovoreno"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Na zahtjev za passkey nije odgovoreno"
+msgstr "Na zahtjev za pristupni ključ nije odgovoreno"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Više ne može vidjeti ovaj feed."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Ova aplikacija nema dozvolu da koristi vaš passkey. Dozvolite joj to u Postavkama, pod Dozvole."
+msgstr "Ova aplikacija nema dozvolu da koristi vaš pristupni ključ. Dozvolite joj to u Postavkama, pod Dozvole."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3415,7 +3415,7 @@ msgstr "Nepročitano"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe"
-msgstr "Otkaži pretplatu"
+msgstr "Prekini pretplatu"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed"
@@ -3424,7 +3424,7 @@ msgstr "Otkaži pretplatu na feed"
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed?"
-msgstr "Otkazati pretplatu na feed?"
+msgstr "Prekinuti pretplatu na feed?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx

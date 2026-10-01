@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#hf} other {#hf}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Kaynak eklendi (1 gönderi içe aktarıldı)} other {Kaynak eklendi (# gönderi içe aktarıldı)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Kaynak eklendi (# gönderi içe aktarıldı)} other {Kaynak eklendi (# gönderi içe aktarıldı)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 gün} other {# gün}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# gün} other {# gün}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} - {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 saat} other {# saat}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# saat} other {# saat}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 dakika} other {# dakika}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# dakika} other {# dakika}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Bu gönderideki # yorumu daha göster} other {Bu gönderideki # yorumu daha göster}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 saniye} other {# saniye}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# saniye} other {# saniye}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} / {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# öğe} other {# öğe}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# yanıt} other {# yanıt daha}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# yanıt} other {+# yanıt daha}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 yanıt} other {# yanıt daha}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -1142,11 +1142,11 @@ msgstr "Katılmıyorum"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Discard"
-msgstr "Vazgeç"
+msgstr "At"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Discard draft?"
-msgstr "Taslak silinsin mi?"
+msgstr "Taslak atılsın mı?"
 
 #: ../../../lib/web/src/lib/chat-ui.ts
 #: ../../../lib/web/src/lib/chat-ui.ts
@@ -2373,11 +2373,11 @@ msgstr "Geçiş anahtarı doğrulaması başarısız oldu. Lütfen tekrar deneyi
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
-msgstr "Passkey'ler"
+msgstr "Geçiş anahtarları"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Passkey'ler bu tarayıcıda kullanılamıyor"
+msgstr "Geçiş anahtarları bu tarayıcıda kullanılamıyor"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2489,7 +2489,7 @@ msgstr "Hesaplarınızı bu sunucuda yeniden bağlayın"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Bu sunucuda parola anahtarlarınızı yeniden kaydedin"
+msgstr "Bu sunucuda geçiş anahtarlarınızı yeniden kaydedin"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -2709,15 +2709,15 @@ msgstr "Yeniden dene"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke"
-msgstr "İptal et"
+msgstr "Geçersiz kıl"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "Erişimi iptal et"
+msgstr "Erişimi kaldır"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
-msgstr "RSS erişimi iptal edilsin mi?"
+msgstr "RSS erişimi geçersiz kılınsın mı?"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -3206,7 +3206,7 @@ msgstr "Mikrofon isteği yanıtlanmadı"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Passkey isteği yanıtlanmadı"
+msgstr "Geçiş anahtarı isteği yanıtlanmadı"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Bu akışı artık göremeyecek."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Bu uygulamanın passkey'inizi kullanmasına izin verilmiyor. Ayarlar'da, İzinler altında izin verin."
+msgstr "Bu uygulamanın geçiş anahtarınızı kullanmasına izin verilmiyor. Ayarlar'da, İzinler altında izin verin."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3415,7 +3415,7 @@ msgstr "Okunmamış"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe"
-msgstr "Aboneliği iptal et"
+msgstr "Abonelikten çık"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed"
@@ -3424,7 +3424,7 @@ msgstr "Akış aboneliğini iptal et"
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed?"
-msgstr "Akış aboneliği iptal edilsin mi?"
+msgstr "Akış aboneliğinden çıkılsın mı?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx

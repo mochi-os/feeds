@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#wyth} other {#wyth}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, zero {Ffynhonnell wedi'i hychwanegu (# postiad wedi'i fewnforio)} one {Ffynhonnell wedi'i hychwanegu (1 postiad wedi'i fewnforio)} two {Ffynhonnell wedi'i hychwanegu (# bostiad wedi'u mewnforio)} few {Ffynhonnell wedi'i hychwanegu (# phostiad wedi'u mewnforio)} many {Ffynhonnell wedi'i hychwanegu (# phostiad wedi'u mewnforio)} other {Ffynhonnell wedi'i hychwanegu (# postiad wedi'u mewnforio)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, zero {Ffynhonnell wedi'i hychwanegu (# postiad wedi'i fewnforio)} one {Ffynhonnell wedi'i hychwanegu (# postiad wedi'i fewnforio)} two {Ffynhonnell wedi'i hychwanegu (# bostiad wedi'u mewnforio)} few {Ffynhonnell wedi'i hychwanegu (# phostiad wedi'u mewnforio)} many {Ffynhonnell wedi'i hychwanegu (# phostiad wedi'u mewnforio)} other {Ffynhonnell wedi'i hychwanegu (# postiad wedi'u mewnforio)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, zero {# diwrnod} one {1 diwrnod} two {# ddiwrnod} few {# diwrnod} many {# diwrnod} other {# diwrnod}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, zero {# diwrnod} one {# diwrnod} two {# ddiwrnod} few {# diwrnod} many {# diwrnod} other {# diwrnod}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} i {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, zero {# awr} one {1 awr} two {# awr} few {# awr} many {# awr} other {# awr}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, zero {# awr} one {# awr} two {# awr} few {# awr} many {# awr} other {# awr}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, zero {# munud} one {1 munud} two {# funud} few {# munud} many {# munud} other {# munud}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, zero {# munud} one {# munud} two {# funud} few {# munud} many {# munud} other {# munud}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, zero {Dangos # sylwadau eraill ar y post hwn} one {Dangos # sylw arall ar y post hwn} two {Dangos # sylw arall ar y post hwn} few {Dangos # sylw arall ar y post hwn} many {Dangos # sylw arall ar y post hwn} other {Dangos # sylw arall ar y post hwn}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, zero {# eiliad} one {1 eiliad} two {# eiliad} few {# eiliad} many {# eiliad} other {# eiliad}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, zero {# eiliad} one {# eiliad} two {# eiliad} few {# eiliad} many {# eiliad} other {# eiliad}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} o {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, zero {# eitem} one {# eitem} two {# eitem} few {# eitem} many {# eitem} other {# eitem}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, zero {# ateb arall} one {# ateb} two {# ateb arall} few {# ateb arall} many {# ateb arall} other {# ateb arall}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, zero {# ateb} one {# ateb} two {+# ateb arall} few {+# ateb arall} many {+# ateb arall} other {+# ateb arall}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, zero {# ateb arall} one {1 ateb} two {# ateb arall} few {# ateb arall} many {# ateb arall} other {# ateb arall}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,7 +2369,7 @@ msgstr "Pasallwedd"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Methodd dilysu'r allwedd mynediad. Rhowch gynnig arall arni."
+msgstr "Methodd dilysu'r basallwedd. Rhowch gynnig arall arni."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
@@ -2489,7 +2489,7 @@ msgstr "Ail-gysylltwch eich cyfrifon ar y gweinydd hwn"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Ailgofrestrwch eich allweddi mynediad ar y gweinydd hwn"
+msgstr "Ailgofrestrwch eich pasallweddi ar y gweinydd hwn"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -3462,7 +3462,7 @@ msgstr "Cynnydd llwytho i fyny"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Defnyddiwch eich allwedd mynediad"
+msgstr "Defnyddiwch eich pasallwedd"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

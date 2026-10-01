@@ -101,11 +101,11 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#vk} other {#vk}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Umthombo wongezwe (kungeniswe umyalezo omnye)} other {Umthombo wongezwe (kungeniswe imiyalezo eyi-#)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
+msgid "{d, plural, one {# day} other {# days}}"
 msgstr "{d, plural, one {usuku olunye} other {iintsuku ezi-#}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -124,11 +124,11 @@ msgid "{from} to {to}"
 msgstr "ukusuka ku-{from} ukuya ku-{to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
 msgstr "{h, plural, one {iyure enye} other {iiyure ezi-#}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
 msgstr "{m, plural, one {umzuzu omnye} other {imizuzu eyi-#}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
@@ -140,7 +140,7 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Bonisa olunye uluvo # kwesi sithuba} other {Bonisa ezinye izimvo # kwesi sithuba}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
 msgstr "{seconds, plural, one {umzuzwana omnye} other {imizuzwana eyi-#}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} kwi-{totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {into e-#} other {izinto ezi-#}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {impendulo enye} other {# zeempendulo ezongezelelweyo}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {Impendulo #} other {+# ezinye iimpendulo}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {impendulo enye} other {# zeempendulo ezongezelelweyo}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,15 +2369,15 @@ msgstr "Isitshixo sokungena"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Ukuqinisekiswa kwe-passkey akuphumelelanga. Nceda uzame kwakhona."
+msgstr "Ukuqinisekiswa kwesitshixo sokungena akuphumelelanga. Nceda uzame kwakhona."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
-msgstr "Ii-passkey"
+msgstr "Izitshixo zokungena"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Ii-passkey azifumaneki kule bhrawuza"
+msgstr "Izitshixo zokungena azifumaneki kule bhrawuza"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2489,7 +2489,7 @@ msgstr "Phinda udibanise iiakhawunti zakho kwiseva yesi"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Phinda ubhalise izitshixo zakho zokufikelela kule seva"
+msgstr "Phinda ubhalise izitshixo zakho zokungena kule seva"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -2709,15 +2709,15 @@ msgstr "Zama kwakhona"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke"
-msgstr "Rhoxisa"
+msgstr "Susa"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "Rhoxisa ufikelelo"
+msgstr "Susa ufikelelo"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
-msgstr "Rhoxisa ufikelelo lwe-RSS?"
+msgstr "Susa ufikelelo lwe-RSS?"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -3206,7 +3206,7 @@ msgstr "Isicelo semayikrofoni asiphendulwanga"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Isicelo se-passkey asiphendulwanga"
+msgstr "Isicelo sesitshixo sokungena asiphendulwanga"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Abasakwazi ukubona le fidi."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Le app ayivumelekanga ukusebenzisa i-passkey yakho. Yivumele kwiiSetingi, phantsi kweeMvume."
+msgstr "Le app ayivumelekanga ukusebenzisa isitshixo sakho sokungena. Yivumele kwiiSetingi, phantsi kweeMvume."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3462,7 +3462,7 @@ msgstr "Inkqubela yokulayisha"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Sebenzisa i-passkey yakho"
+msgstr "Sebenzisa isitshixo sakho sokungena"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

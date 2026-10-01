@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#hep} other {#hep}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Çeşme goşuldy (1 post import edildi)} other {Çeşme goşuldy (# post import edildi)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Çeşme goşuldy (# post import edildi)} other {Çeşme goşuldy (# post import edildi)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 gün} other {# gün}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# gün} other {# gün}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} bilen {to} aralygy"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 sagat} other {# sagat}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# sagat} other {# sagat}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 minut} other {# minut}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# minut} other {# minut}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Bu ýazgydaky ýene # teswiri görkez} other {Bu ýazgydaky ýene # teswiri görkez}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 sekunt} other {# sekunt}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# sekunt} other {# sekunt}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{totalLabel}-den {sentLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# element} other {# element}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# jogap} other {# köp jogap}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# jogap} other {+# köp jogap}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 jogap} other {# köp jogap}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,15 +2369,15 @@ msgstr "Geçiş açary"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Giriş açary bilen tassyklamak şowsuz boldy. Täzeden synanyşyň."
+msgstr "Geçiş açary bilen tassyklamak şowsuz boldy. Täzeden synanyşyň."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
-msgstr "Giriş açarlary"
+msgstr "Geçiş açarlary"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Passkeys bu brauzerde elýeterli däl"
+msgstr "Geçiş açarlary bu brauzerde elýeterli däl"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2489,7 +2489,7 @@ msgstr "Bu serwerde hasaplaryňyzy täzeden baglanyşdyryň"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Bu serwerde giriş açarlaryňyzy gaýtadan hasaba alyň"
+msgstr "Bu serwerde geçiş açarlaryňyzy gaýtadan hasaba alyň"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -2709,15 +2709,15 @@ msgstr "Gaýtadan synanyş"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke"
-msgstr "Ýatyr"
+msgstr "Yzyna al"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "Elýeterliligi ýatyr"
+msgstr "Elýeterliligi yzyna al"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
-msgstr "RSS elýeterliligi ýatyrylsynmy?"
+msgstr "RSS elýeterliligi yzyna alynsynmy?"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -3206,7 +3206,7 @@ msgstr "Mikrofon haýyşyna jogap berilmedi"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Passkey haýyşyna jogap berilmedi"
+msgstr "Geçiş açary haýyşyna jogap berilmedi"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Ol indi bu akymy görüp bilmez."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Bu programma siziň passkey-iňizi ulanmaga rugsat berilmedi. Sazlamalarda, Rugsatlar bölüminde rugsat beriň."
+msgstr "Bu programma siziň geçiş açaryňyzy ulanmaga rugsat berilmedi. Sazlamalarda, Rugsatlar bölüminde rugsat beriň."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3462,7 +3462,7 @@ msgstr "Ýükleme ýagdaýy"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Giriş açaryňyzy ulanyň"
+msgstr "Geçiş açaryňyzy ulanyň"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

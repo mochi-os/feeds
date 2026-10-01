@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ọs} other {#ọs}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Orísun ti fikún (ìfìránṣẹ́ 1 ti gbé wọlé)} other {Orísun ti fikún (ìfìránṣẹ́ # ti gbé wọlé)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Orísun ti fikún (ìfìránṣẹ́ # ti gbé wọlé)} other {Orísun ti fikún (ìfìránṣẹ́ # ti gbé wọlé)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {ọjọ́ 1} other {ọjọ́ #}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {ọjọ́ #} other {ọjọ́ #}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "láti {from} sí {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {wákàtí 1} other {wákàtí #}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {wákàtí #} other {wákàtí #}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {ìṣẹ́jú 1} other {ìṣẹ́jú #}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {ìṣẹ́jú #} other {ìṣẹ́jú #}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Fi ọ̀rọ̀ # mìíràn lórí ìfiránṣẹ́ yìí hàn} other {Fi àwọn ọ̀rọ̀ # mìíràn lórí ìfiránṣẹ́ yìí hàn}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {ìṣẹ́jú-ààyá 1} other {ìṣẹ́jú-ààyá #}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {ìṣẹ́jú-ààyá #} other {ìṣẹ́jú-ààyá #}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} nínú {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# nkan} other {# nkan}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {idahun #} other {# awọn idahun diẹ sii}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {Ìdáhùn #} other {+# àwọn ìdáhùn síi}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {idahun 1} other {# awọn idahun diẹ sii}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,15 +2369,15 @@ msgstr "Kọ́kọ́rọ́-ìwọlé"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Ìjẹ́rìísí passkey kùnà. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+msgstr "Ìjẹ́rìísí kọ́kọ́rọ́-ìwọlé kùnà. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
-msgstr "Àwọn passkey"
+msgstr "Àwọn kọ́kọ́rọ́-ìwọlé"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Àwọn passkey kò sí ní aṣàwákiri yìí"
+msgstr "Àwọn kọ́kọ́rọ́-ìwọlé kò sí ní aṣàwákiri yìí"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2489,7 +2489,7 @@ msgstr "Tun so akonti rẹ pọ lori olupin yii"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Tún àwọn bọ́tìnì ìwọlé rẹ forúkọsílẹ̀ lórí olùpèsè yìí"
+msgstr "Tún àwọn kọ́kọ́rọ́-ìwọlé rẹ forúkọsílẹ̀ lórí olùpèsè yìí"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -2709,15 +2709,15 @@ msgstr "Gbìyànjú lẹ́ẹ̀kan sí i"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke"
-msgstr "Fagi lé"
+msgstr "Gbà padà"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke access"
-msgstr "Fagilé ìwọlé"
+msgstr "Gba ìwọlé padà"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Revoke RSS access?"
-msgstr "Fagilé àǹfààní RSS?"
+msgstr "Gba àǹfààní RSS padà?"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -3206,7 +3206,7 @@ msgstr "A kò dáhùn ìbéèrè gbohùngbohùn náà"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "A kò dáhùn ìbéèrè passkey náà"
+msgstr "A kò dáhùn ìbéèrè kọ́kọ́rọ́-ìwọlé náà"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3226,7 +3226,7 @@ msgstr "Wọn kò lè rí feed yìí mọ́."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Ìṣàmúlò yìí kò ní àṣẹ láti lo passkey rẹ. Fàyè gbà á ní Ètò, lábẹ́ Àwọn Àṣẹ."
+msgstr "Ìṣàmúlò yìí kò ní àṣẹ láti lo kọ́kọ́rọ́-ìwọlé rẹ. Fàyè gbà á ní Ètò, lábẹ́ Àwọn Àṣẹ."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3462,7 +3462,7 @@ msgstr "Ìlọsíwájú ìgbéjáde"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Lo passkey rẹ"
+msgstr "Lo kọ́kọ́rọ́-ìwọlé rẹ"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

@@ -101,12 +101,12 @@ msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#sea} other {#sea}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, one {Tùs air a chur ris (1 phost air a thoirt a-steach)} two {Tùs air a chur ris (# phost air an toirt a-steach)} few {Tùs air a chur ris (# postaichean air an toirt a-steach)} other {Tùs air a chur ris (# postaichean air an toirt a-steach)}}"
+msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Tùs air a chur ris (# phost air a thoirt a-steach)} two {Tùs air a chur ris (# phost air an toirt a-steach)} few {Tùs air a chur ris (# postaichean air an toirt a-steach)} other {Tùs air a chur ris (# postaichean air an toirt a-steach)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d, plural, one {1 latha} two {# latha} few {# làithean} other {# làithean}}"
+msgid "{d, plural, one {# day} other {# days}}"
+msgstr "{d, plural, one {# latha} two {# latha} few {# làithean} other {# làithean}}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
@@ -124,12 +124,12 @@ msgid "{from} to {to}"
 msgstr "{from} gu {to}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{h, plural, one {1 uair} two {# uair} few {# uairean} other {# uairean}}"
+msgid "{h, plural, one {# hour} other {# hours}}"
+msgstr "{h, plural, one {# uair} two {# uair} few {# uairean} other {# uairean}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{m, plural, one {1 mhionaid} two {# mhionaid} few {# mionaidean} other {# mionaidean}}"
+msgid "{m, plural, one {# minute} other {# minutes}}"
+msgstr "{m, plural, one {# mhionaid} two {# mhionaid} few {# mionaidean} other {# mionaidean}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
@@ -140,8 +140,8 @@ msgid "{others, plural, one {Show # other comment on this post} other {Show # ot
 msgstr "{others, plural, one {Seall # bheachd eile air a' phost seo} two {Seall # bheachd eile air a' phost seo} few {Seall # beachdan eile air a' phost seo} other {Seall # beachd eile air a' phost seo}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{seconds, plural, one {1 dhiog} two {# dhiog} few {# diogan} other {# diogan}}"
+msgid "{seconds, plural, one {# second} other {# seconds}}"
+msgstr "{seconds, plural, one {# dhiog} two {# dhiog} few {# diogan} other {# diogan}}"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/ui/upload-progress.tsx
@@ -152,13 +152,13 @@ msgstr "{sentLabel} à {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# nì} two {# nì} few {# nithean} other {# nì}}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "{totalDescendants, plural, one {# reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {# fhreagairt} two {# barrachd freagairtean} few {# barrachd freagairtean} other {# barrachd freagairtean}}"
+
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# fhreagairt} two {+# barrachd freagairtean} few {+# barrachd freagairtean} other {+# barrachd freagairtean}}"
-
-#: src/features/feeds/components/comment-thread.tsx
-msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{totalDescendants, plural, one {1 fhreagairt} two {# barrachd freagairtean} few {# barrachd freagairtean} other {# barrachd freagairtean}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -2369,7 +2369,7 @@ msgstr "Pasgair"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Dh'fhàillig dearbhadh na h-iuchrach-inntrigidh. Feuch ris a-rithist."
+msgstr "Dh'fhàillig dearbhadh a' phasgair. Feuch ris a-rithist."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
@@ -2489,7 +2489,7 @@ msgstr "Ath-cheangail do chunntasan air an fhrithealaiche seo"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "Ath-chlàraich na h-iuchraichean inntrigidh agad air an fhrithealaiche seo"
+msgstr "Ath-chlàraich na pasgairean agad air an fhrithealaiche seo"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -3462,7 +3462,7 @@ msgstr "Adhartas an luchdaidh suas"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Cleachd an iuchair-inntrigidh agad"
+msgstr "Cleachd am pasgair agad"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
