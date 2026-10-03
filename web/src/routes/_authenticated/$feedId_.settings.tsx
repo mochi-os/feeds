@@ -888,19 +888,21 @@ function AccessTab({ feedId }: AccessTabProps) {
 
   return (
     <div className='space-y-6'>
-      <Section title={t`Access management`}>
+      <Section
+        title={t`Access management`}
+        action={
+          <Button
+            onClick={() => setDialogOpen(true)}
+            size='sm'
+            variant='outline'
+            disabled={!canManageRules}
+          >
+            <Plus className='me-2 size-4' />
+            <Trans>Add rule</Trans>
+          </Button>
+        }
+      >
         <div className='space-y-4'>
-          <div className='flex justify-end'>
-            <Button
-              onClick={() => setDialogOpen(true)}
-              size='sm'
-              disabled={!canManageRules}
-            >
-              <Plus className='me-2 h-4 w-4' />
-              <Trans>Add rule</Trans>
-            </Button>
-          </div>
-
           <AccessDialog
             open={dialogOpen}
             onOpenChange={setDialogOpen}
