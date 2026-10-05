@@ -12,6 +12,29 @@ import DOMPurify from 'dompurify'
  * string, falling back to the given (translated) message only when the error
  * carries none.
  */
+/**
+ * `posts` in the order the server listed them. The All feeds page holds its
+ * posts in buckets by feed, which lose the order they arrived in, and only
+ * the server knows the order a sort means: Top and Hot rank by reactions, the
+ * relevance sorts by a score it computes. So the sequence is taken back from
+ * `listed`, the server's own, rather than worked out again here. A post the
+ * server has not listed goes after those it has, newest first.
+ */
+export function inListedOrder<T extends { id: string; created?: number }>(
+  posts: T[],
+  listed: { id: string }[]
+): T[] {
+  const place = new Map(listed.map((post, index) => [post.id, index]))
+  return [...posts].sort((first, second) => {
+    const before = place.get(first.id)
+    const after = place.get(second.id)
+    if (before !== undefined && after !== undefined) return before - after
+    if (before !== undefined) return -1
+    if (after !== undefined) return 1
+    return (second.created ?? 0) - (first.created ?? 0)
+  })
+}
+
 export const sectionErrorFrom = (
   error: unknown,
   fallback: string

@@ -58,7 +58,7 @@ import { FeedPosts } from '../components/feed-posts'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { usePostHandlers } from '../hooks'
-import { sectionErrorFrom } from '../utils'
+import { inListedOrder, sectionErrorFrom } from '../utils'
 
 interface FeedsListPageProps {
   loaderError?: string | null
@@ -321,20 +321,9 @@ export function FeedsListPage({
       )
     }
 
-    // When using relevance-based sort, server already scored posts — sort by score then created
-    // Otherwise sort by timestamp (newest first)
-    if (sort === 'relevant' || sort === 'ai' || sort === 'interests') {
-      posts.sort((a, b) => {
-        const scoreA = a.score ?? 0
-        const scoreB = b.score ?? 0
-        if (scoreB !== scoreA) return scoreB - scoreA
-        return (b.created ?? 0) - (a.created ?? 0)
-      })
-    } else {
-      posts.sort((a, b) => (b.created ?? 0) - (a.created ?? 0))
-    }
-    return posts
-  }, [subscribedFeeds, postsByFeed, permissionsByFeed, sort])
+    // The buckets lose the order the server gave; take it back from the list.
+    return inListedOrder(posts, aggregatePosts)
+  }, [subscribedFeeds, postsByFeed, permissionsByFeed, aggregatePosts])
   const sortOptions: SortType[] = useMemo(() => {
     const opts: SortType[] = []
     if (hasAi) opts.push('ai')
