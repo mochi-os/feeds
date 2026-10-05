@@ -593,7 +593,7 @@ const revokeAccess = async (
 }
 
 // Subscribers of a feed the caller manages
-export interface FeedSubscriber {
+interface FeedSubscriber {
   id: string
   name: string
 }
@@ -929,7 +929,7 @@ const clearNotifications = async (feedId: string): Promise<void> => {
 }
 
 // The user's notification switches for a feed they hold.
-export type NotificationSettings = { post: boolean }
+type NotificationSettings = { post: boolean }
 
 const getNotifications = async (
   feedId: string
