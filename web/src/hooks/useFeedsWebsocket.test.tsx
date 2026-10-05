@@ -5,12 +5,11 @@
 import type { ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { useFeedWebsocket } from './useFeedWebsocket'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { useFeedsWebsocket } from './useFeedsWebsocket'
 
-const { subscribe, refresh, applyFrame } = vi.hoisted(() => ({
+const { subscribe, applyFrame } = vi.hoisted(() => ({
   subscribe: vi.fn(),
-  refresh: vi.fn(),
   applyFrame: vi.fn(),
 }))
 
@@ -20,20 +19,20 @@ vi.mock('@mochi/web', () => ({
   entityWebsocketManager: { subscribe },
 }))
 vi.mock('@/stores/feeds-store', () => ({
-  useFeedsStore: { getState: () => ({ refresh, adjustUnread: vi.fn() }) },
+  useFeedsStore: { getState: () => ({ adjustUnread: vi.fn() }) },
 }))
 vi.mock('@/lib/patch', () => ({ applyFrame }))
 
 type Handler = (event: Record<string, unknown>) => void
 
-/** Mounts the hook and gives its frame handler, with every reload of the post lists it asks for. */
+/** Mounts the hook over one feed and gives its frame handler, with every reload of the post lists it asks for. */
 function listen() {
   const client = new QueryClient()
   const invalidate = vi.spyOn(client, 'invalidateQueries')
   const wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={client}>{children}</QueryClientProvider>
   )
-  renderHook(() => useFeedWebsocket('fp1', 'me'), { wrapper })
+  renderHook(() => useFeedsWebsocket(['fp1'], 'me'), { wrapper })
   const handle = subscribe.mock.calls[0][1] as Handler
   const reloads = () =>
     invalidate.mock.calls.filter(
@@ -43,61 +42,17 @@ function listen() {
   return { handle, client, reloads }
 }
 
-function mount(onGone: (reason: 'removed' | 'deleted') => void) {
-  const client = new QueryClient()
-  const wrapper = ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={client}>{children}</QueryClientProvider>
-  )
-  renderHook(
-    () => useFeedWebsocket('fp1', 'me', undefined, undefined, onGone),
-    { wrapper }
-  )
-  expect(subscribe).toHaveBeenCalledWith('fp1', expect.any(Function))
-  return subscribe.mock.calls[0][1] as Handler
-}
-
 beforeEach(() => {
   vi.clearAllMocks()
   subscribe.mockReturnValue(() => {})
 })
 
-describe('useFeedWebsocket gone events', () => {
-  it('reports a removal and refreshes the sidebar', () => {
-    const onGone = vi.fn()
-    const handle = mount(onGone)
-
-    handle({ type: 'feed/removed', feed: 'feed-1' })
-
-    expect(onGone).toHaveBeenCalledWith('removed')
-    expect(refresh).toHaveBeenCalled()
-  })
-
-  it('reports a deletion', () => {
-    const onGone = vi.fn()
-    const handle = mount(onGone)
-
-    handle({ type: 'feed/deleted', feed: 'feed-1' })
-
-    expect(onGone).toHaveBeenCalledWith('deleted')
-  })
-
-  it('leaves ordinary events alone', () => {
-    const onGone = vi.fn()
-    const handle = mount(onGone)
-
-    handle({ type: 'post/edit', feed: 'feed-1', post: 'p1', sender: 'other' })
-
-    expect(onGone).not.toHaveBeenCalled()
-    expect(refresh).not.toHaveBeenCalled()
-  })
-})
-
-describe('useFeedWebsocket frames about posts', () => {
+describe('useFeedsWebsocket frames about posts', () => {
   it('changes the one post and does not reload the list', () => {
     applyFrame.mockReturnValue(true)
     const { handle, client, reloads } = listen()
     const frame = {
-      type: 'react/post',
+      type: 'comment/create',
       feed: 'feed-1',
       post: 'p1',
       sender: 'other',

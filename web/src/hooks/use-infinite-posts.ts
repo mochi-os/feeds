@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import { useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query'
 import type { FeedPermissions, FeedPost, Post } from '@/types'
 import { mapPosts } from '@/api/adapters'
@@ -36,7 +36,12 @@ interface UseInfinitePostsResult {
   hasNextPage: boolean
   fetchNextPage: () => void
   error: Error | null
+  /** Fetch the list again without the reader having asked: their place is kept. */
   refetch: () => Promise<void>
+  /** Fetch the list again because the reader asked for it as it now is. */
+  reload: () => Promise<void>
+  /** Report a post coming on screen, so the list knows how far the reader is. */
+  seen: (postId: string) => void
 }
 
 type InfinitePostsPage = {
@@ -45,6 +50,22 @@ type InfinitePostsPage = {
   nextCursor: number | undefined
   permissions: FeedPermissions | undefined
   hasAi: boolean
+}
+
+/**
+ * The posts an unread list keeps through a refetch the reader did not ask for:
+ * everything loaded up to and including `reached`, the furthest post they have
+ * had on screen. The server's unread set no longer holds the ones read on the
+ * way, and replacing the list with it would take the posts on screen with them
+ * and leave the scroll position on whatever moved up.
+ */
+export function keptPosts(
+  loaded: FeedPost[],
+  reached: string | null
+): FeedPost[] {
+  if (!reached) return []
+  const index = loaded.findIndex((post) => post.id === reached)
+  return index < 0 ? [] : loaded.slice(0, index + 1)
 }
 
 export function useInfinitePosts({
@@ -58,6 +79,31 @@ export function useInfinitePosts({
   tag,
   unread,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
+  // How far the reader is in this list, and what the last fetch of its first
+  // page kept for them. A different feed, sort or filter is a different list.
+  const reached = useRef<string | null>(null)
+  const held = useRef<Set<string>>(new Set())
+  const asked = useRef(false)
+  const list = JSON.stringify([
+    aggregate,
+    feedId,
+    server,
+    entityContext,
+    limit,
+    sort,
+    tag,
+    unread,
+  ])
+  const listed = useRef(list)
+  if (listed.current !== list) {
+    listed.current = list
+    reached.current = null
+    held.current = new Set()
+  }
+
+  // The query silences query/exhaustive-deps: the reader's place is this
+  // view's own, not part of what the list is. Two views of one list share its
+  // posts, not how far each has been read.
   const query = useInfiniteQuery<
     InfinitePostsPage,
     Error,
@@ -77,13 +123,14 @@ export function useInfinitePosts({
       },
     ],
     number | undefined
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
   >({
     queryKey: [
       'posts',
       aggregate ? '__all__' : feedId,
       { aggregate, feedId, server, entityContext, limit, sort, tag, unread },
     ],
-    queryFn: async ({ pageParam }) => {
+    queryFn: async ({ pageParam, client, queryKey }) => {
       if (!aggregate && !feedId) throw new Error('Feed ID required')
 
       const isRelevanceSort =
@@ -109,7 +156,30 @@ export function useInfinitePosts({
         hasAi?: boolean
       }
 
-      const posts = mapPosts(data.posts)
+      let posts = mapPosts(data.posts)
+
+      if (unread) {
+        if (pageParam === undefined) {
+          // The head of the list: keep what the reader has reached, unless
+          // they asked for the list as it now is.
+          const loaded = asked.current
+            ? undefined
+            : client.getQueryData<
+                InfiniteData<InfinitePostsPage, number | undefined>
+              >(queryKey)
+          const kept = keptPosts(
+            loaded?.pages.flatMap((page) => page.posts) ?? [],
+            reached.current
+          )
+          held.current = new Set(kept.map((post) => post.id))
+          posts = [
+            ...kept,
+            ...posts.filter((post) => !held.current.has(post.id)),
+          ]
+        } else {
+          posts = posts.filter((post) => !held.current.has(post.id))
+        }
+      }
 
       return {
         posts,
@@ -134,6 +204,17 @@ export function useInfinitePosts({
     return query.data.pages.flatMap((page) => page.posts)
   }, [query.data?.pages])
 
+  const loaded = useRef(posts)
+  loaded.current = posts
+
+  const seen = useCallback((postId: string) => {
+    const index = loaded.current.findIndex((post) => post.id === postId)
+    const furthest = loaded.current.findIndex(
+      (post) => post.id === reached.current
+    )
+    if (index > furthest) reached.current = postId
+  }, [])
+
   const permissions = query.data?.pages?.[0]?.permissions
 
   const hasAi = query.data?.pages?.[0]?.hasAi ?? false
@@ -151,5 +232,15 @@ export function useInfinitePosts({
     refetch: async () => {
       await query.refetch()
     },
+    reload: async () => {
+      reached.current = null
+      asked.current = true
+      try {
+        await query.refetch()
+      } finally {
+        asked.current = false
+      }
+    },
+    seen,
   }
 }

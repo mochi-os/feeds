@@ -15,6 +15,7 @@ import {
   type EntityWebsocketEvent,
 } from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
+import { applyFrame } from '@/lib/patch'
 
 interface FeedWebsocketEvent {
   type: string
@@ -71,24 +72,27 @@ export function useFeedsWebsocket(
         }
       }
 
-      // Invalidate posts queries for this feed
-      void queryClient.invalidateQueries({
-        queryKey: ['posts'],
-        predicate: (query) => {
-          const key = query.queryKey
-          if (key[0] !== 'posts') return false
-          const queryFeedId = key[1] as string | undefined
-          if (!queryFeedId) return false
-          // Match by feed ID from message. '__all__' is the aggregate query key
-          // (use-infinite-posts.ts): it is never a feed id or a fingerprint, so
-          // without it every event but post/create left the aggregate stale.
-          return (
-            queryFeedId === '__all__' ||
-            queryFeedId === data.feed ||
-            fingerprintsRef.current.includes(queryFeedId)
-          )
-        },
-      })
+      // A frame about one post changes that post where it stands. Only one
+      // about a feed as a whole reloads the lists that match it.
+      if (!applyFrame(queryClient, data)) {
+        void queryClient.invalidateQueries({
+          queryKey: ['posts'],
+          predicate: (query) => {
+            const key = query.queryKey
+            if (key[0] !== 'posts') return false
+            const queryFeedId = key[1] as string | undefined
+            if (!queryFeedId) return false
+            // Match by feed ID from message. '__all__' is the aggregate query key
+            // (use-infinite-posts.ts): it is never a feed id or a fingerprint, so
+            // without it every event but post/create left the aggregate stale.
+            return (
+              queryFeedId === '__all__' ||
+              queryFeedId === data.feed ||
+              fingerprintsRef.current.includes(queryFeedId)
+            )
+          },
+        })
+      }
 
       // Call optional update handler
       onUpdateRef.current?.(data.feed)

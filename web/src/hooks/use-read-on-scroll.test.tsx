@@ -72,6 +72,17 @@ describe('useReadOnScroll read gate', () => {
     expect(markRead).toHaveBeenCalledTimes(1)
   })
 
+  it('reports a post as it comes on screen, before it has been there long enough to be read', () => {
+    const markRead = vi.fn()
+    const onSeen = vi.fn()
+    renderHook(() => useReadOnScroll(markRead, onSeen))
+
+    intersect(makeEl('arriving-post', '0'))
+
+    expect(onSeen).toHaveBeenCalledWith('arriving-post')
+    expect(markRead).not.toHaveBeenCalled()
+  })
+
   it('does not mark a post that leaves the viewport once it is already read', () => {
     const markRead = vi.fn()
     renderHook(() => useReadOnScroll(markRead))

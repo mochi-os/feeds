@@ -14,6 +14,7 @@ import {
   type EntityWebsocketEvent,
 } from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
+import { applyFrame } from '@/lib/patch'
 
 interface FeedWebsocketEvent {
   type:
@@ -132,20 +133,23 @@ export function useFeedWebsocket(
         case 'feed/update':
         case 'tag/add':
         case 'tag/remove':
-          // Invalidate all posts queries that might match this feed
-          void queryClient.invalidateQueries({
-            queryKey: ['posts'],
-            predicate: (query) => {
-              const key = query.queryKey
-              if (key[0] !== 'posts') return false
+          // A frame about one post changes that post where it stands. Only
+          // one about the feed as a whole reloads the lists that match it.
+          if (!applyFrame(queryClient, data)) {
+            void queryClient.invalidateQueries({
+              queryKey: ['posts'],
+              predicate: (query) => {
+                const key = query.queryKey
+                if (key[0] !== 'posts') return false
 
-              const queryFeedId = key[1] as string | undefined
-              if (!queryFeedId) return false
+                const queryFeedId = key[1] as string | undefined
+                if (!queryFeedId) return false
 
-              // Match if query feed ID matches WebSocket key (fingerprint) or message feed (entity ID)
-              return queryFeedId === feedKey || queryFeedId === data.feed
-            },
-          })
+                // Match if query feed ID matches WebSocket key (fingerprint) or message feed (entity ID)
+                return queryFeedId === feedKey || queryFeedId === data.feed
+              },
+            })
+          }
 
           void queryClient.invalidateQueries({
             queryKey: ['feeds', 'single-post'],

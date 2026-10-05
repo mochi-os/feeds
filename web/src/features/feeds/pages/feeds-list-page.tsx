@@ -137,6 +137,8 @@ export function FeedsListPage({
     fetchNextPage,
     isFetchingNextPage,
     refetch: refetchAggregate,
+    reload: reloadAggregate,
+    seen,
   } = useInfinitePosts({
     feedId: null,
     aggregate: true,
@@ -245,10 +247,10 @@ export function FeedsListPage({
   const handleShowNewPosts = useCallback(() => {
     newPosts.clear()
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
-    // Refetch the aggregate from the top so the queued posts merge in order.
-    void refetchAggregate()
+    // Reload the aggregate from the top so the queued posts merge in order.
+    void reloadAggregate()
     void refreshFeedsAndStore()
-  }, [newPosts, refetchAggregate, refreshFeedsAndStore])
+  }, [newPosts, reloadAggregate, refreshFeedsAndStore])
 
   // Auto-reveal pending posts when the user is (or returns) to the top of the
   // scroll container. Items that arrive while already at the top merge
@@ -301,7 +303,7 @@ export function FeedsListPage({
     },
     [rawMarkRead, setPostsByFeed]
   )
-  const { observePost } = useReadOnScroll(markRead)
+  const { observePost } = useReadOnScroll(markRead, seen)
 
   const allPosts = useMemo(() => {
     const posts: FeedPost[] = []

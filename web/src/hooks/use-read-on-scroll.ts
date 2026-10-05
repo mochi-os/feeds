@@ -8,7 +8,8 @@ const MIN_VISIBLE_MS = 1000
 const SWEEP_INTERVAL_MS = 2000
 
 export function useReadOnScroll(
-  markRead: (postId: string, feedId?: string) => void
+  markRead: (postId: string, feedId?: string) => void,
+  onSeen?: (postId: string) => void
 ) {
   const visibleSince = useRef<
     Map<string, { time: number; feedId?: string; el: HTMLElement }>
@@ -17,6 +18,8 @@ export function useReadOnScroll(
   const pendingElements = useRef<Set<HTMLElement>>(new Set())
   const markReadRef = useRef(markRead)
   markReadRef.current = markRead
+  const onSeenRef = useRef(onSeen)
+  onSeenRef.current = onSeen
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
@@ -28,6 +31,7 @@ export function useReadOnScroll(
           if (!postId) continue
 
           if (entry.isIntersecting) {
+            onSeenRef.current?.(postId)
             if (!visibleSince.current.has(postId)) {
               visibleSince.current.set(postId, {
                 time: now,

@@ -139,6 +139,8 @@ export function EntityFeedPage({
     fetchNextPage,
     isFetchingNextPage,
     refetch: refreshPosts,
+    reload: reloadPosts,
+    seen,
   } = useInfinitePosts({
     feedId: feed.id,
     entityContext: true,
@@ -155,7 +157,7 @@ export function EntityFeedPage({
 
   // Read tracking
   const { markRead } = useMarkAsRead(feed.fingerprint ?? feed.id)
-  const { observePost } = useReadOnScroll(markRead)
+  const { observePost } = useReadOnScroll(markRead, seen)
 
   // Map feed to summary format
   const feedSummary: FeedSummary = useMemo(() => {
@@ -215,8 +217,8 @@ export function EntityFeedPage({
   const handleShowNewPosts = useCallback(() => {
     newPosts.clear()
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
-    void refreshPosts()
-  }, [newPosts, refreshPosts])
+    void reloadPosts()
+  }, [newPosts, reloadPosts])
 
   useMergeOnScrollTop({
     scrollRef,
