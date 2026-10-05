@@ -715,7 +715,7 @@ function AddSourceDialog({
                   onValueChange={([current]) =>
                     setCredStep({ ...credStep, current })
                   }
-                  className='w-64 shrink-0'
+                  className='min-w-0 flex-1 sm:w-64 sm:flex-none'
                 />
                 {credValid && (
                   <span
@@ -952,7 +952,7 @@ function EditSourceDialog({
                   max={100}
                   value={[credValid ? credNum : 50]}
                   onValueChange={([v]) => setCredibility(String(v))}
-                  className='w-64 shrink-0'
+                  className='min-w-0 flex-1 sm:w-64 sm:flex-none'
                 />
                 {credValid && (
                   <span
