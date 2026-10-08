@@ -34,6 +34,11 @@ msgstr "(সম্প্রসারণ)"
 msgid "(expanded)"
 msgstr "(বিস্তৃত)"
 
+#. placeholder {0}: file.oldPath
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "(from {0})"
+msgstr ""
+
 #: ../../../lib/web/src/components/calendar/event-title.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "(No title)"
@@ -49,6 +54,11 @@ msgstr "(আপনি)"
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx
 msgid "[not set]"
 msgstr "[সেট নয়]"
+
+#. placeholder {0}: files.length
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "{0, plural, one {# file changed} other {# files changed}}"
+msgstr ""
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -162,6 +172,10 @@ msgstr "{totalDescendants, plural, one {#টি উত্তর} other {# আর
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# উত্তর} other {+# আরো উত্তর}}"
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "{truncated, plural, one {# more file not shown} other {# more files not shown}}"
+msgstr ""
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -551,6 +565,10 @@ msgstr "ব্যানার সরানো হয়েছে"
 msgid "Banner updated"
 msgstr "ব্যানার আপডেট হয়েছে"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Binary file not shown"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "ব্লক করুন"
@@ -898,6 +916,7 @@ msgstr "ক্লিপবোর্ডে কপি করা হয়েছে
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
@@ -2146,6 +2165,10 @@ msgstr "কোনো অ্যাক্সেস নিয়ম কনফিগ
 msgid "No activity yet"
 msgstr "এখনও কোনো কার্যকলাপ নেই"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "No changes to display"
+msgstr ""
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "No comments on this image yet."
 msgstr "এই ছবিতে এখনও কোনও মন্তব্য নেই।"
@@ -2249,6 +2272,15 @@ msgstr "কোনোটি নয়"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Normal"
 msgstr "সাধারণ"
+
+#. placeholder {0}: formatFileSize(file.limit)
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Not compared: larger than {0}"
+msgstr ""
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Not compared: over the size limit"
+msgstr ""
 
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -3041,6 +3073,10 @@ msgstr "ফিড মালিক উৎসগুলো পরিচালনা
 msgid "Spacious"
 msgstr "প্রশস্ত"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Split"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx
 msgid "Start the discussion by adding the first comment."
 msgstr "প্রথম মন্তব্য যোগ করে আলোচনা শুরু করুন।"
@@ -3385,6 +3421,10 @@ msgstr "অপ্রত্যাশিত API ত্রুটি"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Unfollow thread"
 msgstr "থ্রেড অনুসরণ বন্ধ করুন"
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Unified"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "United States"

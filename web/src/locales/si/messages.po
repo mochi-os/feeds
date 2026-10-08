@@ -34,6 +34,11 @@ msgstr "(පුළුල් කරන්න)"
 msgid "(expanded)"
 msgstr "(විහිදුවා ඇත)"
 
+#. placeholder {0}: file.oldPath
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "(from {0})"
+msgstr ""
+
 #: ../../../lib/web/src/components/calendar/event-title.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "(No title)"
@@ -49,6 +54,11 @@ msgstr "(ඔබ)"
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx
 msgid "[not set]"
 msgstr "[සකසා නැත]"
+
+#. placeholder {0}: files.length
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "{0, plural, one {# file changed} other {# files changed}}"
+msgstr ""
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -162,6 +172,10 @@ msgstr "{totalDescendants, plural, one {පිළිතුරු #ක්} other 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# පිළිතුර} other {+# තවත් පිළිතුරු}}"
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "{truncated, plural, one {# more file not shown} other {# more files not shown}}"
+msgstr ""
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -551,6 +565,10 @@ msgstr "බැනරය ඉවත් කළා"
 msgid "Banner updated"
 msgstr "බැනරය යාවත්කාලීන කළා"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Binary file not shown"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "අවහිර කරන්න"
@@ -898,6 +916,7 @@ msgstr "ක්ලිප්බෝඩ් වෙත පිටපත් කරන �
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
@@ -2146,6 +2165,10 @@ msgstr "ප්‍රවේශ නියමයන් කිසිවක් සැ
 msgid "No activity yet"
 msgstr "තවම ක්‍රියාකාරකම් නැත"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "No changes to display"
+msgstr ""
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "No comments on this image yet."
 msgstr "මෙම රූපයට තවම අදහස් නැත."
@@ -2249,6 +2272,15 @@ msgstr "කිසිවක් නැත"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Normal"
 msgstr "සාමාන්‍ය"
+
+#. placeholder {0}: formatFileSize(file.limit)
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Not compared: larger than {0}"
+msgstr ""
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Not compared: over the size limit"
+msgstr ""
 
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -3041,6 +3073,10 @@ msgstr "මූලාශ්‍ර සංග්‍රහ හිමිකරු ව
 msgid "Spacious"
 msgstr "විශාල"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Split"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx
 msgid "Start the discussion by adding the first comment."
 msgstr "පළමු අදහස එක් කිරීමෙන් සාකච්ඡාව ආරම්භ කරන්න."
@@ -3385,6 +3421,10 @@ msgstr "අනපේක්ෂිත API දෝෂය"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Unfollow thread"
 msgstr "තන්තුව අනුගමනය කිරීම නවත්වන්න"
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Unified"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "United States"

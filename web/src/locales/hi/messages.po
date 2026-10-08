@@ -34,6 +34,11 @@ msgstr "(विस्तार करें)"
 msgid "(expanded)"
 msgstr "(विस्तृत)"
 
+#. placeholder {0}: file.oldPath
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "(from {0})"
+msgstr ""
+
 #: ../../../lib/web/src/components/calendar/event-title.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "(No title)"
@@ -49,6 +54,11 @@ msgstr "(आप)"
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx
 msgid "[not set]"
 msgstr "[सेट नहीं]"
+
+#. placeholder {0}: files.length
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "{0, plural, one {# file changed} other {# files changed}}"
+msgstr ""
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -162,6 +172,10 @@ msgstr "{totalDescendants, plural, one {# उत्तर} other {# और उ�
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
 msgstr "{totalDescendants, plural, one {# उत्तर} other {+# और उत्तर}}"
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "{truncated, plural, one {# more file not shown} other {# more files not shown}}"
+msgstr ""
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
@@ -551,6 +565,10 @@ msgstr "बैनर हटाया गया"
 msgid "Banner updated"
 msgstr "बैनर अपडेट किया गया"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Binary file not shown"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "ब्लॉक करें"
@@ -898,6 +916,7 @@ msgstr "क्लिपबोर्ड पर कॉपी किया गय�
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
@@ -2146,6 +2165,10 @@ msgstr "कोई एक्सेस नियम कॉन्फ़िगर �
 msgid "No activity yet"
 msgstr "अभी तक कोई गतिविधि नहीं"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "No changes to display"
+msgstr ""
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "No comments on this image yet."
 msgstr "इस छवि पर अभी कोई टिप्पणी नहीं है।"
@@ -2249,6 +2272,15 @@ msgstr "कोई नहीं"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Normal"
 msgstr "सामान्य"
+
+#. placeholder {0}: formatFileSize(file.limit)
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Not compared: larger than {0}"
+msgstr ""
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Not compared: over the size limit"
+msgstr ""
 
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -3041,6 +3073,10 @@ msgstr "स्रोत फ़ीड स्वामी द्वारा प�
 msgid "Spacious"
 msgstr "विशाल"
 
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Split"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx
 msgid "Start the discussion by adding the first comment."
 msgstr "पहला कमेंट जोड़कर चर्चा शुरू करें।"
@@ -3385,6 +3421,10 @@ msgstr "अप्रत्याशित API त्रुटि"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Unfollow thread"
 msgstr "थ्रेड अनफ़ॉलो करें"
+
+#: ../../../lib/web/src/components/diff-viewer.tsx
+msgid "Unified"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "United States"
