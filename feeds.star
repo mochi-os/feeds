@@ -752,7 +752,7 @@ def clean_post_data(value):
 # Columns of `feeds` any viewer may see; the rest is owner configuration. A
 # whitelist so a column added later is private by default.
 FEED_FIELDS_PUBLIC = ["id", "name", "privacy", "subscribers", "updated", "fingerprint", "banner", "sort", "populated"]
-FEED_FIELDS_OWNER = ["server", "read", "ai_mode", "ai_account", "ai_prompt_new", "ai_prompt_batch", "ai_prompt_rank", "synced"]
+FEED_FIELDS_OWNER = ["server", "read", "ai_mode", "ai_account", "ai_prompt_new", "ai_prompt_rank", "synced"]
 
 # Project a feed row down to what the caller is entitled to see.
 def feed_visible(feed, is_owner):
@@ -960,13 +960,12 @@ def collect_domains(urls):
 
 # Default AI prompts
 AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post, with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' as an entity with high relevance.\n\nIf the title uses clickbait patterns, include 'clickbait' as an entity with high relevance. Patterns: vague demonstratives ('this', 'these'), withholding ('you won\\'t believe', 'what happened next', 'not what you think'), emotional bait ('will blow your mind', 'will shock you', 'changed my life'), affiliate language ('you need to know', 'we tested', 'we found').\n\nEach post may be prefixed in brackets with its source publication and any linked domains. When the source, or a linked domain, corresponds to a well-known company, publication, or institution, include it as an entity with moderate relevance (around 40-60). Do not create a tag from a generic, unrecognised, or link-shortener domain.\n\nIf a post should be dropped entirely (e.g. it is empty, a cookie notice, a paywall message, or pure spam with no editorial content), set \"drop\": true.\n\nReturn JSON only:\n[{\"index\": 0, \"drop\": false, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
-AI_PROMPT_BATCH = "For each post, assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 75}, ...]\n\nPosts:\n{{posts}}"
+AI_PROMPT_STORY = "A feed has received a new post. Decide whether it reports exactly the same news as one of the earlier posts listed below.\n\nTwo posts report the same news only when both report the same single event, announcement, release or decision. They are different stories when they only share a topic, subject, person, organisation, place or product; when one reports a reaction to, consequence of or follow-up to the other; when they cover different days or stages of something ongoing, such as a trial, war, campaign or investigation; or when one is an opinion piece, review, guide or roundup and the other a news report. If you are not certain, answer null: a missed match only shows the reader a second post, but a wrong match hides a different story from them.\n\nIf it is the same news, also decide whether the new post is a better account of it than that earlier post: more complete, clearer and more informative, from a source at least as credible. Each post shows its source, the source's credibility rating (0-100) and when it was published.\n\nNew post:\n{{post}}\n\nEarlier posts:\n{{posts}}\n\nReturn JSON only:\n{\"story\": <number or null>, \"event\": \"<the event>\", \"better\": <true or false>}\n\n\"story\" is the number of the earlier post that reports the same news, or null if none does. \"event\" names, in a few words, the single event both posts report, and is empty when \"story\" is null. \"better\" is true only if the new post is the better account."
 AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility linearly: a post with credibility 70 should have its score multiplied by 70%, credibility 50 by 50%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
 
 AI_PROMPT_DEFAULTS = {
 	"new": AI_PROMPT_NEW,
-	"batch": AI_PROMPT_BATCH,
 	"rank": AI_PROMPT_RANK,
 	"credibility": AI_PROMPT_CREDIBILITY,
 }
@@ -1000,6 +999,27 @@ def resolve_ai_account(ai_account):
 		if "ai" in acc.get("default", "").split(","):
 			return acc["id"]
 	return accounts[0]["id"]
+
+# A post as an AI prompt sees it: the title once, then up to `limit` characters
+# of the rest. An RSS post's body begins with its own title, so prefixing the
+# title as well spent the limit on a second copy of it.
+def post_prompt(post, limit):
+	data = json.decode(post.get("data", "") or "{}", None)
+	if type(data) != "dict":
+		data = {}
+	rss = data.get("rss", {})
+	if type(rss) != "dict":
+		rss = {}
+	title = (data.get("title", "") or rss.get("title", "") or "").strip()
+	body = (post.get("body", "") or "").strip()
+	if title and body.startswith(title):
+		body = body[len(title):]
+	body = " ".join(body.split())
+	if len(body) > limit:
+		body = body[:limit]
+	if title and body:
+		return title + ": " + body
+	return title or body
 
 # Transform a post using AI before ingestion
 # Returns (action, fields) where action is "continue" or "drop"
@@ -1061,20 +1081,16 @@ def ai_tag_post(feed_id, post_id):
 	body = post["body"]
 	if len(body) < 20:
 		return
-	title = ""
 	source_name = ""
 	link = ""
 	image = ""
 	if post.get("data"):
 		data = json.decode(post["data"], None) or {}
-		title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
 		rss = data.get("rss", {})
 		source_name = rss.get("source", "")
 		link = rss.get("link", "")
 		image = rss.get("image", "")
-	text = (title + ": " + body).strip() if title else body
-	if len(text) > 500:
-		text = text[:500]
+	text = post_prompt(post, 500)
 	# Surface the source publication and any linked domains so the AI can tag
 	# recognisable publishers (resolved via QID; unrecognised domains drop out)
 	domains = collect_domains(([link] if link else []) + extract_urls(body))
@@ -1084,8 +1100,7 @@ def ai_tag_post(feed_id, post_id):
 	if domains:
 		context.append("links: " + ", ".join(domains))
 	prefix = ("[" + " | ".join(context) + "] ") if context else ""
-	post_text = "0. " + prefix + text.replace("\n", " ")
-	prompt = get_ai_prompt(feed_id, "new").replace("{{posts}}", post_text)
+	prompt = get_ai_prompt(feed_id, "new").replace("{{posts}}", "0. " + prefix + text)
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
 		mochi.log.debug("ai_tag_post: AI call failed post=" + post_id + " status=" + str(result["status"]) + " text=" + str(result.get("text", ""))[:500])
@@ -1151,7 +1166,7 @@ def ai_tag_post(feed_id, post_id):
 	if tag_updates:
 		broadcast_event(feed_id, "tag/add/batch", {"items": tag_updates})
 
-# Parse unified tag+dedup AI response: [{"index": N, "novelty": N, "entities": [{"name": "...", "relevance": N}]}]
+# Parse the tagging AI response: [{"index": N, "drop": bool, "entities": [{"name": "...", "relevance": N}]}]
 def parse_unified_tag_response(text):
 	text = text.strip()
 	if text.startswith("```"):
@@ -1177,14 +1192,6 @@ def parse_unified_tag_response(text):
 	result = []
 	for item in items:
 		idx = item.get("index", 0)
-		novelty = item.get("novelty", 100)
-		if type(novelty) not in ("int", "float"):
-			novelty = 100
-		novelty = int(novelty)
-		if novelty < 0:
-			novelty = 0
-		if novelty > 100:
-			novelty = 100
 		entities = []
 		for e in item.get("entities", []):
 			name = e.get("name", "")
@@ -1202,7 +1209,7 @@ def parse_unified_tag_response(text):
 				entity["qid"] = qid
 			entities.append(entity)
 		drop = item.get("drop", False) == True
-		result.append({"index": idx, "novelty": novelty, "entities": entities[:10], "drop": drop})
+		result.append({"index": idx, "entities": entities[:10], "drop": drop})
 	return result
 
 # Scheduled event handler for AI tagging (manual posts, aggregating feed copies, RSS posts)
@@ -1232,6 +1239,13 @@ def schedule_ai_tag(e):
 		viewer_id = e.user.identity.id if e.user else None
 		if viewer_id:
 			score_posts_for_viewer([post_id], viewer_id)
+
+		# Place the post in a story now that its tags exist. Placement takes one
+		# post at a time per feed (see story_drain), so it is queued rather than
+		# done here.
+		if mochi.db.exists("select 1 from feeds where id=? and ai_mode='tag+deduplicate'", feed_id):
+			mochi.db.execute("insert or ignore into placements (post, feed, queued) values (?, ?, ?)", post_id, feed_id, mochi.time.now())
+			mochi.schedule.after("schedule_story", {"feed": feed_id}, 0)
 
 # Scheduled event handler for background AI reranking
 def schedule_ai_rerank(e):
@@ -1268,111 +1282,170 @@ def schedule_scores_refresh(e):
 	if rows:
 		score_posts_for_viewer([r["id"] for r in rows], viewer_id)
 
-# Scheduled event handler for near-duplicate detection via novelty scoring.
-# Groups unprocessed posts by shared tags and sends focused batches for comparison.
-def schedule_dedup_check(e):
+# Near-duplicate posts are grouped into stories. A post that reports nothing
+# earlier in the feed starts a story, named by the post's own id; a post that
+# reports the same story as an earlier one joins it. Only a story's best post
+# keeps full novelty, so the ranking shows one account of each story, and a
+# better account arriving later takes over unless the reader has already seen
+# the story.
+
+# How far back a new post looks for its story, in seconds.
+STORY_WINDOW = 259200
+
+# The most stories one placement shows the AI.
+STORY_CANDIDATES = 15
+
+# Novelty of a story's posts other than its best.
+STORY_DUPLICATE = 10
+
+# Seconds one placement pass may run before leaving the rest to a follow-up.
+STORY_BUDGET = 50
+
+# Output tokens for the story decision: room for a thinking model's reasoning
+# before its short answer.
+STORY_TOKENS = 4096
+
+# A post's line in the story prompt: its source, the source's credibility and
+# when it was published, then its text. The time lets the AI tell a trial's
+# second day from its first.
+def story_line(post):
+	data = json.decode(post.get("data", "") or "{}", None)
+	rss = data.get("rss", {}) if type(data) == "dict" else {}
+	source = rss.get("source", "") if type(rss) == "dict" else ""
+	parts = [source] if source else []
+	parts.append("credibility " + str(post.get("credibility", 100)))
+	if post.get("published"):
+		parts.append("published " + post["published"] + " UTC")
+	return "[" + ", ".join(parts) + "] " + post_prompt(post, 500)
+
+# The story prompt for a new post and the best post of each candidate story.
+def story_prompt(post, candidates):
+	lines = [str(i) + ". " + story_line(c["post"]) for i, c in enumerate(candidates)]
+	return AI_PROMPT_STORY.replace("{{post}}", story_line(post)).replace("{{posts}}", "\n".join(lines))
+
+# Read the AI's story decision: the index of the candidate the new post joins,
+# or None, and whether the new post is the better account. Anything malformed
+# reads as no match, so the post starts a story of its own, and so does a match
+# that names no event: the AI has to say what the two posts both report.
+def story_parse(text, count):
+	none = {"story": None, "better": False}
+	text = (text or "").strip()
+	start = text.find("{")
+	end = text.rfind("}")
+	if start < 0 or end < start:
+		return none
+	answer = json.decode(text[start:end + 1], None)
+	if type(answer) != "dict":
+		return none
+	index = answer.get("story")
+	if type(index) == "float" and index == int(index):
+		index = int(index)
+	if type(index) != "int" or index < 0 or index >= count:
+		return none
+	event = answer.get("event")
+	if type(event) != "string" or not event.strip():
+		return none
+	return {"story": index, "better": answer.get("better") == True}
+
+# What a decision does: the story the new post belongs to, and the novelty each
+# affected post should have. A better account takes over from the story's best
+# post, unless the reader has seen the story already.
+def story_outcome(post_id, candidates, answer):
+	index = answer["story"]
+	if index == None:
+		return {"story": post_id, "novelty": [{"post": post_id, "novelty": 100}]}
+	candidate = candidates[index]
+	if answer["better"] and not candidate["seen"]:
+		return {"story": candidate["story"], "novelty": [{"post": post_id, "novelty": 100}, {"post": candidate["post"]["id"], "novelty": STORY_DUPLICATE}]}
+	return {"story": candidate["story"], "novelty": [{"post": post_id, "novelty": STORY_DUPLICATE}]}
+
+# The recent stories a post might belong to: those with a post sharing one of
+# its tags, most shared tags first. Each comes with its best post, and whether
+# the reader has seen any of its posts.
+def story_candidates(feed_id, post_id, labels):
+	placeholders = ", ".join(["?" for _ in labels])
+	parameters = [feed_id, post_id, mochi.time.now() - STORY_WINDOW] + labels + [STORY_CANDIDATES]
+	rows = mochi.db.rows("select m.story as story, count(*) as shared, max(m.created) as latest from posts m join tags t on t.object=m.id where m.feed=? and m.id!=? and m.story!='' and m.created>? and t.label in (" + placeholders + ") group by m.story order by shared desc, latest desc limit ?", *parameters) or []
+	candidates = []
+	for row in rows:
+		best = mochi.db.row("select id, body, data, credibility, strftime('%Y-%m-%d %H:%M', created, 'unixepoch') as published from posts where feed=? and story=? order by novelty desc, created desc limit 1", feed_id, row["story"])
+		if not best:
+			continue
+		seen = mochi.db.exists("select 1 from posts where feed=? and story=? and read>0", feed_id, row["story"])
+		candidates.append({"story": row["story"], "post": best, "seen": seen})
+	return candidates
+
+# Place one post in a story and return the novelty changes it made. A post
+# already placed is left alone, so a post edited and re-tagged keeps its story.
+def story_place(feed_id, post_id, account):
+	post = mochi.db.row("select id, body, data, credibility, story, strftime('%Y-%m-%d %H:%M', created, 'unixepoch') as published from posts where id=? and feed=?", post_id, feed_id)
+	if not post or post["story"]:
+		return []
+	labels = [t["label"] for t in mochi.db.rows("select label from tags where object=?", post_id) or []]
+	candidates = story_candidates(feed_id, post_id, labels) if labels else []
+	answer = {"story": None, "better": False}
+	if candidates and account:
+		result = mochi.ai.prompt(story_prompt(post, candidates), account=account, tokens=STORY_TOKENS)
+		if result["status"] == 200:
+			answer = story_parse(result.get("text", ""), len(candidates))
+		else:
+			mochi.log.debug("story_place: AI call failed post=" + post_id + " status=" + str(result["status"]))
+	outcome = story_outcome(post_id, candidates, answer)
+	mochi.db.execute("update posts set story=? where id=?", outcome["story"], post_id)
+	changes = []
+	for item in outcome["novelty"]:
+		if mochi.db.exists("select 1 from posts where id=? and novelty!=?", item["post"], item["novelty"]):
+			mochi.db.execute("update posts set novelty=? where id=?", item["novelty"], item["post"])
+			changes.append(item)
+	return changes
+
+# Place a feed's queued posts in their stories, one at a time. Two posts about
+# the same story tagged at the same moment would each miss the other if placed
+# in parallel, so only the holder of the feed's lock places posts; a pass that
+# finds the lock held leaves its post queued for the holder.
+def story_drain(feed_id):
+	feed_data = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
+	if not feed_data or feed_data["ai_mode"] != "tag+deduplicate":
+		mochi.db.execute("delete from placements where feed=?", feed_id)
+		return
+	now = mochi.time.now()
+	name = "story/" + feed_id
+	token = mochi.uid()
+	mochi.db.execute("delete from locks where expires <= ?", now)
+	mochi.db.execute("insert into locks (name, token, expires) values (?, ?, ?) on conflict do nothing", name, token, now + 400)
+	lock = mochi.db.row("select token from locks where name=?", name)
+	if not lock or lock["token"] != token:
+		return
+
+	account = resolve_ai_account(feed_data.get("ai_account", 0))
+	deadline = now + STORY_BUDGET
+	changes = []
+	finished = True
+	for row in mochi.db.rows("select post from placements where feed=? order by queued, post", feed_id) or []:
+		if mochi.time.now() >= deadline:
+			finished = False
+			break
+		# Dequeued before placing, so a post whose placement fails is not
+		# retried by every later pass.
+		mochi.db.execute("delete from placements where post=?", row["post"])
+		changes.extend(story_place(feed_id, row["post"], account))
+
+	if changes:
+		broadcast_event(feed_id, "post/novelty/batch", {"items": changes})
+	mochi.db.execute("delete from locks where name=? and token=?", name, token)
+
+	# Posts queued while this pass held the lock, and any the budget did not
+	# reach, are still waiting.
+	if mochi.db.exists("select 1 from placements where feed=?", feed_id):
+		mochi.schedule.after("schedule_story", {"feed": feed_id}, 0 if finished else 5)
+
+# Scheduled event handler for story placement
+def schedule_story(e):
 	if e.source != "schedule":
 		return
 	feed_id = e.data.get("feed", "")
-	if not feed_id:
-		return
-	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
-	if not feed_data or feed_data.get("ai_mode", "") != "tag+deduplicate":
-		return
-	account = resolve_ai_account(feed_data.get("ai_account", 0))
-	if not account:
-		return
-
-	# Get posts from last 72 hours that haven't been deduped yet (novelty still 100)
-	cutoff = mochi.time.now() - 259200  # 72 hours
-	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc", feed_id, cutoff)
-	if not new_posts:
-		return
-
-	# One batched broadcast for every novelty update in this pass, not one per
-	# post.
-	novelty_updates = []
-
-	# Index posts by ID for quick lookup
-	post_by_id = {}
-	for p in new_posts:
-		post_by_id[p["id"]] = p
-
-	# Build tag -> post IDs index. Posts with no tags get default novelty and are skipped.
-	tag_posts = {}
-	has_tags = {}
-	for p in new_posts:
-		post_tags = mochi.db.rows("select label from tags where object=?", p["id"])
-		if not post_tags:
-			mochi.db.execute("update posts set novelty=50 where id=?", p["id"])
-			novelty_updates.append({"post": p["id"], "novelty": 50})
-			continue
-		has_tags[p["id"]] = True
-		for t in post_tags:
-			label = t["label"]
-			if label not in tag_posts:
-				tag_posts[label] = []
-			tag_posts[label].append(p["id"])
-
-	# Sort tags by frequency ascending — least common tags group the most specific matches
-	tag_counts = [(len(tag_posts[t]), t) for t in tag_posts]
-	tag_counts = sorted(tag_counts)
-	sorted_tags = [tc[1] for tc in tag_counts]
-
-	# Build batches from tag groups, scoring each post only once
-	scored = {}
-	for tag in sorted_tags:
-		batch_ids = []
-		for pid in tag_posts[tag]:
-			if pid not in scored and pid in has_tags:
-				batch_ids.append(pid)
-			if len(batch_ids) >= 15:
-				break
-		if len(batch_ids) < 2:
-			continue
-
-		# Build post summaries for the prompt
-		batch_posts = [post_by_id[pid] for pid in batch_ids]
-		post_lines = []
-		for i, p in enumerate(batch_posts):
-			title = ""
-			if p.get("data"):
-				data = json.decode(p["data"], None) or {}
-				title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
-			body = p.get("body", "")
-			if len(body) > 150:
-				body = body[:150]
-			text = (title + ": " + body).strip() if title else body
-			post_lines.append(str(i) + ". " + text.replace("\n", " "))
-
-		prompt = get_ai_prompt(feed_id, "batch").replace("{{posts}}", "\n".join(post_lines))
-		result = mochi.ai.prompt(prompt, account=account)
-		if result["status"] != 200:
-			continue
-
-		items = parse_unified_tag_response(result["text"])
-		for item in (items or []):
-			idx = item.get("index", -1)
-			if type(idx) != "int" or idx < 0 or idx >= len(batch_posts):
-				continue
-			post_id = batch_posts[idx]["id"]
-			novelty = item.get("novelty", 100)
-			mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
-			novelty_updates.append({"post": post_id, "novelty": novelty})
-			scored[post_id] = True
-
-	# Set default novelty for any remaining unscored posts with tags
-	for pid in has_tags:
-		if pid not in scored:
-			mochi.db.execute("update posts set novelty=50 where id=? and novelty=100", pid)
-			novelty_updates.append({"post": pid, "novelty": 50})
-
-	# One batched broadcast per dedup pass. Subscribers on new versions
-	# apply via event_post_novelty_batch; older subscribers ignore the
-	# event and fall back to the default novelty=100 score until they
-	# upgrade.
-	if novelty_updates:
-		broadcast_event(feed_id, "post/novelty/batch", {"items": novelty_updates})
+	if feed_id:
+		story_drain(feed_id)
 
 # Set AI mode and account for a feed
 def action_ai_settings(a):
@@ -1430,8 +1503,6 @@ def action_ai_prompts_get(a):
 	prompts = {}
 	if feed_data.get("ai_prompt_new", ""):
 		prompts["new"] = feed_data["ai_prompt_new"]
-	if feed_data.get("ai_prompt_batch", ""):
-		prompts["batch"] = feed_data["ai_prompt_batch"]
 	if feed_data.get("ai_prompt_rank", ""):
 		prompts["rank"] = feed_data["ai_prompt_rank"]
 	# Also get user-level credibility prompt
@@ -1458,7 +1529,7 @@ def action_ai_prompts_set(a):
 		return
 	prompt_type = a.input("type")
 	prompt_text = a.input("prompt", "")
-	if prompt_type not in ("new", "batch", "rank", "credibility"):
+	if prompt_type not in ("new", "rank", "credibility"):
 		a.error.label(400, "errors.invalid_prompt_type")
 		return
 	if not is_owner and prompt_type != "rank":
@@ -1860,14 +1931,11 @@ def ai_rerank_batch(feed_id):
 	# Build post summaries for the prompt
 	post_lines = []
 	for i, p in enumerate(posts):
-		body = p.get("body", "")
-		if len(body) > 200:
-			body = body[:200]
 		tags = post_tags.get(p["id"], [])
 		tag_labels = [t["label"] for t in tags if t.get("label")]
 		tag_str = ", ".join(tag_labels[:5]) if tag_labels else "none"
 		cred = p.get("credibility", 100)
-		post_lines.append(str(i) + ". [" + tag_str + "] (credibility: " + str(cred) + ") " + body.replace("\n", " "))
+		post_lines.append(str(i) + ". [" + tag_str + "] (credibility: " + str(cred) + ") " + post_prompt(p, 200))
 
 	prompt = get_ai_prompt(feed_id, "rank").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
 
@@ -2018,8 +2086,24 @@ def database_upgrade(version):
 		mochi.db.execute("create table if not exists follows ( feed text not null, post text not null, primary key ( feed, post ) )")
 		mochi.db.execute("create table if not exists notifications ( feed text not null, kind text not null, enabled integer not null, primary key ( feed, kind ) )")
 
+	if version == 9:
+		# Posts are grouped into stories. Every existing post becomes a story of
+		# its own, and the novelty the old comparison pass gave posts is cleared:
+		# it compared only posts that arrived together.
+		if not any([c["name"] == "story" for c in mochi.db.table("posts")]):
+			mochi.db.execute("alter table posts add column story text not null default ''")
+		mochi.db.execute("update posts set story=id where story=''")
+		mochi.db.execute("update posts set novelty=100 where novelty!=100")
+		mochi.db.execute("create index if not exists posts_story on posts( feed, story )")
+		mochi.db.execute("create table if not exists placements ( post text not null primary key, feed text not null, queued integer not null )")
+		mochi.db.execute("create index if not exists placements_feed on placements( feed, queued )")
+		mochi.db.execute("create table if not exists locks ( name text not null primary key, token text not null, expires integer not null default 0 )")
+		# The comparison pass's prompt went with it.
+		if any([c["name"] == "ai_prompt_batch" for c in mochi.db.table("feeds")]):
+			mochi.db.execute("alter table feeds drop column ai_prompt_batch")
+
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_batch text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -2027,11 +2111,18 @@ def database_create():
 	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
-	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0, novelty integer not null default 100, credibility integer not null default 100 )")
+	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0, novelty integer not null default 100, credibility integer not null default 100, story text not null default '' )")
 	mochi.db.execute("create index if not exists posts_feed on posts( feed )")
 	mochi.db.execute("create index if not exists posts_created on posts( created )")
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
 	mochi.db.execute("create index if not exists posts_mmdd on posts( feed, mmdd )")
+	mochi.db.execute("create index if not exists posts_story on posts( feed, story )")
+
+	# Posts waiting to be placed in a story, and the per-feed lock that lets one
+	# pass place them at a time.
+	mochi.db.execute("create table if not exists placements ( post text not null primary key, feed text not null, queued integer not null )")
+	mochi.db.execute("create index if not exists placements_feed on placements( feed, queued )")
+	mochi.db.execute("create table if not exists locks ( name text not null primary key, token text not null, expires integer not null default 0 )")
 
 	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'text', created integer not null, edited integer not null default 0, attachment text not null default '' )")
 	mochi.db.execute("create index if not exists comments_feed on comments( feed )")
@@ -2584,7 +2675,7 @@ def action_view(a):
 						s = score_row["score"] if score_row else 0
 						novelty = p.get("novelty", 100) / 100.0
 						age_hours = (now_ts - p["created"]) / 3600.0
-						p["effective_score"] = s * novelty * (48.0 / (age_hours + 48.0))
+						p["effective_score"] = s * novelty * (24.0 / (age_hours + 24.0))
 					def score_sort_key(p):
 						return (-p.get("effective_score", 0), -p.get("created", 0))
 					posts = sorted(posts, key=score_sort_key)
@@ -6592,7 +6683,7 @@ def sources_add_rss(a, feed, url, name):
 			domain = parts[1].split("/", 1)[0]
 
 	ai_prompt = get_user_ai_prompt(a, "credibility").replace("{{source}}", name).replace("{{domain}}", domain)
-	ai_result = mochi.ai.prompt(ai_prompt, account=0)
+	ai_result = mochi.ai.prompt(ai_prompt, account=resolve_ai_account(0))
 	if ai_result and ai_result.get("status") == 200:
 		ai_text = ai_result.get("text", "").strip()
 		if decimal(ai_text):
@@ -6983,10 +7074,6 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 					# "caught up" - an RSS feed re-serving old items isn't news.
 					if p["created"] > feed_read:
 						send_notification(feed_id, "post", feed_name, mochi.app.label("notifications.body.new_posts", count=1), p["id"], "/feeds/" + fingerprint)
-
-		# Schedule batch tag+dedup check in tag+deduplicate mode
-		if ai_mode == "tag+deduplicate":
-			mochi.schedule.after("schedule_dedup_check", {"feed": feed_id}, 5)
 
 	return (count, complete)
 

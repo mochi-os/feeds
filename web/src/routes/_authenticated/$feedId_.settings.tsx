@@ -743,7 +743,7 @@ const CREDIBILITY_VARIABLES = '{{source}}, {{domain}}'
 // app. What stays here is which prompts this app offers and their wording.
 //
 // The `type` values are what the backend stores under (feeds.star accepts
-// "new", "batch", "rank" and "credibility"); the label and the variables hint
+// "new", "rank" and "credibility"); the label and the variables hint
 // travel with each one so they cannot drift from it.
 function AiPromptsEditor({
   feedId,
