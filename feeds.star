@@ -1060,7 +1060,7 @@ def transform_post(transform, feed_id, fields):
 	if action == "drop":
 		return ("drop", fields)
 	post_fields = parsed.get("post")
-	if post_fields:
+	if type(post_fields) == "dict" and post_fields:
 		merged = dict(fields)
 		for k in post_fields:
 			merged[k] = post_fields[k]
@@ -1187,13 +1187,20 @@ def parse_unified_tag_response(text):
 			return []
 		text = text[:last_close + 2]
 	items = json.decode(text, None)
-	if not items:
+	if type(items) != "list" or not items:
 		return []
 	result = []
 	for item in items:
+		if type(item) != "dict":
+			continue
 		idx = item.get("index", 0)
 		entities = []
-		for e in item.get("entities", []):
+		found = item.get("entities", [])
+		if type(found) != "list":
+			found = []
+		for e in found:
+			if type(e) != "dict":
+				continue
 			name = e.get("name", "")
 			relevance = e.get("relevance", 0)
 			if not name or type(name) != "string":
@@ -1949,12 +1956,14 @@ def ai_rerank_batch(feed_id):
 		lines = text.split("\n")
 		text = "\n".join(lines[1:-1])
 	scores = json.decode(text, None)
-	if not scores:
+	if type(scores) != "list" or not scores:
 		return
 
 	# Apply scores and update cache
 	now_ts = mochi.time.now()
 	for s in scores:
+		if type(s) != "dict":
+			continue
 		idx = s.get("index", -1)
 		sc = s.get("score", 0)
 		if type(idx) == "int" and idx >= 0 and idx < len(posts):
@@ -7231,6 +7240,18 @@ def action_sources_poll(a):
 # starting new work and leaves the rest to a follow-up run.
 POLL_BUDGET = 50
 
+# Seconds a run holds its feed lock. A crashed run never deletes its own, so
+# the lock expires by itself, past the compute limit that cancels a runaway
+# handler.
+POLL_LOCK = 400
+
+# Seconds until the safety-net poll a run books before its work, so a crash
+# resumes polling instead of leaving it to the daily watchdog. It must exceed
+# POLL_LOCK: a crashed run leaves its lock behind, and a safety net arriving
+# while that lock is live exits without booking anything, which silences the
+# feed until the watchdog.
+POLL_SAFETY = 460
+
 # Scheduled poll handler - runs via mochi.schedule
 def schedule_sources_poll(e):
 	if e.source != "schedule":
@@ -7241,21 +7262,19 @@ def schedule_sources_poll(e):
 	if not feed_id:
 		return
 	# Acquire feed-level lock so parallel schedules exit early instead of racing.
-	# Lock expires in 400s as a crash safety net, past the compute limit that
-	# cancels a runaway handler.
 	now = mochi.time.now()
 	lock_token = mochi.uid()
 	mochi.db.execute("delete from poll_locks where expires <= ?", now)
 	mochi.db.execute("insert into poll_locks (feed, token, expires) values (?, ?, ?) on conflict do nothing",
-		feed_id, lock_token, now + 400)
+		feed_id, lock_token, now + POLL_LOCK)
 	lock = mochi.db.row("select token from poll_locks where feed=?", feed_id)
 	if not lock or lock["token"] != lock_token:
 		return
 
 	# Schedule safety net before doing any work - if the handler crashes,
-	# polling resumes in six minutes instead of waiting for the daily
-	# watchdog, and past the compute limit so a cancelled run has ended.
-	safety = mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 360)
+	# polling resumes once its lock has expired instead of waiting for the
+	# daily watchdog.
+	safety = mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, POLL_SAFETY)
 
 	# Poll a bounded batch of due sources so the handler stays under the compute
 	# limit even when many sources align on the same poll tick. The count cap
