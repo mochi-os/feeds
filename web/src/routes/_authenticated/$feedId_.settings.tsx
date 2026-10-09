@@ -340,15 +340,18 @@ function FeedSettingsPage() {
         }
         back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
       />
-      <Main className='space-y-6'>
-        {/* Tabs - only show for owners */}
-        {selectedFeed.isOwner && (
-          <Tabs
-            variant='underline'
-            value={activeTab}
-            onValueChange={(value) => setActiveTab(value as TabId)}
-          >
-            <TabsList>
+      <Main>
+        {/* The panels sit inside Tabs with the strip: a sticky strip only
+            holds for as long as its parent is on screen. */}
+        <Tabs
+          variant='underline'
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as TabId)}
+          className='gap-6'
+        >
+          {/* Tabs - only show for owners */}
+          {selectedFeed.isOwner && (
+            <TabsList sticky>
               {tabs.map((tab) => (
                 <TabsTrigger key={tab.id} value={tab.id} className='gap-2'>
                   {tab.icon}
@@ -356,31 +359,31 @@ function FeedSettingsPage() {
                 </TabsTrigger>
               ))}
             </TabsList>
-          </Tabs>
-        )}
+          )}
 
-        {/* Tab content */}
-        <div className='pt-2'>
-          {activeTab === 'general' && (
-            <GeneralTab
-              feed={selectedFeed}
-              canUnsubscribe={canUnsubscribe}
-              isSubscribing={isSubscribing}
-              isDeleting={isDeleting}
-              showDeleteDialog={showDeleteDialog}
-              setShowDeleteDialog={setShowDeleteDialog}
-              showUnsubscribeDialog={showUnsubscribeDialog}
-              setShowUnsubscribeDialog={setShowUnsubscribeDialog}
-              onUnsubscribe={handleUnsubscribe}
-              onDelete={handleDelete}
-              onRename={handleRename}
-              setFeeds={setFeeds}
-            />
-          )}
-          {activeTab === 'access' && selectedFeed.isOwner && (
-            <AccessTab feedId={selectedFeed.id} />
-          )}
-        </div>
+          {/* Tab content */}
+          <div className='pt-2'>
+            {activeTab === 'general' && (
+              <GeneralTab
+                feed={selectedFeed}
+                canUnsubscribe={canUnsubscribe}
+                isSubscribing={isSubscribing}
+                isDeleting={isDeleting}
+                showDeleteDialog={showDeleteDialog}
+                setShowDeleteDialog={setShowDeleteDialog}
+                showUnsubscribeDialog={showUnsubscribeDialog}
+                setShowUnsubscribeDialog={setShowUnsubscribeDialog}
+                onUnsubscribe={handleUnsubscribe}
+                onDelete={handleDelete}
+                onRename={handleRename}
+                setFeeds={setFeeds}
+              />
+            )}
+            {activeTab === 'access' && selectedFeed.isOwner && (
+              <AccessTab feedId={selectedFeed.id} />
+            )}
+          </div>
+        </Tabs>
       </Main>
     </>
   )
