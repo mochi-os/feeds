@@ -13,7 +13,8 @@ import {
   useReadOnScroll,
 } from '@/hooks'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
-import { Plural, Trans, useLingui } from '@lingui/react/macro'
+import { plural } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Main,
   Button,
@@ -25,7 +26,7 @@ import {
   PageHeader,
   type SortType,
   SortSelector,
-  NewItemsPill,
+  NewItemsAction,
   usePendingItems,
   useMergeOnScrollTop,
   GeneralError,
@@ -524,6 +525,14 @@ export function FeedsListPage({
         icon={<Rss className='size-4 md:size-5' />}
         actions={
           <>
+            <NewItemsAction
+              count={newPosts.count}
+              onClick={handleShowNewPosts}
+              label={plural(newPosts.count, {
+                one: '# new post',
+                other: '# new posts',
+              })}
+            />
             {isLoggedIn && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -580,17 +589,6 @@ export function FeedsListPage({
           ref={scrollRef}
           className='flex flex-1 flex-col gap-4 overflow-y-auto'
         >
-          <NewItemsPill
-            count={newPosts.count}
-            onClick={handleShowNewPosts}
-            label={
-              <Plural
-                value={newPosts.count}
-                one='# new post'
-                other='# new posts'
-              />
-            }
-          />
           {loaderError ? (
             <div className='mb-4'>
               <GeneralError

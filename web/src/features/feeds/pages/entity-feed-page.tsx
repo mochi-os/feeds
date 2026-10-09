@@ -21,7 +21,8 @@ import type {
   FeedPost,
   ReactionId,
 } from '@/types'
-import { Plural, Trans, useLingui } from '@lingui/react/macro'
+import { plural } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Main,
   Button,
@@ -37,7 +38,7 @@ import {
   LoadingContent,
   SortSelector,
   type SortType,
-  NewItemsPill,
+  NewItemsAction,
   usePendingItems,
   useMergeOnScrollTop,
   GeneralError,
@@ -600,6 +601,14 @@ export function EntityFeedPage({
         icon={<Rss className='size-4 md:size-5' />}
         actions={
           <>
+            <NewItemsAction
+              count={newPosts.count}
+              onClick={handleShowNewPosts}
+              label={plural(newPosts.count, {
+                one: '# new post',
+                other: '# new posts',
+              })}
+            />
             {canPost && (
               <Button
                 variant='ghost'
@@ -707,17 +716,6 @@ export function EntityFeedPage({
       />
       <Main fixed>
         <div ref={scrollRef} className='flex-1 overflow-y-auto px-2 md:px-0'>
-          <NewItemsPill
-            count={newPosts.count}
-            onClick={handleShowNewPosts}
-            label={
-              <Plural
-                value={newPosts.count}
-                one='# new post'
-                other='# new posts'
-              />
-            }
-          />
           {feed.banner_html && (
             <FeedBanner bannerHtml={feed.banner_html} feedId={feed.id} />
           )}
