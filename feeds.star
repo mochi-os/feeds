@@ -6159,7 +6159,7 @@ def event_deleted(e):
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "feed/removed" if removed else "feed/deleted", "feed": feed_id})
 	# Its notifications point at rows that no longer exist.
-	mochi.service.call("notifications", "clear/object", feed_id)
+	mochi.service.call("notifications", "delete/object", feed_id)
 	if removed:
 		send_notification(feed_id, "member/removed", mochi.app.label("notifications.title.removed", name=feed["name"]), mochi.app.label("notifications.body.removed"), feed_id, "/feeds/")
 
