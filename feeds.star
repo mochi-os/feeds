@@ -71,26 +71,31 @@ def strip_html(text):
 	result = []
 	tag = []
 	in_tag = False
-	for c in text.elems():
-		if c == "<":
+	for i in range(len(text)):
+		c = text[i]
+		if in_tag:
+			if c == ">":
+				in_tag = False
+				# Tag name: drop a leading "/" (closing tag), then cut at the first
+				# space or "/" so attributes and self-closing slashes are ignored.
+				name = "".join(tag).strip()
+				if name.startswith("/"):
+					name = name[1:]
+				cut = len(name)
+				for j in range(len(name)):
+					if name[j] == " " or name[j] == "\t" or name[j] == "\n" or name[j] == "/":
+						cut = j
+						break
+				if name[:cut].lower() in strip_html_breaks:
+					result.append("\n")
+			else:
+				tag.append(c)
+		elif c == "<" and i + 1 < len(text) and (text[i + 1].isalpha() or text[i + 1] in "/!?"):
+			# A tag opens only where HTML opens one: "<" before a letter, "/",
+			# "!" or "?". Any other "<", and any ">" outside a tag, is text, so
+			# "3 < 5" in a plain-text title survives.
 			in_tag = True
 			tag = []
-		elif c == ">":
-			in_tag = False
-			# Tag name: drop a leading "/" (closing tag), then cut at the first
-			# space or "/" so attributes and self-closing slashes are ignored.
-			name = "".join(tag).strip()
-			if name.startswith("/"):
-				name = name[1:]
-			cut = len(name)
-			for i in range(len(name)):
-				if name[i] == " " or name[i] == "\t" or name[i] == "\n" or name[i] == "/":
-					cut = i
-					break
-			if name[:cut].lower() in strip_html_breaks:
-				result.append("\n")
-		elif in_tag:
-			tag.append(c)
 		else:
 			result.append(c)
 	out = decode_entities("".join(result))
@@ -98,6 +103,12 @@ def strip_html(text):
 	while "\n\n\n" in out:
 		out = out.replace("\n\n\n", "\n\n")
 	return out.strip()
+
+# A feed or item title as one line of plain text. An Atom title of type "html"
+# arrives as markup, so it is stripped like a description, and the breaks that
+# block tags leave are folded into single spaces.
+def strip_title(text):
+	return " ".join(strip_html(text).split())
 
 # Decode the HTML entities a feed is likely to carry. Shared by strip_html and
 # by attribute reads, which see the same escaping inside a quoted value.
@@ -6671,7 +6682,7 @@ def sources_add_rss(a, feed, url, name):
 
 	# Use feed title as name if not provided
 	if not name:
-		name = result.get("title", "")
+		name = strip_title(result.get("title", ""))
 	if not name:
 		name = url
 
@@ -6950,7 +6961,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 			continue
 
 		# Format post body - strip HTML from description
-		title = item.get("title", "")
+		title = strip_title(item.get("title", ""))
 		description_html = item.get("description", "")
 		description = strip_html(description_html)
 		# RSS <link> is third-party; keep only http(s) so it never renders as a
