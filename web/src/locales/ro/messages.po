@@ -34,6 +34,7 @@ msgstr "(extinde)"
 msgid "(expanded)"
 msgstr "(extins)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(din {0})"
@@ -54,34 +55,53 @@ msgstr "(tu)"
 msgid "[not set]"
 msgstr "[nesetat]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# copie} few {# copii} other {# de copii}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# fișier modificat} few {# fișiere modificate} other {# de fișiere modificate}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# postare nouă} few {# postări noi} other {# de postări noi}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# rezultat} few {# rezultate} other {# de rezultate}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# selectat} few {# selectate} other {# selectate}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# imbricat} few {+# imbricate} other {+# imbricate}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {A fost adăugată # sursă} few {Au fost adăugate # surse} other {Au fost adăugate # de surse}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "Setări {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#săpt} other {#săpt}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Sursă adăugată (# postare importată)} few {Sursă adăugată (# postări importate)} other {Sursă adăugată (# de postări importate)}}"
@@ -226,8 +247,23 @@ msgstr "Acces configurat pentru {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Cont"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Acțiuni cont"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Postările contului"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Cronologia contului"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Adaugă acces"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Adaugă cont"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Adaugă postările contului"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Adaugă cronologia contului"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Adaugă la notificările existente"
 msgid "Add view"
 msgstr "Adaugă vizualizare"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Surse adăugate până acum: {0}; restul urmează"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "De acord"
@@ -400,6 +449,12 @@ msgstr "Permite sortarea după"
 msgid "Also delete posts imported from this source"
 msgstr "Șterge și postările importate din această sursă"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Și pe {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Uimit"
@@ -434,6 +489,7 @@ msgstr "Oricine este autentificat"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Tot ce este abonat la acest flux va înceta să îl primească. Puteți copia un URL nou după aceea."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Sigur vrei să ștergi „{0}”?"
@@ -474,6 +530,8 @@ msgstr "Sigur vrei să te retragi? {opponentName} va câștiga jocul."
 msgid "Ascending"
 msgstr "Crescător"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Înapoi la fluxuri"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Înapoi la pornire"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Copii de rezervă"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Copii de rezervă pentru {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Alege un joc din bara laterală sau începe unul nou."
 msgid "Choose a time"
 msgstr "Alegeți o oră"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Alege un cont"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Se șterg postările salvate..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Închide"
 
@@ -846,9 +918,14 @@ msgstr "Comentează, reacționează și vezi"
 msgid "Comments"
 msgstr "Comentarii"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Comentarii ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Comunitate"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Copiat în clipboard"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Copiază"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Nu s-a putut schimba unde publică fluxul"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Nu s-au putut șterge copiile"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Nu s-a putut urmări"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Nu s-a putut importa"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Șterge coloana"
 msgid "Delete comment"
 msgstr "Șterge comentariul"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Șterge copiile"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Șterge elementul"
 msgid "Delete option"
 msgstr "Șterge opțiunea"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Șterge opțiunea {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Șterge postarea"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Ștergi copiile de pe {0}?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Ștergeți contul de pe serverul vechi"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Șters"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Copii șterse: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Editează setările câmpului"
 msgid "Edit option"
 msgstr "Editează opțiunea"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Indicatoare"
 msgid "Flat"
 msgstr "Plat"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Urmărește"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Urmărește {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Urmărește o persoană sau o comunitate"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Grup"
 msgid "Group by"
 msgstr "Grupează după"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Grup: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Identitate"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Vizualizator de imagini: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Vizualizator de imagini: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperial"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Importă marcajele"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Importă conturile urmărite ca surse"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Importă postările"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Importate: {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Importate până acum: {0}; restul urmează"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Detalii element"
 msgid "Just now"
 msgstr "Chiar acum"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Păstrează"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Scurtături de tastatură"
@@ -1882,6 +2032,7 @@ msgstr "Scurtături de tastatură"
 msgid "Large"
 msgstr "Mare"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Ultima verificare {0}"
@@ -2068,6 +2219,8 @@ msgstr "Mutat"
 msgid "Moved {field}"
 msgstr "Mutat {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Nu sunt configurate reguli de acces. Adaugă reguli pentru a controla ci
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Încă nicio activitate"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Nu a fost făcută încă nicio copie de rezervă. Se face una în fiecare zi."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Niciuna"
 msgid "Normal"
 msgstr "Normal"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Necomparat: mai mare decât {0}"
@@ -2297,6 +2455,7 @@ msgstr "Nimic salvat încă"
 msgid "Notifications"
 msgstr "Notificări"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Notificări: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Număr"
 msgid "On"
 msgstr "Activat"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "În această zi, acum {0} {1, plural, one {an} few {ani} other {de ani}} · "
@@ -2407,6 +2568,10 @@ msgstr "Model (regex)"
 msgid "People"
 msgstr "Persoane"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Persoană sau comunitate"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Încearcă din nou."
 msgid "Please wait a moment and try again."
 msgstr "Așteptați un moment și încercați din nou."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Verificare la fiecare {0}"
@@ -2464,6 +2630,10 @@ msgstr "Postări"
 msgid "Posts and comments"
 msgstr "Postări și comentarii"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Postări pe Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Prompt salvat"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Proprietăți"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Publică pe"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Publică pe {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Memento"
 msgid "Remove"
 msgstr "Elimină"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Elimină {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Elimini {name}?"
 msgid "Remove access rule"
 msgstr "Elimină regula de acces"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Eliminați regula de acces pentru „{0}”?"
@@ -2692,6 +2875,8 @@ msgstr "Se repetă"
 msgid "Reply"
 msgstr "Răspunde"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Selectează cardul anterior"
 msgid "Select..."
 msgstr "Selectează..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Selectat: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Mic"
 msgid "Sort"
 msgstr "Sortează"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Sursă adăugată"
@@ -3110,6 +3297,7 @@ msgstr "Abonat"
 msgid "Subscribed feed"
 msgstr "Feed la care ești abonat"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Abonat la {0}"
@@ -3216,6 +3404,11 @@ msgstr "Camera este deja utilizată"
 msgid "The camera request was not answered"
 msgstr "Solicitarea camerei nu a primit răspuns"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Fluxul a publicat acolo {0} postări. Rămân acolo dacă nu le ștergi."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Solicitarea microfonului nu a primit răspuns"
@@ -3274,10 +3467,12 @@ msgstr "Această postare poate să fi fost ștearsă sau este posibil să nu ai 
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Aceasta elimină fiecare postare din lista ta de salvate. Acțiunea nu poate fi anulată."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Aceasta va șterge definitiv „{0}” și toate postările, comentariile și reacțiile sale. Această acțiune nu poate fi anulată."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Aceasta va opri importul conținutului din „{0}”."
@@ -3508,6 +3703,7 @@ msgstr "Verifică adresa de email"
 msgid "Video thumbnail"
 msgstr "Miniatură video"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Vizualizator video: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Urmărit"
 msgid "Watched only"
 msgstr "Doar urmărite"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Am trimis un cod de verificare la <0>{0}</0>. Introduceți codul mai jos pentru a verifica adresa de e-mail."
@@ -3591,6 +3788,7 @@ msgstr "Nu ai încă niciun feed."
 msgid "You were removed from this feed"
 msgstr "Ai fost eliminat din acest flux"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Nu vei mai primi actualizări de la „{0}”."

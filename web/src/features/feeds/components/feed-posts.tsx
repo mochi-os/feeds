@@ -61,6 +61,7 @@ import {
   PostTagsTooltip,
   type Upload,
   providerName,
+  QuoteCard,
 } from '@mochi/web'
 import {
   Bell,
@@ -1280,6 +1281,9 @@ export function FeedPosts({
                       </div>
                     )}
                     <PostCopies copies={post.copies} />
+                    {post.data?.quote && (
+                      <QuoteCard quote={post.data.quote} className='my-2' />
+                    )}
                     {/* RSS image: show cached image, or lazy-fetch if missing */}
                     {post.data?.rss?.image &&
                       (!singlePost ||

@@ -34,6 +34,7 @@ msgstr "(palawakin)"
 msgid "(expanded)"
 msgstr "(pinalawak)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(mula sa {0})"
@@ -54,34 +55,53 @@ msgstr "(ikaw)"
 msgid "[not set]"
 msgstr "[hindi naitakda]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# kopya} other {# na kopya}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# file ang binago} other {# file ang binago}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# bagong post} other {# bagong post}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# resulta} other {# resulta}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# napili} other {# napili}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# naka-nest} other {+# naka-nest}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Naidagdag ang # source} other {Naidagdag ang # na source}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "Mga setting ng {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#lin} other {#lin}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Naidagdag ang source (# post na na-import)} other {Naidagdag ang source (# na post na na-import)}}"
@@ -226,8 +247,23 @@ msgstr "Naitakda ang access para kay {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Account"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Mga aksyon sa account"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Mga post ng account"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Timeline ng account"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Magdagdag ng access"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Magdagdag ng account"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Magdagdag ng mga post ng account"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Magdagdag ng timeline ng account"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Idagdag sa mga umiiral na notification"
 msgid "Add view"
 msgstr "Magdagdag ng view"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "{0} source na ang naidagdag; susunod ang iba pa"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Sang-ayon"
@@ -400,6 +449,12 @@ msgstr "Payagan ang pag-sort ayon sa"
 msgid "Also delete posts imported from this source"
 msgstr "I-delete din ang mga post na na-import mula sa source na ito"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Nasa {0} din"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Namangha"
@@ -434,6 +489,7 @@ msgstr "Sinumang naka-log in"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Titigil sa pagtanggap nito ang lahat ng naka-subscribe sa feed na ito. Maaari kang kumopya ng bagong URL pagkatapos."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Sigurado ka bang gusto mong i-delete ang \"{0}\"?"
@@ -474,6 +530,8 @@ msgstr "Sigurado ka bang gusto mong sumuko? Mananalo si {opponentName} sa laro."
 msgid "Ascending"
 msgstr "Pataas"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Bumalik sa mga feed"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Bumalik sa home"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Mga backup"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Mga backup ng {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Pumili ng laro mula sa sidebar o magsimula ng bago."
 msgid "Choose a time"
 msgstr "Pumili ng oras"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Pumili ng account"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Nililinis ang mga naka-save na post..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Isara"
 
@@ -846,9 +918,14 @@ msgstr "Magkomento, mag-react, at tingnan"
 msgid "Comments"
 msgstr "Mga komento"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Mga komento ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Komunidad"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Nakopya sa clipboard"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopyahin"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Hindi mabago kung saan naglalathala ang feed"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Hindi ma-delete ang mga kopya"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Hindi masundan"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Hindi ma-import"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "I-delete ang column"
 msgid "Delete comment"
 msgstr "I-delete ang komento"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "I-delete ang mga kopya"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "I-delete ang item"
 msgid "Delete option"
 msgstr "I-delete ang option"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "I-delete ang option {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "I-delete ang post"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "I-delete ang mga kopya sa {0}?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Burahin ang iyong account sa lumang server"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Tinanggal"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Na-delete ang {0} kopya"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "I-edit ang field settings"
 msgid "Edit option"
 msgstr "I-edit ang pagpipilian"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Mga flag"
 msgid "Flat"
 msgstr "Patag"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Sundan"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Sundan si {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Sundan ang isang tao o komunidad"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Grupo"
 msgid "Group by"
 msgstr "Pangkatin ayon sa"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Grupo: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Identity"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Tagatingin ng larawan: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Tagatingin ng larawan: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperyal"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "I-import ang mga bookmark"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "I-import ang mga sinusundan bilang mga source"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "I-import ang mga post"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Na-import ang {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "{0} na ang na-import; susunod ang iba pa"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Detalye ng item"
 msgid "Just now"
 msgstr "Ngayon lang"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Panatilihin"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Mga keyboard shortcut"
@@ -1882,6 +2032,7 @@ msgstr "Mga keyboard shortcut"
 msgid "Large"
 msgstr "Malaki"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Huling na-check {0}"
@@ -2068,6 +2219,8 @@ msgstr "Inilipat"
 msgid "Moved {field}"
 msgstr "Inilipat ang {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Walang naka-configure na access rule. Magdagdag ng mga rule upang kontro
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Wala pang aktibidad"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Wala pang nagawang backup. Gumagawa ng isa araw-araw."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Wala"
 msgid "Normal"
 msgstr "Karaniwan"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Hindi ikinumpara: mas malaki kaysa {0}"
@@ -2297,6 +2455,7 @@ msgstr "Wala pang nai-save"
 msgid "Notifications"
 msgstr "Mga Notification"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Mga notification: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Numero"
 msgid "On"
 msgstr "Naka-on"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Sa araw na ito, {0} {1, plural, one {taon} other {taon}} ang nakalipas · "
@@ -2407,6 +2568,10 @@ msgstr "Pattern (regex)"
 msgid "People"
 msgstr "Mga Tao"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Tao o komunidad"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Pakisubukan muli."
 msgid "Please wait a moment and try again."
 msgstr "Mangyaring maghintay sandali at subukang muli."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Nagpo-poll bawat {0}"
@@ -2464,6 +2630,10 @@ msgstr "Mga Post"
 msgid "Posts and comments"
 msgstr "Mga post at komento"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Mga post sa Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Na-save ang prompt"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Mga katangian"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Ilathala sa"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Ilathala sa {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Paalala"
 msgid "Remove"
 msgstr "Alisin"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Alisin ang {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Alisin ang {name}?"
 msgid "Remove access rule"
 msgstr "Alisin ang access rule"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Alisin ang panuntunan sa access para sa \"{0}\"?"
@@ -2692,6 +2875,8 @@ msgstr "Paulit-ulit"
 msgid "Reply"
 msgstr "Tumugon"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Piliin ang nakaraang card"
 msgid "Select..."
 msgstr "Pumili..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Napili: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Maliit"
 msgid "Sort"
 msgstr "Ayusin"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Naidagdag ang source"
@@ -3110,6 +3297,7 @@ msgstr "Naka-subscribe"
 msgid "Subscribed feed"
 msgstr "Naka-subscribe na feed"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Naka-subscribe sa {0}"
@@ -3216,6 +3404,11 @@ msgstr "Ginagamit na ang camera"
 msgid "The camera request was not answered"
 msgstr "Hindi nasagot ang kahilingan sa camera"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Naglathala ang feed ng {0} post doon. Mananatili ang mga ito maliban kung i-delete mo."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Hindi nasagot ang kahilingan sa mikropono"
@@ -3274,10 +3467,12 @@ msgstr "Maaaring natanggal ang post na ito o wala kang access dito."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Inaalis nito ang bawat post sa iyong listahan ng mga naka-save. Hindi ito mababawi."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Permanenteng tatanggalin nito ang \"{0}\" at lahat ng post, komento, at reaction nito. Hindi maaaring bawiin ang aksyong ito."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Ihihinto nito ang pag-import ng nilalaman mula sa \"{0}\"."
@@ -3508,6 +3703,7 @@ msgstr "Beripikahin ang email address"
 msgid "Video thumbnail"
 msgstr "Thumbnail ng video"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Tagapanood ng video: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Binabantayan"
 msgid "Watched only"
 msgstr "Binabantayan lamang"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Nagpadala kami ng verification code sa <0>{0}</0>. Ilagay ang code sa ibaba upang i-verify ang iyong email address."
@@ -3591,6 +3788,7 @@ msgstr "Wala ka pang feed."
 msgid "You were removed from this feed"
 msgstr "Tinanggal ka sa feed na ito"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Hindi ka na makakatanggap ng mga update mula sa \"{0}\"."

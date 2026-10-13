@@ -34,6 +34,7 @@ msgstr "(expandir)"
 msgid "(expanded)"
 msgstr "(expandido)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(de {0})"
@@ -54,34 +55,53 @@ msgstr "(ti)"
 msgid "[not set]"
 msgstr "[non establecido]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# copia} other {# copias}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ficheiro cambiado} other {# ficheiros cambiados}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# publicación nova} other {# publicacións novas}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# resultado} other {# resultados}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# seleccionado} other {# seleccionados}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# aniñado} other {+# aniñados}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Engadiuse # fonte} other {Engadíronse # fontes}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "Axustes de {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#sem} other {#sem}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Fonte engadida (# publicación importada)} other {Fonte engadida (# publicacións importadas)}}"
@@ -226,8 +247,23 @@ msgstr "Acceso establecido para {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Conta"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Accións da conta"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Publicacións dunha conta"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Cronoloxía dunha conta"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Engadir acceso"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Engadir conta"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Engadir publicacións dunha conta"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Engadir a cronoloxía dunha conta"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Engadir ás notificacións existentes"
 msgid "Add view"
 msgstr "Engadir vista"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Engadíronse {0} fontes ata agora; o resto chegará despois"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "De acordo"
@@ -400,6 +449,12 @@ msgstr "Permitir ordenar por"
 msgid "Also delete posts imported from this source"
 msgstr "Eliminar tamén as publicacións importadas desta fonte"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Tamén en {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Asombrado"
@@ -434,6 +489,7 @@ msgstr "Calquera que iniciase sesión"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Todo o subscrito a este fío deixará de recibilo. Despois podes copiar un URL novo."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Seguro que queres eliminar \"{0}\"?"
@@ -474,6 +530,8 @@ msgstr "Seguro que queres renderte? {opponentName} gañará a partida."
 msgid "Ascending"
 msgstr "Ascendente"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Volver aos feeds"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Volver ao inicio"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Copias de seguridade"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Copias de seguridade de {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Escolle unha partida da barra lateral ou inicia unha nova."
 msgid "Choose a time"
 msgstr "Escoller unha hora"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Escolle unha conta"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Limpando as publicacións gardadas..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Pechar"
 
@@ -846,9 +918,14 @@ msgstr "Comentar, reaccionar e ver"
 msgid "Comments"
 msgstr "Comentarios"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Comentarios ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Comunidade"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Copiado ao portapapeis"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Copiar"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Non se puido cambiar onde publica o fío"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Non se puideron eliminar as copias"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Non se puido seguir"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Non se puido importar"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Eliminar columna"
 msgid "Delete comment"
 msgstr "Eliminar comentario"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Eliminar copias"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Eliminar elemento"
 msgid "Delete option"
 msgstr "Eliminar opción"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Eliminar opción {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Eliminar publicación"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Eliminar as copias en {0}?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Elimina a túa conta no servidor antigo"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Eliminado"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Elimináronse {0} copias"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Editar configuración do campo"
 msgid "Edit option"
 msgstr "Editar opción"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Marcas"
 msgid "Flat"
 msgstr "Plana"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Seguir"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Seguir a {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Seguir unha persoa ou comunidade"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Grupo"
 msgid "Group by"
 msgstr "Agrupar por"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Grupo: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Identidade"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Visor de imaxes: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Visor de imaxes: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperial"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Importar marcadores"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Importar as contas seguidas como fontes"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Importar publicacións"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Importáronse {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Importáronse {0} ata agora; o resto chegará despois"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Detalles do elemento"
 msgid "Just now"
 msgstr "Agora mesmo"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Conservar"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Atallos de teclado"
@@ -1882,6 +2032,7 @@ msgstr "Atallos de teclado"
 msgid "Large"
 msgstr "Grande"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Última comprobación {0}"
@@ -2068,6 +2219,8 @@ msgstr "Movido"
 msgid "Moved {field}"
 msgstr "{field} movido"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Non hai regras de acceso configuradas. Engade regras para controlar quen
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Aínda non hai actividade"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Aínda non se fixo ningunha copia de seguridade. Faise unha cada día."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Ningún"
 msgid "Normal"
 msgstr "Normal"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Non comparado: maior que {0}"
@@ -2297,6 +2455,7 @@ msgstr "Aínda non hai nada gardado"
 msgid "Notifications"
 msgstr "Notificacións"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Notificacións: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Número"
 msgid "On"
 msgstr "Activado"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Neste día, hai {0} {1, plural, one {ano} other {anos}} · "
@@ -2407,6 +2568,10 @@ msgstr "Patrón (regex)"
 msgid "People"
 msgstr "Persoas"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Persoa ou comunidade"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Téntao de novo."
 msgid "Please wait a moment and try again."
 msgstr "Agarda un momento e téntao de novo."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Sondeando cada {0}"
@@ -2464,6 +2630,10 @@ msgstr "Publicacións"
 msgid "Posts and comments"
 msgstr "Publicacións e comentarios"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Publicacións en Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Indicación gardada"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Propiedades"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Publicar en"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Publicar en {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Recordatorio"
 msgid "Remove"
 msgstr "Eliminar"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Eliminar {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Eliminar {name}?"
 msgid "Remove access rule"
 msgstr "Eliminar regra de acceso"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Quitar a regra de acceso para «{0}»?"
@@ -2692,6 +2875,8 @@ msgstr "Repítese"
 msgid "Reply"
 msgstr "Responder"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Seleccionar tarxeta anterior"
 msgid "Select..."
 msgstr "Seleccionar..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Seleccionado: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Pequeno"
 msgid "Sort"
 msgstr "Ordenar"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Fonte engadida"
@@ -3110,6 +3297,7 @@ msgstr "Subscrito"
 msgid "Subscribed feed"
 msgstr "Fío subscrito"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Subscrito a {0}"
@@ -3216,6 +3404,11 @@ msgstr "A cámara xa está en uso"
 msgid "The camera request was not answered"
 msgstr "A solicitude de cámara non recibiu resposta"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "O fío publicou alí {0} publicacións. Mantéñense a menos que as elimines."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "A solicitude de micrófono non recibiu resposta"
@@ -3274,10 +3467,12 @@ msgstr "Esta publicación puido ser eliminada ou pode que non teñas acceso a el
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Isto quita todas as publicacións da túa lista de gardados. Non se pode desfacer."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Isto eliminará permanentemente \"{0}\" e todas as súas publicacións, comentarios e reaccións. Esta acción non se pode desfacer."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Isto deterá a importación de contido de \"{0}\"."
@@ -3508,6 +3703,7 @@ msgstr "Verificar enderezo de correo electrónico"
 msgid "Video thumbnail"
 msgstr "Miniatura de vídeo"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Visor de vídeos: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Vixiado"
 msgid "Watched only"
 msgstr "Só vixiados"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Enviamos un código de verificación a <0>{0}</0>. Introduce o código a continuación para verificar o teu enderezo de correo."
@@ -3591,6 +3788,7 @@ msgstr "Aínda non tes fíos."
 msgid "You were removed from this feed"
 msgstr "Elimináronte deste fío"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Xa non recibirás actualizacións de «{0}»."

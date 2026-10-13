@@ -34,6 +34,7 @@ msgstr "(விரிவாக்கு)"
 msgid "(expanded)"
 msgstr "(விரிவாக்கப்பட்டது)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0} இலிருந்து)"
@@ -54,34 +55,53 @@ msgstr "(நீங்கள்)"
 msgid "[not set]"
 msgstr "[அமைக்கப்படவில்லை]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# நகல்} other {# நகல்கள்}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# கோப்பு மாற்றப்பட்டது} other {# கோப்புகள் மாற்றப்பட்டன}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# புதிய இடுகை} other {# புதிய இடுகைகள்}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# முடிவு} other {# முடிவுகள்}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# தேர்ந்தெடுக்கப்பட்டது} other {# தேர்ந்தெடுக்கப்பட்டது}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# உள்ளமை} other {+# உள்ளமை}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {# மூலம் சேர்க்கப்பட்டது} other {# மூலங்கள் சேர்க்கப்பட்டன}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} அமைப்புகள்"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#நி} other {#நி}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#வா} other {#வா}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {மூலம் சேர்க்கப்பட்டது (# பதிவு இறக்குமதி செய்யப்பட்டது)} other {மூலம் சேர்க்கப்பட்டது (# பதிவுகள் இறக்குமதி செய்யப்பட்டன)}}"
@@ -226,8 +247,23 @@ msgstr "{subjectName}-க்கு அணுகல் அமைக்கப்�
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "கணக்கு"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "கணக்குச் செயல்கள்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "கணக்கின் பதிவுகள்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "கணக்கின் காலவரிசை"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "அணுகல் சேர்"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "கணக்கு சேர்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "கணக்கின் பதிவுகளைச் சேர்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "கணக்கின் காலவரிசையைச் சேர்"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "உள்ள அறிவிப்புகளுக்குச் ச�
 msgid "Add view"
 msgstr "காட்சி சேர்"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "இதுவரை {0} மூலங்கள் சேர்க்கப்பட்டன; மீதமுள்ளவை தொடரும்"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "ஒப்புக்கொள்"
@@ -400,6 +449,12 @@ msgstr "வரிசைப்படுத்துதலை அனுமதி"
 msgid "Also delete posts imported from this source"
 msgstr "இந்த ஆதாரத்திலிருந்து இறக்குமதி செய்யப்பட்ட பதிவுகளையும் நீக்கு"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "{0} இலும்"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "வியந்தேன்"
@@ -434,6 +489,7 @@ msgstr "உள்நுழைந்த யாரும்"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "இந்த ஊட்டத்திற்கு குழுசேர்ந்த அனைத்தும் அதைப் பெறுவதை நிறுத்தும். பிறகு நீங்கள் புதிய URL ஐ நகலெடுக்கலாம்."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\"-ஐ நீக்க விரும்புகிறீர்களா?"
@@ -474,6 +530,8 @@ msgstr "நீங்கள் சரணடைய விரும்புகி�
 msgid "Ascending"
 msgstr "ஏறுவரிசை"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "ஃபீட்களுக்கு திரும்பு"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "முகப்புக்குத் திரும்பு"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "காப்புப்பிரதிகள்"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0} இன் காப்புப்பிரதிகள்"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "பக்கப்பட்டியில் இருந்து ஒ�
 msgid "Choose a time"
 msgstr "நேரத்தைத் தேர்ந்தெடுக்கவும்"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "கணக்கைத் தேர்ந்தெடு"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "சேமித்த இடுகைகளை அழிக்கிற�
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "மூடு"
 
@@ -846,9 +918,14 @@ msgstr "கருத்து, ரியாக்ட் மற்றும் �
 msgid "Comments"
 msgstr "கருத்துகள்"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "கருத்துகள் ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "சமூகம்"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "கிளிப்போர்டுக்கு நகலெடுக�
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "நகலெடு"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "ஊட்டம் வெளியிடும் இடத்தை மாற்ற முடியவில்லை"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "நகல்களை நீக்க முடியவில்லை"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "பின்தொடர முடியவில்லை"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "இறக்குமதி செய்ய முடியவில்லை"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "நெடுவரிசையை நீக்கு"
 msgid "Delete comment"
 msgstr "கருத்தை நீக்கு"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "நகல்களை நீக்கு"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "உருப்படியை நீக்கு"
 msgid "Delete option"
 msgstr "விருப்பத்தை நீக்கு"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "விருப்பம் {0}-ஐ நீக்கு"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "பதிவை நீக்கு"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "{0} இல் உள்ள நகல்களை நீக்கவா?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "பழைய சேவையகத்தில் உங்கள் க
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "நீக்கப்பட்டது"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0} நகல்கள் நீக்கப்பட்டன"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "புல அமைப்புகளைத் திருத்து"
 msgid "Edit option"
 msgstr "விருப்பத்தை திருத்து"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "கொடிகள்"
 msgid "Flat"
 msgstr "தட்டையானது"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "பின்தொடர்"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "{0} ஐப் பின்தொடர்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "ஒரு நபரை அல்லது சமூகத்தைப் பின்தொடர்"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "குழு"
 msgid "Group by"
 msgstr "இதன்படி தொகுக்கவும்"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "குழு: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ஐடி"
 msgid "Identity"
 msgstr "அடையாளம்"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "பட காட்சி: {0}"
@@ -1818,6 +1942,28 @@ msgstr "பட காட்சி: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "இம்பீரியல்"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "புத்தகக்குறிகளை இறக்குமதி செய்"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "பின்தொடரும் கணக்குகளை மூலங்களாக இறக்குமதி செய்"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "பதிவுகளை இறக்குமதி செய்"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} இறக்குமதி செய்யப்பட்டன"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "இதுவரை {0} இறக்குமதி செய்யப்பட்டன; மீதமுள்ளவை தொடரும்"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "உருப்படி விவரங்கள்"
 msgid "Just now"
 msgstr "இப்போதுதான்"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "வைத்திரு"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "விசைப்பலகை குறுக்குவழிகள்"
@@ -1882,6 +2032,7 @@ msgstr "விசைப்பலகை குறுக்குவழிகள�
 msgid "Large"
 msgstr "பெரியது"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "கடைசியாக சரிபார்க்கப்பட்டது {0}"
@@ -2068,6 +2219,8 @@ msgstr "நகர்த்தப்பட்டது"
 msgid "Moved {field}"
 msgstr "{field} நகர்த்தப்பட்டது"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "அணுகல் விதிகள் எதுவும் கட்
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "செயல்பாடு இன்னும் இல்லை"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "இதுவரை காப்புப்பிரதி எதுவும் உருவாக்கப்படவில்லை. ஒவ்வொரு நாளும் ஒன்று உருவாக்கப்படும்."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "ஒன்றுமில்லை"
 msgid "Normal"
 msgstr "சாதாரணம்"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "ஒப்பிடப்படவில்லை: {0}-ஐ விட பெரியது"
@@ -2297,6 +2455,7 @@ msgstr "இன்னும் எதுவும் சேமிக்கப்�
 msgid "Notifications"
 msgstr "அறிவிப்புகள்"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "அறிவிப்புகள்: {0}"
@@ -2315,6 +2474,8 @@ msgstr "எண்"
 msgid "On"
 msgstr "இயக்கத்தில்"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "இந்த நாளில், {0} {1, plural, one {வருடம்} other {வருடங்கள்}} முன்பு · "
@@ -2407,6 +2568,10 @@ msgstr "வடிவம் (regex)"
 msgid "People"
 msgstr "மக்கள்"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "நபர் அல்லது சமூகம்"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "தயவுசெய்து மீண்டும் முயற்�
 msgid "Please wait a moment and try again."
 msgstr "சிறிது நேரம் காத்திருந்து மீண்டும் முயற்சிக்கவும்."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "ஒவ்வொரு {0}-க்கும் சரிபார்க்கப்படுகிறது"
@@ -2464,6 +2630,10 @@ msgstr "பதிவுகள்"
 msgid "Posts and comments"
 msgstr "பதிவுகள் மற்றும் கருத்துகள்"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Bluesky இல் உள்ள பதிவுகள்"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "தூண்டுதல் சேமிக்கப்பட்டத�
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "பண்புகள்"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "வெளியிடும் இடங்கள்"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "{0} இல் வெளியிடு"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "நினைவூட்டல்"
 msgid "Remove"
 msgstr "அகற்று"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0}-ஐ அகற்று"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name}-ஐ அகற்றவா?"
 msgid "Remove access rule"
 msgstr "அணுகல் விதியை அகற்று"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "\"{0}\" க்கான அணுகல் விதியை அகற்றவா?"
@@ -2692,6 +2875,8 @@ msgstr "மீண்டும் நிகழ்கிறது"
 msgid "Reply"
 msgstr "பதில்"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "முந்தைய அட்டையை தேர்ந்தெட�
 msgid "Select..."
 msgstr "தேர்ந்தெடு..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "தேர்ந்தெடுக்கப்பட்டது: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "சிறியது"
 msgid "Sort"
 msgstr "வரிசைப்படுத்து"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "மூலம் சேர்க்கப்பட்டது"
@@ -3110,6 +3297,7 @@ msgstr "சந்தாதாரர் ஆனார்"
 msgid "Subscribed feed"
 msgstr "சந்தா செய்த ஃபீட்"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "{0}-க்கு சந்தாதாரர் ஆனார்"
@@ -3216,6 +3404,11 @@ msgstr "கேமரா ஏற்கனவே பயன்பாட்டில�
 msgid "The camera request was not answered"
 msgstr "கேமரா கோரிக்கைக்கு பதில் இல்லை"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "ஊட்டம் அங்கு {0} பதிவுகளை வெளியிட்டது. நீங்கள் நீக்கும் வரை அவை அங்கேயே இருக்கும்."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "மைக்ரோஃபோன் கோரிக்கைக்கு பதில் இல்லை"
@@ -3274,10 +3467,12 @@ msgstr "இந்த பதிவு நீக்கப்பட்டிரு�
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "இது உங்கள் சேமித்த பட்டியலிலிருந்து ஒவ்வொரு இடுகையையும் அகற்றும். இதை மீட்டெடுக்க முடியாது."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "இது \"{0}\" மற்றும் அதன் அனைத்து பதிவுகள், கருத்துகள் மற்றும் எதிர்வினைகளை நிரந்தரமாக நீக்கும். இந்த செயலை திரும்ப மாற்ற முடியாது."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "இது \"{0}\"-லிருந்து உள்ளடக்கத்தை இறக்குமதி செய்வதை நிறுத்தும்."
@@ -3508,6 +3703,7 @@ msgstr "மின்னஞ்சல் முகவரியை சரிபா�
 msgid "Video thumbnail"
 msgstr "வீடியோ சிறுபடம்"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "வீடியோ காட்சி: {0}"
@@ -3560,6 +3756,7 @@ msgstr "கவனிக்கப்பட்டது"
 msgid "Watched only"
 msgstr "கவனிக்கப்பட்டது மட்டும்"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "நாங்கள் <0>{0}</0> க்கு சரிபார்ப்புக் குறியீட்டை அனுப்பியுள்ளோம். உங்கள் மின்னஞ்சல் முகவரியைச் சரிபார்க்க கீழே குறியீட்டை உள்ளிடவும்."
@@ -3591,6 +3788,7 @@ msgstr "உங்களிடம் இன்னும் ஃபீட்கள�
 msgid "You were removed from this feed"
 msgstr "நீங்கள் இந்த ஊட்டத்திலிருந்து அகற்றப்பட்டீர்கள்"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "இனி \"{0}\" இலிருந்து புதுப்பிப்புகளைப் பெறமாட்டீர்கள்."

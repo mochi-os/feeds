@@ -34,6 +34,7 @@ msgstr "(разгарнуць)"
 msgid "(expanded)"
 msgstr "(разгорнута)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(з {0})"
@@ -54,34 +55,53 @@ msgstr "(вы)"
 msgid "[not set]"
 msgstr "[не зададзена]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# копія} few {# копіі} many {# копій} other {# копіі}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# файл зменены} few {# файлы зменены} many {# файлаў зменена} other {# файла зменена}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# новы допіс} few {# новыя допісы} many {# новых допісаў} other {# новага допісу}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# вынік} few {# вынікі} many {# вынікаў} other {# выніку}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# выбрана} few {# выбрана} many {# выбрана} other {# выбрана}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# укладзены} few {+# укладзеныя} many {+# укладзеных} other {+# укладзенага}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Дададзена # крыніца} few {Дададзена # крыніцы} many {Дададзена # крыніц} other {Дададзена # крыніцы}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "Налады {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#хв} other {#хв}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#тыд} other {#тыд}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Крыніца дададзена (імпартавана # публікацыя)} few {Крыніца дададзена (імпартавана # публікацыі)} many {Крыніца дададзена (імпартавана # публікацый)} other {Крыніца дададзена (імпартавана # публікацыі)}}"
@@ -226,8 +247,23 @@ msgstr "Доступ усталяваны для {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Уліковы запіс"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Дзеянні з уліковым запісам"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Пасты ўліковага запісу"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Храналогія ўліковага запісу"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Дадаць доступ"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Дадаць уліковы запіс"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Дадаць пасты ўліковага запісу"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Дадаць храналогію ўліковага запісу"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Дадаць да існуючых апавяшчэнняў"
 msgid "Add view"
 msgstr "Дадаць выгляд"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Пакуль дададзена крыніц: {0}; астатнія будуць пазней"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Згодны"
@@ -400,6 +449,12 @@ msgstr "Дазволіць сартаваць па"
 msgid "Also delete posts imported from this source"
 msgstr "Таксама выдаліць публікацыі, імпартаваныя з гэтай крыніцы"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Таксама ў {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Здзіўлена"
@@ -434,6 +489,7 @@ msgstr "Кожны, хто ўвайшоў"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Усё, што падпісана на гэтую стужку, перастане яе атрымліваць. Пасля вы можаце скапіяваць новы URL."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Вы ўпэўнены, што хочаце выдаліць \"{0}\"?"
@@ -474,6 +530,8 @@ msgstr "Вы ўпэўнены, што хочаце здацца? {opponentName} 
 msgid "Ascending"
 msgstr "Па ўзрастанні"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Назад да стужак"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "На галоўную"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Рэзервовыя копіі"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Рэзервовыя копіі {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Выберыце гульню з бакавой панэлі або па
 msgid "Choose a time"
 msgstr "Абярыце час"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Выберыце ўліковы запіс"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Ачыстка захаваных запісаў..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Закрыць"
 
@@ -846,9 +918,14 @@ msgstr "Каментаваць, рэагаваць і праглядаць"
 msgid "Comments"
 msgstr "Каментарыі"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Каментарыі ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Супольнасць"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Скапіравана ў буфер абмену"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Капіраваць"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Не ўдалося змяніць, куды публікуе стужка"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Не ўдалося выдаліць копіі"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Не ўдалося падпісацца"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Не ўдалося імпартаваць"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Выдаліць слупок"
 msgid "Delete comment"
 msgstr "Выдаліць каментарый"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Выдаліць копіі"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Выдаліць элемент"
 msgid "Delete option"
 msgstr "Выдаліць опцыю"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Выдаліць опцыю {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Выдаліць публікацыю"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Выдаліць копіі ў {0}?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Выдаліце свой акаўнт на старым серверы"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Выдалена"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Выдалена копій: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Рэдагаваць налады поля"
 msgid "Edit option"
 msgstr "Рэдагаваць опцыю"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Адзнакі"
 msgid "Flat"
 msgstr "Плоская"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Падпісацца"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Падпісацца на {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Падпісацца на чалавека або супольнасць"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Група"
 msgid "Group by"
 msgstr "Групаваць па"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Група: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Асоба"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Прагляд відарысаў: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Прагляд відарысаў: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Імперская"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Імпартаваць закладкі"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Імпартаваць падпіскі як крыніцы"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Імпартаваць пасты"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Імпартавана: {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Пакуль імпартавана: {0}; астатняе будзе пазней"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Дэталі элемента"
 msgid "Just now"
 msgstr "Толькі што"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Пакінуць"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Спалучэнні клавіш"
@@ -1882,6 +2032,7 @@ msgstr "Спалучэнні клавіш"
 msgid "Large"
 msgstr "Вялікі"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Апошняя праверка {0}"
@@ -2068,6 +2219,8 @@ msgstr "Перамешчана"
 msgid "Moved {field}"
 msgstr "Перамешчана {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Правілы доступу не настроены. Дадайце п
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Пакуль няма актыўнасці"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Рэзервовая копія яшчэ не зроблена. Яна робіцца штодня."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Няма"
 msgid "Normal"
 msgstr "Звычайны"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Не параўнана: больш за {0}"
@@ -2297,6 +2455,7 @@ msgstr "Пакуль нічога не захавана"
 msgid "Notifications"
 msgstr "Апавяшчэнні"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Апавяшчэнні: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Нумар"
 msgid "On"
 msgstr "Укл."
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "У гэты дзень, {0} {1, plural, one {год} few {гады} many {гадоў} other {года}} таму · "
@@ -2407,6 +2568,10 @@ msgstr "Шаблон (рэгулярны выраз)"
 msgid "People"
 msgstr "Людзі"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Чалавек або супольнасць"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Паспрабуйце яшчэ раз."
 msgid "Please wait a moment and try again."
 msgstr "Калі ласка, пачакайце крыху і паспрабуйце зноў."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Апытванне кожныя {0}"
@@ -2464,6 +2630,10 @@ msgstr "Пасты"
 msgid "Posts and comments"
 msgstr "Пасты і каментары"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Пасты ў Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Падказка захавана"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Уласцівасці"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Публікаваць у"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Публікаваць у {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Напамін"
 msgid "Remove"
 msgstr "Выдаліць"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Выдаліць {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Выдаліць {name}?"
 msgid "Remove access rule"
 msgstr "Выдаліць правіла доступу"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Выдаліць правіла доступу для \"{0}\"?"
@@ -2692,6 +2875,8 @@ msgstr "Паўтараецца"
 msgid "Reply"
 msgstr "Адказаць"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Выбраць папярэднюю картку"
 msgid "Select..."
 msgstr "Выбраць..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Выбрана: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Малы"
 msgid "Sort"
 msgstr "Сартаваць"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Крыніца дададзена"
@@ -3110,6 +3297,7 @@ msgstr "Падпісана"
 msgid "Subscribed feed"
 msgstr "Падпісаная стужка"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Падпісана на {0}"
@@ -3216,6 +3404,11 @@ msgstr "Камера ўжо выкарыстоўваецца"
 msgid "The camera request was not answered"
 msgstr "Запыт камеры застаўся без адказу"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Стужка апублікавала там пастоў: {0}. Яны застануцца, калі вы іх не выдаліце."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Запыт мікрафона застаўся без адказу"
@@ -3274,10 +3467,12 @@ msgstr "Гэта публікацыя магла быць выдалена, аб
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Гэта выдаліць кожны допіс са спіса захаваных. Гэта нельга адмяніць."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Гэта незваротна выдаліць «{0}» і ўсе яго публікацыі, каментарыі і рэакцыі. Гэта дзеянне нельга адмяніць."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Гэта спыніць імпарт змесціва з «{0}»."
@@ -3508,6 +3703,7 @@ msgstr "Пацвердзіць email-адрас"
 msgid "Video thumbnail"
 msgstr "Мініяцюра відэа"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Прагляд відэа: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Праглядзена"
 msgid "Watched only"
 msgstr "Толькі праглядзеныя"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Мы адправілі код пацвярджэння на <0>{0}</0>. Увядзіце код ніжэй, каб пацвердзіць свой адрас электроннай пошты."
@@ -3591,6 +3788,7 @@ msgstr "У вас яшчэ няма стужак."
 msgid "You were removed from this feed"
 msgstr "Вас выдалілі з гэтай стужкі"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Вы больш не будзеце атрымліваць абнаўленні ад \"{0}\"."

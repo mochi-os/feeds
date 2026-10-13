@@ -7,6 +7,7 @@ import type { AxiosProgressEvent } from 'axios'
 import type {
   BackupsResponse,
   ImportResponse,
+  Lookup,
   PublishResponse,
   PublishSetResponse,
 } from '@/types/feeds'
@@ -743,10 +744,15 @@ const forgetCopies = async (
     { account }
   )
 
+// A handle or link looked up from search: a person, a community or a post on
+// another network.
+const lookup = async (query: string): Promise<Lookup> =>
+  client.get<Lookup>(endpoints.feeds.lookup, { params: { query } })
+
 const importAccount = async (
   feedId: string,
   account: string,
-  kind: 'posts' | 'bookmarks'
+  kind: 'posts' | 'bookmarks' | 'follows'
 ): Promise<ImportResponse> =>
   client.post<ImportResponse, { account: string; kind: string }>(
     endpoints.feeds.importAccount(feedId),
@@ -1089,6 +1095,7 @@ export const feedsApi = {
   getRssToken,
   revokeRssToken,
   getPublish,
+  lookup,
   setPublish,
   forgetCopies,
   importAccount,

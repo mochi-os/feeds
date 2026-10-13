@@ -34,6 +34,7 @@ msgstr "(rozbaliť)"
 msgid "(expanded)"
 msgstr "(rozbalené)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(z {0})"
@@ -54,34 +55,53 @@ msgstr "(vy)"
 msgid "[not set]"
 msgstr "[nenastavené]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# kópia} few {# kópie} many {# kópie} other {# kópií}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# súbor zmenený} few {# súbory zmenené} many {# súboru zmeneného} other {# súborov zmenených}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nový príspevok} few {# nové príspevky} many {# nového príspevku} other {# nových príspevkov}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# výsledok} few {# výsledky} many {# výsledkov} other {# výsledkov}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# vybraté} few {# vybraté} many {# vybratých} other {# vybratých}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# vnorená} few {+# vnorené} many {+# vnorených} other {+# vnorených}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Pridaný # zdroj} few {Pridané # zdroje} many {Pridaného # zdroja} other {Pridaných # zdrojov}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} nastavenia"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#týž} other {#týž}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Zdroj pridaný (# príspevok importovaný)} few {Zdroj pridaný (# príspevky importované)} many {Zdroj pridaný (# príspevkov importovaných)} other {Zdroj pridaný (# príspevkov importovaných)}}"
@@ -226,8 +247,23 @@ msgstr "Prístup nastavený pre {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Účet"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Akcie účtu"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Príspevky účtu"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Časová os účtu"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Pridať prístup"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Pridať účet"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Pridať príspevky účtu"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Pridať časovú os účtu"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Pridať k existujúcim notifikáciám"
 msgid "Add view"
 msgstr "Pridať zobrazenie"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Zatiaľ pridané zdroje: {0}; ostatné budú nasledovať"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Súhlasím"
@@ -400,6 +449,12 @@ msgstr "Povoliť triedenie podľa"
 msgid "Also delete posts imported from this source"
 msgstr "Odstrániť aj príspevky importované z tohto zdroja"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Aj na {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Ohromené"
@@ -434,6 +489,7 @@ msgstr "Ktokoľvek, kto je prihlásený"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Všetko, čo je prihlásené na tento kanál, ho prestane dostávať. Potom môžete skopírovať novú adresu URL."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Naozaj chcete odstrániť „{0}“?"
@@ -474,6 +530,8 @@ msgstr "Naozaj sa chcete vzdať? Hru vyhrá {opponentName}."
 msgid "Ascending"
 msgstr "Vzostupne"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Späť na kanály"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Späť na úvod"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Zálohy"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Zálohy účtu {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Vyberte hru zo bočného panela alebo začnite novú."
 msgid "Choose a time"
 msgstr "Vyberte čas"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Vyberte účet"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Mažú sa uložené príspevky..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Zavrieť"
 
@@ -846,9 +918,14 @@ msgstr "Komentovať, reagovať a prezerať"
 msgid "Comments"
 msgstr "Komentáre"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Komentáre ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Komunita"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Skopírované do schránky"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopírovať"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Nepodarilo sa zmeniť, kam kanál publikuje"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Kópie sa nepodarilo odstrániť"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Sledovanie sa nepodarilo"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Import sa nepodaril"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Odstrániť stĺpec"
 msgid "Delete comment"
 msgstr "Odstrániť komentár"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Odstrániť kópie"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Odstrániť položku"
 msgid "Delete option"
 msgstr "Odstrániť možnosť"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Odstrániť možnosť {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Odstrániť príspevok"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Odstrániť kópie na účte {0}?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Odstráňte svoj účet na starom serveri"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Odstránené"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Odstránené kópie: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Upraviť nastavenia poľa"
 msgid "Edit option"
 msgstr "Upraviť možnosť"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Príznaky"
 msgid "Flat"
 msgstr "Plochý"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Sledovať"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Sledovať {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Sledovať osobu alebo komunitu"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Skupina"
 msgid "Group by"
 msgstr "Zoskupiť podľa"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Skupina: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Identita"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Prehliadač obrázkov: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Prehliadač obrázkov: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperiálne"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Importovať záložky"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Importovať sledované účty ako zdroje"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Importovať príspevky"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Importované: {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Zatiaľ importované: {0}; ostatné budú nasledovať"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Podrobnosti položky"
 msgid "Just now"
 msgstr "Práve teraz"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Ponechať"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Klávesové skratky"
@@ -1882,6 +2032,7 @@ msgstr "Klávesové skratky"
 msgid "Large"
 msgstr "Veľké"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Naposledy skontrolované {0}"
@@ -2068,6 +2219,8 @@ msgstr "Presunuté"
 msgid "Moved {field}"
 msgstr "Presunuté {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Nie sú nakonfigurované žiadne pravidlá prístupu. Pridajte pravidlá
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Zatiaľ žiadna aktivita"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Zatiaľ nebola vytvorená žiadna záloha. Vytvára sa raz denne."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Žiadne"
 msgid "Normal"
 msgstr "Normálne"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Neporovnané: väčšie ako {0}"
@@ -2297,6 +2455,7 @@ msgstr "Zatiaľ nič neuložené"
 msgid "Notifications"
 msgstr "Notifikácie"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Oznámenia: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Číslo"
 msgid "On"
 msgstr "Zapnuté"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "V tento deň, pred {0} {1, plural, one {rokom} few {rokmi} many {rokmi} other {rokmi}} · "
@@ -2407,6 +2568,10 @@ msgstr "Vzor (regex)"
 msgid "People"
 msgstr "Ľudia"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Osoba alebo komunita"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Skúste to znova."
 msgid "Please wait a moment and try again."
 msgstr "Chvíľu počkajte a skúste to znova."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Dotazovanie každých {0}"
@@ -2464,6 +2630,10 @@ msgstr "Príspevky"
 msgid "Posts and comments"
 msgstr "Príspevky a komentáre"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Príspevky na Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Prompt uložený"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Vlastnosti"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Publikovať do"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Publikovať do {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Pripomienka"
 msgid "Remove"
 msgstr "Odstrániť"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Odstrániť {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Odstrániť {name}?"
 msgid "Remove access rule"
 msgstr "Odstrániť pravidlo prístupu"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Odstrániť pravidlo prístupu pre „{0}“?"
@@ -2692,6 +2875,8 @@ msgstr "Opakuje sa"
 msgid "Reply"
 msgstr "Odpovedať"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Vybrať predchádzajúcu kartu"
 msgid "Select..."
 msgstr "Vybrať..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Vybraté: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Malé"
 msgid "Sort"
 msgstr "Zoradiť"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Zdroj pridaný"
@@ -3110,6 +3297,7 @@ msgstr "Prihlásený na odber"
 msgid "Subscribed feed"
 msgstr "Odoberaný kanál"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Prihlásený na odber {0}"
@@ -3216,6 +3404,11 @@ msgstr "Kamera sa už používa"
 msgid "The camera request was not answered"
 msgstr "Žiadosť o kameru zostala bez odpovede"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Kanál tam zverejnil príspevky: {0}. Zostanú tam, kým ich neodstránite."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Žiadosť o mikrofón zostala bez odpovede"
@@ -3274,10 +3467,12 @@ msgstr "Tento príspevok mohol byť odstránený alebo k nemu nemáte prístup."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Týmto sa z vášho zoznamu uložených odstráni každý príspevok. Túto akciu nie je možné vrátiť späť."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Týmto sa natrvalo odstráni „{0}“ a všetky jeho príspevky, komentáre a reakcie. Túto akciu nemožno vrátiť."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Týmto sa zastaví importovanie obsahu z „{0}“."
@@ -3508,6 +3703,7 @@ msgstr "Overiť e-mailovú adresu"
 msgid "Video thumbnail"
 msgstr "Miniatúra videa"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Prehliadač videí: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Sledované"
 msgid "Watched only"
 msgstr "Iba sledované"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Overovací kód sme odoslali na <0>{0}</0>. Zadajte kód nižšie na overenie vašej e-mailovej adresy."
@@ -3591,6 +3788,7 @@ msgstr "Zatiaľ nemáte žiadne kanály."
 msgid "You were removed from this feed"
 msgstr "Boli ste odstránení z tohto kanála"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Aktualizácie od „{0}“ už nebudete dostávať."

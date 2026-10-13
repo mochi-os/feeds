@@ -92,10 +92,27 @@ export function PublishingSection({
     }
   }
 
-  const importFrom = async (account: PublishAccount, kind: 'posts' | 'bookmarks') => {
+  const importFrom = async (
+    account: PublishAccount,
+    kind: 'posts' | 'bookmarks' | 'follows'
+  ) => {
     setBusy(account.id)
     try {
       const answer = await feedsApi.importAccount(feedId, account.id, kind)
+      if (kind === 'follows') {
+        toast.success(
+          answer.more
+            ? t`Added ${answer.imported} sources so far; the rest follow`
+            : plural(answer.imported, {
+                one: 'Added # source',
+                other: 'Added # sources',
+              })
+        )
+        await queryClient.invalidateQueries({
+          queryKey: ['feeds', 'sources', feedId],
+        })
+        return
+      }
       toast.success(
         answer.more
           ? t`Imported ${answer.imported} so far; the rest follow`
@@ -159,6 +176,12 @@ export function PublishingSection({
                     >
                       <Download className='me-2 h-4 w-4' />
                       <Trans>Import bookmarks</Trans>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => void importFrom(account, 'follows')}
+                    >
+                      <Download className='me-2 h-4 w-4' />
+                      <Trans>Import follows as sources</Trans>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setArchive(account)}>
                       <Archive className='me-2 h-4 w-4' />

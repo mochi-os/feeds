@@ -34,6 +34,7 @@ msgstr "(വിപുലീകരിക്കുക)"
 msgid "(expanded)"
 msgstr "(വിപുലീകരിച്ചത്)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0}-ൽ നിന്ന്)"
@@ -54,34 +55,53 @@ msgstr "(നിങ്ങൾ)"
 msgid "[not set]"
 msgstr "[സജ്ജമാക്കിയിട്ടില്ല]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# പകർപ്പ്} other {# പകർപ്പുകൾ}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ഫയൽ മാറ്റി} other {# ഫയലുകൾ മാറ്റി}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# പുതിയ പോസ്റ്റ്} other {# പുതിയ പോസ്റ്റുകൾ}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# ഫലം} other {# ഫലങ്ങൾ}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# തിരഞ്ഞെടുത്തു} other {# തിരഞ്ഞെടുത്തു}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# നെസ്റ്റഡ്} other {+# നെസ്റ്റഡ്}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {# സ്രോതസ്സ് ചേർത്തു} other {# സ്രോതസ്സുകൾ ചേർത്തു}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} ക്രമീകരണങ്ങൾ"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#മി} other {#മി}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ആ} other {#ആ}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {സ്രോതസ്സ് ചേർത്തു (# പോസ്റ്റ് ഇംപോർട്ട് ചെയ്തു)} other {സ്രോതസ്സ് ചേർത്തു (# പോസ്റ്റുകൾ ഇംപോർട്ട് ചെയ്തു)}}"
@@ -226,8 +247,23 @@ msgstr "{subjectName}-നായി ആക്സസ് സജ്ജമാക്�
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "അക്കൗണ്ട്"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "അക്കൗണ്ട് പ്രവർത്തനങ്ങൾ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "അക്കൗണ്ടിന്റെ പോസ്റ്റുകൾ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "അക്കൗണ്ടിന്റെ ടൈംലൈൻ"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "ആക്സസ് ചേർക്കുക"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "അക്കൗണ്ട് ചേർക്കുക"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "അക്കൗണ്ടിന്റെ പോസ്റ്റുകൾ ചേർക്കുക"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "അക്കൗണ്ടിന്റെ ടൈംലൈൻ ചേർക്കുക"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "നിലവിലുള്ള അറിയിപ്പുകളില�
 msgid "Add view"
 msgstr "കാഴ്ച ചേർക്കുക"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "ഇതുവരെ {0} സ്രോതസ്സുകൾ ചേർത്തു; ബാക്കിയുള്ളവ പിന്നാലെ വരും"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "സമ്മതം"
@@ -400,6 +449,12 @@ msgstr "സോർട്ട് ചെയ്യാൻ അനുവദിക്ക�
 msgid "Also delete posts imported from this source"
 msgstr "ഈ ഉറവിടത്തിൽ നിന്ന് ഇറക്കുമതി ചെയ്ത പോസ്റ്റുകളും ഇല്ലാതാക്കുക"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "{0}-ലും ഉണ്ട്"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "അത്ഭുതപ്പെട്ടു"
@@ -434,6 +489,7 @@ msgstr "ലോഗിൻ ചെയ്ത ആരും"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "ഈ ഫീഡ് സബ്‌സ്‌ക്രൈബ് ചെയ്ത എല്ലാം അത് ലഭിക്കുന്നത് നിർത്തും. പിന്നീട് നിങ്ങൾക്ക് ഒരു പുതിയ URL പകർത്താം."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" ഇല്ലാതാക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?"
@@ -474,6 +530,8 @@ msgstr "നിങ്ങൾ കീഴടങ്ങാൻ തീർച്ചയാ�
 msgid "Ascending"
 msgstr "ആരോഹണ ക്രമം"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "ഫീഡുകളിലേക്ക് തിരികെ"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "ഹോമിലേക്ക് മടങ്ങുക"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "ബാക്കപ്പുകൾ"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0} ന്റെ ബാക്കപ്പുകൾ"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "സൈഡ്ബാറിൽ നിന്ന് ഒരു ഗെയിം
 msgid "Choose a time"
 msgstr "ഒരു സമയം തിരഞ്ഞെടുക്കുക"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "ഒരു അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "സംരക്ഷിച്ച പോസ്റ്റുകൾ മായ�
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "അടയ്ക്കുക"
 
@@ -846,9 +918,14 @@ msgstr "കമന്റ് ചെയ്യുക, പ്രതികരിക്
 msgid "Comments"
 msgstr "അഭിപ്രായങ്ങൾ"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "കമന്റുകൾ ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "കമ്മ്യൂണിറ്റി"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത�
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "പകർത്തുക"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "ഫീഡ് പ്രസിദ്ധീകരിക്കുന്ന സ്ഥലം മാറ്റാൻ കഴിഞ്ഞില്ല"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "പകർപ്പുകൾ ഇല്ലാതാക്കാൻ കഴിഞ്ഞില്ല"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "പിന്തുടരാൻ കഴിഞ്ഞില്ല"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "ഇമ്പോർട്ട് ചെയ്യാൻ കഴിഞ്ഞില്ല"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "കോളം ഇല്ലാതാക്കുക"
 msgid "Delete comment"
 msgstr "അഭിപ്രായം ഇല്ലാതാക്കുക"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "പകർപ്പുകൾ ഇല്ലാതാക്കുക"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "ഇനം ഇല്ലാതാക്കുക"
 msgid "Delete option"
 msgstr "ഓപ്ഷൻ ഇല്ലാതാക്കുക"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "ഓപ്ഷൻ {0} ഇല്ലാതാക്കുക"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "പോസ്റ്റ് ഇല്ലാതാക്കുക"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "{0}-ലെ പകർപ്പുകൾ ഇല്ലാതാക്കണോ?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "പഴയ സെർവറിൽ നിങ്ങളുടെ അക്ക
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "ഇല്ലാതാക്കി"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0} പകർപ്പുകൾ ഇല്ലാതാക്കി"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "ഫീൽഡ് ക്രമീകരണങ്ങൾ എഡിറ്റ�
 msgid "Edit option"
 msgstr "ഓപ്ഷൻ എഡിറ്റ് ചെയ്യുക"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "ഫ്ലാഗുകൾ"
 msgid "Flat"
 msgstr "പരന്നത്"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "പിന്തുടരുക"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "{0}-നെ പിന്തുടരുക"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "ഒരു വ്യക്തിയെയോ കമ്മ്യൂണിറ്റിയെയോ പിന്തുടരുക"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "ഗ്രൂപ്പ്"
 msgid "Group by"
 msgstr "ഇത് പ്രകാരം ഗ്രൂപ്പുചെയ്യുക"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "ഗ്രൂപ്പ്: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ഐഡി"
 msgid "Identity"
 msgstr "സ്വത്വം"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "ചിത്ര വ്യൂവർ: {0}"
@@ -1818,6 +1942,28 @@ msgstr "ചിത്ര വ്യൂവർ: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "ഇംപീരിയൽ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "ബുക്ക്മാർക്കുകൾ ഇമ്പോർട്ട് ചെയ്യുക"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "പിന്തുടരുന്ന അക്കൗണ്ടുകൾ സ്രോതസ്സുകളായി ഇമ്പോർട്ട് ചെയ്യുക"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "പോസ്റ്റുകൾ ഇമ്പോർട്ട് ചെയ്യുക"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} ഇമ്പോർട്ട് ചെയ്തു"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "ഇതുവരെ {0} ഇമ്പോർട്ട് ചെയ്തു; ബാക്കിയുള്ളവ പിന്നാലെ വരും"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "ഇനം വിശദാംശങ്ങൾ"
 msgid "Just now"
 msgstr "ഇപ്പോൾ"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "നിലനിർത്തുക"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "കീബോർഡ് കുറുക്കുവഴികൾ"
@@ -1882,6 +2032,7 @@ msgstr "കീബോർഡ് കുറുക്കുവഴികൾ"
 msgid "Large"
 msgstr "വലുത്"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "അവസാനമായി പരിശോധിച്ചത് {0}"
@@ -2068,6 +2219,8 @@ msgstr "നീക്കി"
 msgid "Moved {field}"
 msgstr "{field} നീക്കി"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "ആക്സസ് നിയമങ്ങളൊന്നും കോൺ�
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "പ്രവർത്തനം ഇതുവരെയില്ല"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "ഇതുവരെ ബാക്കപ്പ് ഒന്നും എടുത്തിട്ടില്ല. ദിവസവും ഒരെണ്ണം എടുക്കുന്നു."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "ഒന്നുമില്ല"
 msgid "Normal"
 msgstr "സാധാരണം"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "താരതമ്യം ചെയ്തിട്ടില്ല: {0}-നെക്കാൾ വലുത്"
@@ -2297,6 +2455,7 @@ msgstr "ഇതുവരെ ഒന്നും സംരക്ഷിച്ചി�
 msgid "Notifications"
 msgstr "അറിയിപ്പുകൾ"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "അറിയിപ്പുകൾ: {0}"
@@ -2315,6 +2474,8 @@ msgstr "നമ്പർ"
 msgid "On"
 msgstr "ഓൺ"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "ഈ ദിവസം, {0} {1, plural, one {വർഷം} other {വർഷം}} മുമ്പ് · "
@@ -2407,6 +2568,10 @@ msgstr "പാറ്റേൺ (regex)"
 msgid "People"
 msgstr "ആളുകൾ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "വ്യക്തി അല്ലെങ്കിൽ കമ്മ്യൂണിറ്റി"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "ദയവായി വീണ്ടും ശ്രമിക്കുക.
 msgid "Please wait a moment and try again."
 msgstr "അൽപ്പനേരം കാത്തിരുന്ന് വീണ്ടും ശ്രമിക്കുക."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "ഓരോ {0} കൂടുമ്പോഴും പോളിംഗ്"
@@ -2464,6 +2630,10 @@ msgstr "പോസ്റ്റുകൾ"
 msgid "Posts and comments"
 msgstr "പോസ്റ്റുകളും അഭിപ്രായങ്ങളും"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Bluesky-ലെ പോസ്റ്റുകൾ"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "പ്രോംപ്റ്റ് സേവ് ചെയ്തു"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "സവിശേഷതകൾ"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "പ്രസിദ്ധീകരിക്കേണ്ട ഇടം"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "{0}-ലേക്ക് പ്രസിദ്ധീകരിക്കുക"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "ഓർമ്മപ്പെടുത്തൽ"
 msgid "Remove"
 msgstr "നീക്കം ചെയ്യുക"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} നീക്കം ചെയ്യുക"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name} നീക്കം ചെയ്യണോ?"
 msgid "Remove access rule"
 msgstr "ആക്സസ് നിയമം നീക്കം ചെയ്യുക"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "\"{0}\" എന്നതിനുള്ള ആക്‌സസ് നിയമം നീക്കംചെയ്യണോ?"
@@ -2692,6 +2875,8 @@ msgstr "ആവർത്തിക്കുന്നു"
 msgid "Reply"
 msgstr "മറുപടി"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "മുൻ കാർഡ് തിരഞ്ഞെടുക്കുക"
 msgid "Select..."
 msgstr "തിരഞ്ഞെടുക്കുക..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "തിരഞ്ഞെടുത്തത്: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "ചെറുത്"
 msgid "Sort"
 msgstr "അടുക്കുക"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "സ്രോതസ്സ് ചേർത്തു"
@@ -3110,6 +3297,7 @@ msgstr "സബ്സ്ക്രൈബ് ചെയ്തു"
 msgid "Subscribed feed"
 msgstr "സബ്‌സ്ക്രൈബുചെയ്ത ഫീഡ്"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "{0}-ലേക്ക് സബ്സ്ക്രൈബ് ചെയ്തു"
@@ -3216,6 +3404,11 @@ msgstr "ക്യാമറ ഇതിനകം ഉപയോഗത്തിലാ�
 msgid "The camera request was not answered"
 msgstr "ക്യാമറ അഭ്യർത്ഥനയ്ക്ക് മറുപടി ലഭിച്ചില്ല"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "ഫീഡ് അവിടെ {0} പോസ്റ്റുകൾ പ്രസിദ്ധീകരിച്ചു. നിങ്ങൾ ഇല്ലാതാക്കിയില്ലെങ്കിൽ അവ നിലനിൽക്കും."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "മൈക്രോഫോൺ അഭ്യർത്ഥനയ്ക്ക് മറുപടി ലഭിച്ചില്ല"
@@ -3274,10 +3467,12 @@ msgstr "ഈ പോസ്റ്റ് ഇല്ലാതാക്കിയിര�
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "ഇത് നിങ്ങളുടെ സംരക്ഷിച്ച പട്ടികയിൽ നിന്ന് എല്ലാ പോസ്റ്റും നീക്കം ചെയ്യുന്നു. ഇത് പഴയപടിയാക്കാനാകില്ല."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "ഇത് \"{0}\"-ഉം അതിന്റെ എല്ലാ പോസ്റ്റുകൾ, കമന്റുകൾ, പ്രതികരണങ്ങൾ എന്നിവയും സ്ഥിരമായി ഇല്ലാതാക്കും. ഈ പ്രവർത്തനം പഴയപടിയാക്കാൻ കഴിയില്ല."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "ഇത് \"{0}\"-ൽ നിന്ന് ഉള്ളടക്കം ഇംപോർട്ട് ചെയ്യുന്നത് നിർത്തും."
@@ -3508,6 +3703,7 @@ msgstr "ഇമെയിൽ വിലാസം സ്ഥിരീകരിക്�
 msgid "Video thumbnail"
 msgstr "വീഡിയോ തംബ്നെയിൽ"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "വീഡിയോ വ്യൂവർ: {0}"
@@ -3560,6 +3756,7 @@ msgstr "വാച്ച് ചെയ്തു"
 msgid "Watched only"
 msgstr "വാച്ച് ചെയ്തവ മാത്രം"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "ഞങ്ങൾ <0>{0}</0> എന്നതിലേക്ക് ഒരു പരിശോധനാ കോഡ് അയച്ചു. നിങ്ങളുടെ ഇമെയിൽ വിലാസം പരിശോധിക്കാൻ താഴെ കോഡ് നൽകുക."
@@ -3591,6 +3788,7 @@ msgstr "നിങ്ങൾക്ക് ഇതുവരെ ഫീഡുകൾ ഇ
 msgid "You were removed from this feed"
 msgstr "നിങ്ങളെ ഈ ഫീഡിൽ നിന്ന് നീക്കം ചെയ്തു"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "നിങ്ങൾക്ക് ഇനി \"{0}\"-ൽ നിന്ന് അപ്ഡേറ്റുകൾ ലഭിക്കില്ല."

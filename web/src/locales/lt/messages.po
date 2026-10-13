@@ -34,6 +34,7 @@ msgstr "(išskleisti)"
 msgid "(expanded)"
 msgstr "(išskleista)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(iš {0})"
@@ -54,34 +55,53 @@ msgstr "(jūs)"
 msgid "[not set]"
 msgstr "[nenustatyta]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# kopija} few {# kopijos} many {# kopijos} other {# kopijų}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {pakeistas # failas} few {pakeisti # failai} many {pakeista # failo} other {pakeista # failų}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# naujas įrašas} few {# nauji įrašai} many {# naujo įrašo} other {# naujų įrašų}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# rezultatas} few {# rezultatai} many {# rezultatų} other {# rezultatų}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# pasirinktas} few {# pasirinkti} many {# pasirinktų} other {# pasirinktų}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# įdėtas} few {+# įdėti} many {+# įdėto} other {+# įdėtų}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Pridėtas # šaltinis} few {Pridėti # šaltiniai} many {Pridėta # šaltinio} other {Pridėta # šaltinių}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} nustatymai"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#sav} other {#sav}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Šaltinis pridėtas (# įrašas importuotas)} few {Šaltinis pridėtas (# įrašai importuoti)} many {Šaltinis pridėtas (# įrašų importuota)} other {Šaltinis pridėtas (# įrašų importuota)}}"
@@ -226,8 +247,23 @@ msgstr "Prieiga nustatyta {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Paskyra"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Paskyros veiksmai"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Paskyros įrašai"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Paskyros laiko juosta"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Pridėti prieigą"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Pridėti paskyrą"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Pridėti paskyros įrašus"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Pridėti paskyros laiko juostą"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Pridėti prie esamų pranešimų"
 msgid "Add view"
 msgstr "Pridėti rodinį"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Kol kas pridėta šaltinių: {0}; likę bus pridėti vėliau"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Sutinku"
@@ -400,6 +449,12 @@ msgstr "Leisti rūšiuoti pagal"
 msgid "Also delete posts imported from this source"
 msgstr "Taip pat ištrinti įrašus, importuotus iš šio šaltinio"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Taip pat tinkle {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Nustebęs"
@@ -434,6 +489,7 @@ msgstr "Bet kas, kas prisijungęs"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Viskas, kas prenumeruoja šį srautą, nustos jį gauti. Vėliau galėsite nukopijuoti naują URL."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Ar tikrai norite ištrinti „{0}“?"
@@ -474,6 +530,8 @@ msgstr "Ar tikrai norite pasiduoti? {opponentName} laimės žaidimą."
 msgid "Ascending"
 msgstr "Didėjančiai"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Atgal į srautus"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Atgal į pradžią"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Atsarginės kopijos"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0} atsarginės kopijos"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Pasirinkite žaidimą iš šoninės juostos arba pradėkite naują."
 msgid "Choose a time"
 msgstr "Pasirinkite laiką"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Pasirinkite paskyrą"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Valomi išsaugoti įrašai..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Uždaryti"
 
@@ -846,9 +918,14 @@ msgstr "Komentuoti, reaguoti ir peržiūrėti"
 msgid "Comments"
 msgstr "Komentarai"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Komentarai ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Bendruomenė"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Nukopijuota į iškarpinę"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopijuoti"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Nepavyko pakeisti, kur skelbia srautas"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Nepavyko ištrinti kopijų"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Nepavyko sekti"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Nepavyko importuoti"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Ištrinti stulpelį"
 msgid "Delete comment"
 msgstr "Ištrinti komentarą"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Ištrinti kopijas"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Ištrinti elementą"
 msgid "Delete option"
 msgstr "Ištrinti parinktį"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Ištrinti parinktį {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Ištrinti įrašą"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Ištrinti kopijas iš {0}?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Ištrinkite paskyrą senajame serveryje"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Ištrinta"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Ištrinta kopijų: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Redaguoti lauko nustatymus"
 msgid "Edit option"
 msgstr "Redaguoti parinktį"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Žymos"
 msgid "Flat"
 msgstr "Plokščia"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Sekti"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Sekti {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Sekti asmenį arba bendruomenę"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Grupė"
 msgid "Group by"
 msgstr "Grupuoti pagal"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Grupė: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Tapatybė"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Paveikslėlių peržiūra: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Paveikslėlių peržiūra: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperinė"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Importuoti žymes"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Importuoti sekamus kaip šaltinius"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Importuoti įrašus"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Importuota: {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Kol kas importuota: {0}; likę bus importuoti vėliau"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Elemento informacija"
 msgid "Just now"
 msgstr "Ką tik"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Palikti"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Klaviatūros sparčiosios klavišų kombinacijos"
@@ -1882,6 +2032,7 @@ msgstr "Klaviatūros sparčiosios klavišų kombinacijos"
 msgid "Large"
 msgstr "Didelis"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Paskutinį kartą tikrinta {0}"
@@ -2068,6 +2219,8 @@ msgstr "Perkelta"
 msgid "Moved {field}"
 msgstr "{field} perkelta"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Prieigos taisyklių nesukonfigūruota. Pridėkite taisykles, kad valdytu
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Dar nėra veiklos"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Atsarginė kopija dar nesukurta. Ji kuriama kasdien."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Nėra"
 msgid "Normal"
 msgstr "Normalus"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Nepalyginta: didesnis nei {0}"
@@ -2297,6 +2455,7 @@ msgstr "Dar nieko neišsaugota"
 msgid "Notifications"
 msgstr "Pranešimai"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Pranešimai: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Numeris"
 msgid "On"
 msgstr "Įjungta"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Tą pačią dieną prieš {0} {1, plural, one {metus} few {metus} many {metų} other {metų}} · "
@@ -2407,6 +2568,10 @@ msgstr "Šablonas (regex)"
 msgid "People"
 msgstr "Žmonės"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Asmuo arba bendruomenė"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Bandykite dar kartą."
 msgid "Please wait a moment and try again."
 msgstr "Palaukite šiek tiek ir bandykite dar kartą."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Apklausiama kas {0}"
@@ -2464,6 +2630,10 @@ msgstr "Įrašai"
 msgid "Posts and comments"
 msgstr "Įrašai ir komentarai"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Įrašai Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Užklausa išsaugota"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Savybės"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Skelbti į"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Skelbti į {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Priminimas"
 msgid "Remove"
 msgstr "Šalinti"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Šalinti {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Pašalinti {name}?"
 msgid "Remove access rule"
 msgstr "Šalinti prieigos taisyklę"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Pašalinti prieigos taisyklę „{0}“?"
@@ -2692,6 +2875,8 @@ msgstr "Kartojasi"
 msgid "Reply"
 msgstr "Atsakyti"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Pasirinkite ankstesnę kortelę"
 msgid "Select..."
 msgstr "Pasirinkite..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Pasirinkta: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Mažas"
 msgid "Sort"
 msgstr "Rūšiuoti"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Šaltinis pridėtas"
@@ -3110,6 +3297,7 @@ msgstr "Prenumeruota"
 msgid "Subscribed feed"
 msgstr "Prenumeruotas kanalas"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Prenumeruota: {0}"
@@ -3216,6 +3404,11 @@ msgstr "Kamera jau naudojama"
 msgid "The camera request was not answered"
 msgstr "Į kameros užklausą neatsakyta"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Srautas ten paskelbė įrašų: {0}. Jie liks, nebent juos ištrinsite."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Į mikrofono užklausą neatsakyta"
@@ -3274,10 +3467,12 @@ msgstr "Šis įrašas galėjo būti ištrintas arba neturite prie jo prieigos."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Tai pašalina kiekvieną įrašą iš jūsų išsaugotų sąrašo. Šio veiksmo anuliuoti negalima."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Tai visam laikui ištrins „{0}“ ir visus jo įrašus, komentarus bei reakcijas. Šio veiksmo negalima atšaukti."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Tai sustabdys turinio importavimą iš „{0}“."
@@ -3508,6 +3703,7 @@ msgstr "Patvirtinti el. pašto adresą"
 msgid "Video thumbnail"
 msgstr "Vaizdo įrašo miniatiūra"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Vaizdo įrašų peržiūra: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Stebima"
 msgid "Watched only"
 msgstr "Tik stebima"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Išsiuntėme patvirtinimo kodą adresu <0>{0}</0>. Įveskite kodą žemiau, kad patvirtintumėte savo el. pašto adresą."
@@ -3591,6 +3788,7 @@ msgstr "Dar neturite jokių kanalų."
 msgid "You were removed from this feed"
 msgstr "Buvote pašalinti iš šio srauto"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Daugiau nebegausite atnaujinimų iš „{0}“."

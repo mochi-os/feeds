@@ -36,6 +36,7 @@ const endpoints = {
     search: '-/directory/search',
     recommendations: '-/recommendations',
     probe: '-/probe',
+    lookup: '-/lookup',
     subscribe: '-/subscribe',
     unsubscribe: '-/unsubscribe',
 

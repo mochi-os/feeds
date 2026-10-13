@@ -34,6 +34,7 @@ msgstr "(সম্প্রসারণ)"
 msgid "(expanded)"
 msgstr "(বিস্তৃত)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0} থেকে)"
@@ -54,34 +55,53 @@ msgstr "(আপনি)"
 msgid "[not set]"
 msgstr "[সেট নয়]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {#টি কপি} other {#টি কপি}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {#টি ফাইল পরিবর্তিত} other {#টি ফাইল পরিবর্তিত}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# নতুন পোস্ট} other {# নতুন পোস্ট}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# ফলাফল} other {# ফলাফল}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# নির্বাচিত} other {# নির্বাচিত}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# নেস্টেড} other {+# নেস্টেড}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {#টি উৎস যোগ করা হয়েছে} other {#টি উৎস যোগ করা হয়েছে}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} সেটিংস"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#মি} other {#মি}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#সপ্তা} other {#সপ্তা}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {উৎস যোগ করা হয়েছে (#টি পোস্ট আমদানি করা হয়েছে)} other {উৎস যোগ করা হয়েছে (#টি পোস্ট আমদানি করা হয়েছে)}}"
@@ -226,8 +247,23 @@ msgstr "{subjectName}-এর জন্য অ্যাক্সেস সেট 
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "অ্যাকাউন্ট"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "অ্যাকাউন্টের কাজ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "অ্যাকাউন্টের পোস্ট"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "অ্যাকাউন্টের টাইমলাইন"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "অ্যাক্সেস যোগ করুন"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "অ্যাকাউন্ট যোগ করুন"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "অ্যাকাউন্টের পোস্ট যোগ করুন"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "অ্যাকাউন্টের টাইমলাইন যোগ করুন"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "বিদ্যমান নোটিফিকেশনে যোগ ক
 msgid "Add view"
 msgstr "ভিউ যোগ করুন"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "এখন পর্যন্ত {0}টি উৎস যোগ করা হয়েছে; বাকিগুলো আসছে"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "একমত"
@@ -400,6 +449,12 @@ msgstr "অনুসারে সাজানো অনুমতি দিন"
 msgid "Also delete posts imported from this source"
 msgstr "এই উৎস থেকে আমদানি করা পোস্টও মুছে ফেলুন"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "{0}-এও আছে"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "অবাক"
@@ -434,6 +489,7 @@ msgstr "যে কেউ লগ ইন করেছেন"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "এই ফিডে সাবস্ক্রাইব করা সবকিছু এটি পাওয়া বন্ধ করবে। পরে আপনি একটি নতুন URL কপি করতে পারেন।"
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "আপনি কি নিশ্চিত \"{0}\" মুছতে চান?"
@@ -474,6 +530,8 @@ msgstr "আপনি কি নিশ্চিত যে আপনি হার 
 msgid "Ascending"
 msgstr "ঊর্ধ্বক্রম"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "ফিডে ফিরে যান"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "হোমে ফিরে যান"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "ব্যাকআপ"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0}-এর ব্যাকআপ"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "সাইডবার থেকে একটি গেম বেছে �
 msgid "Choose a time"
 msgstr "একটি সময় বেছে নিন"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "একটি অ্যাকাউন্ট বেছে নিন"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "সংরক্ষিত পোস্ট মুছে ফেলা হ�
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "বন্ধ করুন"
 
@@ -846,9 +918,14 @@ msgstr "মন্তব্য, প্রতিক্রিয়া এবং �
 msgid "Comments"
 msgstr "মন্তব্য"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "মন্তব্য ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "কমিউনিটি"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "ক্লিপবোর্ডে কপি করা হয়েছে
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "কপি করুন"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "ফিড কোথায় প্রকাশ করে তা পরিবর্তন করা যায়নি"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "কপিগুলো মোছা যায়নি"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "ফলো করা যায়নি"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "ইমপোর্ট করা যায়নি"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "কলাম মুছুন"
 msgid "Delete comment"
 msgstr "মন্তব্য মুছুন"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "কপি মুছুন"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "আইটেম মুছুন"
 msgid "Delete option"
 msgstr "অপশন মুছুন"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "অপশন {0} মুছুন"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "পোস্ট মুছুন"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "{0}-এর কপিগুলো মুছবেন?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "পুরানো সার্ভারে আপনার অ্যা
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "মুছে ফেলা হয়েছে"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0}টি কপি মোছা হয়েছে"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "ফিল্ড সেটিংস সম্পাদনা করুন
 msgid "Edit option"
 msgstr "বিকল্প সম্পাদনা"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "ফ্ল্যাগসমূহ"
 msgid "Flat"
 msgstr "সমতল"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "ফলো করুন"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "{0}-কে ফলো করুন"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "কোনো ব্যক্তি বা কমিউনিটিকে ফলো করুন"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "গ্রুপ"
 msgid "Group by"
 msgstr "গ্রুপ অনুসারে"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "গোষ্ঠী: {0}"
@@ -1811,6 +1934,7 @@ msgstr "আইডি"
 msgid "Identity"
 msgstr "পরিচয়"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "ছবি দর্শক: {0}"
@@ -1818,6 +1942,28 @@ msgstr "ছবি দর্শক: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "ইম্পেরিয়াল"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "বুকমার্ক ইমপোর্ট করুন"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "ফলো করা অ্যাকাউন্টগুলো উৎস হিসেবে ইমপোর্ট করুন"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "পোস্ট ইমপোর্ট করুন"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0}টি ইমপোর্ট করা হয়েছে"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "এখন পর্যন্ত {0}টি ইমপোর্ট করা হয়েছে; বাকিগুলো আসছে"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "আইটেমের বিবরণ"
 msgid "Just now"
 msgstr "এইমাত্র"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "রাখুন"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "কীবোর্ড শর্টকাট"
@@ -1882,6 +2032,7 @@ msgstr "কীবোর্ড শর্টকাট"
 msgid "Large"
 msgstr "বড়"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "সর্বশেষ যাচাই {0}"
@@ -2068,6 +2219,8 @@ msgstr "সরানো হয়েছে"
 msgid "Moved {field}"
 msgstr "{field} সরানো হয়েছে"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "কোনো অ্যাক্সেস নিয়ম কনফিগ
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "এখনও কোনো কার্যকলাপ নেই"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "এখনও কোনো ব্যাকআপ তৈরি হয়নি। প্রতিদিন একটি তৈরি হয়।"
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "কোনোটি নয়"
 msgid "Normal"
 msgstr "সাধারণ"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "তুলনা করা হয়নি: {0}-এর চেয়ে বড়"
@@ -2297,6 +2455,7 @@ msgstr "এখনো কিছুই সংরক্ষণ করা হয়�
 msgid "Notifications"
 msgstr "বিজ্ঞপ্তি"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "বিজ্ঞপ্তি: {0}"
@@ -2315,6 +2474,8 @@ msgstr "নম্বর"
 msgid "On"
 msgstr "চালু"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "এই দিনে, {0} {1, plural, one {বছর} other {বছর}} আগে · "
@@ -2407,6 +2568,10 @@ msgstr "প্যাটার্ন (রেজেক্স)"
 msgid "People"
 msgstr "ব্যক্তিরা"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "ব্যক্তি বা কমিউনিটি"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "অনুগ্রহ করে আবার চেষ্টা কর�
 msgid "Please wait a moment and try again."
 msgstr "অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করে আবার চেষ্টা করুন।"
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "প্রতি {0} অন্তর পোলিং"
@@ -2464,6 +2630,10 @@ msgstr "পোস্টসমূহ"
 msgid "Posts and comments"
 msgstr "পোস্ট ও মন্তব্য"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Bluesky-তে পোস্ট"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "প্রম্পট সংরক্ষণ করা হয়েছে
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "বৈশিষ্ট্য"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "যেখানে প্রকাশ করবে"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "{0}-এ প্রকাশ করুন"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "অনুস্মারক"
 msgid "Remove"
 msgstr "সরান"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} সরান"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name} সরাবেন?"
 msgid "Remove access rule"
 msgstr "অ্যাক্সেস নিয়ম সরান"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "\"{0}\" এর জন্য অ্যাক্সেস নিয়ম সরাবেন?"
@@ -2692,6 +2875,8 @@ msgstr "পুনরাবৃত্ত হয়"
 msgid "Reply"
 msgstr "উত্তর দিন"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "পূর্ববর্তী কার্ড নির্বাচন 
 msgid "Select..."
 msgstr "নির্বাচন করুন..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "নির্বাচিত: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "ছোট"
 msgid "Sort"
 msgstr "সাজান"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "উৎস যোগ করা হয়েছে"
@@ -3110,6 +3297,7 @@ msgstr "সাবস্ক্রাইব করা হয়েছে"
 msgid "Subscribed feed"
 msgstr "সাবস্ক্রাইব করা ফিড"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "{0}-এ সাবস্ক্রাইব করা হয়েছে"
@@ -3216,6 +3404,11 @@ msgstr "ক্যামেরাটি ইতিমধ্যে ব্যবহ�
 msgid "The camera request was not answered"
 msgstr "ক্যামেরা অনুরোধের উত্তর দেওয়া হয়নি"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "ফিডটি সেখানে {0}টি পোস্ট প্রকাশ করেছে। আপনি না মুছলে সেগুলো থেকে যাবে।"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "মাইক্রোফোন অনুরোধের উত্তর দেওয়া হয়নি"
@@ -3274,10 +3467,12 @@ msgstr "এই পোস্ট মুছে ফেলা হতে পারে 
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "এটি আপনার সংরক্ষিত তালিকা থেকে প্রতিটি পোস্ট সরিয়ে দেবে। এটি পূর্বাবস্থায় ফেরানো যাবে না।"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "এটি \"{0}\" এবং এর সমস্ত পোস্ট, মন্তব্য এবং প্রতিক্রিয়া স্থায়ীভাবে মুছে ফেলবে। এই অ্যাকশন পূর্বাবস্থায় ফিরিয়ে আনা যাবে না।"
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "এটি \"{0}\" থেকে বিষয়বস্তু আমদানি বন্ধ করবে।"
@@ -3508,6 +3703,7 @@ msgstr "ইমেল ঠিকানা যাচাই করুন"
 msgid "Video thumbnail"
 msgstr "ভিডিও থাম্বনেইল"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "ভিডিও দর্শক: {0}"
@@ -3560,6 +3756,7 @@ msgstr "দেখা হচ্ছে"
 msgid "Watched only"
 msgstr "শুধুমাত্র দেখা"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "আমরা <0>{0}</0> এ একটি যাচাইকরণ কোড পাঠিয়েছি। আপনার ইমেল ঠিকানা যাচাই করতে নীচে কোডটি লিখুন।"
@@ -3591,6 +3788,7 @@ msgstr "আপনার এখনও কোন ফিড নেই।"
 msgid "You were removed from this feed"
 msgstr "আপনাকে এই ফিড থেকে সরানো হয়েছে"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "আপনি আর \"{0}\" থেকে আপডেট পাবেন না।"

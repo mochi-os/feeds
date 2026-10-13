@@ -34,6 +34,7 @@ msgstr "(zabaldu)"
 msgid "(expanded)"
 msgstr "(zabaldua)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0}(e)tik)"
@@ -54,34 +55,53 @@ msgstr "(zu)"
 msgid "[not set]"
 msgstr "[ezarri gabe]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# kopia} other {# kopia}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {fitxategi # aldatuta} other {# fitxategi aldatuta}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# argitalpen berri} other {# argitalpen berri}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# emaitza} other {# emaitza}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# hautatuta} other {# hautatuta}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# habiaratu} other {+# habiaratu}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {# iturri gehitu da} other {# iturri gehitu dira}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} ezarpenak"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ast} other {#ast}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Iturria gehitu da (# mezu inportatuta)} other {Iturria gehitu da (# mezu inportatuta)}}"
@@ -226,8 +247,23 @@ msgstr "Sarbidea ezarria {subjectName}-rentzat"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Kontua"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Kontuaren ekintzak"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Kontuaren argitalpenak"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Kontuaren denbora-lerroa"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Gehitu sarbidea"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Gehitu kontua"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Gehitu kontu baten argitalpenak"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Gehitu kontu baten denbora-lerroa"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Gehitu lehendik dauden jakinarazpenei"
 msgid "Add view"
 msgstr "Gehitu ikuspegia"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Orain arte {0} iturri gehitu dira; gainerakoak ondoren datoz"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Ados"
@@ -400,6 +449,12 @@ msgstr "Baimendu honela ordenatzea"
 msgid "Also delete posts imported from this source"
 msgstr "Ezabatu, gainera, iturri honetatik inportatutako argitalpenak"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "{0}(e)n ere bai"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Harrituta"
@@ -434,6 +489,7 @@ msgstr "Saioa hasi duen edonor"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Jario honetara harpidetutako guztiak jasotzeari utziko dio. Ondoren URL berri bat kopia dezakezu."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Ziur al zaude \"{0}\" ezabatu nahi duzula?"
@@ -474,6 +530,8 @@ msgstr "Ziur al zaude amore eman nahi duzula? {opponentName}-(e)k irabaziko du j
 msgid "Ascending"
 msgstr "Gorakorra"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Itzuli jarioetara"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Itzuli hasierara"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Babeskopiak"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0}(r)en babeskopiak"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Aukeratu joko bat alboko barratik edo hasi berri bat."
 msgid "Choose a time"
 msgstr "Aukeratu ordua"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Aukeratu kontu bat"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Gordetako argitalpenak garbitzen..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Itxi"
 
@@ -846,9 +918,14 @@ msgstr "Iruzkindu, erreakzionatu eta ikusi"
 msgid "Comments"
 msgstr "Iruzkinak"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Iruzkinak ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Komunitatea"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Arbelera kopiatu da"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiatu"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Ezin izan da aldatu jarioa non argitaratzen den"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Ezin izan dira kopiak ezabatu"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Ezin izan da jarraitu"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Ezin izan da inportatu"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Ezabatu zutabea"
 msgid "Delete comment"
 msgstr "Ezabatu iruzkina"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Ezabatu kopiak"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Ezabatu elementua"
 msgid "Delete option"
 msgstr "Ezabatu aukera"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Ezabatu {0} aukera"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Ezabatu argitalpena"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "{0}(e)ko kopiak ezabatu?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Ezabatu zure kontua zerbitzari zaharrean"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Ezabatuta"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0} kopia ezabatu dira"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Editatu eremuaren ezarpenak"
 msgid "Edit option"
 msgstr "Editatu aukera"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Banderak"
 msgid "Flat"
 msgstr "Laua"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Jarraitu"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Jarraitu {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Jarraitu pertsona edo komunitate bat"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Taldea"
 msgid "Group by"
 msgstr "Taldekatu honen arabera"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Taldea: {0}"
@@ -1811,6 +1934,7 @@ msgstr "IDa"
 msgid "Identity"
 msgstr "Identitatea"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Irudi-ikustailea: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Irudi-ikustailea: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Inperiala"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Inportatu laster-markak"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Inportatu jarraitutakoak iturri gisa"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Inportatu argitalpenak"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} inportatu dira"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Orain arte {0} inportatu dira; gainerakoak ondoren datoz"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Elementuaren xehetasunak"
 msgid "Just now"
 msgstr "Oraintxe"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Mantendu"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Teklatuko lasterbideak"
@@ -1882,6 +2032,7 @@ msgstr "Teklatuko lasterbideak"
 msgid "Large"
 msgstr "Handia"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Azken egiaztapena: {0}"
@@ -2068,6 +2219,8 @@ msgstr "Lekuz aldatuta"
 msgid "Moved {field}"
 msgstr "{field} lekuz aldatu da"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Ez da sarbide-araurik konfiguratu. Gehitu arauak baliabide honetara nork
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Oraindik jardueririk ez"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Oraindik ez da babeskopiarik egin. Egunero bat egiten da."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Bat ere ez"
 msgid "Normal"
 msgstr "Arrunta"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Ez da konparatu: {0} baino handiagoa"
@@ -2297,6 +2455,7 @@ msgstr "Ez dago oraindik ezer gordeta"
 msgid "Notifications"
 msgstr "Jakinarazpenak"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Jakinarazpenak: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Zenbakia"
 msgid "On"
 msgstr "Aktibatuta"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Egun honetan, duela {0} {1, plural, one {urte} other {urte}} · "
@@ -2407,6 +2568,10 @@ msgstr "Eredua (regex)"
 msgid "People"
 msgstr "Pertsonak"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Pertsona edo komunitatea"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Saiatu berriro."
 msgid "Please wait a moment and try again."
 msgstr "Itxaron pixka bat eta saiatu berriro."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Inkesta {0}-(e)ro"
@@ -2464,6 +2630,10 @@ msgstr "Argitalpenak"
 msgid "Posts and comments"
 msgstr "Argitalpenak eta iruzkinak"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Bluesky-ko argitalpenak"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Galdera-aukera gorde da"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Propietateak"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Argitaratu hemen"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Argitaratu {0}(e)n"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Oroigarria"
 msgid "Remove"
 msgstr "Kendu"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Kendu {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name} kendu?"
 msgid "Remove access rule"
 msgstr "Kendu sarbide-araua"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "«{0}» sarbide-araua kendu?"
@@ -2692,6 +2875,8 @@ msgstr "Errepikatzen da"
 msgid "Reply"
 msgstr "Erantzun"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Hautatu aurreko txartela"
 msgid "Select..."
 msgstr "Hautatu..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Hautatua: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Txikia"
 msgid "Sort"
 msgstr "Ordenatu"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Iturria gehitu da"
@@ -3110,6 +3297,7 @@ msgstr "Harpidetuta"
 msgid "Subscribed feed"
 msgstr "Harpidetutako jarioa"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "{0}-(e)ra harpidetuta"
@@ -3216,6 +3404,11 @@ msgstr "Kamera dagoeneko erabiltzen ari da"
 msgid "The camera request was not answered"
 msgstr "Kamera eskaerak ez du erantzunik jaso"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Jarioak {0} argitalpen argitaratu ditu han. Bertan geratzen dira ezabatzen ez badituzu."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Mikrofono eskaerak ez du erantzunik jaso"
@@ -3274,10 +3467,12 @@ msgstr "Mezu hau ezabatu da agian edo ez duzu sarbiderik."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Honek argitalpen guztiak kentzen ditu zure gordeen zerrendatik. Ezin da desegin."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Honek \"{0}\" eta bere mezu, iruzkin eta erreakzio guztiak betiko ezabatuko ditu. Ekintza hau ezin da desegin."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Honek \"{0}\"-tik edukia inportatzeari utziko dio."
@@ -3508,6 +3703,7 @@ msgstr "Egiaztatu helbide elektronikoa"
 msgid "Video thumbnail"
 msgstr "Bideoaren miniatura"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Bideo-ikustailea: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Ikusten"
 msgid "Watched only"
 msgstr "Ikusiak soilik"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Egiaztapen-kode bat bidali dugu <0>{0}</0> helbidera. Sartu kodea behean zure helbide elektronikoa egiaztatzeko."
@@ -3591,6 +3788,7 @@ msgstr "Oraindik ez duzu jariorik."
 msgid "You were removed from this feed"
 msgstr "Jario honetatik kendu zaituzte"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Aurrerantzean ez duzu \"{0}\"(r)en eguneraketarik jasoko."

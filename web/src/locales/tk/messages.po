@@ -34,6 +34,7 @@ msgstr "(giňelt)"
 msgid "(expanded)"
 msgstr "(giňeldildi)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0}-dan)"
@@ -54,34 +55,53 @@ msgstr "(siz)"
 msgid "[not set]"
 msgstr "[bellenilmedik]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# nusga} other {# nusga}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# faýl üýtgedildi} other {# faýl üýtgedildi}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# täze ýazgy} other {# täze ýazgy}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# netije} other {# netije}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# saýlandy} other {# saýlandy}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# içki} other {+# içki}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {# çeşme goşuldy} other {# çeşme goşuldy}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} sazlamalary"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#hep} other {#hep}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Çeşme goşuldy (# post import edildi)} other {Çeşme goşuldy (# post import edildi)}}"
@@ -226,8 +247,23 @@ msgstr "{subjectName} üçin giriş bellendi"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Hasap"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Hasap hereketleri"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Hasabyň postlary"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Hasabyň wagt çyzgysy"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Giriş goşmak"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Hasap goşmak"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Hasabyň postlaryny goşmak"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Hasabyň wagt çyzgysyny goşmak"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Bar bolan bildirişlere goşmak"
 msgid "Add view"
 msgstr "Görnüş goşmak"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Häzirlikçe {0} çeşme goşuldy; galanlary yzyndan geler"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Razy"
@@ -400,6 +449,12 @@ msgstr "Tertipleşdirmäge rugsat bermek"
 msgid "Also delete posts imported from this source"
 msgstr "Bu çeşmeden import edilen ýazgylary hem pozmak"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Şeýle hem {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Geň galdy"
@@ -434,6 +489,7 @@ msgstr "Giren islendik adam"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Bu akyma ýazylan ähli zat ony almagy bes eder. Soňra täze URL göçürip bilersiňiz."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" pozmak isleýändigiňize ynamlymy?"
@@ -474,6 +530,8 @@ msgstr "Boýun egmek isleýärsiňizmi? {opponentName} oýny utar."
 msgid "Ascending"
 msgstr "Artýan tertipde"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Akymlara yza"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Baş sahypa dolan"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Ätiýaçlyk nusgalar"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0} hasabynyň ätiýaçlyk nusgalary"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Gapdal panelden oýun saýlaň ýa-da täzesini başlaň."
 msgid "Choose a time"
 msgstr "Wagty saýlaň"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Hasap saýlaň"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Saklanan ýazgylar arassalanýar..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Ýapmak"
 
@@ -846,9 +918,14 @@ msgstr "Teswir, reaksiýa we görmek"
 msgid "Comments"
 msgstr "Teswirler"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Teswirler ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Jemgyýet"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Aralyk buferine nusgalandy"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Nusgalamak"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Akymyň neşir edýän ýerini üýtgedip bolmady"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Nusgalary pozup bolmady"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Yzarlap bolmady"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Import edip bolmady"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Sütüni pozmak"
 msgid "Delete comment"
 msgstr "Teswiri pozmak"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Nusgalary pozmak"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Element pozmak"
 msgid "Delete option"
 msgstr "Wariant pozmak"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "{0} wariant pozmak"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Ýazgyny pozmak"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "{0} hasabyndaky nusgalar pozulsynmy?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Köne serwerdäki hasabyňyzy pozy"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Pozuldy"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0} nusga pozuldy"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Meýdan sazlamalaryny düzet"
 msgid "Edit option"
 msgstr "Saýlawy düzet"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Belliler"
 msgid "Flat"
 msgstr "Tekiz"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Yzarla"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Yzarla: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Adamy ýa-da jemgyýeti yzarla"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Topar"
 msgid "Group by"
 msgstr "Boýunça topla"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Topar: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Şahsyýet"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Surat görkeziji: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Surat görkeziji: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperial"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Bellikleri import etmek"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Yzarlanýan hasaplary çeşme hökmünde import etmek"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Postlary import etmek"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} import edildi"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Häzirlikçe {0} import edildi; galanlary yzyndan geler"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Element jikme-jiklikleri"
 msgid "Just now"
 msgstr "Häzir"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Saklamak"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Klawiatura gysga ýollary"
@@ -1882,6 +2032,7 @@ msgstr "Klawiatura gysga ýollary"
 msgid "Large"
 msgstr "Uly"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Soňky barlanan {0}"
@@ -2068,6 +2219,8 @@ msgstr "Göçürildi"
 msgid "Moved {field}"
 msgstr "{field} göçürildi"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Giriş düzgünleri ýok. Bu çeşmä kim girip biljekdigini dolandyrmak
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Heniz işjeňlik ýok"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Entek ätiýaçlyk nusga döredilmedi. Her gün bir nusga döredilýär."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Hiç biri"
 msgid "Normal"
 msgstr "Adaty"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Deňeşdirilmedi: {0}-dan uly"
@@ -2297,6 +2455,7 @@ msgstr "Hiç zat heniz ýazga geçirilmedi"
 msgid "Notifications"
 msgstr "Bildirişler"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Bildirişler: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Belgi"
 msgid "On"
 msgstr "Açyk"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Bu günde, {0} {1, plural, one {ýyl} other {ýyl}} öň · "
@@ -2407,6 +2568,10 @@ msgstr "Nusga (regex)"
 msgid "People"
 msgstr "Adamlar"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Adam ýa-da jemgyýet"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Haýyş, gaýtadan synanyşyň."
 msgid "Please wait a moment and try again."
 msgstr "Biraz garaşyň we täzeden synanyşyň."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Her {0} -da soraýar"
@@ -2464,6 +2630,10 @@ msgstr "Postlar"
 msgid "Posts and comments"
 msgstr "Postlar we teswirler"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Bluesky-daky postlar"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Soraw saklandy"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Häsiýetler"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Neşir edilýän ýerler"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "{0} hasabynda neşir etmek"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Ýatladyş"
 msgid "Remove"
 msgstr "Aýyr"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} aýyr"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name} aýyrylsynmy?"
 msgid "Remove access rule"
 msgstr "Giriş düzgünini aýyr"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "\"{0}\" üçin giriş düzgüni aýrylsynmy?"
@@ -2692,6 +2875,8 @@ msgstr "Gaýtalanýar"
 msgid "Reply"
 msgstr "Jogap"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Öňki kartoçkany saýla"
 msgid "Select..."
 msgstr "Saýla..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Saýlanan: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Kiçi"
 msgid "Sort"
 msgstr "Tertiple"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Çeşme goşuldy"
@@ -3110,6 +3297,7 @@ msgstr "Abuna ýazyldy"
 msgid "Subscribed feed"
 msgstr "Abuna ýazylan lenta"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "{0} abuna ýazyldy"
@@ -3216,6 +3404,11 @@ msgstr "Kamera eýýäm ulanylýar"
 msgid "The camera request was not answered"
 msgstr "Kamera haýyşyna jogap berilmedi"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Akym ol ýerde {0} post neşir etdi. Siz pozmasaňyz, olar galar."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Mikrofon haýyşyna jogap berilmedi"
@@ -3274,10 +3467,12 @@ msgstr "Bu post pozulan bolup biler ýa-da rugsadyň ýok."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Bu siziň ýatda saklanan sanawyňyzdan her ýazgyny aýyrýar. Muny yzyna gaýtaryp bolmaýar."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Bu \"{0}\" we ähli postlaryny, teswirlerini we reaksiýalaryny hemişelik pozar. Bu hereketi yza gaýtaryp bolmaz."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Bu \"{0}\" -dan mazmun importyny togtadar."
@@ -3508,6 +3703,7 @@ msgstr "E-poçta salgysyny tassykla"
 msgid "Video thumbnail"
 msgstr "Wideo eskizi"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Wideo görkeziji: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Synlandy"
 msgid "Watched only"
 msgstr "Diňe synlandy"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Biz <0>{0}</0> salgysyna tassyklaýyş kody iberdik. E-poçta salgyňyzy tassyklamak üçin aşakda kody giriziň."
@@ -3591,6 +3788,7 @@ msgstr "Entek lentalaryň ýok."
 msgid "You were removed from this feed"
 msgstr "Bu akymdan aýryldyň"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Siz mundan beýläk \"{0}\" çeşmesinden täzelenmeleri almarsyňyz."

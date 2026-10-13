@@ -10,6 +10,7 @@ import { FindEntityPage, toastAction, getErrorMessage } from '@mochi/web'
 import { Rss } from 'lucide-react'
 import endpoints from '@/api/endpoints'
 import { feedsApi } from '@/api/feeds'
+import { LookupResult } from '@/features/feeds/components/lookup-result'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 export const Route = createFileRoute('/_authenticated/find')({
@@ -86,6 +87,7 @@ function FindFeedsPage() {
     <FindEntityPage
       initialQuery={link}
       resolveUri={resolveUri}
+      supplement={(query) => <LookupResult query={query} />}
       onSubscribe={handleSubscribe}
       subscribedIds={subscribedFeedIds}
       entityClass='feed'

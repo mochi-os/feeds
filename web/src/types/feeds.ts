@@ -43,6 +43,19 @@ export interface Feed {
   publish?: string[]
 }
 
+// What a handle or link looked up from search names: a person or community on
+// another network, with what a feed needs to follow them, or a post there.
+export interface Lookup {
+  kind: 'person' | 'group' | 'post'
+  network: string
+  id?: string
+  name?: string
+  address?: string
+  avatar?: string
+  url?: string
+  quote?: import('@mochi/web').Quote
+}
+
 // One of the owner's linked accounts a feed may publish to or read from.
 export interface PublishAccount {
   id: string

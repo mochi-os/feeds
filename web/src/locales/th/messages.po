@@ -34,6 +34,7 @@ msgstr "(ขยาย)"
 msgid "(expanded)"
 msgstr "(ขยาย)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(จาก {0})"
@@ -54,34 +55,53 @@ msgstr "(คุณ)"
 msgid "[not set]"
 msgstr "[ไม่ได้ตั้ง]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# สำเนา} other {# สำเนา}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {เปลี่ยนแปลง # ไฟล์} other {เปลี่ยนแปลง # ไฟล์}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, other {# โพสต์ใหม่}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# ผลลัพธ์} other {# ผลลัพธ์}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {เลือกแล้ว #} other {เลือกแล้ว #}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, other {+# ที่ซ้อนอยู่}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {เพิ่ม # แหล่งที่มาแล้ว} other {เพิ่ม # แหล่งที่มาแล้ว}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "การตั้งค่า {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#น} other {#น}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#สัป} other {#สัป}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, other {เพิ่มแหล่งที่มาแล้ว (นำเข้า # โพสต์)}}"
@@ -226,8 +247,23 @@ msgstr "ตั้งค่าการเข้าถึงสำหรับ{su
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "บัญชี"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "การดำเนินการของบัญชี"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "โพสต์ของบัญชี"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "ไทม์ไลน์ของบัญชี"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "เพิ่มการเข้าถึง"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "เพิ่มบัญชี"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "เพิ่มโพสต์ของบัญชี"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "เพิ่มไทม์ไลน์ของบัญชี"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "เพิ่มไปยังการแจ้งเตือนที
 msgid "Add view"
 msgstr "เพิ่มมุมมอง"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "เพิ่มแล้ว {0} แหล่งที่มา ส่วนที่เหลือจะตามมา"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "เห็นด้วย"
@@ -400,6 +449,12 @@ msgstr "อนุญาตให้เรียงตาม"
 msgid "Also delete posts imported from this source"
 msgstr "ลบโพสต์ที่นำเข้าจากแหล่งนี้ด้วย"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "มีบน {0} ด้วย"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ประหลาดใจ"
@@ -434,6 +489,7 @@ msgstr "ใครก็ตามที่เข้าสู่ระบบ"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "ทุกอย่างที่สมัครรับฟีดนี้จะหยุดรับ คุณสามารถคัดลอก URL ใหม่ได้ภายหลัง"
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "คุณแน่ใจหรือไม่ว่าต้องการลบ\"{0}\"?"
@@ -474,6 +530,8 @@ msgstr "คุณแน่ใจหรือไม่ว่าต้องกา
 msgid "Ascending"
 msgstr "จากน้อยไปมาก"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "กลับไปยังฟีด"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "กลับไปหน้าหลัก"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "ข้อมูลสำรอง"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "ข้อมูลสำรองของ {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "เลือกเกมจากแถบด้านข้างหร
 msgid "Choose a time"
 msgstr "เลือกเวลา"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "เลือกบัญชี"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "กำลังล้างโพสต์ที่บันทึกไ
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "ปิด"
 
@@ -846,9 +918,14 @@ msgstr "แสดงความคิดเห็น ตอบสนอง แ�
 msgid "Comments"
 msgstr "ความคิดเห็น"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "ความคิดเห็น ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "ชุมชน"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "คัดลอกไปยังคลิปบอร์ดแล้ว
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "คัดลอก"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "ไม่สามารถเปลี่ยนตำแหน่งที่ฟีดเผยแพร่ได้"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "ไม่สามารถลบสำเนาได้"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "ไม่สามารถติดตามได้"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "ไม่สามารถนำเข้าได้"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "ลบคอลัมน์"
 msgid "Delete comment"
 msgstr "ลบความคิดเห็น"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "ลบสำเนา"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "ลบรายการ"
 msgid "Delete option"
 msgstr "ลบตัวเลือก"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "ลบตัวเลือก{0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "ลบโพสต์"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "ลบสำเนาบน {0} หรือไม่"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "ลบบัญชีของคุณบนเซิร์ฟเวอ
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "ลบแล้ว"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "ลบ {0} สำเนาแล้ว"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "แก้ไขการตั้งค่าฟิลด์"
 msgid "Edit option"
 msgstr "แก้ไขตัวเลือก"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "แฟล็ก"
 msgid "Flat"
 msgstr "แบน"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "ติดตาม"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "ติดตาม {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "ติดตามบุคคลหรือชุมชน"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "กลุ่ม"
 msgid "Group by"
 msgstr "จัดกลุ่มตาม"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "กลุ่ม: {0}"
@@ -1811,6 +1934,7 @@ msgstr "รหัส"
 msgid "Identity"
 msgstr "ตัวตน"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "โปรแกรมดูรูปภาพ: {0}"
@@ -1818,6 +1942,28 @@ msgstr "โปรแกรมดูรูปภาพ: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "อิมพีเรียล"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "นำเข้าบุ๊กมาร์ก"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "นำเข้าบัญชีที่ติดตามเป็นแหล่งที่มา"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "นำเข้าโพสต์"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "นำเข้าแล้ว {0} รายการ"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "นำเข้าแล้ว {0} รายการ ส่วนที่เหลือจะตามมา"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "รายละเอียดรายการ"
 msgid "Just now"
 msgstr "เมื่อสักครู่"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "เก็บไว้"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "ทางลัดแป้นพิมพ์"
@@ -1882,6 +2032,7 @@ msgstr "ทางลัดแป้นพิมพ์"
 msgid "Large"
 msgstr "ใหญ่"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "ตรวจสอบล่าสุด {0}"
@@ -2068,6 +2219,8 @@ msgstr "ย้ายแล้ว"
 msgid "Moved {field}"
 msgstr "ย้าย {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "ยังไม่ได้ตั้งกฎการเข้าถึ
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "ยังไม่มีกิจกรรม"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "ยังไม่มีข้อมูลสำรอง ระบบจะสำรองข้อมูลวันละครั้ง"
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "ไม่มี"
 msgid "Normal"
 msgstr "ปกติ"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "ไม่ได้เปรียบเทียบ: ใหญ่กว่า {0}"
@@ -2297,6 +2455,7 @@ msgstr "ยังไม่มีรายการที่บันทึก"
 msgid "Notifications"
 msgstr "การแจ้งเตือน"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "การแจ้งเตือน: {0}"
@@ -2315,6 +2474,8 @@ msgstr "หมายเลข"
 msgid "On"
 msgstr "เปิด"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "ในวันนี้ เมื่อ {0} {1, plural, one {ปีที่แล้ว} other {ปีที่แล้ว}} · "
@@ -2407,6 +2568,10 @@ msgstr "รูปแบบ (regex)"
 msgid "People"
 msgstr "ผู้คน"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "บุคคลหรือชุมชน"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "โปรดลองอีกครั้ง"
 msgid "Please wait a moment and try again."
 msgstr "โปรดรอสักครู่แล้วลองอีกครั้ง"
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "ตรวจสอบทุก {0}"
@@ -2464,6 +2630,10 @@ msgstr "โพสต์"
 msgid "Posts and comments"
 msgstr "โพสต์และความคิดเห็น"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "โพสต์บน Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "บันทึกพรอมต์แล้ว"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "คุณสมบัติ"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "เผยแพร่ไปยัง"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "เผยแพร่ไปยัง {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "การแจ้งเตือน"
 msgid "Remove"
 msgstr "ลบ"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "ลบ {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "ลบ {name} หรือไม่?"
 msgid "Remove access rule"
 msgstr "ลบกฎการเข้าถึง"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "นำกฎการเข้าถึงสำหรับ \"{0}\" ออกหรือไม่"
@@ -2692,6 +2875,8 @@ msgstr "ทำซ้ำ"
 msgid "Reply"
 msgstr "ตอบกลับ"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "เลือกการ์ดก่อนหน้า"
 msgid "Select..."
 msgstr "เลือก..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "เลือก: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "เล็ก"
 msgid "Sort"
 msgstr "เรียงลำดับ"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "เพิ่มแหล่งที่มาแล้ว"
@@ -3110,6 +3297,7 @@ msgstr "ติดตามแล้ว"
 msgid "Subscribed feed"
 msgstr "ฟีดที่สมัครรับข้อมูล"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "ติดตาม {0} แล้ว"
@@ -3216,6 +3404,11 @@ msgstr "กล้องกำลังถูกใช้งานอยู่แ
 msgid "The camera request was not answered"
 msgstr "คำขอกล้องไม่ได้รับการตอบกลับ"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "ฟีดเผยแพร่ {0} โพสต์ที่นั่น โพสต์เหล่านั้นจะยังคงอยู่จนกว่าคุณจะลบ"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "คำขอไมโครโฟนไม่ได้รับการตอบกลับ"
@@ -3274,10 +3467,12 @@ msgstr "โพสต์นี้อาจถูกลบ หรือคุณ�
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "การทำเช่นนี้จะนำทุกโพสต์ออกจากรายการที่บันทึกของคุณ ไม่สามารถเลิกทำได้"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "การกระทำนี้จะลบ \"{0}\" และโพสต์ ความคิดเห็น และรีแอ็กชันทั้งหมดอย่างถาวร ไม่สามารถย้อนกลับได้"
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "การกระทำนี้จะหยุดการนำเข้าเนื้อหาจาก \"{0}\""
@@ -3508,6 +3703,7 @@ msgstr "ยืนยันที่อยู่อีเมล"
 msgid "Video thumbnail"
 msgstr "ภาพย่อวิดีโอ"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "โปรแกรมดูวิดีโอ: {0}"
@@ -3560,6 +3756,7 @@ msgstr "ติดตามแล้ว"
 msgid "Watched only"
 msgstr "ที่ติดตามเท่านั้น"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "เราส่งรหัสยืนยันไปที่ <0>{0}</0> แล้ว ป้อนรหัสด้านล่างเพื่อยืนยันที่อยู่อีเมลของคุณ"
@@ -3591,6 +3788,7 @@ msgstr "คุณยังไม่มีฟีด"
 msgid "You were removed from this feed"
 msgstr "คุณถูกลบออกจากฟีดนี้"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "คุณจะไม่ได้รับการอัปเดตจาก \"{0}\" อีกต่อไป"

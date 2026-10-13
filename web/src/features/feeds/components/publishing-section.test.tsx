@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { PublishingSection } from './publishing-section'
 
@@ -126,6 +127,23 @@ describe('Publishing section', () => {
       expect(state.forgetCopies).toHaveBeenCalledWith('feed-1', 'm1')
     )
     expect(state.success).toHaveBeenCalledWith('Deleted 3 copies')
+  })
+
+  it('imports an account’s follows as sources', async () => {
+    state.importAccount.mockResolvedValue({ imported: 4, more: false })
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('@alice@mastodon.social')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[0]
+    )
+    await user.click(
+      await screen.findByRole('menuitem', { name: 'Import follows as sources' })
+    )
+    await waitFor(() =>
+      expect(state.importAccount).toHaveBeenCalledWith('feed-1', 'm1', 'follows')
+    )
+    expect(state.success).toHaveBeenCalledWith('Added 4 sources')
   })
 
   it('shows nothing on a private feed', async () => {

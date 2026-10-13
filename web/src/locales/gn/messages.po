@@ -34,6 +34,7 @@ msgstr "(embotuicha)"
 msgid "(expanded)"
 msgstr "(oñembotuichama)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0} guive)"
@@ -54,34 +55,53 @@ msgstr "(nde)"
 msgid "[not set]"
 msgstr "[noñemoĩva]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# kópia} other {# kópia}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# archivo oñemoambue} other {# archivo oñemoambue}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# marandu pyahu} other {# marandu pyahu}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# ojejuhu} other {# ojejuhu}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# poravopyre} other {# poravopyre}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ipypegua} other {+# ipypegua}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {# heñoiha oñembojuaju} other {# heñoiha oñembojuaju}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} ñemboheko"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#arap} other {#arap}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Heñoiha oñembojuaju (# marandu oñemoinge)} other {Heñoiha oñembojuaju (# marandu oñemoinge)}}"
@@ -226,8 +247,23 @@ msgstr "Jeike oñemoĩ {subjectName}-pe"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Mba'ete"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Mba'ete rembiapokuéra"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Mba'ete marandukuéra"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Mba'ete ára rysýi"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Embojuaju jeike"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Embojuaju mba'ete"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Embojuaju mba'ete marandukuéra"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Embojuaju mba'ete ára rysýi"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Embojuaju momarandu oĩvape"
 msgid "Add view"
 msgstr "Embojuaju jehecha"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Ko'ágã peve {0} heñoiha oñembojuaju; hembýva ou upe rire"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Emoneĩ"
@@ -400,6 +449,12 @@ msgstr "Eipysyrõ emoĩporã ko'ã rupive"
 msgid "Also delete posts imported from this source"
 msgstr "Avei ehundi umi marandu ojegueruva'ekue ko heñoihágui"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "{0}-pe avei"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Hechapyrã"
@@ -434,6 +489,7 @@ msgstr "Oimeraẽva oikéva"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Opa mba'e osuscribíva ko feed-pe ndohupytyvéima. Upéi ikatu embokopia peteĩ URL pyahu."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Añetehápe ehundise \"{0}\"?"
@@ -474,6 +530,8 @@ msgstr "Añetehápe reñeme'ẽse? {opponentName} ipu'akáta ñembosaráipe."
 msgid "Ascending"
 msgstr "Ojupíva"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Ejevy feedkuérape"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Ejevy ógape"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Respaldokuéra"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0} respaldokuéra"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Eiporavo peteĩ ñembosarái yke panel-gui térã eñepyrũ peteĩ pyahu
 msgid "Choose a time"
 msgstr "Eiporavo peteĩ aravo"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Eiporavo peteĩ mba'ete"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Omopotĩhína marandu ñongatupyre..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Mboty"
 
@@ -846,9 +918,14 @@ msgstr "Comentario, reacción ha jehecha"
 msgid "Comments"
 msgstr "Comentariokuéra"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Comentariokuéra ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Aty"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Oñekopiáma clipboard-pe"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopia"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Ndaikatúi oñemoambue moõpa feed omoherakuã"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Ndaikatúi oñembogue kópiakuéra"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Ndaikatúi oñemoirũ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Ndaikatúi ojegueru"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Hundi columna"
 msgid "Delete comment"
 msgstr "Hundi comentario"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Embogue kópiakuéra"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Hundi mba'e"
 msgid "Delete option"
 msgstr "Hundi opción"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Hundi opción {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Hundi marandu"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "¿Embogue kópiakuéra {0}-pegua?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Emboguete nde mba'ete mohendaha ymaguarépe"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Oñemboguete"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0} kópia oñembogue"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Embosako'i campo ñemboheko"
 msgid "Edit option"
 msgstr "Embosako'i jeporavorã"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Banderakuéra"
 msgid "Flat"
 msgstr "Ipe"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Emoirũ"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Emoirũ {0}-pe"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Emoirũ peteĩ tapicha térã aty"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Atypy"
 msgid "Group by"
 msgstr "Embyaty rupive"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Atypy: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Identidad"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Ta'anga jehechaha: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Ta'anga jehechaha: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperial"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Egueru marcadorkuéra"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Egueru umi mba'ete removirũva heñoihárõ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Egueru marandukuéra"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} ojegueru"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Ko'ágã peve {0} ojegueru; hembýva ou upe rire"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Artículo detalles"
 msgid "Just now"
 msgstr "Ko'ág̃aite"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Eñongatu"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Teclado atajo"
@@ -1882,6 +2032,7 @@ msgstr "Teclado atajo"
 msgid "Large"
 msgstr "Tuicha"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Jehecha paha {0}"
@@ -2068,6 +2219,8 @@ msgstr "Oñemongu'e"
 msgid "Moved {field}"
 msgstr "{field} oñemongu'e"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Ndaipóri léi oñembosako'íva. Embojuaju léi resãmbyhy hag̃ua máva
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Ndaipóri tembiapo gueteri"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Ndojejapói gueteri respaldo. Ojejapo peteĩ ára ha ára."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Mba'eve"
 msgid "Normal"
 msgstr "Normal"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Noñembojojái: {0} ári"
@@ -2297,6 +2455,7 @@ msgstr "Ndaipóri gueteri mba'eve ñongatupyre"
 msgid "Notifications"
 msgstr "Momarandukuéra"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Momarandu: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Papapy"
 msgid "On"
 msgstr "Myendy"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Ko ára pe, {0} {1, plural, one {ary} other {ary}} ohasama · "
@@ -2407,6 +2568,10 @@ msgstr "Patrón (regex)"
 msgid "People"
 msgstr "Tapichakuéra"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Tapicha térã aty"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Eha'ãjey angána."
 msgid "Please wait a moment and try again."
 msgstr "Eha'arõmi sapy'aite ha eha'ã jey."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Ojehechajey {0} ñavõ"
@@ -2464,6 +2630,10 @@ msgstr "Marandu"
 msgid "Posts and comments"
 msgstr "Marandu ha comentario"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Marandu Bluesky-pe"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Prompt oñeñongatu"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Propiedadkuéra"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Moõpe emoherakuã"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Emoherakuã {0}-pe"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Mandu'arã"
 msgid "Remove"
 msgstr "Embogue"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Embogue {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "¿Embogue {name}?"
 msgid "Remove access rule"
 msgstr "Embogue jeike léi"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "¿Embogue jeike léi \"{0}\" peg̃uarã?"
@@ -2692,6 +2875,8 @@ msgstr "Oiko jey"
 msgid "Reply"
 msgstr "Embohovái"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Eiporavo kuatia mboyvegua"
 msgid "Select..."
 msgstr "Eiporavo..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Poravopyre: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Michĩ"
 msgid "Sort"
 msgstr "Emoĩporã"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Heñoiha oñembojuaju"
@@ -3110,6 +3297,7 @@ msgstr "Oñesuscribíma"
 msgid "Subscribed feed"
 msgstr "Feed oñesuscribíva"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Oñesuscribíma {0}-pe"
@@ -3216,6 +3404,11 @@ msgstr "Cámara ojeporúma"
 msgid "The camera request was not answered"
 msgstr "Cámara jerure ndojehechái mbohovái"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Feed omoherakuã {0} marandu upépe. Opytáta rehundi peve."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Micrófono jerure ndojehechái mbohovái"
@@ -3274,10 +3467,12 @@ msgstr "Ko marandu ikatu oñembogue térã ndereguerekói jeike."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Kóva oipe'a opaite marandu ne lista ñongatupyrégui. Kóva ndaikatúi oñembojevy."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Kóva ombogue tapiaite \"{0}\" ha opaite imarandu, comentario ha reacción. Ko tembiapo ndaikatúi oñembojevy."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Kóva ojokóta contenido ñegueru \"{0}\"-gui."
@@ -3508,6 +3703,7 @@ msgstr "Ehechajey email dirección"
 msgid "Video thumbnail"
 msgstr "Video ta'ãnga'i"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Video jehecha: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Ojema'ẽva"
 msgid "Watched only"
 msgstr "Ojema'ẽva añoite"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Romondo peteĩ verificación código <0>{0}</0>-pe. Emoinge código ko'ã guýpe rehechajey hag̃ua ne email dirección."
@@ -3591,6 +3788,7 @@ msgstr "Ndereguerekói gueteri feed."
 msgid "You were removed from this feed"
 msgstr "Nde oñemosẽ ko feed guive"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Nderehupytymo'ãvéima ñembohekopyahu \"{0}\"-gui."

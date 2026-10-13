@@ -34,6 +34,7 @@ msgstr "(ពង្រីក)"
 msgid "(expanded)"
 msgstr "(បានពង្រីក)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(ពី {0})"
@@ -54,34 +55,53 @@ msgstr "(អ្នក)"
 msgid "[not set]"
 msgstr "[មិនបានកំណត់]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {ច្បាប់ចម្លង #} other {ច្បាប់ចម្លង #}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {បានផ្លាស់ប្ដូរឯកសារ #} other {បានផ្លាស់ប្ដូរឯកសារ #}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, other {ការបង្ហោះថ្មី # }}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, other {# លទ្ធផល}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, other {# បានជ្រើសរើស}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, other {+# ជាន់ក្នុង}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {បានបន្ថែមប្រភព #} other {បានបន្ថែមប្រភព #}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "ការកំណត់ {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#នាទី} other {#នាទី}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#សប្ដាហ៍} other {#សប្ដាហ៍}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, other {បានបន្ថែមប្រភព (# ការប្រកាសបាននាំចូល)}}"
@@ -226,8 +247,23 @@ msgstr "បានកំណត់ការចូលប្រើសម្រាប
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "គណនី"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "សកម្មភាពគណនី"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "ការបង្ហោះរបស់គណនី"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "បន្ទាត់ពេលវេលារបស់គណនី"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "បន្ថែមការចូលប្រើ"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "បន្ថែមគណនី"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "បន្ថែមការបង្ហោះរបស់គណនី"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "បន្ថែមបន្ទាត់ពេលវេលារបស់គណនី"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "បន្ថែមទៅការជូនដំណឹងដែលមា
 msgid "Add view"
 msgstr "បន្ថែមទិដ្ឋភាព"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "បានបន្ថែមប្រភព {0} ហើយ; ប្រភពដែលនៅសល់នឹងបន្ថែមបន្ទាប់"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "យល់ព្រម"
@@ -400,6 +449,12 @@ msgstr "អនុញ្ញាតការតម្រៀបតាម"
 msgid "Also delete posts imported from this source"
 msgstr "លុបការបង្ហោះដែលបាននាំចូលពីប្រភពនេះផងដែរ"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "មាននៅលើ {0} ផងដែរ"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ភ្ញាក់ផ្អើល"
@@ -434,6 +489,7 @@ msgstr "នរណាម្នាក់ដែលបានចូល"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "អ្វីៗដែលបានជាវព័ត៌មាននេះនឹងឈប់ទទួលបាន។ បន្ទាប់មកអ្នកអាចចម្លង URL ថ្មី។"
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "តើអ្នកប្រាកដថាចង់លុប \"{0}\" មែនទេ?"
@@ -474,6 +530,8 @@ msgstr "តើអ្នកប្រាកដថាចង់លាលែងពី
 msgid "Ascending"
 msgstr "តាមលំដាប់កើន"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "ត្រឡប់ទៅមតិព័ត៌មាន"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "ត្រឡប់ទៅទំព័រដើម"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "ការបម្រុងទុក"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "ការបម្រុងទុករបស់ {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "ជ្រើសរើសហ្គេមពីរបារចំហៀង
 msgid "Choose a time"
 msgstr "ជ្រើសរើសម៉ោង"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "ជ្រើសរើសគណនី"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "កំពុងសម្អាតការបង្ហោះដែលប
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "បិទ"
 
@@ -846,9 +918,14 @@ msgstr "មតិយោបល់ ប្រតិកម្ម និងមើល"
 msgid "Comments"
 msgstr "មតិយោបល់"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "មតិយោបល់ ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "សហគមន៍"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "បានចម្លងទៅក្ដារតម្បៀតខ្ទ
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "ចម្លង"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "មិនអាចប្ដូរកន្លែងបោះផ្សាយរបស់ព័ត៌មានបង្ហាញបានទេ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "មិនអាចលុបច្បាប់ចម្លងបានទេ"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "មិនអាចតាមដានបានទេ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "មិនអាចនាំចូលបានទេ"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "លុបជួរឈរ"
 msgid "Delete comment"
 msgstr "លុបមតិយោបល់"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "លុបច្បាប់ចម្លង"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "លុបធាតុ"
 msgid "Delete option"
 msgstr "លុបជម្រើស"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "លុបជម្រើស {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "លុបការបង្ហោះ"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "លុបច្បាប់ចម្លងនៅលើ {0} ឬ?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "លុបគណនីរបស់អ្នកនៅម៉ាស៊ីន
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "បានលុប"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "បានលុបច្បាប់ចម្លង {0}"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "កែសម្រួលការកំណត់វាល"
 msgid "Edit option"
 msgstr "កែសម្រួលជម្រើស"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "ទង់"
 msgid "Flat"
 msgstr "រាបស្មើ"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "តាមដាន"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "តាមដាន {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "តាមដានមនុស្ស ឬសហគមន៍"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "ក្រុម"
 msgid "Group by"
 msgstr "ដាក់ជាក្រុមតាម"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "ក្រុម៖ {0}"
@@ -1811,6 +1934,7 @@ msgstr "លេខសម្គាល់"
 msgid "Identity"
 msgstr "អត្តសញ្ញាណ"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "កម្មវិធីមើលរូបភាព៖ {0}"
@@ -1818,6 +1942,28 @@ msgstr "កម្មវិធីមើលរូបភាព៖ {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "អ៊ីមភេរៀល"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "នាំចូលសញ្ញាចំណាំ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "នាំចូលគណនីដែលតាមដានជាប្រភព"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "នាំចូលការបង្ហោះ"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "បាននាំចូល {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "បាននាំចូល {0} ហើយ; ដែលនៅសល់នឹងមកបន្ទាប់"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "ព័ត៌មានលម្អិតធាតុ"
 msgid "Just now"
 msgstr "អម្បាញ់មិញ"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "រក្សា"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "ផ្លូវកាត់ក្ដារចុច"
@@ -1882,6 +2032,7 @@ msgstr "ផ្លូវកាត់ក្ដារចុច"
 msgid "Large"
 msgstr "ធំ"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "បានពិនិត្យចុងក្រោយ {0}"
@@ -2068,6 +2219,8 @@ msgstr "បានផ្លាស់ទី"
 msgid "Moved {field}"
 msgstr "បានផ្លាស់ទី {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "មិនមានច្បាប់ចូលប្រើបានកំ
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "មិនទាន់មានសកម្មភាព"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "មិនទាន់មានការបម្រុងទុកនៅឡើយទេ។ ការបម្រុងទុកត្រូវបានធ្វើរៀងរាល់ថ្ងៃ។"
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "គ្មាន"
 msgid "Normal"
 msgstr "ធម្មតា"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "មិនបានប្រៀបធៀបទេ៖ ធំជាង {0}"
@@ -2297,6 +2455,7 @@ msgstr "មិនទាន់មានអ្វីបានរក្សាទុ
 msgid "Notifications"
 msgstr "ការជូនដំណឹង"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "ការជូនដំណឹង៖ {0}"
@@ -2315,6 +2474,8 @@ msgstr "លេខ"
 msgid "On"
 msgstr "បើក"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "នៅថ្ងៃនេះ {0} {1, plural, other {ឆ្នាំ}} មុន · "
@@ -2407,6 +2568,10 @@ msgstr "លំនាំ (regex)"
 msgid "People"
 msgstr "មនុស្ស"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "មនុស្ស ឬសហគមន៍"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "សូមព្យាយាមម្តងទៀត។"
 msgid "Please wait a moment and try again."
 msgstr "សូមរង់ចាំបន្តិច ហើយព្យាយាមម្តងទៀត។"
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "ស្ទង់រាល់ {0}"
@@ -2464,6 +2630,10 @@ msgstr "ប្រកាស"
 msgid "Posts and comments"
 msgstr "ប្រកាស និងមតិយោបល់"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "ការបង្ហោះនៅលើ Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "បានរក្សាទុកការសួរ"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "លក្ខណៈសម្បត្តិ"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "បោះផ្សាយទៅ"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "បោះផ្សាយទៅ {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "ការរំលឹក"
 msgid "Remove"
 msgstr "យកចេញ"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "យក {0} ចេញ"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "យក {name} ចេញ?"
 msgid "Remove access rule"
 msgstr "យកច្បាប់ចូលប្រើចេញ"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "លុបច្បាប់ចូលប្រើសម្រាប់ \"{0}\"?"
@@ -2692,6 +2875,8 @@ msgstr "ធ្វើឡើងវិញ"
 msgid "Reply"
 msgstr "ឆ្លើយតប"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "ជ្រើសរើសកាតមុន"
 msgid "Select..."
 msgstr "ជ្រើសរើស..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "បានជ្រើសរើស៖ <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "តូច"
 msgid "Sort"
 msgstr "តម្រៀប"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "បានបន្ថែមប្រភព"
@@ -3110,6 +3297,7 @@ msgstr "បានជាវ"
 msgid "Subscribed feed"
 msgstr "ព័ត៌មានដែលបានជាវ"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "បានជាវ {0}"
@@ -3216,6 +3404,11 @@ msgstr "កាមេរ៉ាកំពុងត្រូវបានប្រើ
 msgid "The camera request was not answered"
 msgstr "សំណើកាមេរ៉ាមិនត្រូវបានឆ្លើយតបទេ"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "ព័ត៌មានបង្ហាញបានបោះផ្សាយការបង្ហោះ {0} នៅទីនោះ។ ពួកវានៅដដែល លុះត្រាតែអ្នកលុបវា។"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "សំណើមីក្រូហ្វូនមិនត្រូវបានឆ្លើយតបទេ"
@@ -3274,10 +3467,12 @@ msgstr "ការប្រកាសនេះប្រហែលជាត្រូ
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "វាលុបការបង្ហោះទាំងអស់ចេញពីបញ្ជីរក្សាទុករបស់អ្នក។ មិនអាចត្រឡប់វិញបានទេ។"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "នេះនឹងលុប \"{0}\" និងការប្រកាស មតិយោបល់ និងប្រតិកម្មទាំងអស់របស់វាជាអចិន្ត្រៃយ៍។ សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។"
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "នេះនឹងឈប់នាំចូលមាតិកាពី \"{0}\"។"
@@ -3508,6 +3703,7 @@ msgstr "ផ្ទៀងផ្ទាត់អាសយដ្ឋានអ៊ីម
 msgid "Video thumbnail"
 msgstr "រូបភាពតូចវីដេអូ"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "កម្មវិធីមើលវីដេអូ៖ {0}"
@@ -3560,6 +3756,7 @@ msgstr "បានមើល"
 msgid "Watched only"
 msgstr "បានមើលតែប៉ុណ្ណោះ"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "យើងបានផ្ញើលេខកូដផ្ទៀងផ្ទាត់ទៅ <0>{0}</0>។ បញ្ចូលលេខកូដខាងក្រោមដើម្បីផ្ទៀងផ្ទាត់អាសយដ្ឋានអ៊ីមែលរបស់អ្នក។"
@@ -3591,6 +3788,7 @@ msgstr "អ្នកមិនទាន់មានព័ត៌មានទេ។
 msgid "You were removed from this feed"
 msgstr "អ្នកត្រូវបានដកចេញពីព័ត៌មានបង្ហាញនេះ"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "អ្នកនឹងលែងទទួលបានបច្ចុប្បន្នភាពពី \"{0}\" ទៀតហើយ។"

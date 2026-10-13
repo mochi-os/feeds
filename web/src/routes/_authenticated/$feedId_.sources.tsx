@@ -56,6 +56,7 @@ import {
   Rss,
   Trash2,
   Pencil,
+  UserRound,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
@@ -299,9 +300,16 @@ function formatInterval(seconds: number): string {
 }
 
 // The kinds of source a feed takes from the dialog: an RSS feed, another Mochi
-// feed, or one of the owner's accounts on another network - its home timeline
-// or its own posts (decision 32).
-type SourceKind = 'rss' | 'feed/posts' | 'account/timeline' | 'account/posts'
+// feed, one of the owner's accounts on another network - its home timeline or
+// its own posts (decision 32) - or a public person or community there, by
+// handle or link, which the server follows through their web feed or, on
+// Bluesky, their post records (the source type person/posts).
+type SourceKind =
+  | 'rss'
+  | 'feed/posts'
+  | 'account/timeline'
+  | 'account/posts'
+  | 'person'
 
 interface SourcesPanelProps {
   feedId: string
@@ -406,6 +414,15 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
               <AtSign className='me-2 h-4 w-4' />
               <Trans>Account posts</Trans>
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setAddSourceType('person')
+                setShowAddDialog(true)
+              }}
+            >
+              <UserRound className='me-2 h-4 w-4' />
+              <Trans>Person or community</Trans>
+            </DropdownMenuItem>
             {!hasMemoriesSource && (
               <DropdownMenuItem onSelect={() => void handleAddMemories()}>
                 <Calendar className='me-2 h-4 w-4' />
@@ -450,6 +467,8 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                         <Calendar className='text-primary h-4 w-4 shrink-0' />
                       ) : source.type.startsWith('account/') ? (
                         <AtSign className='text-primary h-4 w-4 shrink-0' />
+                      ) : source.type === 'person/posts' ? (
+                        <UserRound className='text-primary h-4 w-4 shrink-0' />
                       ) : (
                         <Link2 className='text-primary h-4 w-4 shrink-0' />
                       )}
@@ -474,9 +493,11 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                       )}
                     </div>
                     <div className='text-muted-foreground mt-1 truncate ps-6 text-xs'>
-                      {source.url && !source.type.startsWith('account/') && (
-                        <>{source.url} · </>
-                      )}
+                      {source.url &&
+                        !source.type.startsWith('account/') &&
+                        source.type !== 'person/posts' && (
+                          <>{source.url} · </>
+                        )}
                       <span>
                         {source.type === 'rss' ? (
                           <Trans>RSS</Trans>
@@ -486,6 +507,8 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                           <Trans>Account timeline</Trans>
                         ) : source.type === 'account/posts' ? (
                           <Trans>Account posts</Trans>
+                        ) : source.type === 'person/posts' ? (
+                          <Trans>Posts on Bluesky</Trans>
                         ) : (
                           <Trans>Mochi feed</Trans>
                         )}
@@ -512,6 +535,7 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                   </div>
                   <div className='ms-2 flex shrink-0 items-center gap-1'>
                     {(source.type === 'rss' ||
+                      source.type === 'person/posts' ||
                       source.type === 'feed/memories') && (
                       <Button
                         variant='ghost'
@@ -795,6 +819,8 @@ function AddSourceDialog({
                   <Trans>Add account timeline</Trans>
                 ) : sourceType === 'account/posts' ? (
                   <Trans>Add account posts</Trans>
+                ) : sourceType === 'person' ? (
+                  <Trans>Follow a person or community</Trans>
                 ) : (
                   <Trans>Add Mochi feed</Trans>
                 )}
@@ -824,7 +850,9 @@ function AddSourceDialog({
                     placeholder={
                       sourceType === 'rss'
                         ? 'https://example.com/feed.xml'
-                        : t`Feed entity ID or fingerprint`
+                        : sourceType === 'person'
+                          ? '@name@server.example, name.bsky.social, https://...'
+                          : t`Feed entity ID or fingerprint`
                     }
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') void handleSubmit()

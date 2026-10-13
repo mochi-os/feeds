@@ -34,6 +34,7 @@ msgstr "(genişlet)"
 msgid "(expanded)"
 msgstr "(genişletildi)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0} kaynağından)"
@@ -54,34 +55,53 @@ msgstr "(sen)"
 msgid "[not set]"
 msgstr "[ayarlanmamış]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# kopya} other {# kopya}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# dosya değiştirildi} other {# dosya değiştirildi}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# yeni gönderi} other {# yeni gönderi}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# sonuç} other {# sonuç}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# seçili} other {# seçili}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# iç içe} other {+# iç içe}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {# kaynak eklendi} other {# kaynak eklendi}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} ayarları"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#dk} other {#dk}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#hf} other {#hf}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Kaynak eklendi (# gönderi içe aktarıldı)} other {Kaynak eklendi (# gönderi içe aktarıldı)}}"
@@ -226,8 +247,23 @@ msgstr "{subjectName} için erişim ayarlandı"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Hesap"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Hesap işlemleri"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Hesap gönderileri"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Hesap zaman tüneli"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Erişim ekle"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Hesap ekle"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Hesap gönderilerini ekle"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Hesap zaman tünelini ekle"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Mevcut bildirimlere ekle"
 msgid "Add view"
 msgstr "Görünüm ekle"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Şimdiye kadar {0} kaynak eklendi; gerisi ardından gelecek"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Katılıyorum"
@@ -400,6 +449,12 @@ msgstr "Şuna göre sıralamaya izin ver"
 msgid "Also delete posts imported from this source"
 msgstr "Bu kaynaktan içe aktarılan gönderileri de sil"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "{0} üzerinde de"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Şaşkın"
@@ -434,6 +489,7 @@ msgstr "Giriş yapmış herkes"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Bu akışa abone olan her şey almayı durduracak. Sonrasında yeni bir URL kopyalayabilirsiniz."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" öğesini silmek istediğinizden emin misiniz?"
@@ -474,6 +530,8 @@ msgstr "Çekilmek istediğinizden emin misiniz? {opponentName} oyunu kazanacak."
 msgid "Ascending"
 msgstr "Artan"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Feed'lere dön"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Ana sayfaya dön"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Yedekler"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0} yedekleri"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Kenar çubuğundan bir oyun seçin veya yenisini başlatın."
 msgid "Choose a time"
 msgstr "Saat seçin"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Bir hesap seçin"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Kaydedilen gönderiler temizleniyor..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Kapat"
 
@@ -846,9 +918,14 @@ msgstr "Yorum yap, tepki ver ve görüntüle"
 msgid "Comments"
 msgstr "Yorumlar"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Yorumlar ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Topluluk"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Panoya kopyalandı"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopyala"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Akışın yayımlandığı yer değiştirilemedi"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Kopyalar silinemedi"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Takip edilemedi"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "İçe aktarılamadı"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Sütunu sil"
 msgid "Delete comment"
 msgstr "Yorumu sil"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Kopyaları sil"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Öğeyi sil"
 msgid "Delete option"
 msgstr "Seçeneği sil"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "{0} seçeneğini sil"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Gönderiyi sil"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "{0} üzerindeki kopyalar silinsin mi?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Eski sunucudaki hesabınızı silin"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Silindi"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0} kopya silindi"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Alan ayarlarını düzenle"
 msgid "Edit option"
 msgstr "Seçeneği düzenle"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Bayraklar"
 msgid "Flat"
 msgstr "Düz"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Takip et"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Takip et: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Bir kişiyi veya topluluğu takip et"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Grup"
 msgid "Group by"
 msgstr "Şuna göre grupla"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Grup: {0}"
@@ -1811,6 +1934,7 @@ msgstr "Kimlik"
 msgid "Identity"
 msgstr "Kimlik"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Görsel görüntüleyici: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Görsel görüntüleyici: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "İngiliz birim sistemi"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Yer imlerini içe aktar"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Takip edilenleri kaynak olarak içe aktar"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Gönderileri içe aktar"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} öğe içe aktarıldı"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Şimdiye kadar {0} öğe içe aktarıldı; gerisi ardından gelecek"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Öğe ayrıntıları"
 msgid "Just now"
 msgstr "Az önce"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Koru"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Klavye kısayolları"
@@ -1882,6 +2032,7 @@ msgstr "Klavye kısayolları"
 msgid "Large"
 msgstr "Büyük"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Son kontrol {0}"
@@ -2068,6 +2219,8 @@ msgstr "Taşındı"
 msgid "Moved {field}"
 msgstr "{field} taşındı"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Erişim kuralı yapılandırılmamış. Bu kaynağa kimin erişebileceğ
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Henüz aktivite yok"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Henüz yedek alınmadı. Her gün bir yedek alınır."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Yok"
 msgid "Normal"
 msgstr "Normal"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Karşılaştırılmadı: {0} boyutundan büyük"
@@ -2297,6 +2455,7 @@ msgstr "Henüz hiçbir şey kaydedilmedi"
 msgid "Notifications"
 msgstr "Bildirimler"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Bildirimler: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Numara"
 msgid "On"
 msgstr "Açık"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Bugün, {0} {1, plural, one {yıl} other {yıl}} önce · "
@@ -2407,6 +2568,10 @@ msgstr "Desen (regex)"
 msgid "People"
 msgstr "Kişiler"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Kişi veya topluluk"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Lütfen tekrar deneyin."
 msgid "Please wait a moment and try again."
 msgstr "Lütfen biraz bekleyip tekrar deneyin."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Her {0} sorgulanıyor"
@@ -2464,6 +2630,10 @@ msgstr "Gönderiler"
 msgid "Posts and comments"
 msgstr "Gönderiler ve yorumlar"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Bluesky'daki gönderiler"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "İstem kaydedildi"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Özellikler"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Yayımlanacak yerler"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "{0} hesabında yayımla"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Hatırlatıcı"
 msgid "Remove"
 msgstr "Kaldır"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} kaldır"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name} kaldırılsın mı?"
 msgid "Remove access rule"
 msgstr "Erişim kuralını kaldır"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "\"{0}\" için erişim kuralı kaldırılsın mı?"
@@ -2692,6 +2875,8 @@ msgstr "Yinelenir"
 msgid "Reply"
 msgstr "Yanıtla"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Önceki kartı seç"
 msgid "Select..."
 msgstr "Seç..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Seçili: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Küçük"
 msgid "Sort"
 msgstr "Sırala"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Kaynak eklendi"
@@ -3110,6 +3297,7 @@ msgstr "Abone olundu"
 msgid "Subscribed feed"
 msgstr "Abone olunan akış"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "{0} aboneliği oluşturuldu"
@@ -3216,6 +3404,11 @@ msgstr "Kamera zaten kullanımda"
 msgid "The camera request was not answered"
 msgstr "Kamera isteği yanıtlanmadı"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Akış orada {0} gönderi yayımladı. Siz silmedikçe orada kalırlar."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Mikrofon isteği yanıtlanmadı"
@@ -3274,10 +3467,12 @@ msgstr "Bu gönderi silinmiş olabilir veya erişimin olmayabilir."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Bu, kaydedilenler listenizden her gönderiyi kaldırır. Bu işlem geri alınamaz."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Bu işlem \"{0}\" ve tüm gönderilerini, yorumlarını ve tepkilerini kalıcı olarak silecek. Bu işlem geri alınamaz."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Bu işlem \"{0}\" kaynağından içerik içe aktarmayı durduracak."
@@ -3508,6 +3703,7 @@ msgstr "E-posta adresini doğrula"
 msgid "Video thumbnail"
 msgstr "Video küçük resmi"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Video görüntüleyici: {0}"
@@ -3560,6 +3756,7 @@ msgstr "İzlenenler"
 msgid "Watched only"
 msgstr "Yalnızca izlenenler"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "<0>{0}</0> adresine bir doğrulama kodu gönderdik. E-posta adresinizi doğrulamak için kodu aşağıya girin."
@@ -3591,6 +3788,7 @@ msgstr "Henüz akışın yok."
 msgid "You were removed from this feed"
 msgstr "Bu akıştan çıkarıldınız"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Artık \"{0}\" hesabından güncelleme almayacaksınız."

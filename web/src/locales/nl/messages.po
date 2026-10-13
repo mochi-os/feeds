@@ -34,6 +34,7 @@ msgstr "(uitvouwen)"
 msgid "(expanded)"
 msgstr "(uitgevouwen)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(van {0})"
@@ -54,34 +55,53 @@ msgstr "(jij)"
 msgid "[not set]"
 msgstr "[niet ingesteld]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# kopie} other {# kopieën}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# bestand gewijzigd} other {# bestanden gewijzigd}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nieuw bericht} other {# nieuwe berichten}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# resultaat} other {# resultaten}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# geselecteerd} other {# geselecteerd}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# genest} other {+# genest}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {# bron toegevoegd} other {# bronnen toegevoegd}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0}-instellingen"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#min} other {#min}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#w} other {#w}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Bron toegevoegd (# bericht geïmporteerd)} other {Bron toegevoegd (# berichten geïmporteerd)}}"
@@ -226,8 +247,23 @@ msgstr "Toegang ingesteld voor {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Account"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Accountacties"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Posts van account"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Tijdlijn van account"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Toegang toevoegen"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Account toevoegen"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Posts van account toevoegen"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Tijdlijn van account toevoegen"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Aan bestaande meldingen toevoegen"
 msgid "Add view"
 msgstr "Weergave toevoegen"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Tot nu toe {0} bronnen toegevoegd; de rest volgt"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Eens"
@@ -400,6 +449,12 @@ msgstr "Sorteren toestaan op"
 msgid "Also delete posts imported from this source"
 msgstr "Ook posts verwijderen die uit deze bron zijn geïmporteerd"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Ook op {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Verbaasd"
@@ -434,6 +489,7 @@ msgstr "Iedereen die is ingelogd"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Alles wat op deze feed is geabonneerd, ontvangt deze niet meer. Je kunt daarna een nieuwe URL kopiëren."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Weet je zeker dat je \"{0}\" wilt verwijderen?"
@@ -474,6 +530,8 @@ msgstr "Weet je zeker dat je wilt opgeven? {opponentName} wint de partij."
 msgid "Ascending"
 msgstr "Oplopend"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Terug naar feeds"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Terug naar start"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Back-ups"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Back-ups van {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Kies een game in de zijbalk of start een nieuw spel."
 msgid "Choose a time"
 msgstr "Kies een tijd"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Kies een account"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Opgeslagen berichten wissen..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Sluiten"
 
@@ -846,9 +918,14 @@ msgstr "Reageren, react geven en bekijken"
 msgid "Comments"
 msgstr "Reacties"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Reacties ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Gemeenschap"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Gekopieerd naar klembord"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiëren"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Kan niet wijzigen waar de feed publiceert"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Kan de kopieën niet verwijderen"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Kan niet volgen"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Kan niet importeren"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Kolom verwijderen"
 msgid "Delete comment"
 msgstr "Reactie verwijderen"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Kopieën verwijderen"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Item verwijderen"
 msgid "Delete option"
 msgstr "Optie verwijderen"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Optie {0} verwijderen"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Post verwijderen"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Kopieën op {0} verwijderen?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Verwijder uw account op de oude server"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Verwijderd"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0} kopieën verwijderd"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Veldinstellingen bewerken"
 msgid "Edit option"
 msgstr "Optie bewerken"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Vlaggen"
 msgid "Flat"
 msgstr "Plat"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Volgen"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "{0} volgen"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Een persoon of gemeenschap volgen"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Groep"
 msgid "Group by"
 msgstr "Groeperen op"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Groep: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Identiteit"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Afbeeldingsviewer: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Afbeeldingsviewer: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperiaal"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Bladwijzers importeren"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Gevolgde accounts als bronnen importeren"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Posts importeren"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} geïmporteerd"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Tot nu toe {0} geïmporteerd; de rest volgt"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Itemdetails"
 msgid "Just now"
 msgstr "Zojuist"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Behouden"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Sneltoetsen"
@@ -1882,6 +2032,7 @@ msgstr "Sneltoetsen"
 msgid "Large"
 msgstr "Groot"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Laatst gecontroleerd {0}"
@@ -2068,6 +2219,8 @@ msgstr "Verplaatst"
 msgid "Moved {field}"
 msgstr "{field} verplaatst"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Geen toegangsregels geconfigureerd. Voeg regels toe om te bepalen wie to
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Nog geen activiteit"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Er is nog geen back-up gemaakt. Er wordt er elke dag een gemaakt."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Geen"
 msgid "Normal"
 msgstr "Normaal"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Niet vergeleken: groter dan {0}"
@@ -2297,6 +2455,7 @@ msgstr "Nog niets opgeslagen"
 msgid "Notifications"
 msgstr "Meldingen"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Meldingen: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Nummer"
 msgid "On"
 msgstr "Aan"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Op deze dag, {0} {1, plural, one {jaar} other {jaar}} geleden · "
@@ -2407,6 +2568,10 @@ msgstr "Patroon (regex)"
 msgid "People"
 msgstr "Mensen"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Persoon of gemeenschap"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Probeer het opnieuw."
 msgid "Please wait a moment and try again."
 msgstr "Wacht even en probeer het opnieuw."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Pollen elke {0}"
@@ -2464,6 +2630,10 @@ msgstr "Posts"
 msgid "Posts and comments"
 msgstr "Posts en reacties"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Posts op Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Prompt opgeslagen"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Eigenschappen"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Publiceren naar"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Publiceren naar {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Herinnering"
 msgid "Remove"
 msgstr "Verwijderen"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} verwijderen"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name} verwijderen?"
 msgid "Remove access rule"
 msgstr "Toegangsregel verwijderen"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Toegangsregel voor \"{0}\" verwijderen?"
@@ -2692,6 +2875,8 @@ msgstr "Herhaalt"
 msgid "Reply"
 msgstr "Antwoorden"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Vorige kaart selecteren"
 msgid "Select..."
 msgstr "Selecteren..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Geselecteerd: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Klein"
 msgid "Sort"
 msgstr "Sorteren"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Bron toegevoegd"
@@ -3110,6 +3297,7 @@ msgstr "Geabonneerd"
 msgid "Subscribed feed"
 msgstr "Geabonneerde feed"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Geabonneerd op {0}"
@@ -3216,6 +3404,11 @@ msgstr "De camera is al in gebruik"
 msgid "The camera request was not answered"
 msgstr "Het cameraverzoek is niet beantwoord"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "De feed heeft daar {0} posts gepubliceerd. Ze blijven staan tenzij je ze verwijdert."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Het microfoonverzoek is niet beantwoord"
@@ -3274,10 +3467,12 @@ msgstr "Dit bericht is mogelijk verwijderd of je hebt er geen toegang toe."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Hiermee wordt elk bericht uit je lijst met bewaarde berichten verwijderd. Dit kan niet ongedaan worden gemaakt."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Hiermee wordt \"{0}\" en alle bijbehorende berichten, reacties en reacties permanent verwijderd. Deze actie kan niet ongedaan worden gemaakt."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Hiermee stopt het importeren van inhoud uit \"{0}\"."
@@ -3508,6 +3703,7 @@ msgstr "E-mailadres verifiëren"
 msgid "Video thumbnail"
 msgstr "Videominiatuur"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Videoviewer: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Gevolgd"
 msgid "Watched only"
 msgstr "Alleen gevolgde"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "We hebben een verificatiecode naar <0>{0}</0> gestuurd. Voer de code hieronder in om je e-mailadres te verifiëren."
@@ -3591,6 +3788,7 @@ msgstr "Je hebt nog geen feeds."
 msgid "You were removed from this feed"
 msgstr "Je bent verwijderd uit deze feed"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Je ontvangt geen updates meer van \"{0}\"."

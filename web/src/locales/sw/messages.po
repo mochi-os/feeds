@@ -34,6 +34,7 @@ msgstr "(panua)"
 msgid "(expanded)"
 msgstr "(imepanuliwa)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(kutoka {0})"
@@ -54,34 +55,53 @@ msgstr "(wewe)"
 msgid "[not set]"
 msgstr "[haijawekwa]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {nakala #} other {nakala #}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {faili # limebadilishwa} other {faili # yamebadilishwa}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# chapisho jipya} other {# machapisho mapya}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {Matokeo #} other {Matokeo #}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# imechaguliwa} other {# zimechaguliwa}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# iliyopachikwa} other {+# zilizopachikwa}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Chanzo # kimeongezwa} other {Vyanzo # vimeongezwa}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "Mipangilio ya {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#dk} other {#dk}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#wk} other {#wk}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Chanzo kimeongezwa (chapisho # limeingizwa)} other {Chanzo kimeongezwa (machapisho # yameingizwa)}}"
@@ -226,8 +247,23 @@ msgstr "Ufikiaji umewekwa kwa {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Akaunti"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Vitendo vya akaunti"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Machapisho ya akaunti"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Rekodi ya matukio ya akaunti"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Ongeza ufikiaji"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Ongeza akaunti"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Ongeza machapisho ya akaunti"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Ongeza rekodi ya matukio ya akaunti"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Ongeza kwenye arifa zilizopo"
 msgid "Add view"
 msgstr "Ongeza mwonekano"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Vyanzo {0} vimeongezwa hadi sasa; vingine vinafuata"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Kubali"
@@ -400,6 +449,12 @@ msgstr "Ruhusu kupanga kwa"
 msgid "Also delete posts imported from this source"
 msgstr "Pia futa machapisho yaliyoletwa kutoka chanzo hiki"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Pia kwenye {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Mshangao"
@@ -434,6 +489,7 @@ msgstr "Yeyote aliyeingia"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Chochote kilichojiandikisha kwenye mlisho huu kitaacha kuupokea. Unaweza kunakili URL mpya baadaye."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Una uhakika unataka kufuta \"{0}\"?"
@@ -474,6 +530,8 @@ msgstr "Una uhakika unataka kujisalimisha? {opponentName} atashinda mchezo."
 msgid "Ascending"
 msgstr "Kupanda"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Rudi kwa milisho"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Rudi mwanzo"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Chelezo"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Chelezo za {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Chagua mchezo kutoka upau wa pembeni au anzisha mpya."
 msgid "Choose a time"
 msgstr "Chagua saa"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Chagua akaunti"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Inafuta machapisho yaliyohifadhiwa..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Funga"
 
@@ -846,9 +918,14 @@ msgstr "Toa maoni, jibu na uone"
 msgid "Comments"
 msgstr "Maoni"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Maoni ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Jumuiya"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Imenakiliwa kwenye ubao wa kunakili"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Nakili"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Imeshindwa kubadilisha mahali mlisho unapochapisha"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Imeshindwa kufuta nakala"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Imeshindwa kufuata"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Imeshindwa kuingiza"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Futa safu"
 msgid "Delete comment"
 msgstr "Futa maoni"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Futa nakala"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Futa kipengee"
 msgid "Delete option"
 msgstr "Futa chaguo"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Futa chaguo {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Futa chapisho"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Futa nakala kwenye {0}?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Futa akaunti yako kwenye seva ya zamani"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Imefutwa"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Nakala {0} zimefutwa"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Hariri mipangilio ya uga"
 msgid "Edit option"
 msgstr "Hariri chaguo"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Alama"
 msgid "Flat"
 msgstr "Tambarare"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Fuata"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Fuata {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Fuata mtu au jumuiya"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Kikundi"
 msgid "Group by"
 msgstr "Panga kwa makundi"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Kikundi: {0}"
@@ -1811,6 +1934,7 @@ msgstr "Kitambulisho"
 msgid "Identity"
 msgstr "Utambulisho"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Kitazamaji picha: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Kitazamaji picha: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Kiimperia"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Ingiza alamisho"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Ingiza akaunti zinazofuatwa kama vyanzo"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Ingiza machapisho"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Vimeingizwa: {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Vimeingizwa {0} hadi sasa; vingine vinafuata"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Maelezo ya kipengee"
 msgid "Just now"
 msgstr "Sasa hivi"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Ziache"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Njia za mkato za kibodi"
@@ -1882,6 +2032,7 @@ msgstr "Njia za mkato za kibodi"
 msgid "Large"
 msgstr "Kubwa"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Imekaguliwa mwisho {0}"
@@ -2068,6 +2219,8 @@ msgstr "Imehamishwa"
 msgid "Moved {field}"
 msgstr "Imehamisha {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Hakuna sheria za ufikiaji zilizosanidiwa. Ongeza sheria kudhibiti nani a
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Hakuna shughuli bado"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Bado hakuna chelezo iliyoundwa. Moja huundwa kila siku."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Hakuna"
 msgid "Normal"
 msgstr "Kawaida"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Haijalinganishwa: kubwa kuliko {0}"
@@ -2297,6 +2455,7 @@ msgstr "Hakuna kilichohifadhiwa bado"
 msgid "Notifications"
 msgstr "Arifa"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Arifa: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Nambari"
 msgid "On"
 msgstr "Imewashwa"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Siku hii, miaka {0} {1, plural, one {iliyopita} other {iliyopita}} · "
@@ -2407,6 +2568,10 @@ msgstr "Muundo (regex)"
 msgid "People"
 msgstr "Watu"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Mtu au jumuiya"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Tafadhali jaribu tena."
 msgid "Please wait a moment and try again."
 msgstr "Tafadhali subiri kidogo kisha ujaribu tena."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Inakagua kila {0}"
@@ -2464,6 +2630,10 @@ msgstr "Machapisho"
 msgid "Posts and comments"
 msgstr "Machapisho na maoni"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Machapisho kwenye Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Kidokezo kimehifadhiwa"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Sifa"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Chapisha kwenye"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Chapisha kwenye {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Kikumbusho"
 msgid "Remove"
 msgstr "Ondoa"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Ondoa {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Ondoa {name}?"
 msgid "Remove access rule"
 msgstr "Ondoa sheria ya ufikiaji"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Ondoa sheria ya ufikiaji ya \"{0}\"?"
@@ -2692,6 +2875,8 @@ msgstr "Hurudiwa"
 msgid "Reply"
 msgstr "Jibu"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Chagua kadi iliyotangulia"
 msgid "Select..."
 msgstr "Chagua..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Imechaguliwa: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Ndogo"
 msgid "Sort"
 msgstr "Panga"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Chanzo kimeongezwa"
@@ -3110,6 +3297,7 @@ msgstr "Umejiunga"
 msgid "Subscribed feed"
 msgstr "Mlisho uliojiandikisha"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Umejiunga na {0}"
@@ -3216,6 +3404,11 @@ msgstr "Kamera tayari inatumika"
 msgid "The camera request was not answered"
 msgstr "Ombi la kamera halikujibiwa"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Mlisho ulichapisha machapisho {0} huko. Yatabaki isipokuwa uyafute."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Ombi la maikrofoni halikujibiwa"
@@ -3274,10 +3467,12 @@ msgstr "Chapisho hili linaweza kuwa limefutwa au huna ufikiaji."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Hii inaondoa kila chapisho kwenye orodha yako ya yaliyohifadhiwa. Kitendo hiki hakiwezi kutenduliwa."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Hii itafuta \"{0}\" kabisa na machapisho yake yote, maoni, na athari. Kitendo hiki hakiwezi kutenduliwa."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Hii itasimamisha kuingiza maudhui kutoka \"{0}\"."
@@ -3508,6 +3703,7 @@ msgstr "Thibitisha anwani ya barua pepe"
 msgid "Video thumbnail"
 msgstr "Kijipicha cha video"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Kitazamaji video: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Imetazamwa"
 msgid "Watched only"
 msgstr "Iliyotazamwa tu"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Tumetuma msimbo wa uthibitishaji kwa <0>{0}</0>. Weka msimbo hapa chini ili kuthibitisha anwani yako ya barua pepe."
@@ -3591,6 +3788,7 @@ msgstr "Bado huna milisho yoyote."
 msgid "You were removed from this feed"
 msgstr "Umeondolewa kwenye mlisho huu"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Hutapokea tena masasisho kutoka kwa \"{0}\"."

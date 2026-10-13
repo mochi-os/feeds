@@ -34,6 +34,7 @@ msgstr "(ընդարձակել)"
 msgid "(expanded)"
 msgstr "(ընդարձակված)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0}-ից)"
@@ -54,34 +55,53 @@ msgstr "(դուք)"
 msgid "[not set]"
 msgstr "[չի սահմանվել]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# պատճեն} other {# պատճեն}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ֆայլ փոխվել է} other {# ֆայլ փոխվել է}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# նոր գրառում} other {# նոր գրառում}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# արդյունք} other {# արդյունք}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# ընտրված} other {# ընտրված}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ներդրված} other {+# ներդրված}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Ավելացվեց # աղբյուր} other {Ավելացվեց # աղբյուր}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} կարգավորումներ"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#ր} other {#ր}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#շաբ} other {#շաբ}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Աղբյուրն ավելացվեց (# գրառում ներմուծվեց)} other {Աղբյուրն ավելացվեց (# գրառում ներմուծվեց)}}"
@@ -226,8 +247,23 @@ msgstr "Մուտքը սահմանված է {subjectName}-ի համար"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Հաշիվ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Հաշվի գործողություններ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Հաշվի գրառումներ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Հաշվի ժապավեն"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Ավելացնել մուտք"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Ավելացնել հաշիվ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Ավելացնել հաշվի գրառումներ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Ավելացնել հաշվի ժապավեն"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Ավելացնել գոյություն ունեցող ծանուցու�
 msgid "Add view"
 msgstr "Ավելացնել տեսք"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Առայժմ ավելացվել է {0} աղբյուր, մնացածը՝ հետո"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Համաձայն"
@@ -400,6 +449,12 @@ msgstr "Թույլատրել տեսակավորել ըստ"
 msgid "Also delete posts imported from this source"
 msgstr "Ջնջել նաև այս աղբյուրից ներմուծված գրառումները"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Նաև {0}-ում"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Զարմացած"
@@ -434,6 +489,7 @@ msgstr "Ցանկացած մուտք գործած անձ"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Այս հոսքին բաժանորդագրված ամեն ինչ կդադարի ստանալ այն։ Դրանից հետո կարող եք պատճենել նոր URL։"
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Վստա՞հ եք, որ ուզում եք ջնջել «{0}»-ը։"
@@ -474,6 +530,8 @@ msgstr "Վստա՞հ եք, որ ուզում եք հանձնվել։ {opponentNa
 msgid "Ascending"
 msgstr "Աճման կարգով"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Հետ դեպի հոսքեր"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Վերադառնալ տուն"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Պահուստային պատճեններ"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0}-ի պահուստային պատճենները"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Ընտրեք խաղ կողագոտուց կամ սկսեք նորը։"
 msgid "Choose a time"
 msgstr "Ընտրեք ժամը"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Ընտրեք հաշիվ"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Պահպանված գրառումները մաքրվում են..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Փակել"
 
@@ -846,9 +918,14 @@ msgstr "Մեկնաբանել, արձագանքել և դիտել"
 msgid "Comments"
 msgstr "Մեկնաբանություններ"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Մեկնաբանություններ ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Համայնք"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Պատճենվեց սեղմատախտակին"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Պատճենել"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Չհաջողվեց փոխել, թե որտեղ է հոսքը հրապարակում"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Չհաջողվեց ջնջել պատճենները"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Չհաջողվեց հետևել"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Չհաջողվեց ներմուծել"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Ջնջել սյունակը"
 msgid "Delete comment"
 msgstr "Ջնջել մեկնաբանությունը"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Ջնջել պատճենները"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Ջնջել կետը"
 msgid "Delete option"
 msgstr "Ջնջել տարբերակը"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Ջնջել {0} տարբերակը"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Ջնջել գրառումը"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Ջնջե՞լ պատճենները {0}-ում"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Ջնջեք ձեր հաշիվը հին սերվերում"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Ջնջվել է"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Ջնջվեց {0} պատճեն"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Խմբագրել դաշտի կարգավորումները"
 msgid "Edit option"
 msgstr "Խմբագրել տարբերակը"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Դրոշներ"
 msgid "Flat"
 msgstr "Հարթ"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Հետևել"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Հետևել {0}-ին"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Հետևել անձի կամ համայնքի"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Խումբ"
 msgid "Group by"
 msgstr "Խմբավորել ըստ"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Խումբ՝ {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Ինքնություն"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Պատկերի դիտիչ՝ {0}"
@@ -1818,6 +1942,28 @@ msgstr "Պատկերի դիտիչ՝ {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Իմպերիալ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Ներմուծել էջանիշները"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Ներմուծել հետևվող հաշիվները որպես աղբյուրներ"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Ներմուծել գրառումները"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Ներմուծվեց {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Առայժմ ներմուծվել է {0}, մնացածը՝ հետո"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Տարրի մանրամասներ"
 msgid "Just now"
 msgstr "Հենց հիմա"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Պահել"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Ստեղնաշարի դյուրանցումներ"
@@ -1882,6 +2032,7 @@ msgstr "Ստեղնաշարի դյուրանցումներ"
 msgid "Large"
 msgstr "Մեծ"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Վերջին ստուգումը՝ {0}"
@@ -2068,6 +2219,8 @@ msgstr "Տեղափոխվել է"
 msgid "Moved {field}"
 msgstr "Տեղափոխվել է {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Մուտքի կանոններ կարգավորված չեն։ Ավելա
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Դեռ ակտիվություն չկա"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Պահուստային պատճեն դեռ չի ստեղծվել։ Այն ստեղծվում է ամեն օր։"
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Ոչ մեկը"
 msgid "Normal"
 msgstr "Սովորական"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Չի համեմատվել. ավելի մեծ է, քան {0}"
@@ -2297,6 +2455,7 @@ msgstr "Դեռ ոչինչ չի պահպանվել"
 msgid "Notifications"
 msgstr "Ծանուցումներ"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Ծանուցումներ՝ {0}"
@@ -2315,6 +2474,8 @@ msgstr "Համար"
 msgid "On"
 msgstr "Միացված"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Այս օրը՝ {0} {1, plural, one {տարի} other {տարի}} առաջ · "
@@ -2407,6 +2568,10 @@ msgstr "Ձևանմուշ (regex)"
 msgid "People"
 msgstr "Մարդիկ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Անձ կամ համայնք"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Խնդրում ենք կրկին փորձել։"
 msgid "Please wait a moment and try again."
 msgstr "Խնդրում ենք մի փոքր սպասել և նորից փորձել։"
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Հարցում ամեն {0}"
@@ -2464,6 +2630,10 @@ msgstr "Գրառումներ"
 msgid "Posts and comments"
 msgstr "Գրառումներ և մեկնաբանություններ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Գրառումներ Bluesky-ում"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Հուշումը պահպանվեց"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Հատկություններ"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Որտեղ հրապարակել"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Հրապարակել {0}-ում"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Հիշեցում"
 msgid "Remove"
 msgstr "Հեռացնել"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Հեռացնել {0}-ը"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Հեռացնե՞լ {name}-ը։"
 msgid "Remove access rule"
 msgstr "Հեռացնել մուտքի կանոնը"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Հեռացնե՞լ «{0}»-ի մուտքի կանոնը։"
@@ -2692,6 +2875,8 @@ msgstr "Կրկնվում է"
 msgid "Reply"
 msgstr "Պատասխանել"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Ընտրել նախորդ քարտը"
 msgid "Select..."
 msgstr "Ընտրել..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Ընտրված է՝ <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Փոքր"
 msgid "Sort"
 msgstr "Տեսակավորել"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Աղբյուրը ավելացվեց"
@@ -3110,6 +3297,7 @@ msgstr "Բաժանորդագրված"
 msgid "Subscribed feed"
 msgstr "Բաժանորդագրված ֆիդ"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Բաժանորդագրված է {0}-ին"
@@ -3216,6 +3404,11 @@ msgstr "Տեսախցիկն արդեն օգտագործվում է"
 msgid "The camera request was not answered"
 msgstr "Տեսախցիկի հարցումը չպատասխանվեց"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Հոսքն այնտեղ հրապարակել է {0} գրառում։ Դրանք կմնան, եթե չջնջեք։"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Խոսափողի հարցումը չպատասխանվեց"
@@ -3274,10 +3467,12 @@ msgstr "Այս գրառումը կարող է ջնջվել, կամ կարող է
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Սա հեռացնում է բոլոր գրառումները ձեր պահվածների ցանկից։ Սա հնարավոր չէ հետարկել։"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Սա մշտապես կջնջի \"{0}\"-ը և նրա բոլոր գրառումները, մեկնաբանությունները և ռեակցիաները: Այս գործողությունը հնարավոր չէ չեղարկել:"
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Սա կդադարեցնի բովանդակության ներմուծումը \"{0}\"-ից:"
@@ -3508,6 +3703,7 @@ msgstr "Ստուգել էլ. փոստի հասցեն"
 msgid "Video thumbnail"
 msgstr "Տեսանյութի մանրապատկեր"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Տեսանյութի դիտիչ՝ {0}"
@@ -3560,6 +3756,7 @@ msgstr "Հետևված"
 msgid "Watched only"
 msgstr "Միայն հետևված"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Մենք հաստատման կոդ ուղարկեցինք <0>{0}</0> հասցեին։ Մուտքագրեք կոդը ստորև՝ ձեր էլ․ հասցեն հաստատելու համար։"
@@ -3591,6 +3788,7 @@ msgstr "Դուք դեռ չունեք ֆիդեր:"
 msgid "You were removed from this feed"
 msgstr "Ձեզ հեռացրել են այս հոսքից"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Դուք այլևս թարմացումներ չեք ստանա «{0}»-ից։"

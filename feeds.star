@@ -3383,17 +3383,23 @@ def safe_link(url):
 def sanitize_post_data(data):
     if not data or type(data) != "dict":
         return data
+    out = data
     rss = data.get("rss")
-    if not rss or type(rss) != "dict":
-        return data
-    link = rss.get("link", "")
-    if link == safe_link(link):
-        return data
-    new_rss = dict(rss)
-    new_rss["link"] = safe_link(link)
-    new_data = dict(data)
-    new_data["rss"] = new_rss
-    return new_data
+    if rss and type(rss) == "dict":
+        link = rss.get("link", "")
+        if link != safe_link(link):
+            new_rss = dict(rss)
+            new_rss["link"] = safe_link(link)
+            out = dict(out)
+            out["rss"] = new_rss
+    if data.get("quote") != None:
+        out = dict(out)
+        clean = sanitize_quote(data["quote"])
+        if clean:
+            out["quote"] = clean
+        else:
+            out.pop("quote")
+    return out
 
 def validate_post_data(data):
     if not data:
@@ -3402,6 +3408,8 @@ def validate_post_data(data):
     # value from a peer or a form, and .get on anything but a dict aborts the
     # handler rather than refusing the input.
     if type(data) != "dict":
+        return False
+    if data.get("quote") != None and type(data["quote"]) != "dict":
         return False
     if data.get("checkin") and not validate_place(data["checkin"]):
         return False
@@ -3473,6 +3481,14 @@ def action_post_create(a):
     if not accounts_ok:
         a.error.label(400, "errors.invalid_accounts")
         return
+
+    # A link to a post on another network is quoted: its text, image and
+    # author travel with the post, so subscribers see the quote as the writer
+    # did.
+    quote = post_quote(body) if body else None
+    if quote:
+        data = dict(data) if data else {}
+        data["quote"] = quote
 
     post_uid = mochi.uid()
     if mochi.db.exists("select id from posts where id=?", post_uid):
@@ -6730,12 +6746,15 @@ def action_sources_add(a):
 		return sources_add_feed(a, feed, url, name)
 	elif source_type in ACCOUNT_SOURCE_TYPES:
 		return sources_add_account(a, feed, source_type, url, name)
+	elif source_type == "person":
+		return sources_add_person(a, feed, url, name)
 	else:
 		a.error.label(400, "errors.invalid_source_type")
 		return
 
-# Add an RSS source
-def sources_add_rss(a, feed, url, name):
+# Add an RSS source. A caller that has fetched the document already, to choose
+# this address among several, passes its result.
+def sources_add_rss(a, feed, url, name, result=None):
 	feed_id = feed["id"]
 
 	# Validate URL format
@@ -6749,7 +6768,8 @@ def sources_add_rss(a, feed, url, name):
 		return
 
 	# Fetch the RSS feed to validate and get initial items
-	result = mochi.rss.fetch(url, {})
+	if result == None:
+		result = mochi.rss.fetch(url, {})
 	status = result["status"]
 
 	if status == 0:
@@ -6791,6 +6811,15 @@ def sources_add_rss(a, feed, url, name):
 				credibility = score
 				suggested_credibility = score
 
+	source, count = rss_source_create(feed_id, url, name, result, a.user.identity.id if a.user else None, credibility)
+	response = {"source": source, "ingested": count}
+	if suggested_credibility != None:
+		response["suggested_credibility"] = suggested_credibility
+	return {"data": response}
+
+# The RSS source row from a fetched document, with the document's items as the
+# source's history and its polls booked. Answers (source, ingested).
+def rss_source_create(feed_id, url, name, result, user_id, credibility=100):
 	source_id = mochi.uid()
 	now = mochi.time.now()
 	ttl = result.get("ttl", 0)
@@ -6805,7 +6834,7 @@ def sources_add_rss(a, feed, url, name):
 	# Ingest initial items. notify=False: this backfills the source's
 	# history for a user who is adding the source right now - it isn't news.
 	items = result.get("items", [])
-	count, _ = ingest_rss_items(source_id, feed_id, items, a.user.identity.id if a.user else None, notify=False)
+	count, _ = ingest_rss_items(source_id, feed_id, items, user_id, notify=False)
 
 	# Schedule next poll
 	mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, base)
@@ -6813,11 +6842,7 @@ def sources_add_rss(a, feed, url, name):
 	# Ensure daily watchdog is running
 	ensure_sources_watchdog()
 
-	source = mochi.db.row("select * from sources where id=?", source_id)
-	response = {"source": source, "ingested": count}
-	if suggested_credibility != None:
-		response["suggested_credibility"] = suggested_credibility
-	return {"data": response}
+	return (mochi.db.row("select * from sources where id=?", source_id), count)
 
 # Add a Mochi feed source
 def sources_add_feed(a, feed, source_feed_id, name):
@@ -7946,8 +7971,8 @@ PUBLISH_TYPES = ["mastodon", "bluesky"]
 # The source types an account offers, and every source type polled on a
 # schedule, with the SQL fragment that selects those.
 ACCOUNT_SOURCE_TYPES = ["account/timeline", "account/posts"]
-POLLED_TYPES = ["rss", "account/timeline", "account/posts"]
-POLLED_SQL = "type in ('rss', 'account/timeline', 'account/posts')"
+POLLED_TYPES = ["rss", "account/timeline", "account/posts", "person/posts"]
+POLLED_SQL = "type in ('rss', 'account/timeline', 'account/posts', 'person/posts')"
 
 # What Bluesky accepts (the constants of its lexicons): a post of 300 graphemes,
 # four images of a megabyte each or one video of fifty, alternative text of a
@@ -8510,47 +8535,59 @@ def poll_account_source(source, user_id=None, deadline=None):
 	new: not seen by this source, not one of the feed's own copies, not older
 	than the source. Each new post goes on to the feed's accounts as a sourced
 	post (decision 30). Answers (count, complete)."""
-	source_id, feed_id = source["id"], source["feed"]
 	now = mochi.time.now()
 	acc = publish_account(source["url"])
-	kind = source["type"]
 	new_count = 0
 	complete = True
 	if acc:
-		if kind == "account/timeline":
+		if source["type"] == "account/timeline":
 			page = mochi.account.timeline(acc["id"], limit=ACCOUNT_PAGE)
 		else:
 			page = mochi.account.posts(acc["id"], limit=ACCOUNT_PAGE)
-		items = (page or {}).get("items") or []
-		feed = mochi.db.row("select * from feeds where id=?", feed_id)
-		since = number(source.get("since", 0))
-		for raw in items:
-			if deadline != None and mochi.time.now() >= deadline:
-				complete = False
-				break
-			item = account_item(acc, raw)
-			if not item or not item["guid"] or not item["text"] and not item["image"]:
-				continue
-			if item["created"] and item["created"] <= since:
-				continue
-			if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source_id, item["guid"]):
-				continue
-			if published_has(feed_id, item["remotes"]):
-				continue
-			if sourced_post(feed, source, acc, item, user_id):
-				new_count += 1
-	new_interval = source["base"] if new_count > 0 else min(source["interval"] * 2, source["max"])
-	if new_count > 0:
-		mochi.db.execute("update sources set changed=? where id=?", now, source_id)
-	jitter = source["jitter"]
-	next_poll = now + new_interval + (mochi.time.now() % max(jitter, 1))
-	mochi.db.execute("update sources set interval=?, next=?, fetched=? where id=?", new_interval, next_poll, now, source_id)
+		feed = mochi.db.row("select * from feeds where id=?", source["feed"])
+		new_count, complete = ingest_account_items(feed, source, acc, (page or {}).get("items") or [], user_id, deadline)
+	source_polled(source, new_count, now)
 	return (new_count, complete)
 
-def sourced_post(feed, source, acc, item, user_id):
+def ingest_account_items(feed, source, acc, items, user_id, deadline, notify=True):
+	"""Posts of the items a source's page brought that are new: not seen by
+	this source, not one of the feed's own copies, not older than the source.
+	Answers (count, complete)."""
+	since = number(source.get("since", 0))
+	new_count = 0
+	complete = True
+	for raw in items:
+		if deadline != None and mochi.time.now() >= deadline:
+			complete = False
+			break
+		item = account_item(acc, raw)
+		if not item or not item["guid"] or not item["text"] and not item["image"]:
+			continue
+		if item["created"] and item["created"] <= since:
+			continue
+		if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source["id"], item["guid"]):
+			continue
+		if published_has(feed["id"], item["remotes"]):
+			continue
+		if sourced_post(feed, source, acc, item, user_id, notify):
+			new_count += 1
+	return (new_count, complete)
+
+def source_polled(source, new_count, now):
+	"""Book the source's next poll: the base interval after news, twice the
+	last one up to the maximum after none."""
+	new_interval = source["base"] if new_count > 0 else min(source["interval"] * 2, source["max"])
+	if new_count > 0:
+		mochi.db.execute("update sources set changed=? where id=?", now, source["id"])
+	jitter = source["jitter"]
+	next_poll = now + new_interval + (mochi.time.now() % max(jitter, 1))
+	mochi.db.execute("update sources set interval=?, next=?, fetched=? where id=?", new_interval, next_poll, now, source["id"])
+
+def sourced_post(feed, source, acc, item, user_id, notify=True):
 	"""Store an account item as a post of the feed, as an RSS item is stored,
-	and publish it on to the feed's other accounts. Answers whether a post
-	was made."""
+	and publish it on to the feed's other accounts; not when the item is the
+	history a source brings as it is added, which is not news. Answers whether
+	a post was made."""
 	feed_id = feed["id"]
 	text = item["text"]
 	link = item["link"]
@@ -8588,7 +8625,7 @@ def sourced_post(feed, source, acc, item, user_id):
 	copies = publish_post(feed, post_id, body, "text", [], None, {
 		"remote": item["guid"], "name": author, "link": link, "network": acc["type"], "account": acc["id"],
 		"item": item["item"], "transformed": transformed, "created": created,
-	})
+	}) if notify else []
 	if copies:
 		post_event["copies"] = copies
 	if feed.get("ai_mode", "") in ("tag", "tag+deduplicate"):
@@ -8610,6 +8647,8 @@ def poll_source(source, user_id=None, deadline=None):
 	"""Poll one source of any scheduled type."""
 	if source["type"] in ACCOUNT_SOURCE_TYPES:
 		return poll_account_source(source, user_id, deadline)
+	if source["type"] in PERSON_TYPES:
+		return poll_person_source(source, user_id, deadline)
 	return poll_rss_source(source, user_id, deadline)
 
 # === Import ===
@@ -8628,15 +8667,20 @@ def action_import(a):
 		a.error.label(404, "errors.account_not_linked")
 		return
 	kind = a.input("kind", "")
-	if kind not in ("posts", "bookmarks"):
+	if kind not in IMPORT_KINDS:
 		a.error.label(400, "errors.invalid_import")
 		return
 	count, more = import_step(feed, acc, kind, "", a.user.identity.id)
 	a.json({"imported": count, "more": more})
 
+IMPORT_KINDS = ["posts", "bookmarks", "follows"]
+
 def import_step(feed, acc, kind, cursor, user_id):
 	"""Up to IMPORT_PAGES pages of the account's posts or bookmarks into the
-	feed; the next step is booked when more remain. Answers (count, more)."""
+	feed, or a step of its follows as sources; the next step is booked when
+	more remain. Answers (count, more)."""
+	if kind == "follows":
+		return import_follows_step(feed, acc, cursor, user_id)
 	count = 0
 	pages = 0
 	for _ in range(IMPORT_PAGES):
@@ -8712,7 +8756,7 @@ def schedule_import(e):
 	feed = mochi.db.row("select * from feeds where id=?", e.data.get("feed", ""))
 	acc = publish_account(e.data.get("account", ""))
 	kind = e.data.get("kind", "")
-	if not feed or not acc or kind not in ("posts", "bookmarks"):
+	if not feed or not acc or kind not in IMPORT_KINDS:
 		return
 	import_step(feed, acc, kind, e.data.get("cursor", ""), e.user.identity.id if e.user else None)
 
@@ -8893,3 +8937,303 @@ def publish_schema_create():
 	mochi.db.execute("create table if not exists account_cursors ( account text not null, kind text not null, cursor text not null default '', updated integer not null default 0, primary key ( account, kind ) )")
 	if not any([c["name"] == "since" for c in mochi.db.table("sources")]):
 		mochi.db.execute("alter table sources add column since integer not null default 0")
+
+# === Following with no account (the federation plan, phase 13) ===
+#
+# A public account or community on another network is followed as a source of
+# a feed by its handle or link, with no account of the owner's on that network:
+# a Mastodon or Lemmy account or community through the web feed its server
+# publishes, as an rss source; a Bluesky account through its post records,
+# which its data server serves to anyone, as the source type person/posts. The
+# same lookup serves the search page, where a handle or a post link is looked
+# up, and a post's first link to a post on another network is quoted with the
+# post.
+
+PERSON_TYPES = ["person/posts"]
+
+# The stand-in for an account where a public person is read with none: the
+# network for the item's shape, no id for the copies' guards.
+PERSON_ACCOUNT = {"id": "", "type": "bluesky"}
+
+# What a quote keeps of a post's text.
+QUOTE_TEXT = 2000
+
+# Seconds a step of a follows import spends before booking the next.
+FOLLOWS_BUDGET = 40
+
+# === Lookup ===
+
+def lookup_person(query):
+	"""Look a handle or link up: a person or community on another network as
+	mochi.account.resolve answers it, with the kind "person" or "group", or a
+	post as mochi.url.quote answers it, with the kind "post". None when the
+	query names neither."""
+	q = query.strip()
+	if not q or len(q) > 2048 or " " in q:
+		return None
+	if q.startswith("http://") or q.startswith("https://"):
+		# On the Bluesky app a post link names the account and the record; a
+		# profile link names the account by handle or identifier.
+		parts = q.split("bsky.app/profile/", 1)
+		if len(parts) == 2 and parts[0] in ("https://", "http://"):
+			if "/post/" in parts[1]:
+				return lookup_post(q)
+			q = parts[1].strip("/").split("?", 1)[0]
+		else:
+			found = mochi.account.resolve(q)
+			if found:
+				return lookup_present(found)
+			return lookup_post(q)
+	elif q.startswith("!") or q.startswith("@"):
+		q = q[1:]
+	found = mochi.account.resolve(q)
+	return lookup_present(found) if found else None
+
+def lookup_present(found):
+	"""A resolved person or community as the client shows it."""
+	return {
+		"kind": "group" if found.get("type") == "group" else "person",
+		"network": found.get("network", ""),
+		"id": found.get("id", ""),
+		"name": found.get("name") or found.get("address") or "",
+		"address": found.get("address", ""),
+		"avatar": safe_link(found.get("avatar", "")),
+		"url": safe_link(found.get("url", "")),
+		"username": found.get("username", ""),
+		"host": found.get("host", ""),
+	}
+
+def lookup_post(link):
+	"""A post at a link, as a quote, with its author."""
+	quote = sanitize_quote(mochi.url.quote(link))
+	if not quote:
+		return None
+	return {"kind": "post", "network": quote.get("network", ""), "quote": quote}
+
+def action_lookup(a):
+	"""A handle or link looked up from search."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	query = a.input("query", "")
+	if not query.strip():
+		a.error.label(400, "errors.no_search_entered")
+		return
+	found = lookup_person(query)
+	if not found:
+		a.error.label(404, "errors.person_not_found")
+		return
+	a.json(found)
+
+# === Sources ===
+
+def person_feeds(found):
+	"""Where a fediverse server may publish a person's or community's posts as
+	a web feed, in the forms Mastodon, Lemmy, Pleroma, Misskey and Pixelfed
+	use, likeliest first."""
+	host, name, page = found.get("host", ""), found.get("username", ""), found.get("url", "")
+	if not host or not name:
+		return []
+	base = "https://" + host
+	if found.get("kind") == "group":
+		return [base + "/feeds/c/" + name + ".xml?sort=New"]
+	urls = []
+	if page.startswith("https://"):
+		urls.append(page + ".rss")
+	urls.append(base + "/feeds/u/" + name + ".xml?sort=New")
+	urls.append(base + "/users/" + name + "/feed.atom")
+	urls.append(base + "/@" + name + ".atom")
+	urls.append(base + "/users/" + name + ".atom")
+	return urls
+
+def person_feed(found):
+	"""The first web feed of a person's or community's that answers, with its
+	document, or (None, None)."""
+	for url in person_feeds(found):
+		result = mochi.rss.fetch(url, {})
+		status = result.get("status", 0)
+		if status >= 200 and status < 300 and (result.get("items") or result.get("title")):
+			return (url, result)
+	return (None, None)
+
+def sources_add_person(a, feed, query, name):
+	"""Follow a public account or community by handle or link: through its
+	server's web feed on the fediverse, through its post records on Bluesky."""
+	found = lookup_person(query)
+	if not found:
+		a.error.label(404, "errors.person_not_found")
+		return
+	if found["kind"] == "post":
+		a.error.label(400, "errors.not_a_person")
+		return
+	name = name or found["name"]
+	if found["network"] == "bluesky":
+		if mochi.db.exists("select 1 from sources where feed=? and type='person/posts' and url=?", feed["id"], found["id"]):
+			a.error.label(400, "errors.source_exists")
+			return
+		source, count = person_source_create(feed["id"], found["id"], name, a.user.identity.id)
+		return {"data": {"source": source, "ingested": count}}
+	url, result = person_feed(found)
+	if not url:
+		a.error.label(502, "errors.no_feed_for_person")
+		return
+	return sources_add_rss(a, feed, url, name, result)
+
+def person_source_create(feed_id, did, name, user_id):
+	"""The person/posts source row for a Bluesky account, with its newest
+	page as the source's history, as an RSS source's document is: not news,
+	not published. Answers (source, ingested)."""
+	source_id = mochi.uid()
+	now = mochi.time.now()
+	base = 300
+	mochi.db.execute("insert into sources (id, feed, type, url, name, credibility, base, max, interval, next, jitter, changed, fetched) values (?, ?, 'person/posts', ?, ?, 100, ?, 86400, ?, ?, 60, ?, ?)",
+		source_id, feed_id, did, name, base, base, now + base + 60, now, now)
+	source = mochi.db.row("select * from sources where id=?", source_id)
+	count, _ = poll_person_source(source, user_id, None, False)
+	mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, base)
+	ensure_sources_watchdog()
+	return (mochi.db.row("select * from sources where id=?", source_id), count)
+
+def poll_person_source(source, user_id=None, deadline=None, notify=True):
+	"""Read the newest page of a followed Bluesky account's posts from its
+	data server and make posts of what is new. A server that does not answer
+	is a poll with nothing new. Answers (count, complete)."""
+	now = mochi.time.now()
+	page = mochi.account.posts(source["url"], limit=ACCOUNT_PAGE)
+	feed = mochi.db.row("select * from feeds where id=?", source["feed"])
+	new_count, complete = ingest_account_items(feed, source, PERSON_ACCOUNT, (page or {}).get("items") or [], user_id, deadline, notify)
+	source_polled(source, new_count, now)
+	return (new_count, complete)
+
+# === Quotes ===
+
+def quote_link(body):
+	"""The first web link in a post's text, which may be a post on another
+	network."""
+	for token in body.split():
+		for prefix in ("https://", "http://"):
+			at = token.find(prefix)
+			if at >= 0:
+				link = token[at:].rstrip(".,;:!?)]}>'\"")
+				if "." in link[len(prefix):]:
+					return link
+	return None
+
+def post_quote(body):
+	"""The post on another network a post's first link names, or None."""
+	link = quote_link(body)
+	if not link:
+		return None
+	return sanitize_quote(mochi.url.quote(link))
+
+def sanitize_quote(quote):
+	"""A quote as it is kept and sent: known fields only, links safe, the text
+	cut; None where it is not a quote of a post."""
+	if type(quote) != "dict":
+		return None
+	url = safe_link(str(quote.get("url", "") or ""))
+	text = str(quote.get("text", "") or "")
+	image = safe_link(str(quote.get("image", "") or ""))
+	if not url or not text and not image:
+		return None
+	clean = {
+		"network": str(quote.get("network", "") or ""),
+		"url": url,
+		"id": str(quote.get("id", "") or "")[:2048],
+		"text": text_cut(text, QUOTE_TEXT),
+		"image": image,
+		"created": number(quote.get("created", 0)),
+	}
+	author = quote.get("author")
+	if type(author) == "dict":
+		clean["author"] = {
+			"id": str(author.get("id", "") or "")[:2048],
+			"name": str(author.get("name", "") or "")[:200],
+			"address": str(author.get("address", "") or "")[:300],
+			"avatar": safe_link(str(author.get("avatar", "") or "")),
+			"url": safe_link(str(author.get("url", "") or "")),
+		}
+	return clean
+
+# === Importing follows ===
+
+def link_next(header):
+	"""The max_id of the next page a Link header names, or empty."""
+	for part in header.split(","):
+		if 'rel="next"' not in part:
+			continue
+		url = part.split("<", 1)[-1].split(">", 1)[0]
+		for pair in url.split("?", 1)[-1].split("&"):
+			if pair.startswith("max_id="):
+				return pair[7:]
+	return ""
+
+def import_follows_page(acc, cursor):
+	"""A page of the account's follows, each {network, identifier, name}, and
+	the cursor for the next page. On Mastodon the cursor carries the account's
+	own id, read once, before the page's max_id."""
+	if acc["type"] == "mastodon":
+		if not cursor:
+			me = mochi.account.request(acc["id"], "GET", "v1/accounts/verify_credentials")
+			own = str(((me or {}).get("data") or {}).get("id", "") or "")
+			if not own:
+				return {"items": [], "cursor": ""}
+			cursor = own + "|"
+		own, _, max_id = cursor.partition("|")
+		query = {"limit": "80"}
+		if max_id:
+			query["max_id"] = max_id
+		answer = mochi.account.request(acc["id"], "GET", "v1/accounts/" + own + "/following", query=query)
+		items = answer.get("data") if answer and type(answer.get("data")) == "list" else []
+		next = link_next(str(answer.get("link", "") or "")) if answer else ""
+		follows = [{"network": "fediverse", "identifier": str(f.get("url") or f.get("uri") or ""), "name": str(f.get("display_name") or f.get("acct") or "")} for f in items if type(f) == "dict"]
+		return {"items": follows, "cursor": (own + "|" + next) if next and items else ""}
+	query = {"actor": acc.get("identifier", ""), "limit": "100"}
+	if cursor:
+		query["cursor"] = cursor
+	answer = mochi.account.request(acc["id"], "GET", "app.bsky.graph.getFollows", query=query)
+	data = answer.get("data") if answer and type(answer.get("data")) == "dict" else {}
+	follows = [{"network": "bluesky", "identifier": str(f.get("did", "") or ""), "name": str(f.get("displayName") or f.get("handle") or "")} for f in (data.get("follows") or []) if type(f) == "dict"]
+	return {"items": follows, "cursor": str(data.get("cursor", "") or "") if follows else ""}
+
+def follow_source(feed, follow, user_id):
+	"""One follow as a source of the feed, unless the feed has it already.
+	Answers whether a source was added."""
+	feed_id = feed["id"]
+	if follow["network"] == "bluesky":
+		did = follow["identifier"]
+		if not did or mochi.db.exists("select 1 from sources where feed=? and type='person/posts' and url=?", feed_id, did):
+			return False
+		person_source_create(feed_id, did, follow["name"], user_id)
+		return True
+	found = lookup_person(follow["identifier"]) if follow["identifier"] else None
+	if not found or found["kind"] == "post":
+		return False
+	url, result = person_feed(found)
+	if not url or mochi.db.exists("select 1 from sources where feed=? and url=?", feed_id, url):
+		return False
+	rss_source_create(feed_id, url, follow["name"] or found["name"], result, user_id)
+	return True
+
+def import_follows_step(feed, acc, cursor, user_id):
+	"""A step of a follows import: the follows of one page from where the last
+	step stopped, each a source, until the step's budget is spent; the next
+	step is booked for the rest. The cursor is the page's, then the offset in
+	it. Answers (count, more)."""
+	page_cursor, _, offset = cursor.partition("#")
+	offset = int(offset) if offset and decimal(offset) else 0
+	deadline = mochi.time.now() + FOLLOWS_BUDGET
+	page = import_follows_page(acc, page_cursor)
+	items = page.get("items") or []
+	count = 0
+	for index in range(offset, len(items)):
+		if mochi.time.now() >= deadline:
+			mochi.schedule.after("schedule_import", {"feed": feed["id"], "account": acc["id"], "kind": "follows", "cursor": page_cursor + "#" + str(index)}, 2)
+			return (count, True)
+		if follow_source(feed, items[index], user_id):
+			count += 1
+	next = page.get("cursor", "") or ""
+	if not next:
+		return (count, False)
+	mochi.schedule.after("schedule_import", {"feed": feed["id"], "account": acc["id"], "kind": "follows", "cursor": next + "#0"}, 2)
+	return (count, True)

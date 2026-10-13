@@ -34,6 +34,7 @@ msgstr "(విస్తరించు)"
 msgid "(expanded)"
 msgstr "(విస్తరించబడింది)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0} నుండి)"
@@ -54,34 +55,53 @@ msgstr "(మీరు)"
 msgid "[not set]"
 msgstr "[సెట్ చేయలేదు]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# కాపీ} other {# కాపీలు}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ఫైల్ మార్చబడింది} other {# ఫైల్‌లు మార్చబడ్డాయి}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# కొత్త పోస్ట్} other {# కొత్త పోస్ట్‌లు}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# ఫలితం} other {# ఫలితాలు}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# ఎంచుకోబడింది} other {# ఎంచుకోబడ్డాయి}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# లోపలిది} other {+# లోపలివి}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {# మూలం జోడించబడింది} other {# మూలాలు జోడించబడ్డాయి}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "{0} సెట్టింగ్‌లు"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#ని} other {#ని}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#వా} other {#వా}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {సోర్స్ జోడించబడింది (# పోస్ట్ ఇంపోర్ట్ చేయబడింది)} other {సోర్స్ జోడించబడింది (# పోస్ట్‌లు ఇంపోర్ట్ చేయబడ్డాయి)}}"
@@ -226,8 +247,23 @@ msgstr "{subjectName} కోసం యాక్సెస్ సెట్ చే�
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "ఖాతా"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "ఖాతా చర్యలు"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "ఖాతా పోస్ట్‌లు"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "ఖాతా టైమ్‌లైన్"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "యాక్సెస్‌ను జోడించండి"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "ఖాతాను జోడించండి"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "ఖాతా పోస్ట్‌లను జోడించండి"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "ఖాతా టైమ్‌లైన్‌ను జోడించండి"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "ప్రస్తుత నోటిఫికేషన్‌లకు �
 msgid "Add view"
 msgstr "వీక్షణను జోడించండి"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "ఇప్పటివరకు {0} మూలాలు జోడించబడ్డాయి; మిగిలినవి తర్వాత వస్తాయి"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "ఏకీభవిస్తాను"
@@ -400,6 +449,12 @@ msgstr "వీటి ద్వారా క్రమబద్ధీకరణన�
 msgid "Also delete posts imported from this source"
 msgstr "ఈ మూలం నుండి దిగుమతి చేయబడిన పోస్ట్‌లను కూడా తొలగించండి"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "{0}లో కూడా"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ఆశ్చర్యపోయాను"
@@ -434,6 +489,7 @@ msgstr "లాగిన్ అయిన ఎవరైనా"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "ఈ ఫీడ్‌కు సభ్యత్వం పొందిన ప్రతిదీ దాన్ని స్వీకరించడం ఆపేస్తుంది. ఆ తర్వాత మీరు కొత్త URLని కాపీ చేయవచ్చు."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "మీరు \"{0}\"ని తొలగించాలనుకుంటున్నారా?"
@@ -474,6 +530,8 @@ msgstr "మీరు నిజంగా రాజీనామా చేయాల
 msgid "Ascending"
 msgstr "ఆరోహణ"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "ఫీడ్‌లకు తిరిగి"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "హోమ్‌కు తిరిగి వెళ్ళండి"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "బ్యాకప్‌లు"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "{0} బ్యాకప్‌లు"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "సైడ్‌బార్ నుండి ఆటను ఎంచుక
 msgid "Choose a time"
 msgstr "సమయాన్ని ఎంచుకోండి"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "ఖాతాను ఎంచుకోండి"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "సేవ్ చేసిన పోస్ట్‌లను క్లి
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "మూసివేయండి"
 
@@ -846,9 +918,14 @@ msgstr "వ్యాఖ్యానించండి, స్పందించ�
 msgid "Comments"
 msgstr "వ్యాఖ్యలు"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "వ్యాఖ్యలు ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "సంఘం"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "క్లిప్‌బోర్డ్‌కి కాపీ చేయ�
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "కాపీ చేయండి"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "ఫీడ్ ప్రచురించే స్థానాన్ని మార్చడం సాధ్యం కాలేదు"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "కాపీలను తొలగించడం సాధ్యం కాలేదు"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "అనుసరించడం సాధ్యం కాలేదు"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "దిగుమతి చేయడం సాధ్యం కాలేదు"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "కాలమ్‌ను తొలగించండి"
 msgid "Delete comment"
 msgstr "వ్యాఖ్యను తొలగించండి"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "కాపీలను తొలగించండి"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "ఐటెమ్‌ను తొలగించండి"
 msgid "Delete option"
 msgstr "ఎంపికను తొలగించండి"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "ఎంపిక {0}ని తొలగించండి"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "పోస్ట్‌ను తొలగించండి"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "{0}లోని కాపీలను తొలగించాలా?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "పాత సర్వర్‌లో మీ ఖాతాను తొ�
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "తొలగించబడింది"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "{0} కాపీలు తొలగించబడ్డాయి"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "ఫీల్డ్ సెట్టింగ్‌లను సవరి�
 msgid "Edit option"
 msgstr "ఎంపికను సవరించు"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "ఫ్లాగ్‌లు"
 msgid "Flat"
 msgstr "చదునైనది"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "అనుసరించు"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "{0}ని అనుసరించు"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "ఒక వ్యక్తిని లేదా సంఘాన్ని అనుసరించు"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "గ్రూప్"
 msgid "Group by"
 msgstr "దీని ద్వారా సమూహపరచు"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "సమూహం: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ఐడీ"
 msgid "Identity"
 msgstr "గుర్తింపు"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "చిత్ర వీక్షకం: {0}"
@@ -1818,6 +1942,28 @@ msgstr "చిత్ర వీక్షకం: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "ఇంపీరియల్"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "బుక్‌మార్క్‌లను దిగుమతి చేయండి"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "అనుసరిస్తున్న ఖాతాలను మూలాలుగా దిగుమతి చేయండి"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "పోస్ట్‌లను దిగుమతి చేయండి"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} దిగుమతి చేయబడ్డాయి"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "ఇప్పటివరకు {0} దిగుమతి చేయబడ్డాయి; మిగిలినవి తర్వాత వస్తాయి"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "అంశం వివరాలు"
 msgid "Just now"
 msgstr "ఇప్పుడే"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "ఉంచు"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "కీబోర్డ్ షార్ట్‌కట్‌లు"
@@ -1882,6 +2032,7 @@ msgstr "కీబోర్డ్ షార్ట్‌కట్‌లు"
 msgid "Large"
 msgstr "పెద్దది"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "చివరిగా తనిఖీ చేయబడింది {0}"
@@ -2068,6 +2219,8 @@ msgstr "తరలించబడింది"
 msgid "Moved {field}"
 msgstr "{field} తరలించబడింది"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "యాక్సెస్ నియమాలు ఏవీ కాన్ఫ
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "ఇంకా యాక్టివిటీ లేదు"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "ఇంకా బ్యాకప్ ఏదీ చేయబడలేదు. ప్రతిరోజూ ఒకటి చేయబడుతుంది."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "ఏదీ లేదు"
 msgid "Normal"
 msgstr "సాధారణం"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "పోల్చలేదు: {0} కంటే పెద్దది"
@@ -2297,6 +2455,7 @@ msgstr "ఇంకా ఏదీ సేవ్ చేయబడలేదు"
 msgid "Notifications"
 msgstr "నోటిఫికేషన్‌లు"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "నోటిఫికేషన్‌లు: {0}"
@@ -2315,6 +2474,8 @@ msgstr "సంఖ్య"
 msgid "On"
 msgstr "ఆన్"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "ఈ రోజున, {0} {1, plural, one {సంవత్సరం} other {సంవత్సరాల}} క్రితం · "
@@ -2407,6 +2568,10 @@ msgstr "నమూనా (regex)"
 msgid "People"
 msgstr "వ్యక్తులు"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "వ్యక్తి లేదా సంఘం"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "దయచేసి మళ్లీ ప్రయత్నించండ�
 msgid "Please wait a moment and try again."
 msgstr "కాసేపు వేచి ఉండి, మళ్లీ ప్రయత్నించండి."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "ప్రతి {0}కు పోలింగ్"
@@ -2464,6 +2630,10 @@ msgstr "పోస్ట్‌లు"
 msgid "Posts and comments"
 msgstr "పోస్ట్‌లు మరియు కామెంట్‌లు"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Blueskyలో పోస్ట్‌లు"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "ప్రాంప్ట్ సేవ్ చేయబడింది"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "లక్షణాలు"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "ప్రచురించే స్థానాలు"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "{0}కి ప్రచురించు"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "రిమైండర్"
 msgid "Remove"
 msgstr "తొలగించండి"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0}ని తొలగించండి"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name}ని తొలగించాలా?"
 msgid "Remove access rule"
 msgstr "యాక్సెస్ నియమాన్ని తొలగించండి"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "\"{0}\" కోసం యాక్సెస్ నియమాన్ని తీసివేయాలా?"
@@ -2692,6 +2875,8 @@ msgstr "పునరావృతమవుతుంది"
 msgid "Reply"
 msgstr "రిప్లై"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "మునుపటి కార్డును ఎంచుకోండ�
 msgid "Select..."
 msgstr "ఎంచుకోండి..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "ఎంచుకోబడింది: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "చిన్నది"
 msgid "Sort"
 msgstr "సార్ట్ చేయండి"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "సోర్స్ జోడించబడింది"
@@ -3110,6 +3297,7 @@ msgstr "చందా చేరారు"
 msgid "Subscribed feed"
 msgstr "సబ్‌స్క్రైబ్ చేసిన ఫీడ్"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "{0}కు చందా చేరారు"
@@ -3216,6 +3404,11 @@ msgstr "కెమెరా ఇప్పటికే వాడుకలో ఉం
 msgid "The camera request was not answered"
 msgstr "కెమెరా అభ్యర్థనకు స్పందన లేదు"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "ఫీడ్ అక్కడ {0} పోస్ట్‌లను ప్రచురించింది. మీరు వాటిని తొలగించే వరకు అవి అలాగే ఉంటాయి."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "మైక్రోఫోన్ అభ్యర్థనకు స్పందన లేదు"
@@ -3274,10 +3467,12 @@ msgstr "ఈ పోస్ట్ తొలగించబడి ఉండవచ్
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "ఇది మీ సేవ్ చేసిన జాబితా నుండి ప్రతి పోస్ట్‌ను తీసివేస్తుంది. దీన్ని రద్దు చేయడం సాధ్యం కాదు."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "ఇది \"{0}\" మరియు దాని అన్ని పోస్ట్‌లు, వ్యాఖ్యలు మరియు రియాక్షన్‌లను శాశ్వతంగా తొలగిస్తుంది. ఈ చర్యను రద్దు చేయలేరు."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "ఇది \"{0}\" నుండి కంటెంట్‌ను ఇంపోర్ట్ చేయడం ఆపుతుంది."
@@ -3508,6 +3703,7 @@ msgstr "ఇమెయిల్ చిరునామాను ధృవీకర�
 msgid "Video thumbnail"
 msgstr "వీడియో థంబ్‌నెయిల్"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "వీడియో వీక్షకం: {0}"
@@ -3560,6 +3756,7 @@ msgstr "వాచ్ చేయబడింది"
 msgid "Watched only"
 msgstr "వాచ్ చేసినవి మాత్రమే"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "మేము <0>{0}</0> కు ధృవీకరణ కోడ్‌ను పంపాము. మీ ఇమెయిల్ చిరునామాను ధృవీకరించడానికి క్రింద కోడ్‌ను నమోదు చేయండి."
@@ -3591,6 +3788,7 @@ msgstr "మీకు ఇంకా ఫీడ్‌లు లేవు."
 msgid "You were removed from this feed"
 msgstr "మిమ్మల్ని ఈ ఫీడ్ నుండి తీసివేశారు"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "మీకు ఇకపై \"{0}\" నుండి అప్‌డేట్‌లు అందవు."

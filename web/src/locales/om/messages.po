@@ -34,6 +34,7 @@ msgstr "(babal'isi)"
 msgid "(expanded)"
 msgstr "(babal'ifame)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "({0} irraa)"
@@ -54,34 +55,53 @@ msgstr "(ati)"
 msgid "[not set]"
 msgstr "[hin qindoofne]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {garagalcha #} other {garagalchoota #}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {faayilii # jijjiirame} other {faayilii # jijjiiraman}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# maxxansaa haaraa} other {# maxxansaalee haaraa}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {bu'aa #} other {bu'aalee #}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# filatame} other {# filataman}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# keessa} other {+# keessa}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Maddi # dabalameera} other {Maddoonni # dabalamaniiru}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "Qindaa'inoota {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#daq} other {#daq}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#tor} other {#tor}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Maddii dabalameera (postii # fe'ameera)} other {Maddii dabalameera (postiwwan # fe'ameera)}}"
@@ -226,8 +247,23 @@ msgstr "Seensi {subjectName} qabameera"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Akkaawuntii"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Gochawwan akkaawuntii"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Maxxansoota akkaawuntii"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Sarara yeroo akkaawuntii"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Seensa dabali"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Akkaawuntii dabali"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Maxxansoota akkaawuntii dabali"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Sarara yeroo akkaawuntii dabali"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Beeksisaalee jiranitti dabali"
 msgid "Add view"
 msgstr "Mul'ata dabali"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Hanga ammaatti maddoonni {0} dabalamaniiru; kanneen hafan ni dhufu"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Ittan walii gala"
@@ -400,6 +449,12 @@ msgstr "Akkaataa kana taasifachuu hayyami"
 msgid "Also delete posts imported from this source"
 msgstr "Maxxansaalee madda kana irraa dhufan illee haqi"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "{0} irrattis"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Dinqisiifame"
@@ -434,6 +489,7 @@ msgstr "Namni seene kamiyyuu"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Wanti kamiyyuu feed kana ajaje fudhachuu ni dhaaba. Booda URL haaraa garagalchuu dandeessa."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" haquu mirkanaa'oo dha?"
@@ -474,6 +530,8 @@ msgstr "Of harkatti kennuu mirkanaa'oo dha? {opponentName} taphicha mo'ata."
 msgid "Ascending"
 msgstr "Ol kaʼaa"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Gara feed-iiwwaniitti deebi'i"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Gara mana deebi’uu"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Garagalchoota kuusaa"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Garagalchoota kuusaa {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Cinaa keessaa tapha filadhu ykn haaraa eegali."
 msgid "Choose a time"
 msgstr "Yeroo filadhu"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Akkaawuntii filadhu"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Maxxansoota olkaa'aman qulqulleessaa jira..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Cufi"
 
@@ -846,9 +918,14 @@ msgstr "Yaada, deebii miiraa, fi mul'isi"
 msgid "Comments"
 msgstr "Yaadawwan"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Yaadawwan ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Hawaasa"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Garagalfamee gara saanduqa garagalchaa"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Garagalchi"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Bakka feed-ichi itti maxxansu jijjiiruu hin dandeenye"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Garagalchoota haquu hin dandeenye"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Hordofuu hin dandeenye"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Alaa galchuu hin dandeenye"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Tarjaa haqi"
 msgid "Delete comment"
 msgstr "Yaada haqi"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Garagalchoota haqi"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Wanta haqi"
 msgid "Delete option"
 msgstr "Filannoo haqi"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Filannoo {0} haqi"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Maxxansa haqi"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Garagalchoota {0} irra jiran haqxaa?"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Akkaawuntii kee sarvaraa durii irraa haqi"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Haqameera"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Garagalchoonni {0} haqamaniiru"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Qindaa'ina dirree sirreessi"
 msgid "Edit option"
 msgstr "Filannoo sirreessi"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Mallattoolee"
 msgid "Flat"
 msgstr "Diriiraa"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Hordofi"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "{0} hordofi"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Nama ykn hawaasa hordofi"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Garee"
 msgid "Group by"
 msgstr "Akkaataa gareessuu"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Garee: {0}"
@@ -1811,6 +1934,7 @@ msgstr "ID"
 msgid "Identity"
 msgstr "Eenyummaa"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Ilaaltuu fakkii: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Ilaaltuu fakkii: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Imperiyaal"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Mallattoolee kitaabaa alaa galchi"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Akkaawuntiiwwan hordofaman akka maddootaatti alaa galchi"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Maxxansoota alaa galchi"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "{0} alaa galfameera"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Hanga ammaatti {0} alaa galfameera; kanneen hafan ni dhufu"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Bal'ina wantichaa"
 msgid "Just now"
 msgstr "Amma"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Qabadhu"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Karoora keyboardii"
@@ -1882,6 +2032,7 @@ msgstr "Karoora keyboardii"
 msgid "Large"
 msgstr "Guddaa"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Yeroo dhumaa kan ilaalame {0}"
@@ -2068,6 +2219,8 @@ msgstr "Sochoofameera"
 msgid "Moved {field}"
 msgstr "{field} sochoofameera"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Seerri itti seenumsaa hin qindaa'amne. Eenyu qabeenya kana itti seenuu d
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Hanga ammaatti sochiin hin jiru"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Ammaaf garagalchi kuusaa hin hojjetamne. Guyyaa guyyaan tokko ni hojjetama."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Tokko illee"
 msgid "Normal"
 msgstr "Idilee"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Hin madaalamne: {0} caalaa guddaa"
@@ -2297,6 +2455,7 @@ msgstr "Hanga ammaa wanti olkaa'ame hin jiru"
 msgid "Notifications"
 msgstr "Beeksisaalee"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Beeksisawwan: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Lakkoofsa"
 msgid "On"
 msgstr "Banaa"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Guyyaa kana, waggaa {0} {1, plural, one {dura} other {dura}} · "
@@ -2407,6 +2568,10 @@ msgstr "Bocaa (regex)"
 msgid "People"
 msgstr "Namoota"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Nama ykn hawaasa"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Maaloo irra deebi'ii yaali."
 msgid "Please wait a moment and try again."
 msgstr "Maaloo yeroo xiqqoo eegiitii irra deebi'ii yaali."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Sakatta'aa jira {0} hunda"
@@ -2464,6 +2630,10 @@ msgstr "Maxxansoota"
 msgid "Posts and comments"
 msgstr "Maxxansoota fi yaadawwan"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Maxxansoota Bluesky irratti"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Gaaffii olkaa'ame"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Qabeenyaalee"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Bakka maxxansaa"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "{0} irratti maxxansi"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Yaadachiisa"
 msgid "Remove"
 msgstr "Haqi"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} haqi"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "{name} haquu?"
 msgid "Remove access rule"
 msgstr "Seera itti seenumsaa haqi"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Seera argannoo \"{0}\" haquu?"
@@ -2692,6 +2875,8 @@ msgstr "Ni irra deebi'a"
 msgid "Reply"
 msgstr "Deebii"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Kaardii kanaan dura turu filadhu"
 msgid "Select..."
 msgstr "Filadhu..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Kan filatame: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Xiqqaa"
 msgid "Sort"
 msgstr "Sirreessi"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Maddi dabalameera"
@@ -3110,6 +3297,7 @@ msgstr "Galaa'eera"
 msgid "Subscribed feed"
 msgstr "Feed galaa'ame"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "{0} galaa'eera"
@@ -3216,6 +3404,11 @@ msgstr "Kaameraan duraanuu fayyadamaa jira"
 msgid "The camera request was not answered"
 msgstr "Gaaffiin kaameraa deebii hin arganne"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Feed-ichi achitti maxxansoota {0} maxxanseera. Yoo ati hin haqiin achuma turu."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Gaaffiin maayikroofoonii deebii hin arganne"
@@ -3274,10 +3467,12 @@ msgstr "Postiin kun haqamuu mala ykn ittigaltee qabaachuu dhabuu mala."
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Kun tarree olkaa'aman kee irraa maxxansaa hunda balleessa. Kun deebi'ee gochuu hin danda'amu."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Kun \"{0}\" fi postii, yaadota fi deebii miiraa hunda isaa bara baraan haqa. Tarkaanfiin kun deebi'ee hin sirreessamu."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Kun \"{0}\" irraa qabiyyee fe'uu dhaabsisa."
@@ -3508,6 +3703,7 @@ msgstr "Teessoo iimeelii mirkaneessi"
 msgid "Video thumbnail"
 msgstr "Suuraa duraa viidiyoo"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Ilaaltuu viidiyoo: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Daawwatame"
 msgid "Watched only"
 msgstr "Kan daawwataman qofa"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Koodii mirkaneessaa gara <0>{0}</0> ergineerra. Teessoo imeelii kee mirkaneessuuf koodii armaan gadii galchi."
@@ -3591,6 +3788,7 @@ msgstr "Feed-iiwwan ammallee hin qabdu."
 msgid "You were removed from this feed"
 msgstr "Ati feed kana irraa haqamteetta"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Ati siʼachi \"{0}\" irraa haaromsa hin argattu."

@@ -34,6 +34,7 @@ msgstr "(ανάπτυξη)"
 msgid "(expanded)"
 msgstr "(αναπτυγμένο)"
 
+#. placeholder {0}: file.oldPath
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "(from {0})"
 msgstr "(από {0})"
@@ -54,34 +55,53 @@ msgstr "(εσείς)"
 msgid "[not set]"
 msgstr "[χωρίς ορισμό]"
 
+#. placeholder {0}: data.copies[account.id]
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {# copy} other {# copies}}"
+msgstr "{0, plural, one {# αντίγραφο} other {# αντίγραφα}}"
+
+#. placeholder {0}: files.length
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# αρχείο άλλαξε} other {# αρχεία άλλαξαν}}"
 
+#. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# νέα δημοσίευση} other {# νέες δημοσιεύσεις}}"
 
+#. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
 msgstr "{0, plural, one {# αποτέλεσμα} other {# αποτελέσματα}}"
 
+#. placeholder {0}: displayInfo.count
+#. placeholder {0}: selectedIds.length
+#. placeholder {0}: unknownIds.length
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# επιλεγμένο} other {# επιλεγμένα}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
 msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ένθετο} other {+# ένθετα}}"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "{0, plural, one {Added # source} other {Added # sources}}"
+msgstr "{0, plural, one {Προστέθηκε # πηγή} other {Προστέθηκαν # πηγές}}"
+
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
 msgstr "Ρυθμίσεις {0}"
 
+#. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
@@ -103,6 +123,7 @@ msgstr "{count, plural, one {#λ} other {#λ}}"
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#εβδ} other {#εβδ}}"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Η πηγή προστέθηκε (εισήχθη # δημοσίευση)} other {Η πηγή προστέθηκε (εισήχθησαν # δημοσιεύσεις)}}"
@@ -226,8 +247,23 @@ msgstr "Η πρόσβαση ορίστηκε για {subjectName}"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Account"
 msgstr "Λογαριασμός"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Account actions"
+msgstr "Ενέργειες λογαριασμού"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account posts"
+msgstr "Αναρτήσεις λογαριασμού"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Account timeline"
+msgstr "Χρονολόγιο λογαριασμού"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
@@ -263,6 +299,14 @@ msgstr "Προσθήκη πρόσβασης"
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
 msgstr "Προσθήκη λογαριασμού"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account posts"
+msgstr "Προσθήκη αναρτήσεων λογαριασμού"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Add account timeline"
+msgstr "Προσθήκη χρονολογίου λογαριασμού"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -334,6 +378,11 @@ msgstr "Προσθήκη σε υπάρχουσες ειδοποιήσεις"
 msgid "Add view"
 msgstr "Προσθήκη προβολής"
 
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Added {0} sources so far; the rest follow"
+msgstr "Προστέθηκαν {0} πηγές μέχρι στιγμής· οι υπόλοιπες ακολουθούν"
+
 #: src/features/feeds/constants.ts
 msgid "Agree"
 msgstr "Συμφωνώ"
@@ -400,6 +449,12 @@ msgstr "Να επιτρέπεται η ταξινόμηση κατά"
 msgid "Also delete posts imported from this source"
 msgstr "Διαγραφή και των δημοσιεύσεων που εισήχθησαν από αυτήν την πηγή"
 
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also on {0}"
+msgstr "Επίσης στο {0}"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Έκπληκτος"
@@ -434,6 +489,7 @@ msgstr "Οποιοσδήποτε είναι συνδεδεμένος"
 msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
 msgstr "Ό,τι είναι εγγεγραμμένο σε αυτήν τη ροή θα σταματήσει να τη λαμβάνει. Μπορείτε να αντιγράψετε μια νέα διεύθυνση URL στη συνέχεια."
 
+#. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε \"{0}\";"
@@ -474,6 +530,8 @@ msgstr "Είστε σίγουροι ότι θέλετε να παραιτηθε�
 msgid "Ascending"
 msgstr "Αύξουσα"
 
+#. placeholder {0}: editingPost.data.checkin.name
+#. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
@@ -542,6 +600,15 @@ msgstr "Πίσω στις ροές"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
 msgid "Back to home"
 msgstr "Επιστροφή στην αρχή"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups"
+msgstr "Αντίγραφα ασφαλείας"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Backups of {0}"
+msgstr "Αντίγραφα ασφαλείας του {0}"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
@@ -721,6 +788,10 @@ msgstr "Επιλέξτε ένα παιχνίδι από την πλαϊνή στ
 msgid "Choose a time"
 msgstr "Επιλέξτε ώρα"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Choose an account"
+msgstr "Επιλέξτε λογαριασμό"
+
 #: ../../../lib/web/src/components/language-picker.tsx
 #: ../../../lib/web/src/components/language-picker.tsx
 msgid "Choose language"
@@ -761,6 +832,7 @@ msgstr "Εκκαθάριση αποθηκευμένων αναρτήσεων..."
 #: ../../../lib/web/src/components/ui/sheet.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
 #: ../../../lib/web/src/components/ui/side-panel.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Close"
 msgstr "Κλείσιμο"
 
@@ -846,9 +918,14 @@ msgstr "Σχολιασμός, αντίδραση και προβολή"
 msgid "Comments"
 msgstr "Σχόλια"
 
+#. placeholder {0}: data.comments.count || 0
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Comments ({0})"
 msgstr "Σχόλια ({0})"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Community"
+msgstr "Κοινότητα"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
@@ -916,6 +993,22 @@ msgstr "Αντιγράφηκε στο πρόχειρο"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Αντιγραφή"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not change where the feed publishes"
+msgstr "Δεν ήταν δυνατή η αλλαγή των προορισμών δημοσίευσης της ροής"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not delete the copies"
+msgstr "Δεν ήταν δυνατή η διαγραφή των αντιγράφων"
+
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Could not follow"
+msgstr "Δεν ήταν δυνατή η παρακολούθηση"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Could not import"
+msgstr "Δεν ήταν δυνατή η εισαγωγή"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
@@ -1063,6 +1156,10 @@ msgstr "Διαγραφή στήλης"
 msgid "Delete comment"
 msgstr "Διαγραφή σχολίου"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete copies"
+msgstr "Διαγραφή αντιγράφων"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
@@ -1090,6 +1187,7 @@ msgstr "Διαγραφή στοιχείου"
 msgid "Delete option"
 msgstr "Διαγραφή επιλογής"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete option {0}"
@@ -1099,6 +1197,11 @@ msgstr "Διαγραφή επιλογής {0}"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Delete post"
 msgstr "Διαγραφή δημοσίευσης"
+
+#. placeholder {0}: kept.account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Delete the copies on {0}?"
+msgstr "Διαγραφή των αντιγράφων στο {0};"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Delete view"
@@ -1111,6 +1214,11 @@ msgstr "Διαγράψτε τον λογαριασμό σας στον παλι�
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
 msgstr "Διαγράφηκε"
+
+#. placeholder {0}: answer.deleted
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Deleted {0} copies"
+msgstr "Διαγράφηκαν {0} αντίγραφα"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted {field}"
@@ -1244,6 +1352,7 @@ msgstr "Επεξεργασία ρυθμίσεων πεδίου"
 msgid "Edit option"
 msgstr "Επεξεργασία επιλογής"
 
+#. placeholder {0}: opt.name
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Edit option {0}"
@@ -1745,6 +1854,19 @@ msgstr "Σημαίες"
 msgid "Flat"
 msgstr "Επίπεδη"
 
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow"
+msgstr "Ακολούθηση"
+
+#. placeholder {0}: author?.name || author?.address || ''
+#: src/features/feeds/components/lookup-result.tsx
+msgid "Follow {0}"
+msgstr "Ακολούθηση {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a person or community"
+msgstr "Ακολουθήστε ένα άτομο ή μια κοινότητα"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
@@ -1783,6 +1905,7 @@ msgstr "Ομάδα"
 msgid "Group by"
 msgstr "Ομαδοποίηση κατά"
 
+#. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Ομάδα: {0}"
@@ -1811,6 +1934,7 @@ msgstr "Αναγνωριστικό"
 msgid "Identity"
 msgstr "Ταυτότητα"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Image viewer: {0}"
 msgstr "Προβολή εικόνας: {0}"
@@ -1818,6 +1942,28 @@ msgstr "Προβολή εικόνας: {0}"
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
 msgstr "Αυτοκρατορικό"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import bookmarks"
+msgstr "Εισαγωγή σελιδοδεικτών"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import follows as sources"
+msgstr "Εισαγωγή ακολουθούμενων ως πηγές"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Import posts"
+msgstr "Εισαγωγή αναρτήσεων"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0}"
+msgstr "Εισήχθησαν {0}"
+
+#. placeholder {0}: answer.imported
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Imported {0} so far; the rest follow"
+msgstr "Εισήχθησαν {0} μέχρι στιγμής· τα υπόλοιπα ακολουθούν"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -1873,6 +2019,10 @@ msgstr "Λεπτομέρειες στοιχείου"
 msgid "Just now"
 msgstr "Μόλις τώρα"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Keep"
+msgstr "Διατήρηση"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
 msgstr "Συντομεύσεις πληκτρολογίου"
@@ -1882,6 +2032,7 @@ msgstr "Συντομεύσεις πληκτρολογίου"
 msgid "Large"
 msgstr "Μεγάλο"
 
+#. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Last checked {0}"
 msgstr "Τελευταίος έλεγχος {0}"
@@ -2068,6 +2219,8 @@ msgstr "Μετακινήθηκε"
 msgid "Moved {field}"
 msgstr "Μετακινήθηκε {field}"
 
+#. placeholder {0}: dayName(dragging.day)
+#. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
 msgid "Moving to {0}"
@@ -2159,6 +2312,10 @@ msgstr "Δεν έχουν διαμορφωθεί κανόνες πρόσβαση
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Δεν υπάρχει ακόμη δραστηριότητα"
+
+#: src/features/feeds/components/publishing-section.tsx
+msgid "No backup has been made yet. One is made each day."
+msgstr "Δεν έχει δημιουργηθεί ακόμη αντίγραφο ασφαλείας. Δημιουργείται ένα κάθε μέρα."
 
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "No changes to display"
@@ -2268,6 +2425,7 @@ msgstr "Κανένα"
 msgid "Normal"
 msgstr "Κανονικό"
 
+#. placeholder {0}: formatFileSize(file.limit)
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "Not compared: larger than {0}"
 msgstr "Δεν συγκρίθηκε: μεγαλύτερο από {0}"
@@ -2297,6 +2455,7 @@ msgstr "Δεν έχει αποθηκευτεί τίποτα ακόμη"
 msgid "Notifications"
 msgstr "Ειδοποιήσεις"
 
+#. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
 msgstr "Ειδοποιήσεις: {0}"
@@ -2315,6 +2474,8 @@ msgstr "Αριθμός"
 msgid "On"
 msgstr "Ενεργό"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
 #: src/api/adapters.ts
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Αυτή τη μέρα πριν από {0} {1, plural, one {χρόνο} other {χρόνια}} · "
@@ -2407,6 +2568,10 @@ msgstr "Μοτίβο (regex)"
 msgid "People"
 msgstr "Άτομα"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Person or community"
+msgstr "Άτομο ή κοινότητα"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
@@ -2426,6 +2591,7 @@ msgstr "Δοκιμάστε ξανά."
 msgid "Please wait a moment and try again."
 msgstr "Περιμένετε λίγο και δοκιμάστε ξανά."
 
+#. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
 msgstr "Δημοσκόπηση κάθε {0}"
@@ -2464,6 +2630,10 @@ msgstr "Αναρτήσεις"
 msgid "Posts and comments"
 msgstr "Αναρτήσεις και σχόλια"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on Bluesky"
+msgstr "Αναρτήσεις στο Bluesky"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Previous image"
@@ -2493,6 +2663,16 @@ msgstr "Η προτροπή αποθηκεύτηκε"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Ιδιότητες"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to"
+msgstr "Δημοσίευση σε"
+
+#. placeholder {0}: account.identifier
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Publish to {0}"
+msgstr "Δημοσίευση στο {0}"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
@@ -2581,10 +2761,12 @@ msgstr "Υπενθύμιση"
 msgid "Remove"
 msgstr "Αφαίρεση"
 
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Αφαίρεση {0}"
 
+#. placeholder {0}: filter.label
 #: ../../../lib/web/src/components/filter-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
@@ -2606,6 +2788,7 @@ msgstr "Αφαίρεση {name};"
 msgid "Remove access rule"
 msgstr "Αφαίρεση κανόνα πρόσβασης"
 
+#. placeholder {0}: formatSubject(removeSubject ?? '', removeData?.name)
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Κατάργηση κανόνα πρόσβασης για «{0}»;"
@@ -2692,6 +2875,8 @@ msgstr "Επαναλαμβάνεται"
 msgid "Reply"
 msgstr "Απάντηση"
 
+#. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
@@ -2922,6 +3107,7 @@ msgstr "Επιλογή προηγούμενης κάρτας"
 msgid "Select..."
 msgstr "Επιλογή..."
 
+#. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Selected: <0>{0}</0>"
 msgstr "Επιλέχθηκε: <0>{0}</0>"
@@ -3027,6 +3213,7 @@ msgstr "Μικρό"
 msgid "Sort"
 msgstr "Ταξινόμηση"
 
+#: src/features/feeds/components/lookup-result.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Source added"
 msgstr "Η πηγή προστέθηκε"
@@ -3110,6 +3297,7 @@ msgstr "Εγγεγραμμένος"
 msgid "Subscribed feed"
 msgstr "Εγγεγραμμένη ροή"
 
+#. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Subscribed to {0}"
 msgstr "Εγγραφή σε {0}"
@@ -3216,6 +3404,11 @@ msgstr "Η κάμερα χρησιμοποιείται ήδη"
 msgid "The camera request was not answered"
 msgstr "Το αίτημα κάμερας δεν απαντήθηκε"
 
+#. placeholder {0}: kept.count
+#: src/features/feeds/components/publishing-section.tsx
+msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr "Η ροή δημοσίευσε εκεί {0} αναρτήσεις. Παραμένουν εκτός αν τις διαγράψετε."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
 msgstr "Το αίτημα μικροφώνου δεν απαντήθηκε"
@@ -3274,10 +3467,12 @@ msgstr "Αυτή η δημοσίευση μπορεί να έχει διαγρα
 msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Αυτό αφαιρεί κάθε δημοσίευση από τη λίστα αποθηκευμένων σας. Δεν μπορεί να αναιρεθεί."
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Αυτό θα διαγράψει οριστικά το «{0}» και όλες τις δημοσιεύσεις, τα σχόλια και τις αντιδράσεις του. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
 
+#. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Αυτό θα σταματήσει την εισαγωγή περιεχομένου από το «{0}»."
@@ -3508,6 +3703,7 @@ msgstr "Επαλήθευση διεύθυνσης email"
 msgid "Video thumbnail"
 msgstr "Μικρογραφία βίντεο"
 
+#. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Video viewer: {0}"
 msgstr "Προβολή βίντεο: {0}"
@@ -3560,6 +3756,7 @@ msgstr "Σε παρακολούθηση"
 msgid "Watched only"
 msgstr "Μόνο σε παρακολούθηση"
 
+#. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Στείλαμε έναν κωδικό επαλήθευσης στο <0>{0}</0>. Εισαγάγετε τον κωδικό παρακάτω για να επαληθεύσετε τη διεύθυνση email σας."
@@ -3591,6 +3788,7 @@ msgstr "Δεν έχετε ακόμα ροές."
 msgid "You were removed from this feed"
 msgstr "Αφαιρεθήκατε από αυτή τη ροή"
 
+#. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Δεν θα λαμβάνετε πλέον ενημερώσεις από «{0}»."

@@ -14,6 +14,7 @@ export type {
   FindFeedsResponse,
   BackupsResponse,
   ImportResponse,
+  Lookup,
   PublishAccount,
   PublishResponse,
   PublishSetResponse,
