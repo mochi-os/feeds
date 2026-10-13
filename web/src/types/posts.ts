@@ -61,6 +61,15 @@ interface PostSource {
   type: string
 }
 
+// A copy of the post on another network, published through one of the owner's
+// accounts: where it is and under which address.
+export interface PostCopy {
+  address: string
+  network: string
+  remote: string
+  url: string
+}
+
 // Post from backend
 export interface Post {
   id: string
@@ -82,6 +91,7 @@ export interface Post {
   down: number
   read: number
   source?: PostSource
+  copies?: PostCopy[]
   score?: number
   // Per-post access, stamped by the aggregate ("All feeds") endpoint so each
   // post carries its own feed's react/comment/manage grant.
@@ -115,6 +125,7 @@ export interface FeedPost {
   down?: number
   read?: number
   source?: PostSource
+  copies?: PostCopy[]
   score?: number
   following?: boolean
 }
@@ -151,6 +162,9 @@ export interface CreatePostRequest {
   data?: PostData
   files?: File[]
   captions?: string[] // aligned with files' order
+  // The accounts this post publishes to, overriding the feed's list; absent
+  // leaves it to the feed.
+  accounts?: string[]
 }
 
 export interface CreatePostResponse {

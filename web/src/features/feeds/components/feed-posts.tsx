@@ -10,6 +10,7 @@ import type {
   FeedComment,
   FeedPermissions,
   FeedPost,
+  PostCopy,
   ReactionId,
 } from '@/types'
 import { t } from '@lingui/core/macro'
@@ -59,6 +60,7 @@ import {
   UploadProgress,
   PostTagsTooltip,
   type Upload,
+  providerName,
 } from '@mochi/web'
 import {
   Bell,
@@ -349,6 +351,33 @@ export function PostCommentsList({
         </button>
       )}
     </>
+  )
+}
+
+// Where else a post is: its copies on other networks, each a link to the copy
+// under the account it was published through.
+export function PostCopies({ copies }: { copies?: PostCopy[] }) {
+  if (!copies || copies.length === 0) return null
+  return (
+    <div className='text-muted-foreground mt-1 flex flex-wrap gap-x-3 text-xs'>
+      {copies.map((copy) =>
+        copy.url ? (
+          <a
+            key={copy.address}
+            href={safeHref(copy.url)}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='hover:underline'
+          >
+            <Trans>Also on {providerName(copy.network)}</Trans>
+          </a>
+        ) : (
+          <span key={copy.address}>
+            <Trans>Also on {providerName(copy.network)}</Trans>
+          </span>
+        )
+      )}
+    </div>
   )
 }
 
@@ -1250,6 +1279,7 @@ export function FeedPosts({
                         )}
                       </div>
                     )}
+                    <PostCopies copies={post.copies} />
                     {/* RSS image: show cached image, or lazy-fetch if missing */}
                     {post.data?.rss?.image &&
                       (!singlePost ||

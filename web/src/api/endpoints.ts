@@ -117,6 +117,12 @@ const endpoints = {
     // Sources
     sources: (feedId: string) => `${feedId}/-/sources`,
     sourcesAdd: (feedId: string) => `${feedId}/-/sources/add`,
+    publish: (feedId: string) => `${feedId}/-/publish`,
+    publishSet: (feedId: string) => `${feedId}/-/publish/set`,
+    publishForget: (feedId: string) => `${feedId}/-/publish/forget`,
+    importAccount: (feedId: string) => `${feedId}/-/import`,
+    backups: (feedId: string) => `${feedId}/-/backups`,
+    backupFile: (feedId: string) => `${feedId}/-/backups/file`,
     sourcesEdit: (feedId: string) => `${feedId}/-/sources/edit`,
     sourcesRemove: (feedId: string) => `${feedId}/-/sources/remove`,
     sourcesPoll: (feedId: string) => `${feedId}/-/sources/poll`,

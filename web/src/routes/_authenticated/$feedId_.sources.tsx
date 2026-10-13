@@ -24,6 +24,11 @@ import {
   usePageTitle,
   getErrorMessage,
   Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   EmptyState,
   GeneralError,
   Skeleton,
@@ -44,6 +49,7 @@ import {
 import {
   Calendar,
   Check,
+  AtSign,
   Link2,
   Plus,
   RefreshCw,
@@ -292,10 +298,15 @@ function formatInterval(seconds: number): string {
   return plural(d, { one: '# day', other: '# days' })
 }
 
+// The kinds of source a feed takes from the dialog: an RSS feed, another Mochi
+// feed, or one of the owner's accounts on another network - its home timeline
+// or its own posts (decision 32).
+type SourceKind = 'rss' | 'feed/posts' | 'account/timeline' | 'account/posts'
+
 interface SourcesPanelProps {
   feedId: string
   addUrl?: string
-  addType?: 'rss' | 'feed/posts'
+  addType?: SourceKind
 }
 
 function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
@@ -303,7 +314,7 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
   const { formatTimestamp } = useFormat()
   const navigateRoute = Route.useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(!!addUrl)
-  const [addSourceType, setAddSourceType] = useState<'rss' | 'feed/posts'>(
+  const [addSourceType, setAddSourceType] = useState<SourceKind>(
     addType ?? 'feed/posts'
   )
   const [removeSource, setRemoveSource] = useState<Source | null>(null)
@@ -377,6 +388,24 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
               <Rss className='me-2 h-4 w-4' />
               <Trans>RSS feed</Trans>
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setAddSourceType('account/timeline')
+                setShowAddDialog(true)
+              }}
+            >
+              <AtSign className='me-2 h-4 w-4' />
+              <Trans>Account timeline</Trans>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setAddSourceType('account/posts')
+                setShowAddDialog(true)
+              }}
+            >
+              <AtSign className='me-2 h-4 w-4' />
+              <Trans>Account posts</Trans>
+            </DropdownMenuItem>
             {!hasMemoriesSource && (
               <DropdownMenuItem onSelect={() => void handleAddMemories()}>
                 <Calendar className='me-2 h-4 w-4' />
@@ -419,6 +448,8 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                         <Rss className='h-4 w-4 shrink-0 text-orange-500' />
                       ) : source.type === 'feed/memories' ? (
                         <Calendar className='text-primary h-4 w-4 shrink-0' />
+                      ) : source.type.startsWith('account/') ? (
+                        <AtSign className='text-primary h-4 w-4 shrink-0' />
                       ) : (
                         <Link2 className='text-primary h-4 w-4 shrink-0' />
                       )}
@@ -443,12 +474,18 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                       )}
                     </div>
                     <div className='text-muted-foreground mt-1 truncate ps-6 text-xs'>
-                      {source.url && <>{source.url} · </>}
+                      {source.url && !source.type.startsWith('account/') && (
+                        <>{source.url} · </>
+                      )}
                       <span>
                         {source.type === 'rss' ? (
                           <Trans>RSS</Trans>
                         ) : source.type === 'feed/memories' ? (
                           <Trans>Memories</Trans>
+                        ) : source.type === 'account/timeline' ? (
+                          <Trans>Account timeline</Trans>
+                        ) : source.type === 'account/posts' ? (
+                          <Trans>Account posts</Trans>
                         ) : (
                           <Trans>Mochi feed</Trans>
                         )}
@@ -558,7 +595,7 @@ interface AddSourceDialogProps {
   feedId: string
   onAdded: () => void
   initialUrl?: string
-  sourceType: 'rss' | 'feed/posts'
+  sourceType: SourceKind
 }
 
 function AddSourceDialog({
@@ -581,6 +618,13 @@ function AddSourceDialog({
   } | null>(null)
   const [isSavingCred, setIsSavingCred] = useState(false)
   const credLabelId = useId()
+  const publishQuery = useQuery({
+    queryKey: ['feeds', 'publish', feedId],
+    queryFn: () => feedsApi.getPublish(feedId),
+    enabled: open && sourceType.startsWith('account/'),
+    retry: false,
+  })
+  const accounts = publishQuery.data?.accounts ?? []
 
   useEffect(() => {
     if (open) {
@@ -747,28 +791,49 @@ function AddSourceDialog({
               <ResponsiveDialogTitle>
                 {sourceType === 'rss' ? (
                   <Trans>Add RSS feed</Trans>
+                ) : sourceType === 'account/timeline' ? (
+                  <Trans>Add account timeline</Trans>
+                ) : sourceType === 'account/posts' ? (
+                  <Trans>Add account posts</Trans>
                 ) : (
                   <Trans>Add Mochi feed</Trans>
                 )}
               </ResponsiveDialogTitle>
             </ResponsiveDialogHeader>
             <div className='space-y-4 py-2'>
-              <div>
-                <Input
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder={
-                    sourceType === 'rss'
-                      ? 'https://example.com/feed.xml'
-                      : t`Feed entity ID or fingerprint`
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') void handleSubmit()
-                  }}
-                  disabled={isAdding}
-                  autoFocus
-                />
-              </div>
+              {sourceType.startsWith('account/') ? (
+                <Select value={url} onValueChange={setUrl}>
+                  <SelectTrigger aria-label={t`Account`}>
+                    <SelectValue placeholder={t`Choose an account`} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[...accounts]
+                      .sort((a, b) => naturalCompare(a.identifier, b.identifier))
+                      .map((account) => (
+                        <SelectItem key={account.id} value={account.id}>
+                          {account.identifier}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <div>
+                  <Input
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder={
+                      sourceType === 'rss'
+                        ? 'https://example.com/feed.xml'
+                        : t`Feed entity ID or fingerprint`
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') void handleSubmit()
+                    }}
+                    disabled={isAdding}
+                    autoFocus
+                  />
+                </div>
+              )}
               {permissionDomain && (
                 <p className='text-muted-foreground text-sm'>
                   <Trans>Requesting access to {permissionDomain}...</Trans>

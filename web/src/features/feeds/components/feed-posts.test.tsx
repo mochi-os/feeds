@@ -235,4 +235,26 @@ describe('FeedPosts card navigation', () => {
     fireEvent.click(card())
     expect(mockNavigate).toHaveBeenCalledTimes(1)
   })
+
+  it('links to a post\'s copies on other networks', () => {
+    renderPosts([
+      {
+        ...post(),
+        copies: [
+          {
+            address: '@alice@mastodon.social',
+            network: 'mastodon',
+            remote: '101',
+            url: 'https://mastodon.social/@alice/101',
+          },
+          { address: 'alice.bsky.social', network: 'bluesky', remote: 'at://x', url: '' },
+        ],
+      },
+    ])
+    const link = screen.getByRole('link', { name: 'Also on Mastodon' })
+    expect(link).toHaveAttribute('href', 'https://mastodon.social/@alice/101')
+    // A copy with no page is named without a link.
+    expect(screen.getByText('Also on Bluesky')).toBeTruthy()
+    expect(screen.queryByRole('link', { name: 'Also on Bluesky' })).toBeNull()
+  })
 })

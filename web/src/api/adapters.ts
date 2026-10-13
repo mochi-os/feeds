@@ -201,6 +201,7 @@ export const mapPosts = (
     down: post.down,
     read: post.read ?? 0,
     source: post.source,
+    copies: post.copies,
     score: post.score,
     following: post.following,
   }))

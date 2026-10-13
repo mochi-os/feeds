@@ -5,6 +5,12 @@
 /* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
 import type { AxiosProgressEvent } from 'axios'
 import type {
+  BackupsResponse,
+  ImportResponse,
+  PublishResponse,
+  PublishSetResponse,
+} from '@/types/feeds'
+import type {
   CreateCommentRequest,
   CreateCommentResponse,
   CreateFeedRequest,
@@ -335,6 +341,9 @@ const createPost = async (
     if (payload.captions?.some((caption) => caption)) {
       formData.append('captions', JSON.stringify(payload.captions))
     }
+  }
+  if (payload.accounts) {
+    formData.append('accounts', JSON.stringify(payload.accounts))
   }
 
   const response = await client.post<
@@ -712,6 +721,50 @@ interface SourcePollResponse {
   data: { fetched: number }
 }
 
+// The accounts on other networks a feed publishes to, and the copies there.
+const getPublish = async (feedId: string): Promise<PublishResponse> =>
+  client.get<PublishResponse>(endpoints.feeds.publish(feedId))
+
+const setPublish = async (
+  feedId: string,
+  accounts: string[]
+): Promise<PublishSetResponse> =>
+  client.post<PublishSetResponse, { accounts: string }>(
+    endpoints.feeds.publishSet(feedId),
+    { accounts: JSON.stringify(accounts) }
+  )
+
+const forgetCopies = async (
+  feedId: string,
+  account: string
+): Promise<{ deleted: number }> =>
+  client.post<{ deleted: number }, { account: string }>(
+    endpoints.feeds.publishForget(feedId),
+    { account }
+  )
+
+const importAccount = async (
+  feedId: string,
+  account: string,
+  kind: 'posts' | 'bookmarks'
+): Promise<ImportResponse> =>
+  client.post<ImportResponse, { account: string; kind: string }>(
+    endpoints.feeds.importAccount(feedId),
+    { account, kind }
+  )
+
+const getBackups = async (
+  feedId: string,
+  account: string
+): Promise<BackupsResponse> =>
+  client.get<BackupsResponse>(endpoints.feeds.backups(feedId), {
+    params: { account },
+  })
+
+// The address of one archive file, for the browser to save.
+const backupFileUrl = (feedId: string, account: string, name: string): string =>
+  `${endpoints.feeds.backupFile(feedId)}?account=${encodeURIComponent(account)}&name=${encodeURIComponent(name)}`
+
 const getSources = async (feedId: string): Promise<SourcesListResponse> => {
   const response = await client.get<
     SourcesListResponse | SourcesListResponse['data']
@@ -1035,6 +1088,12 @@ export const feedsApi = {
   readAllAggregate,
   getRssToken,
   revokeRssToken,
+  getPublish,
+  setPublish,
+  forgetCopies,
+  importAccount,
+  getBackups,
+  backupFileUrl,
   getSources,
   addSource,
   editSource,

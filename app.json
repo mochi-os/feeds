@@ -16,10 +16,10 @@
 
 	"architecture": {"engine": "starlark", "version": 4},
 	"execute": ["lib/attachments.star", "feeds.star", "accounts.star"],
-	"require": {"version": {"minimum": "0.4.230"}},
+	"require": {"version": {"minimum": "2.0.12"}},
 
 	"database": {
-		"schema": 9,
+		"schema": 11,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -77,6 +77,12 @@
 		":feed/-/sources/remove": {"function": "action_sources_remove"},
 		":feed/-/sources/edit": {"function": "action_sources_edit"},
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
+		":feed/-/publish": {"function": "action_publish_list"},
+		":feed/-/publish/set": {"function": "action_publish_set"},
+		":feed/-/publish/forget": {"function": "action_publish_forget"},
+		":feed/-/import": {"function": "action_import"},
+		":feed/-/backups": {"function": "action_backups"},
+		":feed/-/backups/file": {"function": "action_backup_file"},
 		":feed/-/attachments/:id": {"function": "action_attachment", "public": true, "asset": true},
 		":feed/-/attachments/:id/thumbnail": {"function": "action_attachment_thumbnail", "public": true, "asset": true},
 		":feed/-/attachments/:id/preview": {"function": "action_attachment_preview", "public": true, "asset": true},

@@ -57,6 +57,7 @@ import {
 import { mapFeedsToSummaries } from '@/api/adapters'
 import endpoints from '@/api/endpoints'
 import { feedsApi, type AccessRule } from '@/api/feeds'
+import { PublishingSection } from '@/features/feeds/components/publishing-section'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 
@@ -460,6 +461,13 @@ function GeneralTab({
       </Section>
 
       {feed.isOwner && <BannerSection entityId={feed.id} api={feedsApi} />}
+
+      {feed.isOwner && (
+        <PublishingSection
+          feedId={feed.id}
+          privacy={feed.privacy ?? 'public'}
+        />
+      )}
 
       {feed.isOwner ? (
         <AiSettingsSection

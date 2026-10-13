@@ -38,6 +38,18 @@ export interface Feed {
   // 1 (or absent, for owned) once present. The feed shows a loading state while
   // this is 0.
   populated?: number
+  // The ids of the accounts on other networks the feed publishes to; the
+  // owner's view only.
+  publish?: string[]
+}
+
+// One of the owner's linked accounts a feed may publish to or read from.
+export interface PublishAccount {
+  id: string
+  type: string
+  identifier: string
+  name: string
+  server: string
 }
 
 // Directory entry for search results
@@ -187,4 +199,27 @@ export interface FeedSummary {
   ai_mode?: string
   ai_account?: string
   sort?: string // Per-feed override; empty means use default
+}
+
+// What the feed publishes to: the owner's linked accounts, the ids chosen, and
+// how many copies the feed holds on each account.
+export interface PublishResponse {
+  accounts: PublishAccount[]
+  publish: string[]
+  copies: Record<string, number>
+}
+
+export interface PublishSetResponse {
+  publish: string[]
+  // Copies kept on the accounts that left the list, by account id.
+  kept: Record<string, number>
+}
+
+export interface ImportResponse {
+  imported: number
+  more: boolean
+}
+
+export interface BackupsResponse {
+  files: string[]
 }

@@ -19,6 +19,7 @@ import {
   ResponsiveDialogTitle,
   ResponsiveDialogTrigger,
   Select,
+  Switch,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -46,6 +47,7 @@ import {
   type Upload,
 } from '@mochi/web'
 import { X, MapPin, Plane, FilePlus2, Send } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 import { feedsApi } from '@/api/feeds'
 
 type NewPostDialogProps = {
@@ -56,6 +58,7 @@ type NewPostDialogProps = {
     data?: PostData
     files: File[]
     captions: string[]
+    accounts?: string[]
   }) => void | Promise<void>
   /** Controlled open state */
   open?: boolean
@@ -77,6 +80,9 @@ type NewPostFormState = {
   // Keyed by pendingFileKey so a reorder or removal never re-attaches a
   // caption to the wrong file.
   captions: Record<string, string>
+  // The accounts on other networks this post goes to, once the writer has
+  // changed the feed's own list; null leaves it to the feed.
+  accounts: string[] | null
 }
 
 type PlacePickerMode = 'checkin' | null
@@ -108,8 +114,21 @@ export function NewPostDialog({
     data: {},
     files: [],
     captions: {},
+    accounts: null,
   }))
   const attachmentPreviewUrls = useImageObjectUrls(form.files)
+  // Where the chosen feed publishes: offered as switches on a public feed the
+  // writer owns, preset from the feed's list (decision 27).
+  const selectedFeed = feeds.find((f) => f.id === form.feedId)
+  const publishQuery = useQuery({
+    queryKey: ['feeds', 'publish', form.feedId],
+    queryFn: () => feedsApi.getPublish(form.feedId),
+    enabled: isOpen && !!selectedFeed && selectedFeed.privacy === 'public',
+    retry: false,
+  })
+  const publishAccounts = publishQuery.data?.accounts ?? []
+  const publishDefault = publishQuery.data?.publish ?? []
+  const publishChosen = form.accounts ?? publishDefault
 
   const attachmentItems = useMemo<ComposerItem[]>(
     () =>
@@ -253,6 +272,7 @@ export function NewPostDialog({
         captions: form.files.map(
           (file) => form.captions[pendingFileKey(file)] ?? ''
         ),
+        accounts: form.accounts ?? undefined,
       })
       setForm((prev) => ({
         ...prev,
@@ -260,6 +280,7 @@ export function NewPostDialog({
         data: {},
         files: [],
         captions: {},
+        accounts: null,
       }))
       setIsOpen(false)
     } catch {
@@ -335,7 +356,11 @@ export function NewPostDialog({
                   <Select
                     value={form.feedId}
                     onValueChange={(value) =>
-                      setForm((prev) => ({ ...prev, feedId: value }))
+                      setForm((prev) => ({
+                        ...prev,
+                        feedId: value,
+                        accounts: null,
+                      }))
                     }
                   >
                     <SelectTrigger
@@ -354,6 +379,37 @@ export function NewPostDialog({
                         ))}
                     </SelectContent>
                   </Select>
+                </div>
+              )}
+              {publishAccounts.length > 0 && (
+                <div className='space-y-2'>
+                  <Label>
+                    <Trans>Publish to</Trans>
+                  </Label>
+                  <div className='flex flex-wrap gap-3'>
+                    {[...publishAccounts]
+                      .sort((a, b) => naturalCompare(a.identifier, b.identifier))
+                      .map((account) => (
+                        <label
+                          key={account.id}
+                          className='flex items-center gap-2 text-sm'
+                        >
+                          <Switch
+                            checked={publishChosen.includes(account.id)}
+                            aria-label={account.identifier}
+                            onCheckedChange={(on) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                accounts: on
+                                  ? [...publishChosen, account.id]
+                                  : publishChosen.filter((id) => id !== account.id),
+                              }))
+                            }
+                          />
+                          {account.identifier}
+                        </label>
+                      ))}
+                  </div>
                 </div>
               )}
               <div className='space-y-2'>

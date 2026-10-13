@@ -95,6 +95,7 @@ function FeedsLayoutInner() {
       data?: PostData
       files: File[]
       captions: string[]
+      accounts?: string[]
     }) => {
       try {
         const payload = {
@@ -103,6 +104,7 @@ function FeedsLayoutInner() {
           data: input.data,
           files: input.files,
           captions: input.captions,
+          accounts: input.accounts,
         }
         if (input.files.length) {
           await upload(

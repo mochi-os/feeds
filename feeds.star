@@ -679,6 +679,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 		post_id = post["id"]
 		post["sync"] = True
 		post["attachments"] = attachment_list(post_id, feed_id)
+		post["copies"] = copies_present(post_id)
 		# Parse data from JSON string so receiver gets a dict (not a double-encoded string)
 		if post.get("data") and type(post["data"]) == type(""):
 			post["data"] = json.decode(post["data"], None) or {}
@@ -777,6 +778,8 @@ def feed_visible(feed, is_owner):
 		for field in FEED_FIELDS_OWNER:
 			if field in feed:
 				out[field] = feed[field]
+		if feed.get("id"):
+			out["publish"] = publish_list(feed["id"])
 	return out
 
 def is_feed_owner(user_id, feed_data):
@@ -2115,6 +2118,17 @@ def database_upgrade(version):
 		mochi.db.execute("update posts set story=id where story=''")
 		mochi.db.execute("update posts set novelty=100 where novelty!=100")
 		mochi.db.execute("create index if not exists posts_story on posts( feed, story )")
+
+	if version == 10:
+		# Accounts on other networks: the publish lists, the copies and the
+		# record of their ids, the accounts' job cursors, and the moment an
+		# account source polls from.
+		publish_schema_create()
+
+	if version == 11:
+		# The same tables again: a database whose step to 10 ran while the
+		# functions were not yet loaded was left at 10 without them.
+		publish_schema_create()
 		mochi.db.execute("create table if not exists placements ( post text not null primary key, feed text not null, queued integer not null )")
 		mochi.db.execute("create index if not exists placements_feed on placements( feed, queued )")
 		mochi.db.execute("create table if not exists locks ( name text not null primary key, token text not null, expires integer not null default 0 )")
@@ -2191,6 +2205,7 @@ def database_create():
 	mochi.db.execute("insert or ignore into settings ( id, sort ) values ( 1, '' )")
 
 	mochi.db.execute("create table if not exists saved ( id text not null primary key, user text not null, post text not null, data text not null default '', created integer not null, unique ( user, post ) )")
+	publish_schema_create()
 	mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
 
 	# Attachments now live in this database, owned by the shared library.
@@ -2723,6 +2738,7 @@ def action_view(a):
 	reactions_by_post = {}
 	mine_by_post = {}
 	sources_by_post = {}
+	copies_by_post = copies_by_posts([p["id"] for p in posts])
 	if post_ids:
 		for row in mochi.db.rows("select object, id, label, qid, source, relevance from tags where object in (" + placeholders + ")", *post_ids) or []:
 			tags_by_post.setdefault(row["object"], []).append(row)
@@ -2779,6 +2795,7 @@ def action_view(a):
 		elif posts[i]["data"].get("rss", {}).get("source"):
 			rss = posts[i]["data"]["rss"]
 			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
+		posts[i]["copies"] = copies_by_post.get(posts[i]["id"], [])
 
 		# Add tags
 		posts[i]["tags"] = enrich_tags(tags_by_post.get(posts[i]["id"], []), interest_map)
@@ -3451,6 +3468,12 @@ def action_post_create(a):
                 return
             captions.append(caption)
 
+    # The accounts this post goes to, where the writer overrides the feed's list.
+    accounts, accounts_ok = publish_inputs(a)
+    if not accounts_ok:
+        a.error.label(400, "errors.invalid_accounts")
+        return
+
     post_uid = mochi.uid()
     if mochi.db.exists("select id from posts where id=?", post_uid):
         a.error.label(500, "errors.duplicate_id")
@@ -3470,12 +3493,18 @@ def action_post_create(a):
     # Save any uploaded attachments locally
     attachments = attachment_save(a, post_uid, captions=captions)
 
+    # Copies on the accounts the feed publishes to, or those the writer chose
+    # for this post; subscribers learn of them with the post (decision 31).
+    copies = publish_post(feed, post_uid, body, "markdown", attachments, accounts)
+
     # Send post to subscribers with attachment metadata piggybacked
     post_event = {"id": post_uid, "created": now, "body": body}
     if data:
         post_event["data"] = data
     if attachments:
         post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "caption": att.get("caption", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
+    if copies:
+        post_event["copies"] = copies
     broadcast_event(feed_id, "post/create", post_event, user_id)
     if body:
         notify_mentions(feed_id, post_uid, body, user_id, a.user.identity.name)
@@ -3493,6 +3522,7 @@ def action_post_create(a):
         mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
             source["id"], copy_id, post_uid)
         set_feed_updated(source["feed"])
+        publish_sourced(source["feed"], copy_id, body, "text", {"remote": post_uid, "name": feed.get("name", ""), "link": post_link(feed_id, post_uid), "network": "mochi", "created": now})
 
     # Schedule AI tagging
     if feed.get("ai_mode", ""):
@@ -3714,6 +3744,7 @@ def action_post_edit(a):
 		if data:
 			edit_event["data"] = data
 		edit_event["attachments"] = attachment_list(post_id, info["id"])
+		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"])
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 
 		# post/edit WebSocket notification is fired by the commit hook on
@@ -3770,6 +3801,7 @@ def action_post_delete(a):
 			return
 
 
+		publish_delete(post_id)
 		mochi.db.execute("delete from tags where object=?", post_id)
 		mochi.db.execute("delete from reactions where post=?", post_id)
 		mochi.db.execute("delete from comments where post=?", post_id)
@@ -3964,6 +3996,9 @@ def action_delete(a):
 	# Notify subscribers that feed is being deleted (before removing subscriber list)
 	broadcast_event(feed_id, "deleted", {"feed": feed_id})
 
+	# Its copies on other networks go with it.
+	publish_feed_delete(feed_id)
+
 	# Delete attachments for all posts in this feed
 	posts = mochi.db.rows("select id from posts where feed=?", feed_id)
 	for post in posts:
@@ -3980,6 +4015,7 @@ def action_delete(a):
 	rss_tokens_revoke(feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
+	mochi.db.execute("delete from copies where post in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
 	mochi.db.execute("delete from follows where feed=?", feed_id)
 	mochi.db.execute("delete from notifications where feed=?", feed_id)
@@ -5402,6 +5438,7 @@ def event_post_create(e): # feeds_post_create_event
 	attachments = e.content("attachments") or []
 	if attachments:
 		attachment_store(attachments, e.header("from"), post["id"])
+	copies_store(post["id"], e.content("copies"))
 
 	# Insert any tags included inline with the post event
 	tags = e.content("tags") or []
@@ -5439,6 +5476,7 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
 			source["id"], copy_id, post["id"])
 		set_feed_updated(source["feed"])
+		publish_sourced(source["feed"], copy_id, copy_body, copy_format, {"remote": post["id"], "name": feed_data.get("name", ""), "link": "", "network": "mochi", "created": post["created"], "transformed": copy_format == "markdown"})
 		# Schedule AI tagging for aggregating feed copy
 		mochi.schedule.after("schedule_ai_tag", {"feed": source["feed"], "post": copy_id}, 0)
 
@@ -5502,6 +5540,8 @@ def event_post_edit(e):
 
 	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, edited, edited, post_id)
 	mochi.db.commit.fire("posts", "update", post_id)
+	if e.content("copies") != None:
+		copies_store(post_id, e.content("copies"))
 
 	# Update attachments from event
 	attachments = e.content("attachments")
@@ -5600,6 +5640,7 @@ def event_post_delete(e):
 	mochi.db.execute("delete from comments where post=?", post_id)
 	mochi.db.execute("delete from post_scores where post=?", post_id)
 	attachment_clear(post_id)
+	mochi.db.execute("delete from copies where post=?", post_id)
 	mochi.db.execute("delete from posts where id=?", post_id)
 	mochi.db.execute("delete from follows where post=?", post_id)
 	set_feed_updated(feed_data["id"])
@@ -6321,6 +6362,7 @@ def event_view(e):
 		elif post_data["data"].get("rss", {}).get("source"):
 			rss = post_data["data"]["rss"]
 			post_data["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
+		post_data["copies"] = copies_present(post["id"])
 		formatted_posts.append(post_data)
 
 	# Calculate permissions for the requester
@@ -6686,6 +6728,8 @@ def action_sources_add(a):
 		return sources_add_rss(a, feed, url, name)
 	elif source_type == "feed/posts":
 		return sources_add_feed(a, feed, url, name)
+	elif source_type in ACCOUNT_SOURCE_TYPES:
+		return sources_add_account(a, feed, source_type, url, name)
 	else:
 		a.error.label(400, "errors.invalid_source_type")
 		return
@@ -7094,6 +7138,13 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 				if tag_row:
 					tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "qid": tag_row["qid"], "source": "rss"})
 
+		# On to the feed's accounts, with the source's name and link; the
+		# backfill when a source is added is not news and does not go out.
+		if notify:
+			copies = publish_sourced(feed_id, post_id, body, post_format, {"remote": guid, "name": rss_data.get("source", ""), "link": link, "network": "rss", "created": created, "transformed": transformed})
+			if copies:
+				post_event["copies"] = copies
+
 		if ai_mode in ("tag", "tag+deduplicate"):
 			# Defer broadcast until after AI tagging so subscribers see tagged posts
 			mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
@@ -7267,17 +7318,17 @@ def action_sources_poll(a):
 			check_memories(feed_id, mem_source["id"])
 			return {"data": {"fetched": 0}}
 
-		# Poll a specific RSS source
-		source = mochi.db.row("select * from sources where id=? and feed=? and type='rss'", source_id, feed_id)
+		# Poll a specific polled source
+		source = mochi.db.row("select * from sources where id=? and feed=? and " + POLLED_SQL, source_id, feed_id)
 		if not source:
-			a.error.label(404, "errors.rss_source_not_found")
+			a.error.label(404, "errors.source_not_found")
 			return
-		fetched, _ = poll_rss_source(source)
+		fetched, _ = poll_source(source)
 	else:
-		# Poll all RSS sources for this feed
-		sources = mochi.db.rows("select * from sources where feed=? and type='rss'", feed_id)
+		# Poll every polled source of this feed
+		sources = mochi.db.rows("select * from sources where feed=? and " + POLLED_SQL, feed_id)
 		for source in sources:
-			count, _ = poll_rss_source(source)
+			count, _ = poll_source(source)
 			fetched = fetched + count
 
 	return {"data": {"fetched": fetched}}
@@ -7333,11 +7384,11 @@ def schedule_sources_poll(e):
 	cap = 20
 	deadline = now + POLL_BUDGET
 	user_id = e.user.identity.id if e.user else None
-	sources = mochi.db.rows("select * from sources where feed=? and type='rss' and next<=? order by next limit ?", feed_id, now, cap)
+	sources = mochi.db.rows("select * from sources where feed=? and " + POLLED_SQL + " and next<=? order by next limit ?", feed_id, now, cap)
 	polled = 0
 	complete = True
 	for source in sources:
-		_, complete = poll_rss_source(source, user_id, deadline)
+		_, complete = poll_source(source, user_id, deadline)
 		polled = polled + 1
 		if mochi.time.now() >= deadline:
 			break
@@ -7349,7 +7400,7 @@ def schedule_sources_poll(e):
 		# are due; come back in 5s to continue draining.
 		mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 5)
 	else:
-		earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss' and next > ?", feed_id, now)
+		earliest = mochi.db.row("select min(next) as next from sources where feed=? and " + POLLED_SQL + " and next > ?", feed_id, now)
 		if earliest and earliest["next"]:
 			delay = earliest["next"] - mochi.time.now()
 			if delay < 10:
@@ -7360,13 +7411,13 @@ def schedule_sources_poll(e):
 
 # Ensure a poll is scheduled for this feed
 def ensure_feed_poll(feed_id):
-	if not mochi.db.exists("select 1 from sources where feed=? and type='rss'", feed_id):
+	if not mochi.db.exists("select 1 from sources where feed=? and " + POLLED_SQL, feed_id):
 		return
 	scheduled = mochi.schedule.list()
 	for se in scheduled:
 		if se.event == "schedule_sources_poll" and se.data.get("feed", "") == feed_id:
 			return
-	earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
+	earliest = mochi.db.row("select min(next) as next from sources where feed=? and " + POLLED_SQL, feed_id)
 	if earliest and earliest["next"]:
 		delay = earliest["next"] - mochi.time.now()
 		if delay < 10:
@@ -7387,7 +7438,8 @@ def ensure_sources_watchdog():
 # query, and a user whose schedule rows were lost gets them back on the next
 # open rather than on a visit to each feed.
 def ensure_polls():
-	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
+	ensure_account_jobs()
+	feeds = mochi.db.rows("select distinct feed from sources where " + POLLED_SQL)
 	if not feeds:
 		return
 	polled = {}
@@ -7870,3 +7922,974 @@ def action_rss(a):
 
 	a.print('</channel>\n')
 	a.print('</rss>')
+
+# ============================================================================
+# Accounts on other networks (the federation plan, phase 12).
+#
+# A public feed publishes to a list of the user's accounts, empty by default
+# (decision 27): here the linked Mastodon and Bluesky accounts, hosted accounts
+# joining the same list in phases 15 and 18. Each post is copied to each
+# account - text from markdown, cut to the network's limit with a link back,
+# the attachments that fit uploaded with their descriptions and the rest left
+# to the link (decision 24) - and the copy's id kept per post and account so
+# edits and deletes follow (decision 25) and subscribers learn of it (decision
+# 31). An account is also a source: its home timeline or its own posts, under
+# the sources system, with the record of every copy published keeping a poll
+# from bringing one back and a sourced post from going back to where it came
+# from (decisions 30 and 32). The account's history can be imported, its
+# notifications reach the bell, and a continuing archive of it is kept in the
+# user's own storage.
+
+# The networks a feed publishes to through linked accounts.
+PUBLISH_TYPES = ["mastodon", "bluesky"]
+
+# The source types an account offers, and every source type polled on a
+# schedule, with the SQL fragment that selects those.
+ACCOUNT_SOURCE_TYPES = ["account/timeline", "account/posts"]
+POLLED_TYPES = ["rss", "account/timeline", "account/posts"]
+POLLED_SQL = "type in ('rss', 'account/timeline', 'account/posts')"
+
+# What Bluesky accepts (the constants of its lexicons): a post of 300 graphemes,
+# four images of a megabyte each or one video of fifty, alternative text of a
+# thousand characters.
+BLUESKY_CHARACTERS = 300
+BLUESKY_IMAGES = 4
+BLUESKY_IMAGE_BYTES = 1000000
+BLUESKY_VIDEO_BYTES = 50000000
+BLUESKY_DESCRIPTION = 1000
+
+# What a Mastodon server takes when its limits were not read at the link.
+MASTODON_CHARACTERS = 500
+MASTODON_ATTACHMENTS = 4
+MASTODON_IMAGE_BYTES = 16000000
+MASTODON_VIDEO_BYTES = 99000000
+MASTODON_DESCRIPTION = 1500
+
+# How many items one poll, import or backup step reads before it books the
+# next, within the compute limit a handler has.
+ACCOUNT_PAGE = 40
+IMPORT_PAGES = 5
+
+# Seconds between runs of the accounts' jobs - notifications every run, the
+# backup once a day.
+ACCOUNT_JOBS_INTERVAL = 300
+BACKUP_INTERVAL = 86400
+
+# === The accounts ===
+
+def publish_accounts():
+	"""The user's linked accounts a feed may publish to or read from."""
+	return [acc for acc in (mochi.account.list("social") or []) if acc.get("type") in PUBLISH_TYPES and not acc.get("hosted")]
+
+def publish_account(id):
+	"""One such account by id, or None."""
+	if not id:
+		return None
+	acc = mochi.account.get(id)
+	if not acc or acc.get("type") not in PUBLISH_TYPES or acc.get("hosted"):
+		return None
+	return acc
+
+def account_present(acc):
+	"""An account as the client sees it in a publish list or a picker."""
+	return {"id": acc["id"], "type": acc["type"], "identifier": acc.get("identifier", ""), "name": acc.get("name") or acc.get("label") or "", "server": acc.get("server", "")}
+
+def publish_list(feed_id):
+	"""The ids of the accounts a feed publishes to."""
+	return [row["account"] for row in mochi.db.rows("select account from publish where feed=? order by created", feed_id)]
+
+def publish_rows(feed_id):
+	return mochi.db.rows("select account, created from publish where feed=?", feed_id)
+
+# === The copies ===
+
+def copy_present(row):
+	return {"address": row["address"], "network": row["network"], "remote": row["remote"], "url": row.get("url", "")}
+
+def copies_present(post_id):
+	"""A post's copies on other networks, for the client and for events."""
+	return [copy_present(row) for row in mochi.db.rows("select address, network, remote, url from copies where post=? order by created", post_id)]
+
+def copies_by_posts(post_ids):
+	"""{post: [copies]} for many posts in one query."""
+	result = {}
+	if not post_ids:
+		return result
+	marks = ",".join(["?" for _ in post_ids])
+	for row in mochi.db.rows("select post, address, network, remote, url from copies where post in (" + marks + ") order by created", *post_ids):
+		result.setdefault(row["post"], []).append(copy_present(row))
+	return result
+
+def copies_store(post_id, copies):
+	"""Keep the copies a post event carries, as a subscriber (decision 31)."""
+	if type(copies) != "list":
+		return
+	mochi.db.execute("delete from copies where post=? and account=''", post_id)
+	for c in copies:
+		if type(c) != "dict":
+			continue
+		address, network, remote, url = str(c.get("address", "")), str(c.get("network", "")), str(c.get("remote", "")), safe_link(str(c.get("url", "")))
+		if not address or not remote or len(address) > 500 or len(remote) > 2000:
+			continue
+		mochi.db.execute("insert or ignore into copies (post, account, address, network, remote, url, created) values (?, '', ?, ?, ?, ?, ?)", post_id, address, network, remote, url, mochi.time.now())
+
+def copy_record(feed_id, post_id, acc, result):
+	"""Record a copy just published and what the record of it says."""
+	remote = str(result.get("id", ""))
+	if not remote:
+		return None
+	url = str(result.get("url", "") or "")
+	now = mochi.time.now()
+	mochi.db.execute("insert or replace into copies (post, account, address, network, remote, url, created) values (?, ?, ?, ?, ?, ?, ?)",
+		post_id, acc["id"], acc.get("identifier", ""), acc["type"], remote, url, now)
+	published_record(feed_id, remote)
+	return {"address": acc.get("identifier", ""), "network": acc["type"], "remote": remote, "url": url}
+
+def published_record(feed_id, remote):
+	"""Note a remote id as one of this feed's own copies, so no poll brings it
+	back and nothing publishes it again (decision 30)."""
+	if remote:
+		mochi.db.execute("insert or ignore into published (feed, remote) values (?, ?)", feed_id, remote)
+
+def published_has(feed_id, remotes):
+	for remote in remotes:
+		if remote and mochi.db.exists("select 1 from published where feed=? and remote=?", feed_id, remote):
+			return True
+	return False
+
+# === Text ===
+
+def text_codepoints(s):
+	return len([c for c in s.codepoints()])
+
+def text_cut(s, n):
+	"""The first n codepoints of s."""
+	if n <= 0:
+		return ""
+	out = []
+	i = 0
+	for c in s.codepoints():
+		if i >= n:
+			break
+		out.append(c)
+		i += 1
+	return "".join(out)
+
+def publish_text(body, format):
+	"""A post's body as the text a network shows."""
+	if format == "markdown":
+		return mochi.text.plain(body)
+	return body
+
+def publish_excerpt(text, limit, link, omitted):
+	"""The text within a network's limit (decision 24): whole where it fits
+	and nothing was left out, else an excerpt with the link back; the link
+	alone where the server has no public address to link to."""
+	if text_codepoints(text) <= limit and not omitted:
+		return text
+	tail = ("\n\n" + link) if link else ""
+	room = limit - text_codepoints(tail) - 1
+	if room < 1:
+		return text_cut(link, limit)
+	excerpt = text_cut(text, room).rstrip()
+	if text_codepoints(text) > room:
+		excerpt += "…"
+	return excerpt + tail
+
+def post_link(feed_id, post_id):
+	"""The absolute address of a post here, or empty where the server has none."""
+	base = mochi.server.url()
+	if not base:
+		return ""
+	return base + post_url(feed_id, post_id)
+
+def sourced_text(source, text):
+	"""A sourced post as it goes out under the user's own account: the
+	source's name first (decision 30)."""
+	name = source.get("name", "")
+	return (name + ": " + text) if name and not text.startswith(name) else text
+
+# === Attachments (decision 24) ===
+
+def attachment_kind(att):
+	"""image, video or '' for an attachment the networks do not take."""
+	name = att.get("name", "")
+	if attachment_is_image(name):
+		return "image"
+	if mochi.file.type(name) == "video/mp4":
+		return "video"
+	return ""
+
+def attachment_bytes(att, maximum):
+	"""An attachment's bytes within maximum: the file itself, or for an image
+	over the limit its preview variant; None when nothing fits."""
+	file = attachment_filename(att["id"], att["name"])
+	size = number(att.get("size", 0))
+	if size and size <= maximum:
+		data = mochi.file.read(file, maximum)
+		if data != None:
+			return data
+	if attachment_kind(att) == "image":
+		variant = mochi.image.variant(file, "preview")
+		if variant:
+			data = mochi.cache.read(variant, maximum)
+			if data != None:
+				return data
+	return None
+
+def publish_media(acc, attachments, limits):
+	"""Upload the attachments that fit a network's count, size and type, in
+	the post's order, the kind of the first eligible one deciding where the
+	network takes one kind per post. Answers (uploads, omitted)."""
+	eligible = [att for att in attachments if attachment_kind(att)]
+	omitted = len(eligible) < len(attachments)
+	if not eligible:
+		return ([], omitted)
+	kind = attachment_kind(eligible[0])
+	count = limits["video"] if kind == "video" else limits["images"]
+	maximum = limits["video_bytes"] if kind == "video" else limits["image_bytes"]
+	uploads = []
+	for att in eligible:
+		if attachment_kind(att) != kind or len(uploads) >= count:
+			omitted = True
+			continue
+		data = attachment_bytes(att, maximum)
+		if data == None:
+			omitted = True
+			continue
+		description = text_cut(att.get("description") or att.get("caption") or "", limits["description"])
+		upload = mochi.account.upload(acc["id"], data, mochi.file.type(att["name"]), name=att.get("name", "file"), description=description)
+		if not upload or not upload.get("id"):
+			omitted = True
+			continue
+		uploads.append({"upload": upload, "kind": kind, "description": description})
+	return (uploads, omitted)
+
+def mastodon_limits(acc):
+	limits = acc.get("limits") or {}
+	return {
+		"characters": number(limits.get("characters")) or MASTODON_CHARACTERS,
+		"images": number(limits.get("attachments")) or MASTODON_ATTACHMENTS,
+		"video": 1,
+		"image_bytes": number(limits.get("image")) or MASTODON_IMAGE_BYTES,
+		"video_bytes": number(limits.get("video")) or MASTODON_VIDEO_BYTES,
+		"description": number(limits.get("description")) or MASTODON_DESCRIPTION,
+	}
+
+BLUESKY_LIMITS = {"characters": BLUESKY_CHARACTERS, "images": BLUESKY_IMAGES, "video": 1, "image_bytes": BLUESKY_IMAGE_BYTES, "video_bytes": BLUESKY_VIDEO_BYTES, "description": BLUESKY_DESCRIPTION}
+
+# === Publishing ===
+
+def publish_object(acc, text, link, attachments, source):
+	"""The object a post becomes on an account's network, in that network's
+	own form (mochi.account.object.create), with the text cut and the
+	attachments that fit."""
+	limits = mastodon_limits(acc) if acc["type"] == "mastodon" else BLUESKY_LIMITS
+	uploads, omitted = publish_media(acc, attachments, limits)
+	if source:
+		text = sourced_text(source, text)
+		link = source.get("link", "") or link
+	body = publish_excerpt(text, limits["characters"], link, omitted or bool(source))
+	if acc["type"] == "mastodon":
+		object = {"status": body, "visibility": "public"}
+		if uploads:
+			object["media_ids"] = [u["upload"]["id"] for u in uploads]
+		return object
+	object = {"$type": "app.bsky.feed.post", "text": body}
+	facets = []
+	if link and link in body:
+		start = body.find(link)
+		facets.append({"index": {"byteStart": start, "byteEnd": start + len(link)}, "features": [{"$type": "app.bsky.richtext.facet#link", "uri": link}]})
+	if facets:
+		object["facets"] = facets
+	if uploads:
+		if uploads[0]["kind"] == "video":
+			object["embed"] = {"$type": "app.bsky.embed.video", "video": uploads[0]["upload"]["data"], "alt": uploads[0]["description"]}
+		else:
+			object["embed"] = {"$type": "app.bsky.embed.images", "images": [{"image": u["upload"]["data"], "alt": u["description"]} for u in uploads]}
+	return object
+
+def publish_announce(acc, source):
+	"""A sourced post from the same network, untransformed, goes out as the
+	network's own share of the original (decision 30): a boost on Mastodon, a
+	repost on Bluesky. Answers {id, url} or None."""
+	item = source.get("item") or {}
+	if acc["type"] == "mastodon":
+		status = str(item.get("id", ""))
+		if not status:
+			return None
+		answer = mochi.account.request(acc["id"], "POST", "v1/statuses/" + status + "/reblog")
+		if not answer or answer.get("status", 0) < 200 or answer.get("status", 0) > 299 or type(answer.get("data")) != "dict":
+			return None
+		return mastodon_copy(answer["data"])
+	uri, cid = item.get("uri", ""), item.get("cid", "")
+	if not uri or not cid:
+		return None
+	return mochi.account.object.create(acc["id"], {"$type": "app.bsky.feed.repost", "subject": {"uri": uri, "cid": cid}}, key=uri + "|" + acc["id"])
+
+def mastodon_copy(status):
+	return {"id": str(status.get("id", "")), "url": str(status.get("url", "") or status.get("uri", ""))}
+
+def publish_post(feed, post_id, body, format, attachments, accounts=None, source=None):
+	"""Publish a post to the accounts given, else the feed's list; a public
+	feed only (decision 27). A sourced post (source: remote, name, link,
+	network, item, transformed, created) never goes back to the account it
+	came from nor out again as a copy already published, and only to accounts
+	added before it arrived (decision 30). Answers the copies made."""
+	if feed.get("privacy", "public") != "public":
+		return []
+	feed_id = feed["id"]
+	rows = publish_rows(feed_id)
+	if accounts != None:
+		rows = [{"account": a, "created": 0} for a in accounts]
+	if not rows:
+		return []
+	if source and published_has(feed_id, [source.get("remote", "")]):
+		return []
+	text = publish_text(body, format)
+	link = post_link(feed_id, post_id)
+	copies = []
+	for row in rows:
+		acc = publish_account(row["account"])
+		if not acc:
+			continue
+		if source:
+			if source.get("account") == acc["id"]:
+				continue
+			if number(row.get("created", 0)) > number(source.get("created", 0)):
+				continue
+		if mochi.db.exists("select 1 from copies where post=? and account=?", post_id, acc["id"]):
+			continue
+		result = None
+		if source and source.get("network") == acc["type"] and not source.get("transformed"):
+			result = publish_announce(acc, source)
+		if not result:
+			object = publish_object(acc, text, link, attachments, source)
+			result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"])
+		if not result:
+			mochi.log.warn("Feeds could not publish post %s to %s", post_id, acc.get("identifier", acc["id"]))
+			continue
+		copy = copy_record(feed_id, post_id, acc, result)
+		if copy:
+			copies.append(copy)
+	if source and copies:
+		published_record(feed_id, source.get("remote", ""))
+	return copies
+
+def publish_update(feed, post_id, body, format, attachments):
+	"""A new version of a post reaches each copy (decision 25), copies on
+	accounts since removed from the list included."""
+	rows = mochi.db.rows("select account, remote from copies where post=? and account!=''", post_id)
+	if not rows:
+		return copies_present(post_id)
+	text = publish_text(body, format)
+	link = post_link(feed["id"], post_id)
+	for row in rows:
+		acc = publish_account(row["account"])
+		if not acc:
+			continue
+		object = publish_object(acc, text, link, attachments, None)
+		result = mochi.account.object.update(acc["id"], row["remote"], object)
+		if not result:
+			mochi.log.warn("Feeds could not update the copy of post %s on %s", post_id, acc.get("identifier", acc["id"]))
+			continue
+		if result.get("id") and result["id"] != row["remote"]:
+			mochi.db.execute("update copies set remote=?, url=? where post=? and account=?", str(result["id"]), str(result.get("url", "") or ""), post_id, acc["id"])
+			published_record(feed["id"], str(result["id"]))
+	return copies_present(post_id)
+
+def publish_delete(post_id):
+	"""Withdraw every copy of a post (decision 25). The record of their ids
+	stays, so a poll never brings one back."""
+	for row in mochi.db.rows("select account, remote from copies where post=? and account!=''", post_id):
+		acc = publish_account(row["account"])
+		if acc:
+			mochi.account.object.delete(acc["id"], row["remote"])
+	mochi.db.execute("delete from copies where post=?", post_id)
+
+def publish_forget(feed_id, account_id):
+	"""Delete the feed's copies on one account, when the user chooses to as
+	the account leaves the list. Answers how many."""
+	rows = mochi.db.rows("select post, remote from copies where account=? and post in (select id from posts where feed=?)", account_id, feed_id)
+	acc = publish_account(account_id)
+	for row in rows:
+		if acc:
+			mochi.account.object.delete(acc["id"], row["remote"])
+		mochi.db.execute("delete from copies where post=? and account=?", row["post"], account_id)
+	return len(rows)
+
+def publish_feed_delete(feed_id):
+	"""A deleted feed takes its copies with it."""
+	for row in mochi.db.rows("select id from posts where feed=?", feed_id):
+		publish_delete(row["id"])
+	mochi.db.execute("delete from publish where feed=?", feed_id)
+	mochi.db.execute("delete from published where feed=?", feed_id)
+
+def publish_inputs(a):
+	"""The accounts a post names for itself, overriding the feed's list: a
+	JSON list of ids, or None when the post leaves it to the feed. Answers
+	(accounts, ok)."""
+	raw = a.input("accounts")
+	if raw == None or raw == "":
+		return (None, True)
+	decoded = json.decode(raw, None)
+	if type(decoded) != "list" or len(decoded) > 20:
+		return (None, False)
+	accounts = []
+	for id in decoded:
+		if type(id) != "string" or not publish_account(id):
+			return (None, False)
+		if id not in accounts:
+			accounts.append(id)
+	return (accounts, True)
+
+# === Actions ===
+
+def publish_feed(a):
+	"""The feed an action names, when the caller owns it, else None having
+	answered."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return None
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return None
+	if not is_feed_owner(a.user.identity.id, feed):
+		a.error.label(403, "errors.access_denied")
+		return None
+	return feed
+
+def action_publish_list(a):
+	"""The accounts the feed may publish to and those it does."""
+	feed = publish_feed(a)
+	if not feed:
+		return
+	a.json({"accounts": [account_present(acc) for acc in publish_accounts()], "publish": publish_list(feed["id"]), "copies": publish_counts(feed["id"])})
+
+def publish_counts(feed_id):
+	"""How many copies the feed holds on each account."""
+	counts = {}
+	for row in mochi.db.rows("select account, count(*) as n from copies where account!='' and post in (select id from posts where feed=?) group by account", feed_id):
+		counts[row["account"]] = row["n"]
+	return counts
+
+def action_publish_set(a):
+	"""Set the feed's publish list. The copies on an account that leaves it
+	are kept, and counted in the answer so the client can offer to delete them."""
+	feed = publish_feed(a)
+	if not feed:
+		return
+	if feed.get("privacy", "public") != "public":
+		a.error.label(400, "errors.feed_not_public")
+		return
+	accounts, ok = publish_inputs(a)
+	if not ok:
+		a.error.label(400, "errors.invalid_accounts")
+		return
+	accounts = accounts or []
+	before = publish_list(feed["id"])
+	now = mochi.time.now()
+	for id in accounts:
+		if id not in before:
+			mochi.db.execute("insert or ignore into publish (feed, account, created) values (?, ?, ?)", feed["id"], id, now)
+	for id in before:
+		if id not in accounts:
+			mochi.db.execute("delete from publish where feed=? and account=?", feed["id"], id)
+	ensure_account_jobs()
+	counts = publish_counts(feed["id"])
+	a.json({"publish": accounts, "kept": {id: counts.get(id, 0) for id in before if id not in accounts and counts.get(id, 0)}})
+
+def action_publish_forget(a):
+	"""Delete the feed's copies on an account, as offered when it leaves the list."""
+	feed = publish_feed(a)
+	if not feed:
+		return
+	account = a.input("account", "")
+	if not account:
+		a.error.label(400, "errors.account_is_required")
+		return
+	a.json({"deleted": publish_forget(feed["id"], account)})
+
+# === Sources ===
+
+def account_source_name(kind, acc):
+	label = "source.account.timeline" if kind == "account/timeline" else "source.account.posts"
+	return mochi.app.label(label, name=acc.get("identifier", ""))
+
+def sources_add_account(a, feed, kind, account_id, name):
+	"""A linked account as a source: its home timeline or its own posts
+	(decision 32). Nothing before now is read - history is imported on
+	request - so the poll starts from the moment the source was added."""
+	feed_id = feed["id"]
+	acc = publish_account(account_id)
+	if not acc:
+		a.error.label(404, "errors.account_not_linked")
+		return
+	if mochi.db.exists("select 1 from sources where feed=? and type=? and url=?", feed_id, kind, acc["id"]):
+		a.error.label(400, "errors.source_exists")
+		return
+	if not name:
+		name = account_source_name(kind, acc)
+	source_id = mochi.uid()
+	now = mochi.time.now()
+	base = 300
+	mochi.db.execute("insert into sources (id, feed, type, url, name, credibility, base, max, interval, next, jitter, changed, fetched, since) values (?, ?, ?, ?, ?, 100, ?, 86400, ?, ?, 60, ?, ?, ?)",
+		source_id, feed_id, kind, acc["id"], name, base, base, now + base + 60, now, now, now)
+	mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, base)
+	ensure_sources_watchdog()
+	ensure_account_jobs()
+	source = mochi.db.row("select * from sources where id=?", source_id)
+	return {"data": {"source": source, "ingested": 0}}
+
+def account_item(acc, item):
+	"""One timeline or posts item in a network's own form as a sourced post:
+	remote ids, created, text, link, image, author, and the item for an
+	announce. None for an item that is not a post."""
+	if type(item) != "dict":
+		return None
+	if acc["type"] == "mastodon":
+		status = item
+		boosted = ""
+		if type(item.get("reblog")) == "dict":
+			status = item["reblog"]
+			boosted = str((item.get("account") or {}).get("display_name") or (item.get("account") or {}).get("acct") or "")
+		author = status.get("account") or {}
+		text = strip_html(status.get("content", "") or "")
+		spoiler = status.get("spoiler_text", "") or ""
+		if spoiler:
+			text = spoiler + "\n\n" + text
+		image = ""
+		for media in status.get("media_attachments") or []:
+			if type(media) == "dict" and media.get("type") == "image":
+				image = safe_link(str(media.get("url", "") or media.get("preview_url", "")))
+				break
+		return {
+			"remotes": [str(status.get("id", "")), str(status.get("uri", "")), str(item.get("id", ""))],
+			"guid": str(status.get("uri", "") or status.get("id", "")),
+			"created": mochi.time.parse(str(status.get("created_at", ""))) or 0,
+			"text": text,
+			"html": str(status.get("content", "") or ""),
+			"link": safe_link(str(status.get("url", "") or status.get("uri", ""))),
+			"image": image,
+			"author": str(author.get("display_name") or author.get("acct") or ""),
+			"boosted": boosted,
+			"item": {"id": str(status.get("id", ""))},
+		}
+	post = item.get("post") if type(item.get("post")) == "dict" else item
+	record = post.get("record") or {}
+	author = post.get("author") or {}
+	uri = str(post.get("uri", ""))
+	rkey = uri.rsplit("/", 1)[-1] if "/" in uri else ""
+	handle = str(author.get("handle", "") or author.get("did", ""))
+	image = ""
+	embed = post.get("embed") or {}
+	images = embed.get("images") if type(embed) == "dict" else None
+	if type(images) == "list" and images and type(images[0]) == "dict":
+		image = safe_link(str(images[0].get("fullsize", "") or images[0].get("thumb", "")))
+	reason = item.get("reason") if type(item.get("reason")) == "dict" else None
+	boosted = ""
+	if reason and str(reason.get("$type", "")).endswith("#reasonRepost"):
+		by = reason.get("by") or {}
+		boosted = str(by.get("displayName") or by.get("handle") or "")
+	return {
+		"remotes": [uri],
+		"guid": uri,
+		"created": mochi.time.parse(str(record.get("createdAt", ""))) or 0,
+		"text": str(record.get("text", "") or ""),
+		"html": "",
+		"link": ("https://bsky.app/profile/" + handle + "/post/" + rkey) if handle and rkey else "",
+		"image": image,
+		"author": str(author.get("displayName") or handle),
+		"boosted": boosted,
+		"item": {"uri": uri, "cid": str(post.get("cid", ""))},
+	}
+
+def poll_account_source(source, user_id=None, deadline=None):
+	"""Read the newest page of an account source and make posts of what is
+	new: not seen by this source, not one of the feed's own copies, not older
+	than the source. Each new post goes on to the feed's accounts as a sourced
+	post (decision 30). Answers (count, complete)."""
+	source_id, feed_id = source["id"], source["feed"]
+	now = mochi.time.now()
+	acc = publish_account(source["url"])
+	kind = source["type"]
+	new_count = 0
+	complete = True
+	if acc:
+		if kind == "account/timeline":
+			page = mochi.account.timeline(acc["id"], limit=ACCOUNT_PAGE)
+		else:
+			page = mochi.account.posts(acc["id"], limit=ACCOUNT_PAGE)
+		items = (page or {}).get("items") or []
+		feed = mochi.db.row("select * from feeds where id=?", feed_id)
+		since = number(source.get("since", 0))
+		for raw in items:
+			if deadline != None and mochi.time.now() >= deadline:
+				complete = False
+				break
+			item = account_item(acc, raw)
+			if not item or not item["guid"] or not item["text"] and not item["image"]:
+				continue
+			if item["created"] and item["created"] <= since:
+				continue
+			if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source_id, item["guid"]):
+				continue
+			if published_has(feed_id, item["remotes"]):
+				continue
+			if sourced_post(feed, source, acc, item, user_id):
+				new_count += 1
+	new_interval = source["base"] if new_count > 0 else min(source["interval"] * 2, source["max"])
+	if new_count > 0:
+		mochi.db.execute("update sources set changed=? where id=?", now, source_id)
+	jitter = source["jitter"]
+	next_poll = now + new_interval + (mochi.time.now() % max(jitter, 1))
+	mochi.db.execute("update sources set interval=?, next=?, fetched=? where id=?", new_interval, next_poll, now, source_id)
+	return (new_count, complete)
+
+def sourced_post(feed, source, acc, item, user_id):
+	"""Store an account item as a post of the feed, as an RSS item is stored,
+	and publish it on to the feed's other accounts. Answers whether a post
+	was made."""
+	feed_id = feed["id"]
+	text = item["text"]
+	link = item["link"]
+	fields = {"title": "", "description": text, "link": link}
+	t_action, t_fields = transform_post(source.get("transform", ""), feed_id, fields)
+	if t_action == "drop":
+		return False
+	transformed = t_fields.get("description") != text or t_fields.get("link") != link
+	if transformed:
+		text = t_fields.get("description", text)
+		link = safe_link(t_fields.get("link", link)) or link
+	author = item["author"]
+	parts = [p for p in [text, link] if p]
+	body = "\n\n".join(parts)
+	if not body:
+		return False
+	data = {"rss": {"title": "", "link": link, "html": "" if transformed else item["html"], "source": author}}
+	if item["image"]:
+		data["rss"]["image"] = item["image"]
+	if item["boosted"]:
+		data["rss"]["shared"] = item["boosted"]
+	created = item["created"] or mochi.time.now()
+	post_id = mochi.uid()
+	mmdd = compute_mmdd(created)
+	credibility = source.get("credibility", 100)
+	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		post_id, feed_id, body, json.encode(data), "markdown" if transformed else "text", created, created, mmdd, credibility)
+	mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?) on conflict do nothing", source["id"], post_id, item["guid"])
+	winner = mochi.db.row("select post from source_posts where source=? and guid=?", source["id"], item["guid"])
+	if not winner or winner["post"] != post_id:
+		mochi.db.execute("delete from posts where id=?", post_id)
+		return False
+	mochi.db.commit.fire("posts", "insert", post_id)
+	post_event = {"id": post_id, "created": created, "body": body, "data": data, "credibility": credibility}
+	copies = publish_post(feed, post_id, body, "text", [], None, {
+		"remote": item["guid"], "name": author, "link": link, "network": acc["type"], "account": acc["id"],
+		"item": item["item"], "transformed": transformed, "created": created,
+	})
+	if copies:
+		post_event["copies"] = copies
+	if feed.get("ai_mode", "") in ("tag", "tag+deduplicate"):
+		mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
+	else:
+		broadcast_event(feed_id, "post/create", post_event, user_id)
+	set_feed_updated(feed_id)
+	return True
+
+def publish_sourced(feed_id, post_id, body, format, source):
+	"""A post that arrived from any source - an RSS item, another feed's post -
+	goes on to the feed's accounts (decision 30)."""
+	feed = mochi.db.row("select * from feeds where id=?", feed_id)
+	if not feed or not publish_rows(feed_id):
+		return []
+	return publish_post(feed, post_id, body, format, [], None, source)
+
+def poll_source(source, user_id=None, deadline=None):
+	"""Poll one source of any scheduled type."""
+	if source["type"] in ACCOUNT_SOURCE_TYPES:
+		return poll_account_source(source, user_id, deadline)
+	return poll_rss_source(source, user_id, deadline)
+
+# === Import ===
+
+def action_import(a):
+	"""Bring an account's history into the feed: its posts, or its bookmarks
+	into the feed and into Saved. Imported posts are recorded as the feed's
+	own and never published (decision 30). A long history continues in
+	scheduled steps; the answer says how many this step brought and whether
+	more follow."""
+	feed = publish_feed(a)
+	if not feed:
+		return
+	acc = publish_account(a.input("account", ""))
+	if not acc:
+		a.error.label(404, "errors.account_not_linked")
+		return
+	kind = a.input("kind", "")
+	if kind not in ("posts", "bookmarks"):
+		a.error.label(400, "errors.invalid_import")
+		return
+	count, more = import_step(feed, acc, kind, "", a.user.identity.id)
+	a.json({"imported": count, "more": more})
+
+def import_step(feed, acc, kind, cursor, user_id):
+	"""Up to IMPORT_PAGES pages of the account's posts or bookmarks into the
+	feed; the next step is booked when more remain. Answers (count, more)."""
+	count = 0
+	pages = 0
+	for _ in range(IMPORT_PAGES):
+		if kind == "posts":
+			page = mochi.account.posts(acc["id"], cursor=cursor, limit=ACCOUNT_PAGE)
+		else:
+			page = import_bookmarks_page(acc, cursor)
+		if not page:
+			return (count, False)
+		for raw in page.get("items") or []:
+			item = account_item(acc, raw)
+			if not item or not item["guid"] or published_has(feed["id"], item["remotes"]):
+				continue
+			post_id = import_post(feed, item)
+			if not post_id:
+				continue
+			published_record(feed["id"], item["guid"])
+			for remote in item["remotes"]:
+				published_record(feed["id"], remote)
+			if kind == "bookmarks":
+				mochi.db.execute("insert or ignore into saved (id, user, post, data, created) values (?, ?, ?, ?, ?)", mochi.uid(), user_id, post_id, json.encode({"feed": feed["id"], "body": item["text"], "link": item["link"]}), mochi.time.now())
+			count += 1
+		cursor = page.get("cursor", "") or ""
+		pages += 1
+		if not cursor:
+			if count:
+				set_feed_updated(feed["id"])
+			return (count, False)
+	if count:
+		set_feed_updated(feed["id"])
+	mochi.schedule.after("schedule_import", {"feed": feed["id"], "account": acc["id"], "kind": kind, "cursor": cursor}, 2)
+	return (count, True)
+
+def import_bookmarks_page(acc, cursor):
+	"""A page of the account's bookmarks in the network's own form."""
+	if acc["type"] == "mastodon":
+		query = {"limit": str(ACCOUNT_PAGE)}
+		if cursor:
+			query["max_id"] = cursor
+		answer = mochi.account.request(acc["id"], "GET", "v1/bookmarks", query=query)
+		items = answer.get("data") if answer and type(answer.get("data")) == "list" else []
+		next = str(items[-1].get("id", "")) if items and type(items[-1]) == "dict" else ""
+		return {"items": items, "cursor": next if len(items) >= ACCOUNT_PAGE else ""}
+	query = {"limit": str(ACCOUNT_PAGE)}
+	if cursor:
+		query["cursor"] = cursor
+	answer = mochi.account.request(acc["id"], "GET", "app.bsky.bookmark.getBookmarks", query=query)
+	data = answer.get("data") if answer and type(answer.get("data")) == "dict" else {}
+	items = []
+	for bookmark in data.get("bookmarks") or []:
+		if type(bookmark) == "dict" and type(bookmark.get("item")) == "dict":
+			items.append({"post": bookmark["item"]})
+	return {"items": items, "cursor": str(data.get("cursor", "") or "")}
+
+def import_post(feed, item):
+	"""Store an imported item as a post of the feed, dated when it was made."""
+	body = "\n\n".join([p for p in [item["text"], item["link"]] if p])
+	if not body:
+		return None
+	data = {"rss": {"title": "", "link": item["link"], "html": item["html"], "source": item["author"]}}
+	if item["image"]:
+		data["rss"]["image"] = item["image"]
+	created = item["created"] or mochi.time.now()
+	post_id = mochi.uid()
+	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, read) values (?, ?, ?, ?, 'text', ?, ?, ?, ?)",
+		post_id, feed["id"], body, json.encode(data), created, created, compute_mmdd(created), created)
+	mochi.db.commit.fire("posts", "insert", post_id)
+	return post_id
+
+def schedule_import(e):
+	if e.source != "schedule":
+		return
+	feed = mochi.db.row("select * from feeds where id=?", e.data.get("feed", ""))
+	acc = publish_account(e.data.get("account", ""))
+	kind = e.data.get("kind", "")
+	if not feed or not acc or kind not in ("posts", "bookmarks"):
+		return
+	import_step(feed, acc, kind, e.data.get("cursor", ""), e.user.identity.id if e.user else None)
+
+# === The accounts' jobs: notifications and backup ===
+
+def account_cursor(account, kind):
+	row = mochi.db.row("select cursor, updated from account_cursors where account=? and kind=?", account, kind)
+	return (row["cursor"], row["updated"]) if row else ("", 0)
+
+def account_cursor_set(account, kind, cursor):
+	mochi.db.execute("insert or replace into account_cursors (account, kind, cursor, updated) values (?, ?, ?, ?)", account, kind, cursor, mochi.time.now())
+
+def job_accounts():
+	"""The accounts the jobs cover: those in a publish list or a source."""
+	ids = {}
+	for row in mochi.db.rows("select distinct account from publish"):
+		ids[row["account"]] = True
+	for row in mochi.db.rows("select distinct url from sources where type in ('account/timeline', 'account/posts')"):
+		ids[row["url"]] = True
+	return [acc for acc in [publish_account(id) for id in ids] if acc]
+
+def ensure_account_jobs():
+	"""Keep the recurring job scheduled while any account is in use."""
+	if not job_accounts():
+		return
+	for se in mochi.schedule.list():
+		if se.event == "schedule_account_jobs":
+			return
+	mochi.schedule.every("schedule_account_jobs", {}, ACCOUNT_JOBS_INTERVAL)
+
+def schedule_account_jobs(e):
+	if e.source != "schedule":
+		return
+	accounts = job_accounts()
+	if not accounts:
+		for se in mochi.schedule.list():
+			if se.event == "schedule_account_jobs":
+				se.cancel()
+		return
+	now = mochi.time.now()
+	for acc in accounts:
+		notify_account(acc)
+		_, backed = account_cursor(acc["id"], "backup")
+		if now - backed >= BACKUP_INTERVAL:
+			backup_account(acc)
+
+def notify_account(acc):
+	"""The account's notifications since the last run, to the bell."""
+	cursor, _ = account_cursor(acc["id"], "notifications")
+	page = mochi.account.notifications(acc["id"], limit=ACCOUNT_PAGE)
+	items = (page or {}).get("items") or []
+	newest = ""
+	fresh = []
+	for raw in items:
+		if type(raw) != "dict":
+			continue
+		id = str(raw.get("id", "") or raw.get("uri", "") or raw.get("cid", ""))
+		if not id:
+			continue
+		if not newest:
+			newest = id
+		if id == cursor:
+			break
+		fresh.append(raw)
+	if not cursor:
+		# The first run marks where it starts; what came before is history.
+		fresh = []
+	for raw in reversed(fresh):
+		notification = account_notification(acc, raw)
+		if notification:
+			mochi.service.call("notifications", "send", "account", acc["id"], notification["title"], notification["body"], notification["url"],
+				mochi.app.label("notifications.topic.account"), event="account:" + notification["id"])
+	if newest:
+		account_cursor_set(acc["id"], "notifications", newest)
+
+def account_notification(acc, raw):
+	"""One notification in the network's own form as title, body and link."""
+	if acc["type"] == "mastodon":
+		kind = str(raw.get("type", ""))
+		actor = raw.get("account") or {}
+		name = str(actor.get("display_name") or actor.get("acct") or "")
+		status = raw.get("status") if type(raw.get("status")) == "dict" else {}
+		url = safe_link(str(status.get("url", "") or actor.get("url", "") or ""))
+		body = text_cut(strip_html(str(status.get("content", "") or "")), 200)
+		labels = {"mention": "notifications.account.mention", "status": "notifications.account.posted", "reblog": "notifications.account.shared", "follow": "notifications.account.followed", "favourite": "notifications.account.liked", "update": "notifications.account.edited"}
+		label = labels.get(kind, "")
+		if not label:
+			return None
+		return {"id": str(raw.get("id", "")), "title": mochi.app.label(label, name=name), "body": body, "url": url}
+	reason = str(raw.get("reason", ""))
+	actor = raw.get("author") or {}
+	name = str(actor.get("displayName") or actor.get("handle") or "")
+	handle = str(actor.get("handle", ""))
+	uri = str(raw.get("uri", ""))
+	rkey = uri.rsplit("/", 1)[-1] if "/" in uri else ""
+	labels = {"mention": "notifications.account.mention", "reply": "notifications.account.replied", "quote": "notifications.account.quoted", "repost": "notifications.account.shared", "like": "notifications.account.liked", "follow": "notifications.account.followed"}
+	label = labels.get(reason, "")
+	if not label:
+		return None
+	if reason in ("mention", "reply", "quote") and handle and rkey:
+		url = "https://bsky.app/profile/" + handle + "/post/" + rkey
+	elif handle:
+		url = "https://bsky.app/profile/" + handle
+	else:
+		url = ""
+	record = raw.get("record") if type(raw.get("record")) == "dict" else {}
+	return {"id": uri or str(raw.get("cid", "")), "title": mochi.app.label(label, name=name), "body": text_cut(str(record.get("text", "") or ""), 200), "url": url}
+
+def backup_account(acc):
+	"""Add to the account's archive in the user's storage: the posts since the
+	last backup, a month's worth a file, and on Bluesky the repository as
+	exported by its server."""
+	cursor, _ = account_cursor(acc["id"], "backup/posts")
+	directory = "backups/" + acc["id"]
+	newest = ""
+	rows = []
+	page = mochi.account.posts(acc["id"], limit=ACCOUNT_PAGE)
+	for raw in (page or {}).get("items") or []:
+		item = account_item(acc, raw)
+		if not item or not item["guid"]:
+			continue
+		if not newest:
+			newest = item["guid"]
+		if item["guid"] == cursor:
+			break
+		rows.append(raw)
+	if rows:
+		name = directory + "/posts-" + mochi.time.local(mochi.time.now(), "date")[:7] + ".jsonl"
+		existing = mochi.file.read(name) if mochi.file.exists(name) else None
+		lines = [json.encode(raw) for raw in reversed(rows)]
+		data = (str(existing) + "\n" if existing else "") + "\n".join(lines) + "\n"
+		mochi.file.write(name, data)
+	if newest:
+		account_cursor_set(acc["id"], "backup/posts", newest)
+	if acc["type"] == "bluesky" and acc.get("server"):
+		did = (mochi.account.get(acc["id"]) or {}).get("did", "")
+		if did:
+			answer = mochi.account.media(acc["id"], "https://" + acc["server"] + "/xrpc/com.atproto.sync.getRepo?did=" + did)
+			if answer and answer.get("status") == 200 and answer.get("data"):
+				mochi.file.write(directory + "/repository.car", answer["data"])
+	account_cursor_set(acc["id"], "backup", "")
+
+def action_backups(a):
+	"""The archive files of an account the feed publishes to."""
+	feed = publish_feed(a)
+	if not feed:
+		return
+	acc = publish_account(a.input("account", ""))
+	if not acc:
+		a.error.label(404, "errors.account_not_linked")
+		return
+	a.json({"files": sorted([str(entry) for entry in mochi.file.list("backups/" + acc["id"]) or []])})
+
+def action_backup_file(a):
+	"""One archive file, for the owner to download."""
+	feed = publish_feed(a)
+	if not feed:
+		return
+	acc = publish_account(a.input("account", ""))
+	name = mochi.file.clean(a.input("name", ""), 120)
+	if not acc or not name or "/" in name:
+		a.error.label(404, "errors.backup_not_found")
+		return
+	path = "backups/" + acc["id"] + "/" + name
+	if not mochi.file.exists(path):
+		a.error.label(404, "errors.backup_not_found")
+		return
+	a.write.file(path, storage=True)
+
+# === Schema ===
+
+def publish_schema_create():
+	"""The tables publishing and the accounts' jobs keep, made at creation and
+	by the migration alike."""
+	mochi.db.execute("create table if not exists publish ( feed text not null, account text not null, created integer not null, primary key ( feed, account ) )")
+	mochi.db.execute("create table if not exists copies ( post text not null, account text not null default '', address text not null, network text not null, remote text not null, url text not null default '', created integer not null, primary key ( post, address ) )")
+	mochi.db.execute("create table if not exists published ( feed text not null, remote text not null, primary key ( feed, remote ) )")
+	mochi.db.execute("create table if not exists account_cursors ( account text not null, kind text not null, cursor text not null default '', updated integer not null default 0, primary key ( account, kind ) )")
+	if not any([c["name"] == "since" for c in mochi.db.table("sources")]):
+		mochi.db.execute("alter table sources add column since integer not null default 0")
