@@ -3004,22 +3004,29 @@ def action_create(a):
         a.error.label(400, "errors.invalid_privacy")
         return
 
-    # Create Mochi entity
-    entity = mochi.entity.create("feed", name, privacy, "")
+    entity = feed_create(a.user.identity.id, a.user.identity.name, name, privacy, a.input("memories") != "false")
     if not entity:
         a.error.label(500, "errors.failed_create_feed")
         return
 
-    now = mochi.time.now()
-    creator = a.user.identity.id
+    return {"data": {"id": entity, "fingerprint": mochi.entity.fingerprint(entity)}}
 
-    # Store in database
+def feed_create(creator, creator_name, name, privacy, memories):
+    """Create a feed for the creator given: the entity, its row, the creator
+    as its first subscriber, its access and, unless declined, the memories
+    source. Answers the entity id, or None when no entity could be made."""
+    entity = mochi.entity.create("feed", name, privacy, "")
+    if not entity:
+        return None
+
+    now = mochi.time.now()
+
     fp = mochi.entity.fingerprint(entity) or ""
     mochi.db.execute("insert into feeds (id, name, privacy, subscribers, updated, fingerprint) values (?, ?, ?, 1, ?, ?)",
         entity, name, privacy, now, fp)
 
     mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
-        entity, creator, a.user.identity.name)
+        entity, creator, creator_name)
 
     # Set up access control
     resource = "feed/" + entity
@@ -3030,14 +3037,42 @@ def action_create(a):
     # Creator gets full access
     mochi.access.allow(creator, resource, "*", creator)
 
-    # Auto-add memories source unless explicitly disabled
-    memories = a.input("memories")
-    if memories != "false":
+    if memories:
         mem_id = mochi.uid()
         mochi.db.execute("insert into sources (id, feed, type, url, name, base, max, interval, next, jitter, fetched) values (?, ?, 'feed/memories', '', ?, 0, 0, 0, 0, 0, 0)",
             mem_id, entity, mochi.app.label("source.memories.name"))
 
-    return {"data": {"id": entity, "fingerprint": mochi.entity.fingerprint(entity)}}
+    return entity
+
+# Service functions, for the login app's consent page (decision 42): the
+# user's own feeds, and a feed made to be a hosted account's home feed. A
+# service function runs as the calling user with no request, so the identity
+# is read from the entities the user owns.
+
+def service_identity():
+    """The caller's person entity, or None."""
+    for e in mochi.entity.owned():
+        if e.get("class") == "person":
+            return e
+    return None
+
+def function_list(context):
+    """The caller's own feeds: id, name, privacy and fingerprint."""
+    owned = owned_set()
+    return [{"id": r["id"], "name": r["name"], "privacy": r["privacy"], "fingerprint": r["fingerprint"]}
+        for r in mochi.db.rows("select id, name, privacy, fingerprint from feeds") if r["id"] in owned]
+
+def function_create(context, name, privacy="public"):
+    """Make a feed for the caller, publishing to nothing yet. Answers {id, name, fingerprint}, or None when it cannot."""
+    if not name or not mochi.text.valid(name, "name") or privacy not in ["public", "private"]:
+        return None
+    identity = service_identity()
+    if not identity:
+        return None
+    entity = feed_create(identity["id"], identity.get("name", ""), name, privacy, True)
+    if not entity:
+        return None
+    return {"id": entity, "name": name, "fingerprint": mochi.entity.fingerprint(entity) or ""}
 
 def action_search(a): # feeds_search
 	if not a.user.identity.id:

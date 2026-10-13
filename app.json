@@ -9,6 +9,10 @@
 	"classes": ["feed"],
 	"paths": ["feeds"],
 	"services": ["feeds"],
+	"functions": {
+		"list": {"function": "function_list", "permission": "oauth/consent"},
+		"create": {"function": "function_create", "permission": "oauth/consent"}
+	},
 
 	"architecture": {"engine": "starlark", "version": 4},
 	"execute": ["lib/attachments.star", "feeds.star", "accounts.star"],
