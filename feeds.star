@@ -2138,6 +2138,10 @@ def database_upgrade(version):
 	if version == 12:
 		# A hosted account's address and page on the publish list (phase 15).
 		publish_schema_create()
+	if version == 13:
+		# A fediverse address is written @name@domain; the list kept the
+		# name@domain of the account's earlier identifier.
+		mochi.db.execute("update publish set address='@'||address where address!='' and address not like '@%'")
 
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")

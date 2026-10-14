@@ -93,7 +93,7 @@ export function FollowButton({
                   <SelectContent>
                     {accounts.map((a) => (
                       <SelectItem key={a.address} value={a.address}>
-                        @{a.address}
+                        {a.address}
                       </SelectItem>
                     ))}
                   </SelectContent>
