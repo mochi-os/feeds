@@ -2135,6 +2135,9 @@ def database_upgrade(version):
 		# The comparison pass's prompt went with it.
 		if any([c["name"] == "ai_prompt_batch" for c in mochi.db.table("feeds")]):
 			mochi.db.execute("alter table feeds drop column ai_prompt_batch")
+	if version == 12:
+		# A hosted account's address and page on the publish list (phase 15).
+		publish_schema_create()
 
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
@@ -2441,6 +2444,11 @@ def action_info_entity(a):
 
     raw = mochi.entity.fingerprint(feed_entity_id)
     fp = raw[:3] + "-" + raw[3:6] + "-" + raw[6:]
+
+    # The hosted accounts the feed publishes to, for the follow control a
+    # visitor from another network uses (phase 15): public, as the feed is.
+    if feed.get("privacy", "public") == "public":
+        feed["accounts"] = follow_accounts(feed_entity_id)
 
     return {"data": {
         "entity": True,
@@ -7965,8 +7973,10 @@ def action_rss(a):
 # notifications reach the bell, and a continuing archive of it is kept in the
 # user's own storage.
 
-# The networks a feed publishes to through linked accounts.
+# The networks a feed publishes to through linked accounts, and the one it
+# publishes to through hosted accounts (phase 15).
 PUBLISH_TYPES = ["mastodon", "bluesky"]
+HOSTED_TYPES = ["fediverse"]
 
 # The source types an account offers, and every source type polled on a
 # schedule, with the SQL fragment that selects those.
@@ -8002,22 +8012,32 @@ BACKUP_INTERVAL = 86400
 
 # === The accounts ===
 
+def publishable(acc):
+	"""Whether an account is one a feed may publish to: a linked account on a
+	network that takes posts, or a hosted fediverse account."""
+	if acc.get("hosted"):
+		return acc.get("type") in HOSTED_TYPES
+	return acc.get("type") in PUBLISH_TYPES
+
 def publish_accounts():
-	"""The user's linked accounts a feed may publish to or read from."""
-	return [acc for acc in (mochi.account.list("social") or []) if acc.get("type") in PUBLISH_TYPES and not acc.get("hosted")]
+	"""The user's accounts a feed may publish to or read from."""
+	return [acc for acc in (mochi.account.list() or []) if publishable(acc)]
 
 def publish_account(id):
 	"""One such account by id, or None."""
 	if not id:
 		return None
 	acc = mochi.account.get(id)
-	if not acc or acc.get("type") not in PUBLISH_TYPES or acc.get("hosted"):
+	if not acc or not publishable(acc):
 		return None
 	return acc
 
+def hosted_fediverse(acc):
+	return bool(acc.get("hosted")) and acc.get("type") == "fediverse"
+
 def account_present(acc):
 	"""An account as the client sees it in a publish list or a picker."""
-	return {"id": acc["id"], "type": acc["type"], "identifier": acc.get("identifier", ""), "name": acc.get("name") or acc.get("label") or "", "server": acc.get("server", "")}
+	return {"id": acc["id"], "type": acc["type"], "identifier": acc.get("identifier", ""), "name": acc.get("name") or acc.get("label") or "", "server": acc.get("server", ""), "hosted": bool(acc.get("hosted")), "url": acc.get("url", "")}
 
 def publish_list(feed_id):
 	"""The ids of the accounts a feed publishes to."""
@@ -8289,7 +8309,10 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 		if source and source.get("network") == acc["type"] and not source.get("transformed"):
 			result = publish_announce(acc, source)
 		if not result:
-			object = publish_object(acc, text, link, attachments, source)
+			if hosted_fediverse(acc):
+				object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source)
+			else:
+				object = publish_object(acc, text, link, attachments, source)
 			result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"])
 		if not result:
 			mochi.log.warn("Feeds could not publish post %s to %s", post_id, acc.get("identifier", acc["id"]))
@@ -8313,7 +8336,10 @@ def publish_update(feed, post_id, body, format, attachments):
 		acc = publish_account(row["account"])
 		if not acc:
 			continue
-		object = publish_object(acc, text, link, attachments, None)
+		if hosted_fediverse(acc):
+			object = fediverse_note(acc, feed, post_id, body, format, link, attachments, None)
+		else:
+			object = publish_object(acc, text, link, attachments, None)
 		result = mochi.account.object.update(acc["id"], row["remote"], object)
 		if not result:
 			mochi.log.warn("Feeds could not update the copy of post %s on %s", post_id, acc.get("identifier", acc["id"]))
@@ -8418,6 +8444,11 @@ def action_publish_set(a):
 	for id in accounts:
 		if id not in before:
 			mochi.db.execute("insert or ignore into publish (feed, account, created) values (?, ?, ?)", feed["id"], id, now)
+		# The address and page of a hosted account, for the follow control,
+		# which runs with no user and so cannot ask for the account.
+		acc = publish_account(id)
+		if acc and hosted_fediverse(acc):
+			mochi.db.execute("update publish set address=?, url=? where feed=? and account=?", acc.get("identifier", ""), acc.get("url", ""), feed["id"], id)
 	for id in before:
 		if id not in accounts:
 			mochi.db.execute("delete from publish where feed=? and account=?", feed["id"], id)
@@ -8931,12 +8962,202 @@ def action_backup_file(a):
 def publish_schema_create():
 	"""The tables publishing and the accounts' jobs keep, made at creation and
 	by the migration alike."""
-	mochi.db.execute("create table if not exists publish ( feed text not null, account text not null, created integer not null, primary key ( feed, account ) )")
+	mochi.db.execute("create table if not exists publish ( feed text not null, account text not null, created integer not null, address text not null default '', url text not null default '', primary key ( feed, account ) )")
+	# A hosted account's address and page beside its id, so a visitor's follow
+	# control, which runs with no user, can name it (phase 15).
+	columns = [c["name"] for c in mochi.db.table("publish")]
+	for column in ["address", "url"]:
+		if column not in columns:
+			mochi.db.execute("alter table publish add column " + column + " text not null default ''")
 	mochi.db.execute("create table if not exists copies ( post text not null, account text not null default '', address text not null, network text not null, remote text not null, url text not null default '', created integer not null, primary key ( post, address ) )")
 	mochi.db.execute("create table if not exists published ( feed text not null, remote text not null, primary key ( feed, remote ) )")
 	mochi.db.execute("create table if not exists account_cursors ( account text not null, kind text not null, cursor text not null default '', updated integer not null default 0, primary key ( account, kind ) )")
 	if not any([c["name"] == "since" for c in mochi.db.table("sources")]):
 		mochi.db.execute("alter table sources add column since integer not null default 0")
+
+# === Hosted fediverse accounts (the federation plan, phase 15) ===
+#
+# A hosted account publishes through core's ActivityPub engine, which signs and
+# delivers as the account and serves what the account published under its id:
+# the object a post becomes is built here, in the network's form, both when the
+# post goes out and when another server asks for it (activitypub/object). The
+# text goes whole, as sanitised HTML with mention and hashtag links, since a
+# receiving server shows a remote post of any length; the attachments that fit
+# Mastodon's defaults go as links to this server's public attachment routes,
+# the rest are left to the post's page, which the object names as its url
+# (decision 24). A visitor from another network follows a feed's account from
+# their own server through the follow control, which asks their server where
+# to send them: the subscribe template WebFinger publishes.
+
+# What Mastodon's defaults take of a post's attachments (decision 24).
+FEDIVERSE_LIMITS = {"images": MASTODON_ATTACHMENTS, "video": 1, "image_bytes": MASTODON_IMAGE_BYTES, "video_bytes": MASTODON_VIDEO_BYTES, "description": MASTODON_DESCRIPTION}
+
+# The public, as a Note addresses it.
+FEDIVERSE_PUBLIC = "https://www.w3.org/ns/activitystreams#Public"
+
+def fediverse_tags_base():
+	"""Where a hashtag link in a published post leads: this server's feed
+	search, or nothing where the server has no public address."""
+	base = mochi.server.url()
+	if not base:
+		return ""
+	return base + "/feeds/search?q=%23"
+
+def fediverse_attachment(feed_id, att, variant=""):
+	"""An attachment as a Document in a Note: its public address here, as the
+	attachment routes serve it, the preview variant for an image over the
+	limit. None where the server has no public address."""
+	base = mochi.server.url()
+	fingerprint = mochi.entity.fingerprint(feed_id)
+	if not base or not fingerprint:
+		return None
+	url = base + "/feeds/" + fingerprint + "/-/attachments/" + att["id"]
+	if variant:
+		url += "/" + variant
+	document = {"type": "Document", "mediaType": mochi.file.type(att.get("name", "")), "url": url}
+	description = text_cut(att.get("description") or att.get("caption") or "", FEDIVERSE_LIMITS["description"])
+	if description:
+		document["name"] = description
+	return document
+
+def fediverse_attachments(feed_id, attachments):
+	"""The attachments of a post that go in its Note: images and videos within
+	Mastodon's defaults, in the post's order, the kind of the first deciding
+	where one kind goes per post, as publish_media chooses them."""
+	eligible = [att for att in attachments if attachment_kind(att)]
+	if not eligible:
+		return []
+	kind = attachment_kind(eligible[0])
+	count = FEDIVERSE_LIMITS["video"] if kind == "video" else FEDIVERSE_LIMITS["images"]
+	maximum = FEDIVERSE_LIMITS["video_bytes"] if kind == "video" else FEDIVERSE_LIMITS["image_bytes"]
+	documents = []
+	for att in eligible:
+		if attachment_kind(att) != kind or len(documents) >= count:
+			continue
+		variant = ""
+		if number(att.get("size", 0)) > maximum:
+			if kind != "image":
+				continue
+			variant = "preview"
+		document = fediverse_attachment(feed_id, att, variant)
+		if document:
+			documents.append(document)
+	return documents
+
+def fediverse_plain(text):
+	"""Plain text as markdown that renders to the same text: the characters
+	markdown reads as markup escaped, each line its own paragraph."""
+	lines = []
+	for line in text.split("\n"):
+		for mark in ["\\", "*", "_", "[", "]", "`", "#", ">", "~"]:
+			line = line.replace(mark, "\\" + mark)
+		lines.append(line.replace("<", "&lt;"))
+	return "\n\n".join(lines)
+
+def fediverse_note(acc, feed, post_id, body, format, link, attachments, source):
+	"""The Note a post becomes on a hosted fediverse account: the text as HTML
+	with mentions and hashtags linked and tagged, the attachments that fit, the
+	post's page as its url, and a sourced post's origin named first (decision
+	30). Core gives it its id, its author and its time, and the public
+	addressing unless the Note carries its own: it does when someone is
+	mentioned, so that their server is told too."""
+	text = sourced_text(source, body) if source else body
+	if format != "markdown":
+		text = fediverse_plain(text)
+	rendered = mochi.text.fediverse(text, tags=fediverse_tags_base())
+	note = {"type": "Note", "content": rendered["html"], "sensitive": False}
+	if link:
+		note["url"] = link
+	if source and source.get("link"):
+		note["url"] = source["link"]
+	tags = []
+	mentioned = []
+	for mention in rendered["mentions"]:
+		tag = {"type": "Mention", "name": mention["handle"], "href": mention["url"]}
+		found = mochi.account.resolve(mention["handle"])
+		if found and found.get("id"):
+			tag["href"] = found["id"]
+			mentioned.append(found["id"])
+		tags.append(tag)
+	base = fediverse_tags_base()
+	for hashtag in rendered["hashtags"]:
+		tag = {"type": "Hashtag", "name": "#" + hashtag}
+		if base:
+			tag["href"] = base + hashtag
+		tags.append(tag)
+	if tags:
+		note["tag"] = tags
+	if mentioned and acc.get("url"):
+		note["to"] = [FEDIVERSE_PUBLIC]
+		note["cc"] = [acc["url"] + "/followers"] + mentioned
+	documents = fediverse_attachments(feed["id"], attachments or [])
+	if documents:
+		note["attachment"] = documents
+	return note
+
+def function_activitypub_object(context, account, id):
+	"""An object this feed published as a hosted account, as it stands now:
+	core's engine asks for it when another server fetches it or reads the
+	account's outbox. None where the copy is gone or the feed no longer
+	public."""
+	row = mochi.db.row("select post from copies where account=? and remote=?", account, id)
+	if not row:
+		return None
+	post = mochi.db.row("select * from posts where id=?", row["post"])
+	if not post:
+		return None
+	feed = mochi.db.row("select * from feeds where id=?", post["feed"])
+	if not feed or feed.get("privacy", "public") != "public":
+		return None
+	source = None
+	data = json.decode(post.get("data", "") or "{}", {})
+	rss = data.get("rss") if type(data) == "dict" else None
+	if type(rss) == "dict" and rss.get("source"):
+		source = {"name": rss.get("source", ""), "link": safe_link(rss.get("link", ""))}
+	acc = mochi.account.get(account)
+	if not acc:
+		return None
+	return fediverse_note(acc, feed, post["id"], post["body"], post.get("format", "markdown"), post_link(feed["id"], post["id"]), attachment_list(post["id"]), source)
+
+def follow_accounts(feed_id):
+	"""The hosted accounts a feed publishes to, as a visitor sees them: the
+	address and the page kept on the publish list, nothing of the account
+	itself, which a request with no user could not read."""
+	return [{"address": row["address"], "url": row["url"]} for row in mochi.db.rows("select address, url from publish where feed=? and address!='' order by created", feed_id)]
+
+def action_follow(a):
+	"""The follow control of a public feed page: a visitor gives the handle of
+	their account elsewhere, and is answered the page on their own server that
+	follows the feed's account - the subscribe template their server publishes,
+	with the account's address in it. Public, since the visitor has no account
+	here; the lookup runs under the host policy and the limiter per host."""
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	if feed.get("privacy", "public") != "public":
+		a.error.label(403, "errors.access_denied")
+		return
+	accounts = follow_accounts(feed["id"])
+	if not accounts:
+		a.error.label(404, "errors.account_not_found")
+		return
+	handle = a.input("handle", "").strip()
+	if handle.startswith("@"):
+		handle = handle[1:]
+	if not handle or len(handle) > 255 or "@" not in handle or " " in handle:
+		a.error.label(400, "errors.invalid_handle")
+		return
+	chosen = accounts[0]
+	wanted = a.input("account", "")
+	for acc in accounts:
+		if wanted and acc["address"] == wanted:
+			chosen = acc
+	found = mochi.account.resolve(handle)
+	if not found or not found.get("subscribe"):
+		a.error.label(404, "errors.server_not_found")
+		return
+	a.json({"url": found["subscribe"].replace("{uri}", chosen["address"])})
 
 # === Following with no account (the federation plan, phase 13) ===
 #

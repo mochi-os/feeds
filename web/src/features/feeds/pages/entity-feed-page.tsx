@@ -71,6 +71,7 @@ import type { FeedGoneReason } from '@/hooks/useFeedWebsocket'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedGone } from '@/features/feeds/components/feed-gone'
 import { FeedBanner } from '../components/feed-banner'
+import { FollowButton } from '../components/follow-button'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
 import { removeCommentFromTree } from '../utils'
@@ -677,6 +678,9 @@ export function EntityFeedPage({
                 {/* button-icon-ok: Subscribe has no conventional glyph; every sibling app ships it text-only */}
                 <Trans>Subscribe</Trans>
               </Button>
+            )}
+            {!canManage && !feedSummary.isOwner && feed.accounts && (
+              <FollowButton feedId={feed.id} accounts={feed.accounts} />
             )}
           </>
         }

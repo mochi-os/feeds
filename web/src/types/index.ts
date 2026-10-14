@@ -10,6 +10,7 @@ export type {
   DirectoryEntry,
   Feed,
   FeedPermissions,
+  FollowAccount,
   FeedSummary,
   FindFeedsResponse,
   BackupsResponse,

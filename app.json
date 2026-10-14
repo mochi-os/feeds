@@ -4,14 +4,17 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 {
-	"version": "8.0",
+	"version": "8.1",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
 	"services": ["feeds"],
 	"functions": {
 		"list": {"function": "function_list", "permission": "oauth/consent"},
-		"create": {"function": "function_create", "permission": "oauth/consent"}
+		"create": {"function": "function_create", "permission": "oauth/consent"},
+		// An object a feed published as a hosted fediverse account, asked for
+		// by core's ActivityPub engine when another server fetches it.
+		"activitypub/object": {"function": "function_activitypub_object"}
 	},
 
 	"architecture": {"engine": "starlark", "version": 4},
@@ -19,7 +22,7 @@
 	"require": {"version": {"minimum": "2.0.12"}},
 
 	"database": {
-		"schema": 11,
+		"schema": 12,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -78,6 +81,7 @@
 		":feed/-/sources/remove": {"function": "action_sources_remove"},
 		":feed/-/sources/edit": {"function": "action_sources_edit"},
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
+		":feed/-/follow": {"function": "action_follow", "public": true},
 		":feed/-/publish": {"function": "action_publish_list"},
 		":feed/-/publish/set": {"function": "action_publish_set"},
 		":feed/-/publish/forget": {"function": "action_publish_forget"},

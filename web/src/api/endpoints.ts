@@ -118,6 +118,7 @@ const endpoints = {
     // Sources
     sources: (feedId: string) => `${feedId}/-/sources`,
     sourcesAdd: (feedId: string) => `${feedId}/-/sources/add`,
+    follow: (feedId: string) => `${feedId}/-/follow`,
     publish: (feedId: string) => `${feedId}/-/publish`,
     publishSet: (feedId: string) => `${feedId}/-/publish/set`,
     publishForget: (feedId: string) => `${feedId}/-/publish/forget`,

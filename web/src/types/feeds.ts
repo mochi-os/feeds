@@ -41,6 +41,14 @@ export interface Feed {
   // The ids of the accounts on other networks the feed publishes to; the
   // owner's view only.
   publish?: string[]
+  // The hosted fediverse accounts a public feed publishes to, which a visitor
+  // from another network may follow: each its address and its page.
+  accounts?: FollowAccount[]
+}
+
+export interface FollowAccount {
+  address: string
+  url: string
 }
 
 // What a handle or link looked up from search names: a person or community on
@@ -56,13 +64,16 @@ export interface Lookup {
   quote?: import('@mochi/web').Quote
 }
 
-// One of the owner's linked accounts a feed may publish to or read from.
+// One of the owner's accounts a feed may publish to or read from: linked on
+// another server, or hosted here.
 export interface PublishAccount {
   id: string
   type: string
   identifier: string
   name: string
   server: string
+  hosted?: boolean
+  url?: string
 }
 
 // Directory entry for search results

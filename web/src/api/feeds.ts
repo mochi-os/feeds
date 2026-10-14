@@ -749,6 +749,18 @@ const forgetCopies = async (
 const lookup = async (query: string): Promise<Lookup> =>
   client.get<Lookup>(endpoints.feeds.lookup, { params: { query } })
 
+// Where a visitor's own server follows one of the feed's hosted accounts: the
+// page to send them to, from the handle they gave.
+const follow = async (
+  feedId: string,
+  handle: string,
+  account: string
+): Promise<{ url: string }> =>
+  client.post<{ url: string }, { handle: string; account: string }>(
+    endpoints.feeds.follow(feedId),
+    { handle, account }
+  )
+
 const importAccount = async (
   feedId: string,
   account: string,
@@ -1094,6 +1106,7 @@ export const feedsApi = {
   readAllAggregate,
   getRssToken,
   revokeRssToken,
+  follow,
   getPublish,
   lookup,
   setPublish,
