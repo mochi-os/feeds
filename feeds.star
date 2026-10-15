@@ -8376,8 +8376,8 @@ def action_rss(a):
 # Accounts on other networks (the federation plan, phase 12).
 #
 # A public feed publishes to a list of the user's accounts, empty by default
-# (decision 27): here the linked Mastodon and Bluesky accounts, hosted accounts
-# joining the same list in phases 15 and 18. Each post is copied to each
+# (decision 27): the linked Mastodon and Bluesky accounts, and the hosted
+# fediverse (phase 15) and Bluesky (phase 18) accounts. Each post is copied to each
 # account - text from markdown, cut to the network's limit with a link back,
 # the attachments that fit uploaded with their descriptions and the rest left
 # to the link (decision 24) - and the copy's id kept per post and account so
@@ -8389,10 +8389,10 @@ def action_rss(a):
 # notifications reach the bell, and a continuing archive of it is kept in the
 # user's own storage.
 
-# The networks a feed publishes to through linked accounts, and the one it
-# publishes to through hosted accounts (phase 15).
+# The networks a feed publishes to through linked accounts, and those it
+# publishes to through hosted accounts (phases 15 and 18).
 PUBLISH_TYPES = ["mastodon", "bluesky"]
-HOSTED_TYPES = ["fediverse"]
+HOSTED_TYPES = ["fediverse", "bluesky"]
 
 # The source types an account offers, and every source type polled on a
 # schedule, with the SQL fragment that selects those.
@@ -8432,7 +8432,7 @@ BACKUP_INTERVAL = 86400
 
 def publishable(acc):
 	"""Whether an account is one a feed may publish to: a linked account on a
-	network that takes posts, or a hosted fediverse account."""
+	network that takes posts, or a hosted fediverse or Bluesky account."""
 	if acc.get("hosted"):
 		return acc.get("type") in HOSTED_TYPES
 	return acc.get("type") in PUBLISH_TYPES
@@ -8643,11 +8643,37 @@ BLUESKY_LIMITS = {"characters": BLUESKY_CHARACTERS, "images": BLUESKY_IMAGES, "v
 
 # === Publishing ===
 
+def bluesky_facets(text):
+	"""The rich text of a post record: each link, @handle and #tag in the
+	text as a facet over its byte range, a mention carrying the identifier
+	its handle resolves to. Byte ranges, as the network counts them."""
+	facets = []
+	position = 0
+	for token in text.split():
+		start = text.find(token, position)
+		if start < 0:
+			continue
+		position = start + len(token)
+		word = token.rstrip(".,;:!?)]}\"'")
+		if not word:
+			continue
+		index = {"byteStart": start, "byteEnd": start + len(word)}
+		if (word.startswith("https://") and len(word) > 8) or (word.startswith("http://") and len(word) > 7):
+			facets.append({"index": index, "features": [{"$type": "app.bsky.richtext.facet#link", "uri": word}]})
+		elif word.startswith("@") and "." in word and len(word) > 3:
+			found = mochi.account.resolve(word[1:])
+			if found and found.get("network") == "bluesky" and found.get("id"):
+				facets.append({"index": index, "features": [{"$type": "app.bsky.richtext.facet#mention", "did": found["id"]}]})
+		elif word.startswith("#") and len(word) > 1 and len(word) <= 65 and word[1:].isalnum():
+			facets.append({"index": index, "features": [{"$type": "app.bsky.richtext.facet#tag", "tag": word[1:]}]})
+	return facets
+
 def publish_object(acc, text, link, attachments, source, features=None):
 	"""The object a post becomes on an account's network, in that network's
 	own form (mochi.account.object.create), with the text cut and the
-	attachments that fit, and on Mastodon its visibility, content warning,
-	sensitive flag, language and poll (phase 17)."""
+	attachments that fit; on Mastodon its visibility, content warning,
+	sensitive flag, language and poll (phase 17); on Bluesky its links,
+	mentions and hashtags as facets and its language."""
 	features = features or post_features({})
 	limits = mastodon_limits(acc) if acc["type"] == "mastodon" else BLUESKY_LIMITS
 	uploads, omitted = publish_media(acc, attachments, limits)
@@ -8671,12 +8697,11 @@ def publish_object(acc, text, link, attachments, source, features=None):
 			object["poll"] = {"options": [o["name"] for o in poll["options"]], "expires_in": expires, "multiple": bool(poll.get("multiple"))}
 		return object
 	object = {"$type": "app.bsky.feed.post", "text": body}
-	facets = []
-	if link and link in body:
-		start = body.find(link)
-		facets.append({"index": {"byteStart": start, "byteEnd": start + len(link)}, "features": [{"$type": "app.bsky.richtext.facet#link", "uri": link}]})
+	facets = bluesky_facets(body)
 	if facets:
 		object["facets"] = facets
+	if features["language"]:
+		object["langs"] = [features["language"]]
 	if uploads:
 		if uploads[0]["kind"] == "video":
 			object["embed"] = {"$type": "app.bsky.embed.video", "video": uploads[0]["upload"]["data"], "alt": uploads[0]["description"]}
@@ -8754,7 +8779,9 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 				object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source, features)
 			else:
 				object = publish_object(acc, text, link, attachments, source, features)
-			result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"])
+			# A sourced post may wait for the relay's budget on a hosted
+			# Bluesky account (decision 30).
+			result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"], sourced=bool(source))
 		if not result:
 			mochi.log.warn("Feeds could not publish post %s to %s", post_id, acc.get("identifier", acc["id"]))
 			continue
