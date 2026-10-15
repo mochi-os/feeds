@@ -107,6 +107,10 @@ msgstr "Mipangilio ya {0}"
 msgid "{0} sources"
 msgstr "Vyanzo ya {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Imeshirikiwa mara moja} other {Imeshirikiwa mara #}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#sk} other {#sk}}"
@@ -459,6 +463,10 @@ msgstr "Pia futa machapisho yaliyoletwa kutoka chanzo hiki"
 msgid "Also on {0}"
 msgstr "Pia kwenye {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Jibu pia kutoka"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Mshangao"
@@ -631,9 +639,19 @@ msgstr "Bango limesasishwa"
 msgid "Binary file not shown"
 msgstr "Faili ya binari haionyeshwi"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Zuia"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "Zuia {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "Kuzuia {author}?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "Zuia {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "Zuia {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Amezuiwa"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Kamera haipatikani"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Maelezo ya muktadha na undani."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Endelea"
 
@@ -1007,7 +1031,12 @@ msgstr "Imeshindwa kubadilisha mahali mlisho unapochapisha"
 msgid "Could not delete the copies"
 msgstr "Imeshindwa kufuta nakala"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Hilo halikuweza kufanyika"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Imeshindwa kupata seva hiyo"
 
@@ -2240,6 +2269,23 @@ msgstr "Imehamisha {field}"
 msgid "Moving to {0}"
 msgstr "Inahamishia {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Nyamazisha"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "Nyamazisha {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "Kunyamazisha {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Amenyamazishwa"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Hakuna ufikiaji"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Hakuna sheria za ufikiaji zilizosanidiwa. Ongeza sheria kudhibiti nani anaweza kufikia rasilimali hii."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Hakuna akaunti"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Sajili upya pasiki zako kwenye seva hii"
 msgid "React and view"
 msgstr "Jibu na uone"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Sababu"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Inapendekezwa"
@@ -2889,12 +2945,34 @@ msgstr "Hurudiwa"
 msgid "Reply"
 msgstr "Jibu"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Jibu kutoka mtandao mwingine"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "Jibu kwa {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Ripoti"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "Ripoti {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "Kuripoti {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Imeripotiwa"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Ombi la maikrofoni halikujibiwa"
 msgid "The passkey request was not answered"
 msgstr "Ombi la pasiki halikujibiwa"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Ripoti huenda kwa wasimamizi wa seva yao wenyewe, pamoja na maoni haya."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Maudhui yaliyoombwa hayakupatikana."
@@ -3446,6 +3528,14 @@ msgstr "Hisia za mtu huyu katika mlisho huu zitafutwa."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Hataweza kuona mlisho huu tena."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Bado wanaweza kukufuata, lakini hakuna chochote zaidi wanachotuma kitakachokufikia."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Hawakufuati tena, na hakuna chochote zaidi wanachotuma kitakachokufikia."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Mabadiliko yako yatapotea."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Jina lako la utani"
 

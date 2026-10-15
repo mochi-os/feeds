@@ -107,6 +107,10 @@ msgstr "{0} ezarpenak"
 msgid "{0} sources"
 msgstr "{0} iturriak"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Behin bultzatua} other {# aldiz bultzatua}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#eg} other {#eg}}"
@@ -459,6 +463,10 @@ msgstr "Ezabatu, gainera, iturri honetatik inportatutako argitalpenak"
 msgid "Also on {0}"
 msgstr "{0}(e)n ere bai"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Erantzun hemendik ere"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Harrituta"
@@ -631,9 +639,19 @@ msgstr "Iragarki-banda eguneratu da"
 msgid "Binary file not shown"
 msgstr "Fitxategi bitarra ez da erakusten"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Blokeatu"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "Blokeatu {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} blokeatu?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "Blokeatu {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} blokeatu?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Blokeatuta"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Kamera ez dago erabilgarri"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Testuinguruko informazioa eta xehetasunak."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Jarraitu"
 
@@ -1007,7 +1031,12 @@ msgstr "Ezin izan da aldatu jarioa non argitaratzen den"
 msgid "Could not delete the copies"
 msgstr "Ezin izan dira kopiak ezabatu"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Ezin izan da hori egin"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Ezin izan da zerbitzari hori aurkitu"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} lekuz aldatu da"
 msgid "Moving to {0}"
 msgstr "Hona eramaten: {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Isilarazi"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "Isilarazi {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} isilarazi?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Isilarazita"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Sarbiderik ez"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Ez da sarbide-araurik konfiguratu. Gehitu arauak baliabide honetara nork sarbidea duen kontrolatzeko."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Konturik ez"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Erregistratu berriro zure sarbide-gakoak zerbitzari honetan"
 msgid "React and view"
 msgstr "Erreakzionatu eta ikusi"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Arrazoia"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Gomendatua"
@@ -2889,12 +2945,34 @@ msgstr "Errepikatzen da"
 msgid "Reply"
 msgstr "Erantzun"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Erantzun beste sare batetik"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "Erantzun {0}-(r)i..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Salatu"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "Salatu {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} salatu?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Salatuta"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Mikrofono eskaerak ez du erantzunik jaso"
 msgid "The passkey request was not answered"
 msgstr "Sarbide-gakoaren eskaerak ez du erantzunik jaso"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Salaketa beren zerbitzariko moderatzaileei iristen zaie, iruzkin honekin batera."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Eskatutako edukia ezin izan da aurkitu."
@@ -3446,6 +3528,14 @@ msgstr "Pertsona honen erreakzioak ezabatu egiten dira jario honetan."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Ez du jario hau gehiago ikusiko."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Oraindik jarrai zaitzakete, baina bidaltzen duten ezer ez zaizu iritsiko."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Jada ez zaituzte jarraitzen, eta bidaltzen duten ezer ez zaizu iritsiko."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Zure aldaketak galduko dira."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Zure erabiltzaile-izena"
 

@@ -107,6 +107,10 @@ msgstr "{0}-innstillingar"
 msgid "{0} sources"
 msgstr "{0}-kjelder"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Framheva éin gong} other {Framheva # gonger}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#d} other {#d}}"
@@ -459,6 +463,10 @@ msgstr "Slett òg innlegg importerte frå denne kjelda"
 msgid "Also on {0}"
 msgstr "Òg på {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Svar òg frå"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Forundra"
@@ -631,9 +639,19 @@ msgstr "Banner oppdatert"
 msgid "Binary file not shown"
 msgstr "Binærfila blir ikkje vist"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Blokker"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "Blokker {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "Blokkere {author}?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "Blokker {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "Blokkere {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Blokkert"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Kamera ikkje tilgjengeleg"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Kontekstinformasjon og detaljar."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Hald fram"
 
@@ -1007,7 +1031,12 @@ msgstr "Klarte ikkje å endre kvar straumen publiserer"
 msgid "Could not delete the copies"
 msgstr "Klarte ikkje å slette kopiane"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Det kunne ikkje gjerast"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Klarte ikkje å finne tenaren"
 
@@ -2240,6 +2269,23 @@ msgstr "Flytta {field}"
 msgid "Moving to {0}"
 msgstr "Flyttar til {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Stilla"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "Demp {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "Dempe {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Dempa"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Ingen tilgang"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Ingen tilgangsreglar er sette opp. Legg til reglar for å styra kven som har tilgang til denne ressursen."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Ingen konto"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Registrer tilgangsnøklane dine på nytt på denne tenaren"
 msgid "React and view"
 msgstr "Reager og sjå"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Grunn"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Tilrådd"
@@ -2889,12 +2945,34 @@ msgstr "Gjentek seg"
 msgid "Reply"
 msgstr "Svar"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Svar frå eit anna nettverk"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "Svar til {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Rapporter"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "Rapporter {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "Rapportere {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Rapportert"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Mikrofonførespurnaden vart ikkje svara på"
 msgid "The passkey request was not answered"
 msgstr "Førespurnaden om tilgangsnøkkel vart ikkje svara på"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Rapporten går til moderatorane på deira eigen tenar, saman med denne kommentaren."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Fann ikkje innhaldet du bad om."
@@ -3446,6 +3528,14 @@ msgstr "Reaksjonane til denne personen i denne straumen blir sletta."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Dei kan ikkje lenger sjå denne straumen."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Dei kan framleis følgje deg, men ikkje noko meir dei sender når fram til deg."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Dei følgjer deg ikkje lenger, og ikkje noko meir dei sender når fram til deg."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Endringane dine går tapt."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Brukarnamnet ditt"
 

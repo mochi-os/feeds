@@ -107,6 +107,10 @@ msgstr "{0} жөндөөлөрү"
 msgid "{0} sources"
 msgstr "{0} булактары"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Бир жолу бөлүшүлдү} other {# жолу бөлүшүлдү}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#күн} other {#күн}}"
@@ -459,6 +463,10 @@ msgstr "Бул булактан импортталган посттор да ж�
 msgid "Also on {0}"
 msgstr "{0} тармагында да"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Ошондой эле мындан жооп берүү"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Таң калган"
@@ -631,9 +639,19 @@ msgstr "Баннер жаңыланды"
 msgid "Binary file not shown"
 msgstr "Экилик файл көрсөтүлбөйт"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Бөгөттөө"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} бөгөттөө"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} бөгөттөлсүнбү?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} бөгөттөө"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} бөгөттөлсүнбү?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Бөгөттөлгөн"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Камера жеткиликсиз"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Контексттик маалымат жана деталдар."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Улантуу"
 
@@ -1007,7 +1031,12 @@ msgstr "Лентанын жарыялоо ордун өзгөртүү мүмкү
 msgid "Could not delete the copies"
 msgstr "Көчүрмөлөрдү жок кылуу мүмкүн болбоду"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Муну аткаруу мүмкүн болгон жок"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Ал серверди табуу мүмкүн болбоду"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} жылдырылды"
 msgid "Moving to {0}"
 msgstr "{0} күнүнө жылдырылууда"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Үнсүздөө"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} үнүн өчүрүү"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} үнү өчүрүлсүнбү?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Унчуктурулган"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Кирүү жок"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Кирүү эрежелери жок. Бул ресурска ким кире аларын башкаруу үчүн эрежелерди кошуңуз."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Аккаунт жок"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Бул серверде кирүү ачкычтарыңызды кайр
 msgid "React and view"
 msgstr "Реакция кылуу жана көрүү"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Себеп"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Сунушталган"
@@ -2889,12 +2945,34 @@ msgstr "Кайталанат"
 msgid "Reply"
 msgstr "Жооп"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Башка тармактан жооп берүү"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0}-га жооп..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Билдирүү"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} жөнүндө арызданууу"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} жөнүндө арызданылсынбы?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Билдирилди"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Микрофон сурамына жооп берилген жок"
 msgid "The passkey request was not answered"
 msgstr "Кирүү ачкычы сурамына жооп берилген жок"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Арыз ушул комментарий менен бирге алардын өз серверинин модераторлоруна жөнөтүлөт."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Суралган мазмун табылган жок."
@@ -3446,6 +3528,14 @@ msgstr "Бул адамдын ушул лентадагы реакциялары
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Ал мындан ары бул лентаны көрө албайт."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Алар сизге дагы эле жазыла алышат, бирок алар жөнөткөн эч нерсе сизге жетпейт."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Алар мындан ары сизге жазылбайт жана алар жөнөткөн эч нерсе сизге жетпейт."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Өзгөртүүлөрүңүз жоголот."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Колдонуучу атыңыз"
 

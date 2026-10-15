@@ -27,6 +27,11 @@ export interface Comment {
   user: string
   my_reaction: string
   reactions: Reaction[]
+  // A comment from another network: its form (html, cleaned on arrival), the
+  // author's page there and the comment's id there.
+  format?: string
+  page?: string
+  remote?: string
   // Anchor: the id of one of the post's attachments this comment is about,
   // its display name (caption or file name) and its caption alone (empty
   // when it has none). Empty when unanchored.
@@ -45,6 +50,10 @@ export interface FeedComment {
   avatar?: string
   created: number
   body: string
+  // 'html' for a comment from another network, shown as cleaned HTML; the
+  // author's page there, where the name leads.
+  format?: string
+  page?: string
   reactions: ReactionCounts
   userReaction?: ReactionId | null
   attachments?: Attachment[]
@@ -65,6 +74,9 @@ export interface CreateCommentRequest {
   files?: File[]
   // Anchor the comment to one of the post's attachments
   attachment?: string
+  // The commenter's own hosted account the comment also goes out from, as a
+  // reply to the post's copy on that network
+  account?: string
 }
 
 export interface CreateCommentResponse {

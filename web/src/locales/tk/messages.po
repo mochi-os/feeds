@@ -107,6 +107,10 @@ msgstr "{0} sazlamalary"
 msgid "{0} sources"
 msgstr "{0} çeşmeleri"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Bir gezek paýlaşyldy} other {# gezek paýlaşyldy}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#gün} other {#gün}}"
@@ -459,6 +463,10 @@ msgstr "Bu çeşmeden import edilen ýazgylary hem pozmak"
 msgid "Also on {0}"
 msgstr "Şeýle hem {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Şundan hem jogap bermek"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Geň galdy"
@@ -631,9 +639,19 @@ msgstr "Banner täzelendi"
 msgid "Binary file not shown"
 msgstr "Ikilik faýl görkezilmeýär"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Petiklemek"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} blokirlemek"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} blokirlenmelimi?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} petiklemek"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} petiklenilsinmi?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Blokirlenen"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Kamera elýeterli däl"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Kontekstual maglumat we jikme-jiklikler."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Dowam etmek"
 
@@ -1007,7 +1031,12 @@ msgstr "Akymyň neşir edýän ýerini üýtgedip bolmady"
 msgid "Could not delete the copies"
 msgstr "Nusgalary pozup bolmady"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Muny edip bolmady"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Ol serweri tapyp bolmady"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} göçürildi"
 msgid "Moving to {0}"
 msgstr "{0} senesine geçirilýär"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Sessiz et"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} sessizlemek"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} sessizlenmelimi?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Sessiz edildi"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Girip bolmaýar"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Giriş düzgünleri ýok. Bu çeşmä kim girip biljekdigini dolandyrmak üçin düzgünler goşuň."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Hasap ýok"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Bu serwerde geçiş açarlaryňyzy gaýtadan hasaba alyň"
 msgid "React and view"
 msgstr "Reaksiýa we görmek"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Sebäp"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Maslahat berilýän"
@@ -2889,12 +2945,34 @@ msgstr "Gaýtalanýar"
 msgid "Reply"
 msgstr "Jogap"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Başga tordan jogap bermek"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} jogap ber..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Habar ber"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} barada habar bermek"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} barada habar berilmelimi?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Hasabat berildi"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Mikrofon haýyşyna jogap berilmedi"
 msgid "The passkey request was not answered"
 msgstr "Geçiş açary haýyşyna jogap berilmedi"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Habar şu teswir bilen bilelikde olaryň öz serweriniň moderatorlaryna gidýär."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Soralan mazmun tapylmady."
@@ -3446,6 +3528,14 @@ msgstr "Bu adamyň bu akymdaky reaksiýalary pozular."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Ol indi bu akymy görüp bilmez."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Olar sizi henizem yzarlap bilýärler, ýöne olaryň iberýän hiç zady size ýetmez."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Olar indi sizi yzarlamaýarlar we olaryň iberýän hiç zady size ýetmez."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Üýtgeşmeleriňiz ýitiriler."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Siziň lakamyňyz"
 

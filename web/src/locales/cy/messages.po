@@ -107,6 +107,10 @@ msgstr "Gosodiadau {0}"
 msgid "{0} sources"
 msgstr "Ffynonellau {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Wedi'i hybu unwaith} other {Wedi'i hybu # gwaith}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#dydd} other {#dydd}}"
@@ -459,6 +463,10 @@ msgstr "Hefyd dileu postiadau a fewnforiwyd o'r ffynhonnell hon"
 msgid "Also on {0}"
 msgstr "Hefyd ar {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Ateb hefyd o"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Wedi rhyfeddu"
@@ -631,9 +639,19 @@ msgstr "Baner wedi'i diweddaru"
 msgid "Binary file not shown"
 msgstr "Ni ddangosir y ffeil ddeuaidd"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Blocio"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "Rhwystro {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "Rhwystro {author}?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "Blocio {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "Blocio {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Wedi'i rwystro"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Camera ddim ar gael"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Gwybodaeth a manylion cyd-destunol."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Parhau"
 
@@ -1007,7 +1031,12 @@ msgstr "Methu newid ble mae'r llif yn cyhoeddi"
 msgid "Could not delete the copies"
 msgstr "Methu dileu'r copïau"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Methu gwneud hynny"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Methu dod o hyd i'r gweinydd hwnnw"
 
@@ -2240,6 +2269,23 @@ msgstr "Symudwyd {field}"
 msgid "Moving to {0}"
 msgstr "Yn symud i {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Tewi"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "Tawelu {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "Tawelu {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Wedi'i ddistewi"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Dim mynediad"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Dim rheolau mynediad wedi'u ffurfweddu. Ychwanegwch reolau i reoli pwy sy'n gallu cyrchu'r adnodd hwn."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Dim cyfrif"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Ailgofrestrwch eich pasallweddi ar y gweinydd hwn"
 msgid "React and view"
 msgstr "Ymateb a gweld"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Rheswm"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Argymhellir"
@@ -2889,12 +2945,34 @@ msgstr "Yn ailadrodd"
 msgid "Reply"
 msgstr "Ymateb"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Ateb o rwydwaith arall"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "Ymateb i {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Riportio"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "Rhoi gwybod am {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "Rhoi gwybod am {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Wedi'i riportio"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Ni chafodd y cais meicroffon ei ateb"
 msgid "The passkey request was not answered"
 msgstr "Ni chafodd y cais pasallwedd ei ateb"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Mae'r adroddiad yn mynd at gymedrolwyr eu gweinydd eu hunain, gyda'r sylw hwn."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Nid oedd modd dod o hyd i'r cynnwys y gofynnwyd amdano."
@@ -3446,6 +3528,14 @@ msgstr "Caiff ymatebion y person hwn yn y ffrwd hon eu dileu."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Ni fydd yn gallu gweld y ffrwd hon mwyach."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Gallant eich dilyn o hyd, ond ni fydd dim byd arall a anfonant yn eich cyrraedd."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Nid ydynt yn eich dilyn mwyach, ac ni fydd dim byd arall a anfonant yn eich cyrraedd."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Bydd eich newidiadau'n cael eu colli."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Eich enw defnyddiwr"
 

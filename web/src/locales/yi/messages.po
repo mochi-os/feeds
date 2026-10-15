@@ -107,6 +107,10 @@ msgstr "{0} אײַנשטעלונגען"
 msgid "{0} sources"
 msgstr "{0} מקורים"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {איין מאָל פֿאַרשפּרייט} other {# מאָל פֿאַרשפּרייט}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ט} other {#ט}}"
@@ -459,6 +463,10 @@ msgstr "אויך אויסמעקן פּאָסטן אימפּאָרטירט פֿו
 msgid "Also on {0}"
 msgstr "אויך אויף {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "אויך ענטפֿערן פֿון"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "פֿאַרחידושט"
@@ -631,9 +639,19 @@ msgstr "באַנער באַנײַט"
 msgid "Binary file not shown"
 msgstr "בינארע טעקע ווערט נישט געוויזן"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "בלאָקירן"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "בלאָקירן {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "בלאָקירן {author}?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "בלאָקיר {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "בלאָקיר {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "בלאָקירט"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "די קאַמערע איז נישט פֿאַראַן"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "קאָנטעקסטועלע אינפֿאָרמאַציע און פּרט�
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "ממשיך"
 
@@ -1007,7 +1031,12 @@ msgstr "ניט געלונגען צו ענדערן וווּ דער פֿיד פּ�
 msgid "Could not delete the copies"
 msgstr "ניט געלונגען אויסצומעקן די קאָפּיעס"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "מען האָט דאָס נישט געקענט טאָן"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ניט געלונגען צו געפֿינען יענעם סערווער"
 
@@ -2240,6 +2269,23 @@ msgstr "אַריבערגעפֿירט {field}"
 msgid "Moving to {0}"
 msgstr "פֿאַררוקן צו {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "פֿאַרשטומען"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "פֿאַרשטומען {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "פֿאַרשטומען {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "פֿאַרשטילט"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "קיין צוטריט"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "קיין צוטריט כּללים קאָנפֿיגורירט. צולייג כּללים צו קאָנטראָלירן ווער קען האָבן צוטריט צו דעם רעסורס."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "קיין קאָנטע נישט"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "רעגיסטרירט איבער אײַערע פּאַסקייס אויף
 msgid "React and view"
 msgstr "רעאַגיר און קוק"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "סיבה"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "רעקאָמענדירט"
@@ -2889,12 +2945,34 @@ msgstr "חזרט זיך"
 msgid "Reply"
 msgstr "ענטפֿער"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "ענטפֿערן פֿון אַן אַנדער נעץ"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "ענטפֿער צו {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "באַריכט"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "באַריכטן {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "באַריכטן {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "באַריכטעט"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "די מיקראָפֿאָן־בקשה איז נישט געענטפֿער
 msgid "The passkey request was not answered"
 msgstr "די פּאַסקיי־בקשה איז נישט געענטפֿערט געוואָרן"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "דער באַריכט גייט צו די מאָדעראַטאָרן פֿון זייער אייגענעם סערווער, מיט דעם קאָמענטאַר."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "דער פֿאַרלאַנגטער אינהאַלט איז נישט געפֿונען געוואָרן."
@@ -3446,6 +3528,14 @@ msgstr "די רעאַקציעס פֿון דער פּערזאָן אין דעם �
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "זיי וועלן מער ניט קענען זען דעם פֿיד."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "זיי קענען דיך נאָך אַלץ נאָכפֿאָלגן, אָבער גאָרנישט מער וואָס זיי שיקן וועט דיך דערגרייכן."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "זיי פֿאָלגן דיך מער נישט נאָך, און גאָרנישט מער וואָס זיי שיקן וועט דיך דערגרייכן."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "אײַערע ענדערונגען װעלן פֿאַרלוירן װערן."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "אײַער צונאָמען"
 

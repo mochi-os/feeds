@@ -71,8 +71,8 @@ import type { FeedGoneReason } from '@/hooks/useFeedWebsocket'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedGone } from '@/features/feeds/components/feed-gone'
 import { FeedBanner } from '../components/feed-banner'
-import { FollowButton } from '../components/follow-button'
 import { FeedPosts } from '../components/feed-posts'
+import { FollowButton } from '../components/follow-button'
 import { usePostHandlers } from '../hooks'
 import { removeCommentFromTree } from '../utils'
 
@@ -384,10 +384,11 @@ export function EntityFeedPage({
       postId: string,
       body?: string,
       files?: File[],
-      attachment?: string
+      attachment?: string,
+      account?: string
     ) => {
       markRead(postId, feed.fingerprint ?? feed.id)
-      return handleAddComment(feedId, postId, body, files, attachment)
+      return handleAddComment(feedId, postId, body, files, attachment, account)
     },
     [handleAddComment, markRead, feed.fingerprint, feed.id]
   )

@@ -107,6 +107,10 @@ msgstr "Roghainnean {0}"
 msgid "{0} sources"
 msgstr "Tùsan {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Air a bhrosnachadh aon turas} two {Air a bhrosnachadh dà thuras} few {Air a bhrosnachadh # tursan} other {Air a bhrosnachadh # turas}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#là} other {#là}}"
@@ -459,6 +463,10 @@ msgstr "Sguab às cuideachd postaichean a chaidh ion-phortadh bhon tùs seo"
 msgid "Also on {0}"
 msgstr "Cuideachd air {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Freagair cuideachd o"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Air iongnadh"
@@ -631,9 +639,19 @@ msgstr "Bratach air ùrachadh"
 msgid "Binary file not shown"
 msgstr "Cha dèid am faidhle dà-fhillte a shealltainn"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Bac"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "Bac {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "A bheil thu airson {author} a bhacadh?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "Bac {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "Bac {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Air a bhacadh"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Chan eil an camara ri fhaighinn"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Fiosrachadh agus mion-fhiosrachadh co-theacsail."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Lean air adhart"
 
@@ -1007,7 +1031,12 @@ msgstr "Cha b' urrainn dhuinn atharrachadh càite am foillsich an t-inbhir"
 msgid "Could not delete the copies"
 msgstr "Cha b' urrainn dhuinn na lethbhric a sguabadh às"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Cha b’ urrainn dhuinn seo a dhèanamh"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Cha b' urrainn dhuinn am frithealaiche sin a lorg"
 
@@ -2240,6 +2269,23 @@ msgstr "Chaidh {field} a ghluasad"
 msgid "Moving to {0}"
 msgstr "Ga ghluasad gu {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Cuir na thosd"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "Mùch {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "A bheil thu airson {author} a mhùchadh?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Air a thostachadh"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Gun chothrom"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Cha deach riaghailtean cothraim a chur air dòigh. Cuir riaghailtean ris airson smachd a chumail air cò aig a tha cothrom an goireas seo."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Gun chunntas"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Ath-chlàraich na pasgairean agad air an fhrithealaiche seo"
 msgid "React and view"
 msgstr "Dèan ath-bhualadh is seall"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Adhbhar"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Air a mholadh"
@@ -2889,12 +2945,34 @@ msgstr "Ag ath-aithris"
 msgid "Reply"
 msgstr "Freagair"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Freagair o lìonra eile"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "Freagair {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Aithris"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "Innis mu {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "A bheil thu airson innse mu {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Air aithris"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Cha deach an t-iarrtas micreofon a fhreagairt"
 msgid "The passkey request was not answered"
 msgstr "Cha deach an t-iarrtas pasgair a fhreagairt"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Thèid an aithris gu maoir an fhrithealaiche aca fhèin, leis a’ bheachd seo."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Cha b' urrainn dhuinn an t-susbaint a chaidh iarraidh a lorg."
@@ -3446,6 +3528,14 @@ msgstr "Thèid ath-bhualaidhean an neach seo san inbhir seo a sguabadh às."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Chan fhaic an neach seo an inbhir seo tuilleadh."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "’S urrainn dhaibh do leantainn fhathast, ach cha ruig dad eile a chuireas iad thu."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Chan eil iad gad leantainn tuilleadh, is cha ruig dad eile a chuireas iad thu."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Thèid na h-atharraichean agad air chall."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "D' ainm-cleachdaiche"
 

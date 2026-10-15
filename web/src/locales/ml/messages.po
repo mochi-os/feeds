@@ -107,6 +107,10 @@ msgstr "{0} ക്രമീകരണങ്ങൾ"
 msgid "{0} sources"
 msgstr "{0} സ്രോതസ്സുകൾ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {ഒരിക്കൽ ബൂസ്റ്റ് ചെയ്തു} other {# തവണ ബൂസ്റ്റ് ചെയ്തു}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ദി} other {#ദി}}"
@@ -459,6 +463,10 @@ msgstr "ഈ ഉറവിടത്തിൽ നിന്ന് ഇറക്കു
 msgid "Also on {0}"
 msgstr "{0}-ലും ഉണ്ട്"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "ഇതിൽ നിന്നും മറുപടി നൽകുക"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "അത്ഭുതപ്പെട്ടു"
@@ -631,9 +639,19 @@ msgstr "ബാനർ അപ്ഡേറ്റുചെയ്തു"
 msgid "Binary file not shown"
 msgstr "ബൈനറി ഫയൽ കാണിച്ചിട്ടില്ല"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "ബ്ലോക്ക് ചെയ്യുക"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} എന്നയാളെ ബ്ലോക്ക് ചെയ്യുക"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} എന്നയാളെ ബ്ലോക്ക് ചെയ്യണോ?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} ബ്ലോക്ക് ചെയ്യുക"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} ബ്ലോക്ക് ചെയ്യണോ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "ബ്ലോക്ക് ചെയ്തു"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "ക്യാമറ ലഭ്യമല്ല"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "സന്ദർഭോചിത വിവരങ്ങളും വിശ�
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "തുടരുക"
 
@@ -1007,7 +1031,12 @@ msgstr "ഫീഡ് പ്രസിദ്ധീകരിക്കുന്ന �
 msgid "Could not delete the copies"
 msgstr "പകർപ്പുകൾ ഇല്ലാതാക്കാൻ കഴിഞ്ഞില്ല"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "അത് ചെയ്യാനായില്ല"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ആ സെർവർ കണ്ടെത്താൻ കഴിഞ്ഞില്ല"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} നീക്കി"
 msgid "Moving to {0}"
 msgstr "{0} എന്നതിലേക്ക് നീക്കുന്നു"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "നിശബ്ദമാക്കുക"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} എന്നയാളെ മ്യൂട്ട് ചെയ്യുക"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} എന്നയാളെ മ്യൂട്ട് ചെയ്യണോ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "മ്യൂട്ട് ചെയ്തു"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "ആക്സസ് ഇല്ല"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ആക്സസ് നിയമങ്ങളൊന്നും കോൺഫിഗർ ചെയ്തിട്ടില്ല. ഈ റിസോഴ്സ് ആർക്കെല്ലാം ആക്സസ് ചെയ്യാമെന്ന് നിയന്ത്രിക്കാൻ നിയമങ്ങൾ ചേർക്കുക."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "അക്കൗണ്ട് ഇല്ല"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ഈ സെർവറിൽ നിങ്ങളുടെ പാസ്കീ
 msgid "React and view"
 msgstr "പ്രതികരിക്കുക, കാണുക"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "കാരണം"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "ശുപാർശ ചെയ്തത്"
@@ -2889,12 +2945,34 @@ msgstr "ആവർത്തിക്കുന്നു"
 msgid "Reply"
 msgstr "മറുപടി"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "മറ്റൊരു നെറ്റ്‌വർക്കിൽ നിന്ന് മറുപടി നൽകുക"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} എന്നയാൾക്ക് മറുപടി..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "റിപ്പോർട്ട് ചെയ്യുക"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} എന്നയാളെ റിപ്പോർട്ട് ചെയ്യുക"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} എന്നയാളെ റിപ്പോർട്ട് ചെയ്യണോ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "റിപ്പോർട്ട് ചെയ്തു"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "മൈക്രോഫോൺ അഭ്യർത്ഥനയ്ക്ക�
 msgid "The passkey request was not answered"
 msgstr "പാസ്കീ അഭ്യർത്ഥനയ്ക്ക് മറുപടി ലഭിച്ചില്ല"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "റിപ്പോർട്ട് ഈ അഭിപ്രായത്തോടൊപ്പം അവരുടെ സ്വന്തം സെർവറിന്റെ മോഡറേറ്റർമാർക്ക് പോകുന്നു."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "അഭ്യർത്ഥിച്ച ഉള്ളടക്കം കണ്ടെത്താനായില്ല."
@@ -3446,6 +3528,14 @@ msgstr "ഈ വ്യക്തിയുടെ ഈ ഫീഡിലെ പ്ര�
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "അവർക്ക് ഇനി ഈ ഫീഡ് കാണാൻ കഴിയില്ല."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "അവർക്ക് ഇപ്പോഴും നിങ്ങളെ പിന്തുടരാം, പക്ഷേ അവർ അയയ്ക്കുന്നതൊന്നും നിങ്ങളിൽ എത്തില്ല."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "അവർ ഇനി നിങ്ങളെ പിന്തുടരുന്നില്ല, അവർ അയയ്ക്കുന്നതൊന്നും നിങ്ങളിൽ എത്തില്ല."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "നിങ്ങളുടെ മാറ്റങ്ങൾ നഷ്ടപ്പെടും."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "നിങ്ങളുടെ ഉപയോക്തൃനാമം"
 

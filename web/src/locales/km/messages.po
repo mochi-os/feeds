@@ -107,6 +107,10 @@ msgstr "ការកំណត់ {0}"
 msgid "{0} sources"
 msgstr "ប្រភព {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, other {បានចែករំលែក # ដង}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ថ} other {#ថ}}"
@@ -459,6 +463,10 @@ msgstr "លុបការបង្ហោះដែលបាននាំចូល
 msgid "Also on {0}"
 msgstr "មាននៅលើ {0} ផងដែរ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "ឆ្លើយតបពីនេះផងដែរ"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ភ្ញាក់ផ្អើល"
@@ -631,9 +639,19 @@ msgstr "បានធ្វើបច្ចុប្បន្នភាពបដា
 msgid "Binary file not shown"
 msgstr "ឯកសារ​គោលពីរ​មិន​ត្រូវ​បាន​បង្ហាញ​ទេ"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "រារាំង"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "រារាំង {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "រារាំង {author} ឬ?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "រារាំង {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "រារាំង {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "បានរារាំង"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "កាមេរ៉ាមិនអាចប្រើបាន"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "ព័ត៌មាន និងព័ត៌មានលម្អិត�
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "បន្ត"
 
@@ -1007,7 +1031,12 @@ msgstr "មិនអាចប្ដូរកន្លែងបោះផ្សា
 msgid "Could not delete the copies"
 msgstr "មិនអាចលុបច្បាប់ចម្លងបានទេ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "មិនអាចធ្វើវាបានទេ"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "មិនអាចរកឃើញម៉ាស៊ីនមេនោះបានទេ"
 
@@ -2240,6 +2269,23 @@ msgstr "បានផ្លាស់ទី {field}"
 msgid "Moving to {0}"
 msgstr "កំពុងផ្លាស់ទីទៅ {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "បិទសំឡេង"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "បិទសំឡេង {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "បិទសំឡេង {author} ឬ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "បានបិទសំឡេង"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "គ្មានសិទ្ធិចូលប្រើ"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "មិនមានច្បាប់ចូលប្រើបានកំណត់រចនាសម្ព័ន្ធទេ។ បន្ថែមច្បាប់ដើម្បីគ្រប់គ្រងអ្នកដែលអាចចូលប្រើធនធាននេះ។"
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "គ្មានគណនី"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ចុះឈ្មោះកូនសោចូលរបស់អ្នក
 msgid "React and view"
 msgstr "ប្រតិកម្ម និងមើល"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "មូលហេតុ"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "បានណែនាំ"
@@ -2889,12 +2945,34 @@ msgstr "ធ្វើឡើងវិញ"
 msgid "Reply"
 msgstr "ឆ្លើយតប"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "ឆ្លើយតបពីបណ្ដាញផ្សេង"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "ឆ្លើយតបទៅ {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "រាយការណ៍"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "រាយការណ៍ {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "រាយការណ៍ {author} ឬ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "បានរាយការណ៍"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "សំណើមីក្រូហ្វូនមិនត្រូវប
 msgid "The passkey request was not answered"
 msgstr "សំណើកូនសោចូលមិនត្រូវបានឆ្លើយតបទេ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "របាយការណ៍ត្រូវបានផ្ញើទៅអ្នកសម្របសម្រួលនៃម៉ាស៊ីនមេរបស់ពួកគេ ជាមួយមតិនេះ។"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "រកមិនឃើញខ្លឹមសារដែលបានស្នើសុំទេ។"
@@ -3446,6 +3528,14 @@ msgstr "ប្រតិកម្មរបស់បុគ្គលនេះនៅ
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "គាត់នឹងមិនអាចមើលព័ត៌មានបង្ហាញនេះបានទៀតទេ។"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "ពួកគេនៅតែអាចតាមដានអ្នកបាន ប៉ុន្តែអ្វីដែលពួកគេផ្ញើនឹងមិនមកដល់អ្នកទៀតទេ។"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "ពួកគេលែងតាមដានអ្នកទៀតហើយ ហើយអ្វីដែលពួកគេផ្ញើនឹងមិនមកដល់អ្នកទេ។"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "ការផ្លាស់ប្ដូររបស់អ្នកនឹងបាត់បង់។"
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "ឈ្មោះអ្នកប្រើរបស់អ្នក"
 

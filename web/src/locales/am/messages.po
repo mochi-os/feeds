@@ -107,6 +107,10 @@ msgstr "የ{0} ቅንብሮች"
 msgid "{0} sources"
 msgstr "የ{0} ምንጮች"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {አንድ ጊዜ ተጋርቷል} other {# ጊዜ ተጋርቷል}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ቀ} other {#ቀ}}"
@@ -459,6 +463,10 @@ msgstr "ከዚህ ምንጭ የገቡ ልጥፎችንም ሰርዝ"
 msgid "Also on {0}"
 msgstr "በ{0} ላይም"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "እንዲሁም ከዚህ ይመልሱ"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ተደንቄያለሁ"
@@ -631,9 +639,19 @@ msgstr "ባነር ተዘምኗል"
 msgid "Binary file not shown"
 msgstr "ሁለትዮሽ ፋይል አይታይም"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "አግድ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author}ን አግድ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author}ን ይታገድ?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name}ን አግድ"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} ይታገድ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "ታግዷል"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "ካሜራ አይገኝም"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "የአውድ መረጃና ዝርዝሮች።"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "ቀጥል"
 
@@ -1007,7 +1031,12 @@ msgstr "ፊዱ የሚያትምበትን ቦታ መቀየር አልተቻለም"
 msgid "Could not delete the copies"
 msgstr "ቅጂዎቹን መሰረዝ አልተቻለም"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "ይህን ማድረግ አልተቻለም"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ያንን አገልጋይ ማግኘት አልተቻለም"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} ተንቀሳቅሷል"
 msgid "Moving to {0}"
 msgstr "ወደ {0} በማንቀሳቀስ ላይ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "ዝምታ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author}ን ጸጥ አድርግ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author}ን ጸጥ ይደረግ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "ዝም ተብሏል"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "ምንም ድረሳ የለም"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ምንም የድረሳ ህጎች አልተዋቀሩም። ይህን ሀብት ማን እንደሚደርስ ለመቆጣጠር ህጎችን ያክሉ።"
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "መለያ የለም"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ፓስኪዎችዎን በዚህ አገልጋይ ላይ እንደገና �
 msgid "React and view"
 msgstr "ምላሽ ስጥ እና ተመልከት"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "ምክንያት"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "የተመከረ"
@@ -2889,12 +2945,34 @@ msgstr "ይደገማል"
 msgid "Reply"
 msgstr "ምላሽ ስጥ"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "ከሌላ አውታረ መረብ መልስ ይስጡ"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "ለ {0} መልስ..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "ሪፖርት አድርግ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author}ን ጠቁም"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author}ን ይጠቆም?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "ተዘግቧል"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "የማይክሮፎን ጥያቄው መልስ አላገኘም"
 msgid "The passkey request was not answered"
 msgstr "የፓስኪ ጥያቄው መልስ አላገኘም"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "ጥቆማው ከዚህ አስተያየት ጋር ወደ የራሳቸው አገልጋይ አወያዮች ይሄዳል።"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "የተጠየቀው ይዘት ሊገኝ አልቻለም።"
@@ -3446,6 +3528,14 @@ msgstr "የዚህ ሰው ስሜት መግለጫዎች በዚህ ፊድ ውስጥ
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "ከዚህ በኋላ ይህን ፊድ ማየት አይችሉም።"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "አሁንም ሊከተሉዎት ይችላሉ፣ ነገር ግን የሚልኩት ምንም ነገር ወደ እርስዎ አይደርስም።"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "ከእንግዲህ አይከተሉዎትም፣ እና የሚልኩት ምንም ነገር ወደ እርስዎ አይደርስም።"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "ለውጦችዎ ይጠፋሉ።"
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "የእርስዎ የተጠቃሚ ስም"
 

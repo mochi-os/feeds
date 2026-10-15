@@ -58,7 +58,8 @@ export type UseCommentActionsResult = {
     postId: string,
     body?: string,
     files?: File[],
-    attachment?: string
+    attachment?: string,
+    account?: string
   ) => Promise<void>
   /** Reply to an existing comment */
   handleReplyToComment: (
@@ -132,7 +133,10 @@ export function useCommentActions({
       postId: string,
       body?: string,
       files?: File[],
-      attachment?: string
+      attachment?: string,
+      // The commenter's own hosted account the comment also goes out from,
+      // as a reply to the post's copy on that network
+      account?: string
     ) => {
       const draft = (body ?? commentDrafts[postId])?.trim()
       if (!draft) return
@@ -180,6 +184,7 @@ export function useCommentActions({
           id: comment.id,
           files,
           attachment,
+          account,
         }
         if (files?.length) {
           await upload(

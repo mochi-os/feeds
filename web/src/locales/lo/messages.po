@@ -107,6 +107,10 @@ msgstr "ການຕັ້ງຄ່າ {0}"
 msgid "{0} sources"
 msgstr "ແຫຼ່ງ {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, other {ຖືກບູສ # ຄັ້ງ}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ວ} other {#ວ}}"
@@ -459,6 +463,10 @@ msgstr "ລົບໂພສທີ່ນຳເຂົ້າຈາກແຫຼ່ງ
 msgid "Also on {0}"
 msgstr "ມີຢູ່ໃນ {0} ນຳ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "ຕອບກັບຈາກນີ້ນຳ"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ປະທັບໃຈ"
@@ -631,9 +639,19 @@ msgstr "ອັບເດດປ້າຍແລ້ວ"
 msgid "Binary file not shown"
 msgstr "ບໍ່ສະແດງໄຟລ໌ຖານສອງ"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "ບລັອກ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "ບລັອກ {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "ບລັອກ {author} ບໍ?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "ບລັອກ {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "ບລັອກ {name} ບໍ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "ຖືກບລັອກ"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "ບໍ່ມີກ້ອງຖ່າຍຮູບ"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "ຂໍ້ມູນຕາມບໍລິບົດ ແລະ ລາຍລ�
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "ຕໍ່"
 
@@ -1007,7 +1031,12 @@ msgstr "ບໍ່ສາມາດປ່ຽນບ່ອນທີ່ຟີດເຜ
 msgid "Could not delete the copies"
 msgstr "ບໍ່ສາມາດລົບສຳເນົາໄດ້"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "ບໍ່ສາມາດເຮັດສິ່ງນັ້ນໄດ້"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ບໍ່ສາມາດຊອກຫາເຊີບເວີນັ້ນໄດ້"
 
@@ -2240,6 +2269,23 @@ msgstr "ຍ້າຍ {field} ແລ້ວ"
 msgid "Moving to {0}"
 msgstr "ກຳລັງຍ້າຍໄປ {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "ປິດສຽງ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "ປິດສຽງ {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "ປິດສຽງ {author} ບໍ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "ຖືກປິດສຽງ"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "ບໍ່ມີການເຂົ້າເຖິງ"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ບໍ່ມີກົດການເຂົ້າເຖິງທີ່ຕັ້ງຄ່າໄວ້. ເພີ່ມກົດເພື່ອຄວບຄຸມຜູ້ທີ່ສາມາດເຂົ້າເຖິງຊັບພະຍາກອນນີ້."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "ບໍ່ມີບັນຊີ"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ລົງທະບຽນກະແຈຜ່ານຂອງທ່ານຄ
 msgid "React and view"
 msgstr "ປະຕິກິລິຍາແລະເບິ່ງ"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "ເຫດຜົນ"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "ແນະນຳ"
@@ -2889,12 +2945,34 @@ msgstr "ເຮັດຊ້ຳ"
 msgid "Reply"
 msgstr "ຕອບ"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "ຕອບກັບຈາກເຄືອຂ່າຍອື່ນ"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "ຕອບ {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "ລາຍງານ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "ລາຍງານ {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "ລາຍງານ {author} ບໍ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "ລາຍງານແລ້ວ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "ຄຳຮ້ອງຂໍໄມໂຄຣໂຟນບໍ່ໄດ້ຮັ
 msgid "The passkey request was not answered"
 msgstr "ຄຳຮ້ອງຂໍກະແຈຜ່ານບໍ່ໄດ້ຮັບການຕອບ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "ລາຍງານຈະຖືກສົ່ງໄປຫາຜູ້ດູແລຂອງເຊີບເວີຂອງເຂົາ ພ້ອມກັບຄຳເຫັນນີ້."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "ບໍ່ພົບເນື້ອຫາທີ່ຮ້ອງຂໍ."
@@ -3446,6 +3528,14 @@ msgstr "ປະຕິກິລິຍາຂອງຄົນນີ້ໃນຟີດ
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "ເຂົາຈະບໍ່ສາມາດເບິ່ງຟີດນີ້ໄດ້ອີກ."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "ເຂົາຍັງສາມາດຕິດຕາມທ່ານໄດ້ ແຕ່ສິ່ງທີ່ເຂົາສົ່ງຈະບໍ່ເຖິງທ່ານອີກ."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "ເຂົາບໍ່ຕິດຕາມທ່ານອີກແລ້ວ ແລະ ສິ່ງທີ່ເຂົາສົ່ງຈະບໍ່ເຖິງທ່ານ."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "ການປ່ຽນແປງຂອງເຈົ້າຈະຫາຍໄປ."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "ຊື່ຜູ້ໃຊ້ຂອງທ່ານ"
 

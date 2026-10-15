@@ -107,6 +107,10 @@ msgstr "{0} կարգավորումներ"
 msgid "{0} sources"
 msgstr "{0} աղբյուրներ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Տարածվել է մեկ անգամ} other {Տարածվել է # անգամ}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#օր} other {#օր}}"
@@ -459,6 +463,10 @@ msgstr "Ջնջել նաև այս աղբյուրից ներմուծված գրա�
 msgid "Also on {0}"
 msgstr "Նաև {0}-ում"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Պատասխանել նաև այս հաշվից"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Զարմացած"
@@ -631,9 +639,19 @@ msgstr "Բանները թարմացվեց"
 msgid "Binary file not shown"
 msgstr "Երկուական ֆայլը չի ցուցադրվում"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Արգելափակել"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "Արգելափակել {author}-ին"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "Արգելափակե՞լ {author}-ին"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "Արգելափակել {name}-ին"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "Արգելափակե՞լ {name}-ին։"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Արգելափակված"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Տեսախցիկը հասանելի չէ"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Համատեքստային տեղեկություններ և մանրա�
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Շարունակել"
 
@@ -1007,7 +1031,12 @@ msgstr "Չհաջողվեց փոխել, թե որտեղ է հոսքը հրապա�
 msgid "Could not delete the copies"
 msgstr "Չհաջողվեց ջնջել պատճենները"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Չհաջողվեց դա անել"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Չհաջողվեց գտնել այդ սերվերը"
 
@@ -2240,6 +2269,23 @@ msgstr "Տեղափոխվել է {field}"
 msgid "Moving to {0}"
 msgstr "Տեղափոխվում է {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Անձայնեցնել"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "Լռեցնել {author}-ին"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "Լռեցնե՞լ {author}-ին"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Լռեցված"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Մուտք չկա"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Մուտքի կանոններ կարգավորված չեն։ Ավելացրեք կանոններ՝ կառավարելու, թե ով կարող է մուտք գործել այս ռեսուրսը։"
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Առանց հաշվի"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Կրկին գրանցեք ձեր անցաբանալիները այս ս�
 msgid "React and view"
 msgstr "Արձագանքել և դիտել"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Պատճառ"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Առաջարկվող"
@@ -2889,12 +2945,34 @@ msgstr "Կրկնվում է"
 msgid "Reply"
 msgstr "Պատասխանել"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Պատասխանել այլ ցանցից"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "Պատասխանել {0}-ին..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Հաղորդել"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "Բողոքել {author}-ի մասին"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "Բողոքե՞լ {author}-ի մասին"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Հաղորդված է"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Խոսափողի հարցումը չպատասխանվեց"
 msgid "The passkey request was not answered"
 msgstr "Անցաբանալու հարցումը չպատասխանվեց"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Բողոքը այս մեկնաբանության հետ գնում է նրանց սեփական սերվերի մոդերատորներին։"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Հնարավոր չեղավ գտնել պահանջված բովանդակությունը։"
@@ -3446,6 +3528,14 @@ msgstr "Այս անձի արձագանքները այս հոսքում ջնջվ�
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Նա այլևս չի կարողանա դիտել այս հոսքը։"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Նրանք դեռ կարող են հետևել ձեզ, բայց նրանց ուղարկածը այլևս ձեզ չի հասնի։"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Նրանք այլևս չեն հետևում ձեզ, և նրանց ուղարկածը ձեզ չի հասնի։"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Քո փոփոխությունները կկորչեն։"
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Ձեր օգտանունը"
 

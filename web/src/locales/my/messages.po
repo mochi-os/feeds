@@ -107,6 +107,10 @@ msgstr "{0} ဆက်တင်များ"
 msgid "{0} sources"
 msgstr "{0} မူရင်းများ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, other {# ကြိမ် မျှဝေထားသည်}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ရ} other {#ရ}}"
@@ -459,6 +463,10 @@ msgstr "ဤအရင်းအမြစ်မှ တင်သွင်းထာ�
 msgid "Also on {0}"
 msgstr "{0} တွင်လည်း ရှိသည်"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "ဤမှလည်း ပြန်ကြားရန်"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "အံ့သြသည်"
@@ -631,9 +639,19 @@ msgstr "ပိုစတာ ပြောင်းပြီး"
 msgid "Binary file not shown"
 msgstr "ဘိုင်နရီဖိုင်ကို မပြထားပါ"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "ပိတ်ဆို့မည်"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} ကို ပိတ်ဆို့ရန်"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} ကို ပိတ်ဆို့မလား?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} ကို ပိတ်ဆို့မည်"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} ကို ပိတ်ဆို့မလား?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "ပိတ်ဆို့ထားသည်"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "ကင်မရာ မရနိုင်ပါ"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "ဆက်စပ်အချက်အလက်နှင့် အသေ�
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "ဆက်လက်လုပ်ဆောင်မည်"
 
@@ -1007,7 +1031,12 @@ msgstr "ဖိဒ် ထုတ်ဝေသည့်နေရာကို ပြ�
 msgid "Could not delete the copies"
 msgstr "မိတ္တူများကို ဖျက်၍ မရပါ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "ထိုသို့ လုပ်၍မရပါ"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ထိုဆာဗာကို ရှာမတွေ့ပါ"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} ကို ရွှေ့ခဲ့သည်"
 msgid "Moving to {0}"
 msgstr "{0} သို့ ရွှေ့နေသည်"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "အသံပိတ်"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} ကို အသံပိတ်ရန်"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} ကို အသံပိတ်မလား?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "အသံပိတ်ထား"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "ဝင်ရောက်ခွင့်မရှိ"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ဝင်ရောက်ခွင့်စည်းမျဉ်းများ မသတ်မှတ်ထားပါ။ ဤအရင်းအမြစ်ကို မည်သူဝင်နိုင်သည်ကို ထိန်းချုပ်ရန် စည်းမျဉ်းများ ထည့်ပါ။"
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "အကောင့်မရှိပါ"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ဤဆာဗာတွင် သင်၏ ဝင်ရောက်ခွ�
 msgid "React and view"
 msgstr "တုံ့ပြန်ပြီး ကြည့်ရှု"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "အကြောင်းပြချက်"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "အကြံပြုထား"
@@ -2889,12 +2945,34 @@ msgstr "ထပ်ခါထပ်ခါ ဖြစ်သည်"
 msgid "Reply"
 msgstr "ပြန်ကြား"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "အခြားကွန်ရက်မှ ပြန်ကြားရန်"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} သို့ ပြန်ကြား..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "အစီရင်ခံ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} ကို တိုင်ကြားရန်"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} ကို တိုင်ကြားမလား?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "အစီရင်ခံပြီး"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "မိုက်ခရိုဖုန်း တောင်းဆို�
 msgid "The passkey request was not answered"
 msgstr "ဝင်ရောက်ခွင့်သော့ တောင်းဆိုမှုကို မဖြေကြားခဲ့ပါ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "တိုင်ကြားချက်သည် ဤမှတ်ချက်နှင့်အတူ ၎င်းတို့၏ ဆာဗာ စီမံသူများထံ ရောက်သွားမည်။"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "တောင်းဆိုထားသော အကြောင်းအရာကို ရှာမတွေ့ပါ။"
@@ -3446,6 +3528,14 @@ msgstr "ဤသူ၏ ဤဖိဒ်အတွင်းရှိ တုံ့ပ�
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "သူတို့ ဤဖိဒ်ကို ကြည့်နိုင်တော့မည် မဟုတ်ပါ။"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "၎င်းတို့သည် သင့်ကို ဆက်လက်စောင့်ကြည့်နိုင်သေးသော်လည်း ၎င်းတို့ပို့သမျှ သင့်ထံ ရောက်မည်မဟုတ်ပါ။"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "၎င်းတို့သည် သင့်ကို မစောင့်ကြည့်တော့ဘဲ ၎င်းတို့ပို့သမျှ သင့်ထံ ရောက်မည်မဟုတ်ပါ။"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "သင်၏ ပြင်ဆင်မှုများ ပျောက်ဆုံးသွားပါမည်။"
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "သင့်သုံးစွဲသူအမည်"
 

@@ -107,6 +107,10 @@ msgstr "{0} wakichäwinaka"
 msgid "{0} sources"
 msgstr "{0} jalsuwinaka"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Mä kuti yatiyata} other {# kuti yatiyata}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#u} other {#u}}"
@@ -459,6 +463,10 @@ msgstr "Aka jalsut apantat qillqatanaks chhaqtayaña"
 msgid "Also on {0}"
 msgstr "{0} ukansa"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Ukhamarak akat jaysaña"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Muspharaña"
@@ -631,9 +639,19 @@ msgstr "Banner machaqachata"
 msgid "Binary file not shown"
 msgstr "Archivo binario janiw uñacht'ayatakiti"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Jark'ama"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} jark'aña"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} jark'añati?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} jark'ama"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "¿{name} jark'ama?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Jark'ata"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Cámara jan utjkiti"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Contexto yatiyäwinaka ukat detallenaka."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Sarantaña"
 
@@ -1007,7 +1031,12 @@ msgstr "Janiw feedan kawkir yatiyatap mayjt'ayañjamäkiti"
 msgid "Could not delete the copies"
 msgstr "Janiw copianak chhaqtayañjamäkiti"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Janiw ukax lurkiti"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Janiw uka servidor jikxatañjamäkiti"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} astata"
 msgid "Moving to {0}"
 msgstr "{0} uksaru unuqtayaskiwa"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Amukt'ayaña"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} amukt'ayaña"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} amukt'ayañati?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Amukt'ayata"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Janiw mantañax utjkiti"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Janiw mantañ kamachinakax wakichatäkiti. Khitis aka recurso mantaspa uk apnaqañatakix kamachinak yapxatam."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Jan cuentani"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Mantañ llawinakama aka servidoran wasitat qillqantma"
 msgid "React and view"
 msgstr "Reaccionaña ukat uñjaña"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Layku"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Iwxata"
@@ -2889,12 +2945,34 @@ msgstr "Kutiptiwa"
 msgid "Reply"
 msgstr "Jaysaña"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Yaqha red ukat jaysaña"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} ukar jaysaña..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Reportaña"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} yatiyaña"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} yatiyañati?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Reportata"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Micrófono mayiwix janiw jaysatäkiti"
 msgid "The passkey request was not answered"
 msgstr "Mantañ llawi mayiwix janiw jaysatäkiti"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Yatiyawix aka amuytʼampi jupanakan servidorapan moderadoranakaparuw puri."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Mayit contenidox janiw jikxataskiti."
@@ -3446,6 +3528,14 @@ msgstr "Aka feedan reaccionanakapax chhaqtayatawa."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Janiw jupax aka feed uñjkaniti."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Jupanakax jumar arkaskakispawa, ukampis janiw kuntix apayanipki ukax jumar purkaniti."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Jupanakax janiw jumar arkxapxiti, ukat janiw kuntix apayanipki ukax jumar purkaniti."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Mayjt'ayatanakamax chhaqtarakini."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Apnaqiri sutima"
 

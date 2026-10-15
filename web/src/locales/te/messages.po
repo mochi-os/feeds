@@ -107,6 +107,10 @@ msgstr "{0} సెట్టింగ్‌లు"
 msgid "{0} sources"
 msgstr "{0} సోర్స్‌లు"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {ఒకసారి బూస్ట్ చేయబడింది} other {# సార్లు బూస్ట్ చేయబడింది}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#రో} other {#రో}}"
@@ -459,6 +463,10 @@ msgstr "ఈ మూలం నుండి దిగుమతి చేయబడ�
 msgid "Also on {0}"
 msgstr "{0}లో కూడా"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "దీని నుండి కూడా బదులివ్వండి"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ఆశ్చర్యపోయాను"
@@ -631,9 +639,19 @@ msgstr "బ్యానర్ నవీకరించబడింది"
 msgid "Binary file not shown"
 msgstr "బైనరీ ఫైల్ చూపబడలేదు"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "బ్లాక్ చేయండి"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author}ను బ్లాక్ చేయండి"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author}ను బ్లాక్ చేయాలా?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name}ని బ్లాక్ చేయండి"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name}ని బ్లాక్ చేయాలా?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "బ్లాక్ చేయబడింది"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "కెమెరా అందుబాటులో లేదు"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "సందర్భోచిత సమాచారం మరియు వ
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "కొనసాగించండి"
 
@@ -1007,7 +1031,12 @@ msgstr "ఫీడ్ ప్రచురించే స్థానాన్న�
 msgid "Could not delete the copies"
 msgstr "కాపీలను తొలగించడం సాధ్యం కాలేదు"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "అది చేయడం సాధ్యపడలేదు"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ఆ సర్వర్‌ను కనుగొనడం సాధ్యం కాలేదు"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} తరలించబడింది"
 msgid "Moving to {0}"
 msgstr "{0}కి తరలిస్తోంది"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "మ్యూట్"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author}ను మ్యూట్ చేయండి"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author}ను మ్యూట్ చేయాలా?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "మ్యూట్ చేయబడింది"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "యాక్సెస్ లేదు"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "యాక్సెస్ నియమాలు ఏవీ కాన్ఫిగర్ చేయబడలేదు. ఈ రిసోర్స్‌ను ఎవరు యాక్సెస్ చేయగలరో నియంత్రించడానికి నియమాలను జోడించండి."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "ఖాతా లేదు"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ఈ సర్వర్‌లో మీ పాస్‌కీలను �
 msgid "React and view"
 msgstr "స్పందించండి మరియు చూడండి"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "కారణం"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "రికమెండ్ చేయబడింది"
@@ -2889,12 +2945,34 @@ msgstr "పునరావృతమవుతుంది"
 msgid "Reply"
 msgstr "రిప్లై"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "మరో నెట్‌వర్క్ నుండి బదులివ్వండి"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} కి ప్రత్యుత్తరం..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "రిపోర్ట్ చేయండి"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author}ను నివేదించండి"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author}ను నివేదించాలా?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "రిపోర్ట్ చేయబడింది"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "మైక్రోఫోన్ అభ్యర్థనకు స్ప�
 msgid "The passkey request was not answered"
 msgstr "పాస్‌కీ అభ్యర్థనకు స్పందన లేదు"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "నివేదిక ఈ వ్యాఖ్యతో పాటు వారి స్వంత సర్వర్ మోడరేటర్‌లకు వెళ్తుంది."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "అభ్యర్థించిన కంటెంట్ కనుగొనబడలేదు."
@@ -3446,6 +3528,14 @@ msgstr "ఈ ఫీడ్‌లో ఆ వ్యక్తి రియాక్�
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "వారు ఈ ఫీడ్‌ను ఇకపై చూడలేరు."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "వారు ఇంకా మిమ్మల్ని అనుసరించవచ్చు, కానీ వారు పంపేది ఏదీ మీకు చేరదు."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "వారు ఇక మిమ్మల్ని అనుసరించరు, వారు పంపేది ఏదీ మీకు చేరదు."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "మీ మార్పులు పోతాయి."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "మీ హ్యాండిల్"
 

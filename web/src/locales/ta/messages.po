@@ -107,6 +107,10 @@ msgstr "{0} அமைப்புகள்"
 msgid "{0} sources"
 msgstr "{0} மூலங்கள்"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {ஒருமுறை பூஸ்ட் செய்யப்பட்டது} other {# முறை பூஸ்ட் செய்யப்பட்டது}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#நா} other {#நா}}"
@@ -459,6 +463,10 @@ msgstr "இந்த ஆதாரத்திலிருந்து இறக�
 msgid "Also on {0}"
 msgstr "{0} இலும்"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "இதிலிருந்தும் பதிலளி"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "வியந்தேன்"
@@ -631,9 +639,19 @@ msgstr "பேனர் புதுப்பிக்கப்பட்டத�
 msgid "Binary file not shown"
 msgstr "பைனரி கோப்பு காட்டப்படவில்லை"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "தடு"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author}ஐத் தடு"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author}ஐத் தடுக்கவா?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} ஐத் தடு"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} ஐத் தடுக்கவா?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "தடுக்கப்பட்டது"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "கேமரா கிடைக்கவில்லை"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "சூழல் சார்ந்த தகவல் மற்றும
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "தொடர்"
 
@@ -1007,7 +1031,12 @@ msgstr "ஊட்டம் வெளியிடும் இடத்தை ம
 msgid "Could not delete the copies"
 msgstr "நகல்களை நீக்க முடியவில்லை"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "அதைச் செய்ய முடியவில்லை"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "அந்தச் சர்வரைக் கண்டறிய முடியவில்லை"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} நகர்த்தப்பட்டது"
 msgid "Moving to {0}"
 msgstr "{0} க்கு நகர்த்தப்படுகிறது"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "முடக்கு"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author}ஐ ஒலியடக்கு"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author}ஐ ஒலியடக்கவா?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "முடக்கப்பட்டது"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "அணுகல் இல்லை"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "அணுகல் விதிகள் எதுவும் கட்டமைக்கப்படவில்லை. இந்த ஆதாரத்தை யார் அணுகலாம் என்பதைக் கட்டுப்படுத்த விதிகளைச் சேர்க்கவும்."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "கணக்கு இல்லை"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "இந்த சேவையகத்தில் உங்கள் க
 msgid "React and view"
 msgstr "ரியாக்ட் மற்றும் பார்க்கவும்"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "காரணம்"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "பரிந்துரைக்கப்பட்டது"
@@ -2889,12 +2945,34 @@ msgstr "மீண்டும் நிகழ்கிறது"
 msgid "Reply"
 msgstr "பதில்"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "வேறொரு பிணையத்திலிருந்து பதிலளி"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} க்கு பதிலளி..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "புகாரளி"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author}ஐப் புகாரளி"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author}ஐப் புகாரளிக்கவா?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "புகாரளிக்கப்பட்டது"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "மைக்ரோஃபோன் கோரிக்கைக்கு �
 msgid "The passkey request was not answered"
 msgstr "கடவுக்குறி கோரிக்கைக்கு பதில் இல்லை"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "புகார் இந்தக் கருத்துடன் அவர்களின் சொந்த சேவையகத்தின் மதிப்பீட்டாளர்களுக்குச் செல்கிறது."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "கோரப்பட்ட உள்ளடக்கத்தைக் கண்டறிய முடியவில்லை."
@@ -3446,6 +3528,14 @@ msgstr "இந்த ஊட்டத்தில் அவரது எதிர
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "அவர் இந்த ஊட்டத்தை இனி பார்க்க முடியாது."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "அவர்கள் இன்னும் உங்களைப் பின்தொடரலாம், ஆனால் அவர்கள் அனுப்புவது எதுவும் உங்களை அடையாது."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "அவர்கள் இனி உங்களைப் பின்தொடரவில்லை, அவர்கள் அனுப்புவது எதுவும் உங்களை அடையாது."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "உங்கள் மாற்றங்கள் இழக்கப்படும்."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "உங்கள் புனைப்பெயர்"
 

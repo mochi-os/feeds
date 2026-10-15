@@ -107,6 +107,10 @@ msgstr "{0} ਸੈਟਿੰਗਾਂ"
 msgid "{0} sources"
 msgstr "{0} ਸਰੋਤ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {ਇੱਕ ਵਾਰ ਬੂਸਟ ਕੀਤਾ} other {# ਵਾਰ ਬੂਸਟ ਕੀਤਾ}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ਦਿ} other {#ਦਿ}}"
@@ -459,6 +463,10 @@ msgstr "ਇਸ ਸਰੋਤ ਤੋਂ ਆਯਾਤ ਕੀਤੀਆਂ ਪੋਸ�
 msgid "Also on {0}"
 msgstr "{0} 'ਤੇ ਵੀ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "ਇਸ ਤੋਂ ਵੀ ਜਵਾਬ ਦਿਓ"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ਹੈਰਾਨ"
@@ -631,9 +639,19 @@ msgstr "ਬੈਨਰ ਅਪਡੇਟ ਕੀਤਾ"
 msgid "Binary file not shown"
 msgstr "ਬਾਈਨਰੀ ਫਾਈਲ ਨਹੀਂ ਦਿਖਾਈ ਗਈ"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "ਬਲੌਕ ਕਰੋ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} ਨੂੰ ਬਲੌਕ ਕਰੋ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} ਨੂੰ ਬਲੌਕ ਕਰਨਾ ਹੈ?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} ਨੂੰ ਬਲੌਕ ਕਰੋ"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} ਨੂੰ ਬਲੌਕ ਕਰਨਾ ਹੈ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "ਬਲੌਕ ਕੀਤਾ"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "ਕੈਮਰਾ ਉਪਲਬਧ ਨਹੀਂ"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "ਪ੍ਰਸੰਗਿਕ ਜਾਣਕਾਰੀ ਅਤੇ ਵੇਰਵੇ
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "ਜਾਰੀ ਰੱਖੋ"
 
@@ -1007,7 +1031,12 @@ msgstr "ਫੀਡ ਕਿੱਥੇ ਪ੍ਰਕਾਸ਼ਿਤ ਹੁੰਦੀ �
 msgid "Could not delete the copies"
 msgstr "ਕਾਪੀਆਂ ਮਿਟਾਈਆਂ ਨਹੀਂ ਜਾ ਸਕੀਆਂ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "ਇਹ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ਉਹ ਸਰਵਰ ਨਹੀਂ ਲੱਭਿਆ ਜਾ ਸਕਿਆ"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} ਮੂਵ ਕੀਤਾ ਗਿਆ"
 msgid "Moving to {0}"
 msgstr "{0} ਉੱਤੇ ਲਿਜਾਇਆ ਜਾ ਰਿਹਾ ਹੈ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "ਮਿਊਟ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} ਨੂੰ ਮਿਊਟ ਕਰੋ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} ਨੂੰ ਮਿਊਟ ਕਰਨਾ ਹੈ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "ਮਿਊਟ ਕੀਤਾ"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "ਪਹੁੰਚ ਨਹੀਂ"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ਕੋਈ ਪਹੁੰਚ ਨਿਯਮ ਕੌਨਫਿਗਰ ਨਹੀਂ ਕੀਤੇ। ਨਿਯਮ ਜੋੜੋ ਇਹ ਕੰਟਰੋਲ ਕਰਨ ਲਈ ਕਿ ਇਸ ਰਿਸੋਰਸ ਤੱਕ ਕੌਣ ਪਹੁੰਚ ਸਕਦਾ ਹੈ।"
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "ਕੋਈ ਖਾਤਾ ਨਹੀਂ"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ਇਸ ਸਰਵਰ 'ਤੇ ਆਪਣੀਆਂ ਪਾਸਕੀਆਂ ਮ
 msgid "React and view"
 msgstr "ਪ੍ਰਤੀਕਿਰਿਆ ਦਿਓ ਅਤੇ ਦੇਖੋ"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "ਕਾਰਨ"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "ਸਿਫ਼ਾਰਸ਼ ਕੀਤੇ"
@@ -2889,12 +2945,34 @@ msgstr "ਦੁਹਰਾਇਆ ਜਾਂਦਾ ਹੈ"
 msgid "Reply"
 msgstr "ਜਵਾਬ"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "ਕਿਸੇ ਹੋਰ ਨੈੱਟਵਰਕ ਤੋਂ ਜਵਾਬ ਦਿਓ"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} ਨੂੰ ਜਵਾਬ ਦਿਓ..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "ਰਿਪੋਰਟ ਕਰੋ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} ਦੀ ਰਿਪੋਰਟ ਕਰੋ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} ਦੀ ਰਿਪੋਰਟ ਕਰਨੀ ਹੈ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "ਰਿਪੋਰਟ ਕੀਤਾ ਗਿਆ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਬੇਨਤੀ ਦਾ ਜਵਾਬ �
 msgid "The passkey request was not answered"
 msgstr "ਪਾਸਕੀ ਬੇਨਤੀ ਦਾ ਜਵਾਬ ਨਹੀਂ ਮਿਲਿਆ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "ਰਿਪੋਰਟ ਇਸ ਟਿੱਪਣੀ ਸਮੇਤ ਉਨ੍ਹਾਂ ਦੇ ਆਪਣੇ ਸਰਵਰ ਦੇ ਮੌਡਰੇਟਰਾਂ ਕੋਲ ਜਾਂਦੀ ਹੈ।"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "ਬੇਨਤੀ ਕੀਤੀ ਸਮੱਗਰੀ ਨਹੀਂ ਮਿਲੀ।"
@@ -3446,6 +3528,14 @@ msgstr "ਇਸ ਵਿਅਕਤੀ ਦੀਆਂ ਇਸ ਫੀਡ ਵਿਚਲੀ�
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "ਉਹ ਅੱਗੇ ਤੋਂ ਇਹ ਫੀਡ ਨਹੀਂ ਦੇਖ ਸਕਣਗੇ।"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "ਉਹ ਅਜੇ ਵੀ ਤੁਹਾਨੂੰ ਫ਼ਾਲੋ ਕਰ ਸਕਦੇ ਹਨ, ਪਰ ਉਹ ਜੋ ਭੇਜਣਗੇ ਉਹ ਤੁਹਾਡੇ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚੇਗਾ।"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "ਉਹ ਹੁਣ ਤੁਹਾਨੂੰ ਫ਼ਾਲੋ ਨਹੀਂ ਕਰਦੇ, ਅਤੇ ਉਹ ਜੋ ਭੇਜਣਗੇ ਉਹ ਤੁਹਾਡੇ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚੇਗਾ।"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "ਤੁਹਾਡੀਆਂ ਤਬਦੀਲੀਆਂ ਗੁੰਮ ਹੋ ਜਾਣਗੀਆਂ।"
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "ਤੁਹਾਡਾ ਉਪਭੋਗਤਾ ਨਾਮ"
 

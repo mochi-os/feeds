@@ -107,6 +107,10 @@ msgstr "{0} wakichiykuna"
 msgid "{0} sources"
 msgstr "{0} pukyukuna"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Huk kuti mast'arisqa} other {# kuti mast'arisqa}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#p} other {#p}}"
@@ -459,6 +463,10 @@ msgstr "Kay pukyumanta importasqa qillqakunatapas wischuy"
 msgid "Also on {0}"
 msgstr "{0}-pipas"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Kaymantapas kutichiy"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Utirayasqa"
@@ -631,9 +639,19 @@ msgstr "Banner musuqchasqa"
 msgid "Binary file not shown"
 msgstr "Archivo binario mana rikuchisqachu"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Hark'ay"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} hark'ay"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} hark'aychu?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name}-ta hark'ay"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "¿{name}-ta hark'ay?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Hark'asqa"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Cámara mana kanchu"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Contexto willariy hinaspa detallekuna."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Qatiy"
 
@@ -1007,7 +1031,12 @@ msgstr "Mana feedpa maypi churasqanta hukchayta atinchu"
 msgid "Could not delete the copies"
 msgstr "Mana copiakunata wischuyta atinchu"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Chaytaqa manam ruway atikunchu"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Chay servidorta mana tariyta atikurqanchu"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} astasqa"
 msgid "Moving to {0}"
 msgstr "{0}-man astachkan"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Ch'inyachiy"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} upallachiy"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} upallachiychu?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Ch'inyachisqa"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Mana yaykuy kanchu"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Manam yaykuy kamachiykuna churasqachu. Kamachiykunata yapay pikunachus kay recursoman yaykuyta atinanta kamachinaykipaq."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Mana cuentayuq"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Kay servidorpi yaykuna llaveykikunata yapamanta registray"
 msgid "React and view"
 msgstr "Reaccionay hinaspa qhaway"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Imarayku"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Recomendasqa"
@@ -2889,12 +2945,34 @@ msgstr "Kutipakun"
 msgid "Reply"
 msgstr "Kutichiy"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Huk redmanta kutichiy"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0}-man kutichiy..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Reportay"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} willakuy"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} willakuychu?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Reportasqa"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Micrófono mañakuyqa manam kutichisqachu karqan"
 msgid "The passkey request was not answered"
 msgstr "Yaykuna llave mañakuyqa manam kutichisqachu karqan"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Willakuyqa kay comentariowan kuska paykunapa servidorninpa moderadorninkunaman rin."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Mañakusqa contenido mana tarikunchu."
@@ -3446,6 +3528,14 @@ msgstr "Kay runapa reaccionninkuna kay feedpi wischusqa kanqa."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Manaña kay feedta qhawayta atinqachu."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Paykunaqa qatisunkikumanraqmi, ichaqa imatapas apachisqankuqa manañam qamman chayanqachu."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Paykunaqa manañam qatisunkikuchu, hinaspa imatapas apachisqankuqa manañam qamman chayanqachu."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Hukchasqaykikuna chinkanqa."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Identificadorniyki"
 

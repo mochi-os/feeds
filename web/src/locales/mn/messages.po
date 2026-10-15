@@ -107,6 +107,10 @@ msgstr "{0}-н тохиргоо"
 msgid "{0} sources"
 msgstr "{0}-н эх сурвалжууд"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Нэг удаа хуваалцсан} other {# удаа хуваалцсан}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ө} other {#ө}}"
@@ -459,6 +463,10 @@ msgstr "Энэ эх сурвалжаас оруулсан бичлэгүүдий
 msgid "Also on {0}"
 msgstr "Мөн {0} дээр"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Мөн эндээс хариулах"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Гайхсан"
@@ -631,9 +639,19 @@ msgstr "Баннер шинэчлэгдсэн"
 msgid "Binary file not shown"
 msgstr "Хоёртын файлыг харуулахгүй"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Блоклох"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author}-г хориглох"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author}-г хориглох уу?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name}-г блоклох"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name}-г блоклох уу?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Хориглосон"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Камер ашиглах боломжгүй"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Контекст мэдээлэл ба дэлгэрэнгүй."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Үргэлжлүүлэх"
 
@@ -1007,7 +1031,12 @@ msgstr "Фийдийн нийтлэх газрыг өөрчилж чадсанг
 msgid "Could not delete the copies"
 msgstr "Хуулбаруудыг устгаж чадсангүй"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Үүнийг хийж чадсангүй"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Тэр серверийг олж чадсангүй"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} зөөсөн"
 msgid "Moving to {0}"
 msgstr "{0} руу зөөж байна"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Чимээгүй болгох"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author}-г дуугүй болгох"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author}-г дуугүй болгох уу?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Чимээгүй болгосон"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Хандах эрх байхгүй"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Хандалтын дүрэм тохируулагдаагүй байна. Энэ нөөцөд хэн хандах эрхтэй байхыг тохируулахын тулд дүрэм нэмнэ үү."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Бүртгэлгүй"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Энэ серверт нэвтрэх түлхүүрээ дахин бү�
 msgid "React and view"
 msgstr "Хариу үйлдэл болон үзэх"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Шалтгаан"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Зөвлөмжтэй"
@@ -2889,12 +2945,34 @@ msgstr "Давтагдана"
 msgid "Reply"
 msgstr "Хариулах"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Өөр сүлжээнээс хариулах"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0}-д хариу..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Гомдол гаргах"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author}-г мэдээлэх"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author}-г мэдээлэх үү?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Гомдол гарсан"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Микрофоны хүсэлтэд хариу ирсэнгүй"
 msgid "The passkey request was not answered"
 msgstr "Нэвтрэх түлхүүрийн хүсэлтэд хариу ирсэнгүй"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Мэдээлэл энэ сэтгэгдлийн хамт тэдний өөрийн серверийн модераторуудад очно."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Хүссэн агуулга олдсонгүй."
@@ -3446,6 +3528,14 @@ msgstr "Энэ хүний энэ фийд дэх реакцууд устгагд
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Тэр цаашид энэ фийдийг харах боломжгүй болно."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Тэд таныг дагасан хэвээр байж болно, гэвч тэдний илгээсэн зүйл танд хүрэхгүй."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Тэд таныг дагахаа больсон бөгөөд тэдний илгээсэн зүйл танд хүрэхгүй."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Таны өөрчлөлт алдагдана."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Таны хэрэглэгчийн нэр"
 

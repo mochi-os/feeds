@@ -107,6 +107,10 @@ msgstr "{0} 설정"
 msgid "{0} sources"
 msgstr "{0} 소스"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, other {#회 부스트됨}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#일} other {#일}}"
@@ -459,6 +463,10 @@ msgstr "이 소스에서 가져온 게시물도 함께 삭제"
 msgid "Also on {0}"
 msgstr "{0}에도 게시됨"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "이 계정으로도 답글"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "놀람"
@@ -631,9 +639,19 @@ msgstr "배너 업데이트됨"
 msgid "Binary file not shown"
 msgstr "바이너리 파일은 표시되지 않습니다"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "차단"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} 차단"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author}님을 차단할까요?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name}님 차단"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name}님을 차단할까요?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "차단됨"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "카메라를 사용할 수 없음"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "맥락 정보 및 세부 사항."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "계속"
 
@@ -1007,7 +1031,12 @@ msgstr "피드 게시 위치를 변경할 수 없었어요"
 msgid "Could not delete the copies"
 msgstr "사본을 삭제할 수 없었어요"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "실행하지 못했습니다"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "해당 서버를 찾을 수 없었어요"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} 이동됨"
 msgid "Moving to {0}"
 msgstr "{0}(으)로 이동 중"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "음소거"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} 음소거"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author}님을 음소거할까요?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "음소거됨"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "접근 권한 없음"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "설정된 접근 규칙이 없어요. 이 리소스에 접근할 수 있는 사용자를 제어하려면 규칙을 추가하세요."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "계정 없음"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "이 서버에서 패스키를 다시 등록하세요"
 msgid "React and view"
 msgstr "반응 및 보기"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "사유"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "추천됨"
@@ -2889,12 +2945,34 @@ msgstr "반복됨"
 msgid "Reply"
 msgstr "답글"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "다른 네트워크에서 답글"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0}에게 답글..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "신고"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} 신고"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author}님을 신고할까요?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "신고됨"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "마이크 요청에 응답이 없었습니다"
 msgid "The passkey request was not answered"
 msgstr "패스키 요청에 응답이 없었습니다"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "신고는 이 댓글과 함께 상대 서버의 운영자에게 전달됩니다."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "요청한 콘텐츠를 찾을 수 없습니다."
@@ -3446,6 +3528,14 @@ msgstr "이 사람이 이 피드에 남긴 반응은 삭제돼요."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "이 피드를 더 이상 볼 수 없어요."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "상대는 계속 팔로우할 수 있지만, 상대가 보내는 것은 더 이상 도달하지 않습니다."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "상대는 더 이상 팔로우하지 않으며, 상대가 보내는 것은 도달하지 않습니다."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "변경한 내용이 사라져요."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "내 핸들"
 

@@ -107,6 +107,10 @@ msgstr "{0} ñemboheko"
 msgid "{0} sources"
 msgstr "{0} heñoiha"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Oñemombarete peteĩ jey} other {Oñemombarete # jey}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ára} other {#ára}}"
@@ -459,6 +463,10 @@ msgstr "Avei ehundi umi marandu ojegueruva'ekue ko heñoihágui"
 msgid "Also on {0}"
 msgstr "{0}-pe avei"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Embohovái avei ko'águi"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Hechapyrã"
@@ -631,9 +639,19 @@ msgstr "Banner oñembohekopyahúma"
 msgid "Binary file not shown"
 msgstr "Archivo binario noñehechaukái"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Ejoko"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "Ejoko {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "¿Ejokóta {author}?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "Ejoko {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "¿Ejoko {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Ojejokóva"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Cámara ndaipóri"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Contexto marandu ha detalle."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Tenonde"
 
@@ -1007,7 +1031,12 @@ msgstr "Ndaikatúi oñemoambue moõpa feed omoherakuã"
 msgid "Could not delete the copies"
 msgstr "Ndaikatúi oñembogue kópiakuéra"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Ndaikatúi ojejapo"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Ndaikatúi ojejuhu upe mohendaha"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} oñemongu'e"
 msgid "Moving to {0}"
 msgstr "Oñemongu'ehína {0}-pe"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Emokirirĩ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "Emokirirĩ {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "¿Emokirirĩta {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Okirirĩva"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Ndaipóri jeike"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Ndaipóri léi oñembosako'íva. Embojuaju léi resãmbyhy hag̃ua mávapa ikatu oike ko recurso-pe."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Ndaipóri cuenta"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Emboheraguapy jey nde jeike rape kuéra ko mohendahápe"
 msgid "React and view"
 msgstr "Ereacciona ha ehecha"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Mba'érepa"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Ojeporavóva"
@@ -2889,12 +2945,34 @@ msgstr "Oiko jey"
 msgid "Reply"
 msgstr "Embohovái"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Embohovái ambue red-gui"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "Embohovái {0}-pe..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Ereporta"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "Emomarandu {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "¿Emomarandúta {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Oñereportama"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Micrófono jerure ndojehechái mbohovái"
 msgid "The passkey request was not answered"
 msgstr "Jeike rape jerure noñembohováiri"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Pe momarandu oho umi moderador servidor imba'évape, ko comentario ndive."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Ndaikatúi ojejuhu tetepy ojejeruréva."
@@ -3446,6 +3528,14 @@ msgstr "Ko tapicha reacciones-kuéra ko feed-pe ojehundíta."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Ndaikatuvéima ohecha ko feed."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Ikatu gueteri ndesegui, ha katu mba'eve omondóva ndoguahẽmo'ãi ndéve."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Ndanesegui véima, ha mba'eve omondóva ndoguahẽmo'ãi ndéve."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Ne ñemoambue okañyta."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Nde puruhára réra"
 

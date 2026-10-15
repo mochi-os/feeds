@@ -92,6 +92,8 @@ export interface Post {
   read: number
   source?: PostSource
   copies?: PostCopy[]
+  // How many times the post was boosted on other networks
+  boosts?: number
   score?: number
   // Per-post access, stamped by the aggregate ("All feeds") endpoint so each
   // post carries its own feed's react/comment/manage grant.
@@ -126,6 +128,8 @@ export interface FeedPost {
   read?: number
   source?: PostSource
   copies?: PostCopy[]
+  // How many times the post was boosted on other networks
+  boosts?: number
   score?: number
   following?: boolean
 }

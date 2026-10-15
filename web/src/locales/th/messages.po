@@ -107,6 +107,10 @@ msgstr "การตั้งค่า {0}"
 msgid "{0} sources"
 msgstr "แหล่งที่มา {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, other {ถูกบูสต์ # ครั้ง}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ว} other {#ว}}"
@@ -459,6 +463,10 @@ msgstr "ลบโพสต์ที่นำเข้าจากแหล่ง
 msgid "Also on {0}"
 msgstr "มีบน {0} ด้วย"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "ตอบกลับจากบัญชีนี้ด้วย"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ประหลาดใจ"
@@ -631,9 +639,19 @@ msgstr "อัปเดตแบนเนอร์แล้ว"
 msgid "Binary file not shown"
 msgstr "ไม่แสดงไฟล์ไบนารี"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "บล็อก"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "บล็อก {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "บล็อก {author} ไหม"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "บล็อก {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "บล็อก {name} หรือไม่"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "ถูกบล็อก"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "กล้องไม่พร้อมใช้งาน"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "ข้อมูลบริบทและรายละเอียด
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "ดำเนินการต่อ"
 
@@ -1007,7 +1031,12 @@ msgstr "ไม่สามารถเปลี่ยนตำแหน่งท
 msgid "Could not delete the copies"
 msgstr "ไม่สามารถลบสำเนาได้"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "ไม่สามารถทำได้"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ไม่พบเซิร์ฟเวอร์นั้น"
 
@@ -2240,6 +2269,23 @@ msgstr "ย้าย {field}"
 msgid "Moving to {0}"
 msgstr "กำลังย้ายไปยัง {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "ปิดเสียง"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "ปิดเสียง {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "ปิดเสียง {author} ไหม"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "ปิดเสียงแล้ว"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "ไม่มีสิทธิ์เข้าถึง"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ยังไม่ได้ตั้งกฎการเข้าถึง เพิ่มกฎเพื่อควบคุมว่าใครสามารถเข้าถึงทรัพยากรนี้ได้"
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "ไม่มีบัญชี"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ลงทะเบียนพาสคีย์ของคุณให
 msgid "React and view"
 msgstr "ตอบสนองและดู"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "เหตุผล"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "แนะนำ"
@@ -2889,12 +2945,34 @@ msgstr "ทำซ้ำ"
 msgid "Reply"
 msgstr "ตอบกลับ"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "ตอบกลับจากเครือข่ายอื่น"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "ตอบกลับ {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "รายงาน"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "รายงาน {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "รายงาน {author} ไหม"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "รายงานแล้ว"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "คำขอไมโครโฟนไม่ได้รับการ
 msgid "The passkey request was not answered"
 msgstr "คำขอพาสคีย์ไม่ได้รับการตอบกลับ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "รายงานจะส่งไปยังผู้ดูแลของเซิร์ฟเวอร์ของเขาเอง พร้อมความคิดเห็นนี้"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "ไม่พบเนื้อหาที่ร้องขอ"
@@ -3446,6 +3528,14 @@ msgstr "รีแอ็กชันของบุคคลนี้ในฟี
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "ผู้ใช้รายนี้จะไม่สามารถดูฟีดนี้ได้อีก"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "เขายังติดตามคุณได้ แต่สิ่งที่เขาส่งจะไม่ถึงคุณอีก"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "เขาไม่ได้ติดตามคุณแล้ว และสิ่งที่เขาส่งจะไม่ถึงคุณ"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "การเปลี่ยนแปลงของคุณจะหายไป"
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "ชื่อแฝงของคุณ"
 

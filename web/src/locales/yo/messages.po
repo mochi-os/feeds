@@ -107,6 +107,10 @@ msgstr "Àwọn ìṣètò {0}"
 msgid "{0} sources"
 msgstr "Àwọn orísun {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {A ti gbé e ga lẹ́ẹ̀kan} other {A ti gbé e ga ní ìgbà #}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ọj} other {#ọj}}"
@@ -459,6 +463,10 @@ msgstr "Bákan náà pa àwọn ìfìránṣẹ́ tí a kó wọlé láti orísu
 msgid "Also on {0}"
 msgstr "Ó tún wà lórí {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Dáhùn pẹ̀lú láti"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Yà l'ẹnu"
@@ -631,9 +639,19 @@ msgstr "A ti ṣe àtúnṣe banner"
 msgid "Binary file not shown"
 msgstr "Fáìlì binary kò hàn"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Dènà"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "Dínà {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "Dínà {author}?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "Dènà {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "Dènà {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Ti dínà"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Kamẹra kò sí"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Ìròyìn àti ẹ̀kúnrẹ́rẹ́ ipò."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Tẹ̀síwájú"
 
@@ -1007,7 +1031,12 @@ msgstr "Kò ṣeé ṣe láti yí ibi tí fíìdì ń tẹ̀jáde sí padà"
 msgid "Could not delete the copies"
 msgstr "Kò ṣeé ṣe láti pa àwọn ẹ̀dà rẹ́"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Kò lè ṣe é"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Kò ṣeé ṣe láti rí sáfà yẹn"
 
@@ -2240,6 +2269,23 @@ msgstr "A gbé {field} lọ"
 msgid "Moving to {0}"
 msgstr "Ń kó lọ sí {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Pa ìró"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "Pa ohùn {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "Pa ohùn {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "A ti pa ohùn mọ́"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Kò sí àyè"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "A kò ṣètò àwọn òfin àyè kankan. Fi àwọn òfin kún láti ṣàkóso ẹni tó lè ní àyè sí ohun àmúṣọ̀rọ̀ yìí."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Kò sí àkàǹtì"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Tún àwọn kọ́kọ́rọ́-ìwọlé rẹ forúkọsílẹ̀ lórí
 msgid "React and view"
 msgstr "Fesi ki o wo"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Ìdí"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Tí a dábàá"
@@ -2889,12 +2945,34 @@ msgstr "Ó máa ń tún wáyé"
 msgid "Reply"
 msgstr "Dáhùn"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Dáhùn láti nẹ́tíwọ́kì mìíràn"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "Dáhùn {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Ròyìn"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "Ròyìn {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "Ròyìn {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Ti ròyìn"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "A kò dáhùn ìbéèrè gbohùngbohùn náà"
 msgid "The passkey request was not answered"
 msgstr "A kò dáhùn ìbéèrè kọ́kọ́rọ́-ìwọlé náà"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Ìròyìn náà ń lọ sí ọ̀dọ̀ àwọn alábòójútó olupin tiwọn, pẹ̀lú àlàyé yìí."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "A kò rí àkóónú tí o béèrè fún."
@@ -3446,6 +3528,14 @@ msgstr "Àwọn ìhùwàpadà ẹni yìí nínú feed yìí yóò parẹ́."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Wọn kò lè rí feed yìí mọ́."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Wọ́n ṣì lè tẹ̀lé ọ, ṣùgbọ́n kò sí ohun mìíràn tí wọ́n bá rán tí yóò dé ọ̀dọ̀ rẹ."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Wọn kò tẹ̀lé ọ mọ́, kò sì sí ohun mìíràn tí wọ́n bá rán tí yóò dé ọ̀dọ̀ rẹ."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Àwọn àyípadà rẹ yóò sọnù."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Ìnagijẹ rẹ"
 

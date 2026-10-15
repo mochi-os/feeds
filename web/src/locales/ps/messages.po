@@ -107,6 +107,10 @@ msgstr "د {0} ترتیبات"
 msgid "{0} sources"
 msgstr "د {0} سرچینې"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {یو ځل شریک شوی} other {# ځله شریک شوی}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ورځ} other {#ورځ}}"
@@ -459,6 +463,10 @@ msgstr "د دې سرچینې څخه واردات شوي پوسټونه هم ړن
 msgid "Also on {0}"
 msgstr "په {0} کې هم"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "له دې څخه هم ځواب ورکړئ"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "حیران"
@@ -631,9 +639,19 @@ msgstr "بانر نوی شو"
 msgid "Binary file not shown"
 msgstr "دوه‌ییزه دوتنه نه ښودل کېږي"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "بلاک کړئ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} بند کړئ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} بند شي؟"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} بلاک کړئ"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} بلاک کړئ؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "بند شوی"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "کامره شتون نلري"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "د شالید معلومات او توضیحات."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "دوام ورکړئ"
 
@@ -1007,7 +1031,12 @@ msgstr "د فیډ د خپرولو ځای بدل نه شو"
 msgid "Could not delete the copies"
 msgstr "کاپيانې ړنګې نه شوې"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "دا ونه شو"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "هغه سرور ونه موندل شو"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} لېږدول شو"
 msgid "Moving to {0}"
 msgstr "{0} ته لېږدول"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "خاموش"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} غلی کړئ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} غلی شي؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "بې غږه شوی"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "د لاسرسي اجازه نشته"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "د لاسرسي قاعدې نه دي تنظیم شوې. د دې سرچینې لاسرسي د کنترول لپاره قاعدې اضافه کړئ."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "حساب نشته"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "خپل پاسکي ګانې پدې سرور کې بیا ثبت کړئ"
 msgid "React and view"
 msgstr "غبرګون او کتنه"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "دلیل"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "سپارښتل شوی"
@@ -2889,12 +2945,34 @@ msgstr "تکراریږي"
 msgid "Reply"
 msgstr "ځواب"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "له بلې شبکې څخه ځواب ورکړئ"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} ته ځواب ووایاست..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "راپور ورکړئ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} راپور کړئ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} راپور شي؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "راپور شوی"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "د مایکروفون غوښتنې ته ځواب ورنکړل شو"
 msgid "The passkey request was not answered"
 msgstr "د پاسکي غوښتنې ته ځواب ورنکړل شو"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "راپور له دې تبصرې سره د دوی د خپل سرور مدیرانو ته ځي."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "غوښتل شوې منځپانګه ونه موندل شوه."
@@ -3446,6 +3528,14 @@ msgstr "د دې شخص غبرګونونه په دې فیډ کې ړنګ شي."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "دوی نور دا فیډ نه شي کتلی."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "دوی لا هم تاسو تعقیبولی شي، خو هغه څه چې لېږي تاسو ته نه رسېږي."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "دوی نور تاسو نه تعقیبوي، او هغه څه چې لېږي تاسو ته نه رسېږي."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "ستاسو بدلونونه به له لاسه ووځي."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "ستاسو مستعار نوم"
 

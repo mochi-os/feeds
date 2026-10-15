@@ -107,6 +107,10 @@ msgstr "{0} ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
 msgid "{0} sources"
 msgstr "{0} ಮೂಲಗಳು"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {ಒಮ್ಮೆ ಬೂಸ್ಟ್ ಮಾಡಲಾಗಿದೆ} other {# ಬಾರಿ ಬೂಸ್ಟ್ ಮಾಡಲಾಗಿದೆ}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ದಿ} other {#ದಿ}}"
@@ -459,6 +463,10 @@ msgstr "ಈ ಮೂಲದಿಂದ ಆಮದು ಮಾಡಿದ ಪೋಸ್ಟ�
 msgid "Also on {0}"
 msgstr "{0} ನಲ್ಲಿಯೂ ಇದೆ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "ಇದರಿಂದಲೂ ಉತ್ತರಿಸಿ"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "ಆಶ್ಚರ್ಯಚಕಿತ"
@@ -631,9 +639,19 @@ msgstr "ಬ್ಯಾನರ್ ನವೀಕರಿಸಲಾಗಿದೆ"
 msgid "Binary file not shown"
 msgstr "ಬೈನರಿ ಫೈಲ್ ತೋರಿಸಲಾಗಿಲ್ಲ"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "ನಿರ್ಬಂಧಿಸಿ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} ಅವರನ್ನು ನಿರ್ಬಂಧಿಸಿ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} ಅವರನ್ನು ನಿರ್ಬಂಧಿಸಬೇಕೇ?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} ಅವರನ್ನು ನಿರ್ಬಂಧಿಸಿ"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} ಅವರನ್ನು ನಿರ್ಬಂಧಿಸಬೇಕೆ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "ಕ್ಯಾಮೆರಾ ಲಭ್ಯವಿಲ್ಲ"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "ಸಂದರ್ಭಾನುಸಾರ ಮಾಹಿತಿ ಮತ್ತು 
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "ಮುಂದುವರಿಸಿ"
 
@@ -1007,7 +1031,12 @@ msgstr "ಫೀಡ್ ಎಲ್ಲಿ ಪ್ರಕಟಿಸುತ್ತದೆ ಎ
 msgid "Could not delete the copies"
 msgstr "ಪ್ರತಿಗಳನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "ಅದನ್ನು ಮಾಡಲಾಗಲಿಲ್ಲ"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ಆ ಸರ್ವರ್ ಅನ್ನು ಹುಡುಕಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} ಸರಿಸಲಾಗಿದೆ"
 msgid "Moving to {0}"
 msgstr "{0} ಗೆ ಸರಿಸಲಾಗುತ್ತಿದೆ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "ಮ್ಯೂಟ್"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} ಅವರನ್ನು ಮ್ಯೂಟ್ ಮಾಡಿ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} ಅವರನ್ನು ಮ್ಯೂಟ್ ಮಾಡಬೇಕೇ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "ಮ್ಯೂಟ್ ಮಾಡಲಾಗಿದೆ"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "ಪ್ರವೇಶವಿಲ್ಲ"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ಯಾವುದೇ ಪ್ರವೇಶ ನಿಯಮಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ. ಈ ಸಂಪನ್ಮೂಲವನ್ನು ಯಾರು ಪ್ರವೇಶಿಸಬಹುದು ಎಂಬುದನ್ನು ನಿಯಂತ್ರಿಸಲು ನಿಯಮಗಳನ್ನು ಸೇರಿಸಿ."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "ಖಾತೆ ಇಲ್ಲ"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ಈ ಸರ್ವರ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಪಾಸ್‌
 msgid "React and view"
 msgstr "ಪ್ರತಿಕ್ರಿಯಿಸಿ ಮತ್ತು ವೀಕ್ಷಿಸಿ"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "ಕಾರಣ"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ"
@@ -2889,12 +2945,34 @@ msgstr "ಪುನರಾವರ್ತಿಸುತ್ತದೆ"
 msgid "Reply"
 msgstr "ರಿಪ್ಲೈ"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "ಬೇರೆ ನೆಟ್‌ವರ್ಕ್‌ನಿಂದ ಉತ್ತರಿಸಿ"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} ಗೆ ಪ್ರತ್ಯುತ್ತರ..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "ರಿಪೋರ್ಟ್ ಮಾಡಿ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} ಅವರನ್ನು ವರದಿ ಮಾಡಿ"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} ಅವರನ್ನು ವರದಿ ಮಾಡಬೇಕೇ?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "ರಿಪೋರ್ಟ್ ಮಾಡಲಾಗಿದೆ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "ಮೈಕ್ರೊಫೋನ್ ವಿನಂತಿಗೆ ಉತ್ತರ 
 msgid "The passkey request was not answered"
 msgstr "ಪಾಸ್‌ಕೀ ವಿನಂತಿಗೆ ಉತ್ತರ ಸಿಗಲಿಲ್ಲ"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "ವರದಿಯು ಈ ಕಾಮೆಂಟ್‌ನೊಂದಿಗೆ ಅವರ ಸ್ವಂತ ಸರ್ವರ್‌ನ ಮಾಡರೇಟರ್‌ಗಳಿಗೆ ಹೋಗುತ್ತದೆ."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "ವಿನಂತಿಸಿದ ವಿಷಯವನ್ನು ಹುಡುಕಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
@@ -3446,6 +3528,14 @@ msgstr "ಈ ವ್ಯಕ್ತಿಯ ಪ್ರತಿಕ್ರಿಯೆಗಳನ�
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "ಅವರು ಇನ್ನು ಮುಂದೆ ಈ ಫೀಡ್ ಅನ್ನು ನೋಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "ಅವರು ಈಗಲೂ ನಿಮ್ಮನ್ನು ಅನುಸರಿಸಬಹುದು, ಆದರೆ ಅವರು ಕಳುಹಿಸುವ ಯಾವುದೂ ನಿಮ್ಮನ್ನು ತಲುಪುವುದಿಲ್ಲ."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "ಅವರು ಇನ್ನು ನಿಮ್ಮನ್ನು ಅನುಸರಿಸುವುದಿಲ್ಲ, ಮತ್ತು ಅವರು ಕಳುಹಿಸುವ ಯಾವುದೂ ನಿಮ್ಮನ್ನು ತಲುಪುವುದಿಲ್ಲ."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಳೆದುಹೋಗುತ್ತವೆ."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "ನಿಮ್ಮ ಬಳಕೆದಾರಹೆಸರು"
 

@@ -29,8 +29,18 @@ import {
   useDiscardGuard,
   type Upload,
 } from '@mochi/web'
-import { Check, Pencil, Plus, Reply, Trash2 } from 'lucide-react'
+import {
+  Ban,
+  Check,
+  Flag,
+  Pencil,
+  Plus,
+  Reply,
+  Trash2,
+  VolumeX,
+} from 'lucide-react'
 import endpoints from '@/api/endpoints'
+import { sanitizeHtml } from '../utils'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
 
@@ -52,6 +62,15 @@ type CommentThreadProps = {
   onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
   onDelete?: (commentId: string) => void
+  /**
+   * The owner's moderation of a comment by a person on another network:
+   * block or mute them, or report them to their own server with a reason.
+   */
+  onModerate?: (
+    commentId: string,
+    action: 'block' | 'mute' | 'report',
+    reason?: string
+  ) => void | Promise<void>
   currentUserId?: string
   depth?: number
   canReact?: boolean
@@ -80,6 +99,7 @@ export function CommentThread({
   onReact,
   onEdit,
   onDelete,
+  onModerate,
   currentUserId,
   depth = 0,
   canReact = true,
@@ -93,6 +113,12 @@ export function CommentThread({
   const [editing, setEditing] = useState<string | null>(null)
   const [editBody, setEditBody] = useState('')
   const [deleting, setDeleting] = useState(false)
+  // The owner's moderation of a comment from another network: which action
+  // is being confirmed, and the reason given with a report.
+  const [moderating, setModerating] = useState<
+    'block' | 'mute' | 'report' | null
+  >(null)
+  const [reportReason, setReportReason] = useState('')
   // The reply box owns its files and reports their count; the guard here and
   // the one above (which arbitrates switching between reply boxes) read it.
   const [replyFileCount, setReplyFileCount] = useState(0)
@@ -141,6 +167,24 @@ export function CommentThread({
 
   const canEditComment = isCommentOwner && onEdit
   const canDeleteComment = (isCommentOwner || canManageComments) && onDelete
+  // A person on another network is known by their own id there, which a
+  // Mochi identity never contains a colon; the owner may block, mute or
+  // report them from their comment.
+  const author = comment.author
+  const outsider = comment.subscriberId.includes(':')
+  const canModerate = outsider && canManageComments && !!onModerate
+  const authorName = comment.page ? (
+    <a
+      href={comment.page}
+      target='_blank'
+      rel='noopener noreferrer'
+      className='text-foreground font-medium hover:underline'
+    >
+      {comment.author}
+    </a>
+  ) : (
+    <span className='text-foreground font-medium'>{comment.author}</span>
+  )
 
   const getTotalReplyCount = (c: FeedComment): number => {
     if (!c.replies) return 0
@@ -206,7 +250,7 @@ export function CommentThread({
       {/* Per-row hover group - only this comment's row, not children */}
       <div className='group/row'>
         <div className='flex h-5 items-center gap-2 text-xs'>
-          <span className='text-foreground font-medium'>{comment.author}</span>
+          {authorName}
           <span className='text-muted-foreground'>·</span>
           <span className='text-muted-foreground'>
             {formatTimestamp(comment.created)}
@@ -282,6 +326,13 @@ export function CommentThread({
               </Button>
             </div>
           </div>
+        ) : comment.format === 'html' ? (
+          // A comment from another network arrived as HTML, cleaned on the
+          // way in; cleaned again here as every HTML body is.
+          <div
+            className='text-foreground prose prose-sm max-w-none text-sm leading-relaxed'
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(comment.body) }}
+          />
         ) : (
           <p className='text-foreground text-sm leading-relaxed whitespace-pre-wrap'>
             {renderMentions(comment.body)}
@@ -378,6 +429,52 @@ export function CommentThread({
                       <TooltipContent>{t`Delete comment`}</TooltipContent>
                     </Tooltip>
                   )}
+                  {canModerate && (
+                    <>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type='button'
+                            aria-label={t`Mute ${author}`}
+                            className={iconActionButtonClass}
+                            onClick={() => setModerating('mute')}
+                          >
+                            <VolumeX className='size-4' />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent>{t`Mute ${author}`}</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type='button'
+                            aria-label={t`Block ${author}`}
+                            className={iconActionButtonClass}
+                            onClick={() => setModerating('block')}
+                          >
+                            <Ban className='size-4' />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent>{t`Block ${author}`}</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type='button'
+                            aria-label={t`Report ${author}`}
+                            className={iconActionButtonClass}
+                            onClick={() => {
+                              setReportReason('')
+                              setModerating('report')
+                            }}
+                          >
+                            <Flag className='size-4' />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent>{t`Report ${author}`}</TooltipContent>
+                      </Tooltip>
+                    </>
+                  )}
                 </ActionPillActions>
               </ActionPill>
             </div>
@@ -414,6 +511,52 @@ export function CommentThread({
           setDeleting(false)
         }}
       />
+      <ConfirmDialog
+        open={moderating === 'mute'}
+        onOpenChange={(open) => !open && setModerating(null)}
+        title={t`Mute ${author}?`}
+        desc={t`They can still follow you, but nothing more they send reaches you.`}
+        confirmText={t`Mute`}
+        icon={<VolumeX className='size-4' />}
+        handleConfirm={() => {
+          void onModerate?.(comment.id, 'mute')
+          setModerating(null)
+        }}
+      />
+      <ConfirmDialog
+        open={moderating === 'block'}
+        onOpenChange={(open) => !open && setModerating(null)}
+        title={t`Block ${author}?`}
+        desc={t`They no longer follow you, and nothing more they send reaches you.`}
+        confirmText={t`Block`}
+        icon={<Ban className='size-4' />}
+        destructive={true}
+        handleConfirm={() => {
+          void onModerate?.(comment.id, 'block')
+          setModerating(null)
+        }}
+      />
+      <ConfirmDialog
+        open={moderating === 'report'}
+        onOpenChange={(open) => !open && setModerating(null)}
+        title={t`Report ${author}?`}
+        desc={t`The report goes to the moderators of their own server, with this comment.`}
+        confirmText={t`Report`}
+        icon={<Flag className='size-4' />}
+        handleConfirm={() => {
+          void onModerate?.(comment.id, 'report', reportReason.trim())
+          setModerating(null)
+        }}
+      >
+        <MentionTextarea
+          className='placeholder:text-muted-foreground'
+          value={reportReason}
+          onValueChange={setReportReason}
+          rows={3}
+          placeholder={t`Reason`}
+          aria-label={t`Reason`}
+        />
+      </ConfirmDialog>
       {discardDialog}
     </div>
   )
@@ -437,6 +580,7 @@ export function CommentThread({
           onReact={onReact}
           onEdit={onEdit}
           onDelete={onDelete}
+          onModerate={onModerate}
           currentUserId={currentUserId}
           depth={depth + 1}
           canReact={canReact}

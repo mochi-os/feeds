@@ -107,6 +107,10 @@ msgstr ""
 msgid "{0} sources"
 msgstr ""
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr ""
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr ""
@@ -459,6 +463,10 @@ msgstr ""
 msgid "Also on {0}"
 msgstr ""
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr ""
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr ""
@@ -631,8 +639,18 @@ msgstr ""
 msgid "Binary file not shown"
 msgstr ""
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
 msgstr ""
 
 #: ../../../lib/web/src/components/member-list.tsx
@@ -642,6 +660,10 @@ msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
 msgstr ""
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr ""
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr ""
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr ""
 
@@ -1007,7 +1031,12 @@ msgstr ""
 msgid "Could not delete the copies"
 msgstr ""
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr ""
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr ""
 
@@ -2240,6 +2269,23 @@ msgstr ""
 msgid "Moving to {0}"
 msgstr ""
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2321,6 +2367,11 @@ msgstr ""
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
 msgstr ""
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
@@ -2708,6 +2759,11 @@ msgstr ""
 msgid "React and view"
 msgstr ""
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr ""
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr ""
@@ -2889,11 +2945,33 @@ msgstr ""
 msgid "Reply"
 msgstr ""
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr ""
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
 msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3431,6 +3509,10 @@ msgstr ""
 msgid "The passkey request was not answered"
 msgstr ""
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr ""
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr ""
@@ -3445,6 +3527,14 @@ msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
 msgstr ""
 
 #: ../../../lib/web/src/lib/shell-errors.ts
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr ""
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr ""
 

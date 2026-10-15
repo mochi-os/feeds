@@ -14,7 +14,8 @@
 		"create": {"function": "function_create", "permission": "oauth/consent"},
 		// An object a feed published as a hosted fediverse account, asked for
 		// by core's ActivityPub engine when another server fetches it.
-		"activitypub/object": {"function": "function_activitypub_object"}
+		"activitypub/object": {"function": "function_activitypub_object"},
+		"activitypub/receive": {"function": "function_activitypub_receive"}
 	},
 
 	"architecture": {"engine": "starlark", "version": 4},
@@ -22,7 +23,7 @@
 	"require": {"version": {"minimum": "2.0.12"}},
 
 	"database": {
-		"schema": 13,
+		"schema": 14,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -82,6 +83,10 @@
 		":feed/-/sources/edit": {"function": "action_sources_edit"},
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
 		":feed/-/follow": {"function": "action_follow", "public": true},
+		":feed/-/reply": {"function": "action_reply", "public": true},
+		":feed/-/:post/:comment/block": {"function": "action_comment_block"},
+		":feed/-/:post/:comment/mute": {"function": "action_comment_mute"},
+		":feed/-/:post/:comment/report": {"function": "action_comment_report"},
 		":feed/-/publish": {"function": "action_publish_list"},
 		":feed/-/publish/set": {"function": "action_publish_set"},
 		":feed/-/publish/forget": {"function": "action_publish_forget"},

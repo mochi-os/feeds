@@ -107,6 +107,10 @@ msgstr "{0}-ის პარამეტრები"
 msgid "{0} sources"
 msgstr "{0}-ის წყაროები"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {ერთხელ გაზიარებული} other {#-ჯერ გაზიარებული}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#დღ} other {#დღ}}"
@@ -459,6 +463,10 @@ msgstr "ასევე წაშალე ამ წყაროდან ი�
 msgid "Also on {0}"
 msgstr "ასევე {0}-ზე"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "ასევე უპასუხე აქედან"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "გაოცებული"
@@ -631,9 +639,19 @@ msgstr "ბანერი განახლდა"
 msgid "Binary file not shown"
 msgstr "ორობითი ფაილი არ არის ნაჩვენები"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "დაბლოკვა"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author}-ის დაბლოკვა"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "დაიბლოკოს {author}?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name}-ის დაბლოკვა"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "დაიბლოკოს {name}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "დაბლოკილი"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "კამერა მიუწვდომელია"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "კონტექსტური ინფორმაცია და 
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "გაგრძელება"
 
@@ -1007,7 +1031,12 @@ msgstr "არხის გამოქვეყნების ადგილ�
 msgid "Could not delete the copies"
 msgstr "ასლების წაშლა ვერ მოხერხდა"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "ეს ვერ გაკეთდა"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ამ სერვერის პოვნა ვერ მოხერხდა"
 
@@ -2240,6 +2269,23 @@ msgstr "გადაადგილდა {field}"
 msgid "Moving to {0}"
 msgstr "მიმდინარეობს გადატანა {0}-ზე"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "ჩაჩუმება"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author}-ის დადუმება"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "დადუმდეს {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "დადუმებული"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "წვდომა არ არის"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "წვდომის წესები არ არის კონფიგურირებული. დაამატეთ წესები იმის მართვისთვის, თუ ვის აქვს წვდომა ამ რესურსზე."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "ანგარიშის გარეშე"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "ხელახლა დაარეგისტრირეთ თქ�
 msgid "React and view"
 msgstr "რეაქცია და ნახვა"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "მიზეზი"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "რეკომენდებული"
@@ -2889,12 +2945,34 @@ msgstr "მეორდება"
 msgid "Reply"
 msgstr "პასუხი"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "უპასუხე სხვა ქსელიდან"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "პასუხი {0}-ს..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "გასაჩივრება"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author}-ის დარეპორტება"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "დარეპორტდეს {author}?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "გაცხადებული"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "მიკროფონის მოთხოვნას პასუ�
 msgid "The passkey request was not answered"
 msgstr "წვდომის გასაღების მოთხოვნას პასუხი არ მოჰყვა"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "საჩივარი ამ კომენტართან ერთად მათი საკუთარი სერვერის მოდერატორებთან მიდის."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "მოთხოვნილი კონტენტი ვერ მოიძებნა."
@@ -3446,6 +3528,14 @@ msgstr "ამ ადამიანის რეაქციები ამ �
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "ის ვეღარ შეძლებს ამ არხის ნახვას."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "მათ ჯერ კიდევ შეუძლიათ თქვენი გამოწერა, მაგრამ მათი გაგზავნილი აღარ მოგივათ."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "ისინი აღარ გიწერენ, და მათი გაგზავნილი აღარ მოგივათ."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "შენი ცვლილებები დაიკარგება."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "თქვენი მომხმარებლის სახელი"
 

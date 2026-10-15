@@ -107,6 +107,10 @@ msgstr "إعدادات {0}"
 msgid "{0} sources"
 msgstr "مصادر {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {أُعيد نشره مرة واحدة} two {أُعيد نشره مرتين} other {أُعيد نشره # مرات}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ي} other {#ي}}"
@@ -459,6 +463,10 @@ msgstr "حذف المنشورات المستوردة من هذا المصدر أ
 msgid "Also on {0}"
 msgstr "أيضًا على {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "الرد أيضًا من"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "مندهش"
@@ -631,9 +639,19 @@ msgstr "تم تحديث البانر"
 msgid "Binary file not shown"
 msgstr "الملف الثنائي غير معروض"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "حظر"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "حظر {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "حظر {author}؟"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "حظر {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "حظر {name}؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "محظور"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "الكاميرا غير متاحة"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "معلومات وتفاصيل سياقية."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "متابعة"
 
@@ -1007,7 +1031,12 @@ msgstr "تعذّر تغيير مكان نشر التغذية"
 msgid "Could not delete the copies"
 msgstr "تعذّر حذف النسخ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "تعذر القيام بذلك"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "تعذّر العثور على ذلك الخادم"
 
@@ -2240,6 +2269,23 @@ msgstr "تم نقل {field}"
 msgid "Moving to {0}"
 msgstr "جارٍ النقل إلى {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "كتم"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "كتم {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "كتم {author}؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "مكتوم"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "لا يوجد وصول"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "لم يتم تكوين قواعد وصول. أضف قواعد للتحكم في من يمكنه الوصول إلى هذا المورد."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "بدون حساب"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "أعد تسجيل مفاتيح المرور على هذا الخادم"
 msgid "React and view"
 msgstr "التفاعل والعرض"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "السبب"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "موصى به"
@@ -2889,12 +2945,34 @@ msgstr "يتكرر"
 msgid "Reply"
 msgstr "رد"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "الرد من شبكة أخرى"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "الرد على {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "إبلاغ"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "الإبلاغ عن {author}"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "الإبلاغ عن {author}؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "تم الإبلاغ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "لم تتم الإجابة على طلب الميكروفون"
 msgid "The passkey request was not answered"
 msgstr "لم تتم الإجابة على طلب مفتاح المرور"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "يُرسل البلاغ إلى مشرفي خادمهم مع هذا التعليق."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "تعذر العثور على المحتوى المطلوب."
@@ -3446,6 +3528,14 @@ msgstr "تُحذف تفاعلات هذا الشخص في هذه التغذية."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "لن يتمكن بعد الآن من عرض هذه التغذية."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "لا يزال بإمكانهم متابعتك، لكن لن يصلك شيء آخر يرسلونه."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "لم يعودوا يتابعونك، ولن يصلك شيء آخر يرسلونه."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "ستُفقد تغييراتك."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "معرّفك"
 

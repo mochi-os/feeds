@@ -5,13 +5,6 @@
 /* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
 import type { AxiosProgressEvent } from 'axios'
 import type {
-  BackupsResponse,
-  ImportResponse,
-  Lookup,
-  PublishResponse,
-  PublishSetResponse,
-} from '@/types/feeds'
-import type {
   CreateCommentRequest,
   CreateCommentResponse,
   CreateFeedRequest,
@@ -37,6 +30,14 @@ import type {
   ViewFeedResponse,
   Source,
 } from '@/types'
+import type {
+  BackupsResponse,
+  ImportResponse,
+  Lookup,
+  PublishAccount,
+  PublishResponse,
+  PublishSetResponse,
+} from '@/types/feeds'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 
@@ -458,6 +459,9 @@ const createComment = async (
   if (payload.attachment) {
     formData.append('attachment', payload.attachment)
   }
+  if (payload.account) {
+    formData.append('account', payload.account)
+  }
   if (payload.files) {
     for (const file of payload.files) {
       formData.append('files', file)
@@ -760,6 +764,42 @@ const follow = async (
     endpoints.feeds.follow(feedId),
     { handle, account }
   )
+
+// The reply control of a public post: the visitor's own server's page for
+// the post's copy on the fediverse.
+const reply = async (
+  feedId: string,
+  postId: string,
+  handle: string
+): Promise<{ url: string }> =>
+  client.post<{ url: string }, { post: string; handle: string }>(
+    endpoints.feeds.reply(feedId),
+    { post: postId, handle }
+  )
+
+// The owner blocks, mutes or reports the person behind a comment from
+// another network.
+const moderateComment = async (
+  feedId: string,
+  postId: string,
+  commentId: string,
+  action: 'block' | 'mute' | 'report',
+  reason?: string
+): Promise<void> => {
+  await client.post(
+    endpoints.feeds.comment[action](feedId, postId, commentId),
+    reason === undefined ? {} : { reason }
+  )
+}
+
+// The user's hosted accounts on other networks, for replying from one.
+const hostedAccounts = async (): Promise<PublishAccount[]> => {
+  const accounts = await client.post<PublishAccount[], { capability: string }>(
+    endpoints.feeds.accounts,
+    { capability: 'network' }
+  )
+  return (accounts ?? []).filter((a) => a.hosted && a.type === 'fediverse')
+}
 
 const importAccount = async (
   feedId: string,
@@ -1090,6 +1130,9 @@ export const feedsApi = {
   deletePost,
   reactToPost,
   createComment,
+  reply,
+  moderateComment,
+  hostedAccounts,
   editComment,
   deleteComment,
   reactToComment,

@@ -107,6 +107,10 @@ msgstr "{0} سیٹنگز"
 msgid "{0} sources"
 msgstr "{0} سورسز"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {ایک بار بوسٹ کیا گیا} other {# بار بوسٹ کیا گیا}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#دن} other {#دن}}"
@@ -459,6 +463,10 @@ msgstr "اس ذریعہ سے درآمد کردہ پوسٹس کو بھی حذف �
 msgid "Also on {0}"
 msgstr "{0} پر بھی"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "اس سے بھی جواب دیں"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "حیران"
@@ -631,9 +639,19 @@ msgstr "بینر اپڈیٹ ہوا"
 msgid "Binary file not shown"
 msgstr "بائنری فائل نہیں دکھائی گئی"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "بلاک کریں"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} کو بلاک کریں"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} کو بلاک کریں؟"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} کو بلاک کریں"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} کو بلاک کریں؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "بلاک شدہ"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "کیمرہ دستیاب نہیں"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "سیاق و سباق کی معلومات اور تفصیلات۔"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "جاری رکھیں"
 
@@ -1007,7 +1031,12 @@ msgstr "فیڈ کے شائع ہونے کی جگہ تبدیل نہیں ہو سک�
 msgid "Could not delete the copies"
 msgstr "کاپیاں حذف نہیں ہو سکیں"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "یہ نہیں ہو سکا"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "وہ سرور نہیں مل سکا"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} منتقل ہوا"
 msgid "Moving to {0}"
 msgstr "{0} پر منتقل کیا جا رہا ہے"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "خاموش"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} کو خاموش کریں"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} کو خاموش کریں؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "خاموش"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "کوئی رسائی نہیں"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "رسائی کے کوئی قواعد کنفیگر نہیں ہیں۔ یہ کنٹرول کرنے کے لیے قواعد شامل کریں کہ اس وسیلے تک کون رسائی حاصل کر سکتا ہے۔"
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "کوئی اکاؤنٹ نہیں"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "اس سرور پر اپنی پاس کیز دوبارہ رجسٹر کری
 msgid "React and view"
 msgstr "رد عمل دیں اور دیکھیں"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "وجہ"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "تجویز کردہ"
@@ -2889,12 +2945,34 @@ msgstr "دہرایا جاتا ہے"
 msgid "Reply"
 msgstr "جواب"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "کسی دوسرے نیٹ ورک سے جواب دیں"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} کو جواب دیں..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "رپورٹ کریں"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} کی رپورٹ کریں"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} کی رپورٹ کریں؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "report ہو گیا"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "مائیکروفون کی درخواست کا جواب نہیں دیا �
 msgid "The passkey request was not answered"
 msgstr "پاس کی کی درخواست کا جواب نہیں دیا گیا"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "رپورٹ اس تبصرے کے ساتھ ان کے اپنے سرور کے ناظمین کے پاس جاتی ہے۔"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "مطلوبہ مواد نہیں مل سکا۔"
@@ -3446,6 +3528,14 @@ msgstr "اس فیڈ میں اس شخص کے ری ایکشنز حذف ہو جائ
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "وہ اب یہ فیڈ نہیں دیکھ سکیں گے۔"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "وہ اب بھی آپ کو فالو کر سکتے ہیں، لیکن وہ جو بھیجیں گے وہ آپ تک نہیں پہنچے گا۔"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "وہ اب آپ کو فالو نہیں کرتے، اور وہ جو بھیجیں گے وہ آپ تک نہیں پہنچے گا۔"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "آپ کی تبدیلیاں ضائع ہو جائیں گی۔"
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "آپ کا ہینڈل"
 

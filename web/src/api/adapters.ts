@@ -106,6 +106,8 @@ const mapComment = (
     attachment: comment.attachment || undefined,
     attachmentName: comment.attachment_name || undefined,
     attachmentCaption: comment.attachment_caption || undefined,
+    format: comment.format || undefined,
+    page: comment.page || undefined,
   }
 }
 
@@ -202,6 +204,7 @@ export const mapPosts = (
     read: post.read ?? 0,
     source: post.source,
     copies: post.copies,
+    boosts: post.boosts,
     score: post.score,
     following: post.following,
   }))

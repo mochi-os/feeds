@@ -2,7 +2,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import type {
@@ -13,8 +20,9 @@ import type {
   PostCopy,
   ReactionId,
 } from '@/types'
+import type { PublishAccount } from '@/types'
 import { t } from '@lingui/core/macro'
-import { Trans } from '@lingui/react/macro'
+import { Plural, Trans } from '@lingui/react/macro'
 import {
   Button,
   Card,
@@ -39,7 +47,15 @@ import {
   AttachmentComposer,
   AttachmentAddTile,
   type ComposerItem,
+  getErrorMessage,
   useFormat,
+  Label,
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+  Select,
+  toast,
   useListAutoAnimate,
   moveItem,
   findCommentTextInTree,
@@ -96,6 +112,7 @@ import { AttachmentComments } from './attachment-comments'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
+import { ReplyButton } from './reply-button'
 import { SavedButton } from './saved-button'
 
 // Unified attachment type for editing - can be existing or new
@@ -112,7 +129,8 @@ type FeedPostsProps = {
     postId: string,
     body?: string,
     files?: File[],
-    attachment?: string
+    attachment?: string,
+    account?: string
   ) => void | Promise<void>
   onReplyToComment: (
     feedId: string,
@@ -247,6 +265,11 @@ export type PostCommentsListProps = {
   onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
   onDelete?: (commentId: string) => void
+  onModerate?: (
+    commentId: string,
+    action: 'block' | 'mute' | 'report',
+    reason?: string
+  ) => void | Promise<void>
   onSearchPeople: (query: string) => Promise<MentionUser[]>
   currentUserId?: string
   canReact: boolean
@@ -277,6 +300,7 @@ export function PostCommentsList({
   onReact,
   onEdit,
   onDelete,
+  onModerate,
   onSearchPeople,
   currentUserId,
   canReact,
@@ -328,6 +352,7 @@ export function PostCommentsList({
             onReact={onReact}
             onEdit={onEdit}
             onDelete={onDelete}
+            onModerate={onModerate}
             onSearchPeople={onSearchPeople}
             currentUserId={currentUserId}
             canReact={canReact}
@@ -357,11 +382,17 @@ export function PostCommentsList({
 
 // Where else a post is: its copies on other networks, each a link to the copy
 // under the account it was published through.
-export function PostCopies({ copies }: { copies?: PostCopy[] }) {
-  if (!copies || copies.length === 0) return null
+export function PostCopies({
+  copies,
+  boosts,
+}: {
+  copies?: PostCopy[]
+  boosts?: number
+}) {
+  if ((!copies || copies.length === 0) && !boosts) return null
   return (
     <div className='text-muted-foreground mt-1 flex flex-wrap gap-x-3 text-xs'>
-      {copies.map((copy) =>
+      {(copies ?? []).map((copy) =>
         copy.url ? (
           <a
             key={copy.address}
@@ -377,6 +408,11 @@ export function PostCopies({ copies }: { copies?: PostCopy[] }) {
             <Trans>Also on {providerName(copy.network)}</Trans>
           </span>
         )
+      )}
+      {!!boosts && (
+        <span>
+          <Plural value={boosts} _1='Boosted once' other='Boosted # times' />
+        </span>
       )}
     </div>
   )
@@ -474,17 +510,77 @@ export function FeedPosts({
 
   // Rejects on failure so the box keeps its draft and files for Retry: the
   // comment was rolled back and the draft restored upstream.
+  // The commenter's hosted accounts on the fediverse, for a comment to go out
+  // from one as a reply to the post's copy (decision 31): read once a post
+  // with such a copy is shown, and the account chosen per post.
+  const [replyAccounts, setReplyAccounts] = useState<PublishAccount[]>([])
+  const [replyFrom, setReplyFrom] = useState<Record<string, string>>({})
+  const anyFediverseCopy = posts.some((p) =>
+    p.copies?.some((copy) => copy.network === 'fediverse')
+  )
+  useEffect(() => {
+    if (!isLoggedIn || readOnly || !anyFediverseCopy) return
+    let cancelled = false
+    feedsApi
+      .hostedAccounts()
+      .then((accounts) => {
+        if (!cancelled) setReplyAccounts(accounts)
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [isLoggedIn, readOnly, anyFediverseCopy])
+
   const submitComment = useCallback(
     async (feedId: string, postId: string, body: string, files?: File[]) => {
       setIsSubmittingComment(true)
       try {
-        await onAddComment(feedId, postId, body, files)
+        await onAddComment(
+          feedId,
+          postId,
+          body,
+          files,
+          undefined,
+          replyFrom[postId] || undefined
+        )
         setCommentingOn(null)
       } finally {
         setIsSubmittingComment(false)
       }
     },
-    [onAddComment]
+    [onAddComment, replyFrom]
+  )
+
+  // The owner's moderation of a comment by a person on another network.
+  const moderateComment = useCallback(
+    async (
+      feedId: string,
+      postId: string,
+      commentId: string,
+      action: 'block' | 'mute' | 'report',
+      reason?: string
+    ) => {
+      try {
+        await feedsApi.moderateComment(
+          feedId,
+          postId,
+          commentId,
+          action,
+          reason
+        )
+        toast.success(
+          action === 'block'
+            ? t`Blocked`
+            : action === 'mute'
+              ? t`Muted`
+              : t`Reported`
+        )
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Could not do that`))
+      }
+    },
+    []
   )
 
   // Only one comment box is open at a time, so the guard can live up here and
@@ -818,6 +914,11 @@ export function FeedPosts({
     canManageComments: usePerPostPermissions
       ? post.isOwner || post.permissions?.manage || false
       : isFeedOwner || permissions?.manage || false,
+    onModerate: (
+      commentId: string,
+      action: 'block' | 'mute' | 'report',
+      reason?: string
+    ) => moderateComment(post.feedId, post.id, commentId, action, reason),
   })
 
   const navigate = useNavigate()
@@ -1280,7 +1381,13 @@ export function FeedPosts({
                         )}
                       </div>
                     )}
-                    <PostCopies copies={post.copies} />
+                    <PostCopies copies={post.copies} boosts={post.boosts} />
+                    {!isLoggedIn &&
+                      post.copies?.some(
+                        (copy) => copy.network === 'fediverse'
+                      ) && (
+                        <ReplyButton feedId={post.feedId} postId={post.id} />
+                      )}
                     {post.data?.quote && (
                       <QuoteCard quote={post.data.quote} className='my-2' />
                     )}
@@ -1722,6 +1829,42 @@ export function FeedPosts({
                 {/* Expanded comment input */}
                 {commentingOn === post.id && (
                   <div onClick={(e) => e.stopPropagation()}>
+                    {replyAccounts.length > 0 &&
+                      post.copies?.some(
+                        (copy) => copy.network === 'fediverse'
+                      ) && (
+                        <div className='mb-2 flex items-center gap-2 text-xs'>
+                          <Label htmlFor={`reply-from-${post.id}`}>
+                            <Trans>Also reply from</Trans>
+                          </Label>
+                          <Select
+                            value={replyFrom[post.id] ?? ''}
+                            onValueChange={(value) =>
+                              setReplyFrom((current) => ({
+                                ...current,
+                                [post.id]: value === 'none' ? '' : value,
+                              }))
+                            }
+                          >
+                            <SelectTrigger
+                              id={`reply-from-${post.id}`}
+                              className='h-7 w-auto min-w-40 text-xs'
+                            >
+                              <SelectValue placeholder={t`No account`} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value='none'>
+                                <Trans>No account</Trans>
+                              </SelectItem>
+                              {replyAccounts.map((account) => (
+                                <SelectItem key={account.id} value={account.id}>
+                                  {account.identifier}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
                     <CommentBox
                       value={commentDrafts[post.id] ?? ''}
                       onValueChange={(value) => onDraftChange(post.id, value)}

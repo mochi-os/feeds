@@ -107,6 +107,10 @@ msgstr "Qindaa'inoota {0}"
 msgid "{0} sources"
 msgstr "Maddoota {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {Al tokko qoodameera} other {Yeroo # qoodameera}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#gu} other {#gu}}"
@@ -459,6 +463,10 @@ msgstr "Maxxansaalee madda kana irraa dhufan illee haqi"
 msgid "Also on {0}"
 msgstr "{0} irrattis"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "Asiis irraa deebisi"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "Dinqisiifame"
@@ -631,9 +639,19 @@ msgstr "Banneriin haaromfame"
 msgid "Binary file not shown"
 msgstr "Faayiliin baayinarii hin mul'ifamne"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "Ugguri"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} uggurii"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} uggurtaa?"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} ugguri"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} ugguruu?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "Uggurameera"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "Kaameraan hin argamu"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "Odeeffannoo fi caasaa naannoo."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "Itti fufi"
 
@@ -1007,7 +1031,12 @@ msgstr "Bakka feed-ichi itti maxxansu jijjiiruu hin dandeenye"
 msgid "Could not delete the copies"
 msgstr "Garagalchoota haquu hin dandeenye"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "Sun hojjetamuu hin dandeenye"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "Sarvarii sana argachuu hin dandeenye"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} sochoofameera"
 msgid "Moving to {0}"
 msgstr "Gara {0} sochoosaa jira"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "Cal'isiisi"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} callisiisi"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} callisiiftaa?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "Calliifame"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "Itti seenuun hin jiru"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Seerri itti seenumsaa hin qindaa'amne. Eenyu qabeenya kana itti seenuu danda'u to'achuuf seerota dabali."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "Herrega hin qabu"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "Passkey-wwan kee sajoo kana irratti irra deebi'ii galmeessi"
 msgid "React and view"
 msgstr "Deebii miiraa kennuu fi ilaaluu"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "Sababa"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "Yaadachifame"
@@ -2889,12 +2945,34 @@ msgstr "Ni irra deebi'a"
 msgid "Reply"
 msgstr "Deebii"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "Saphaphuu biraa irraa deebisi"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} f deebii kenni..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "Gabaasi"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} gabaasi"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} gabaaftaa?"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "Gabaafame"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "Gaaffiin maayikroofoonii deebii hin arganne"
 msgid "The passkey request was not answered"
 msgstr "Gaaffiin passkey deebii hin arganne"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "Gabaasni yaada kanaa wajjin gara to'attoota sarvarii isaanii deema."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "Qabiyyeen gaafatame argamuu hin dandeenye."
@@ -3446,6 +3528,14 @@ msgstr "Yaadni miiraa nama kanaa feed kana keessaa ni haqama."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "Isaan si'achi feed kana ilaaluu hin danda'an."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "Ammas si hordofuu danda'u, garuu wanti isaan ergan tokkollee si bira hin ga'u."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "Siʼachi si hin hordofan, wanti isaan ergan tokkollee si bira hin ga'u."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "Jijjiiramni kee ni bada."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "Maqaa fayyadamaa kee"
 

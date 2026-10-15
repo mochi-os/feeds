@@ -107,6 +107,10 @@ msgstr "{0} سيٽنگون"
 msgid "{0} sources"
 msgstr "{0} ماخذ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {هڪ ڀيرو بوسٽ ٿيل} other {# ڀيرا بوسٽ ٿيل}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ڏ} other {#ڏ}}"
@@ -459,6 +463,10 @@ msgstr "هن ذريعي مان درآمد ٿيل پوسٽون پڻ ختم ڪري
 msgid "Also on {0}"
 msgstr "{0} تي پڻ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "هن مان به جواب ڏيو"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "حيران"
@@ -631,9 +639,19 @@ msgstr "بينر اپڊيٽ ٿيو"
 msgid "Binary file not shown"
 msgstr "بائنري فائل نه ڏيکاري وئي"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "بلاڪ ڪريو"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} کي بلاڪ ڪريو"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} کي بلاڪ ڪجي؟"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "{name} کي بلاڪ ڪريو"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} کي بلاڪ ڪريو؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "بلاڪ ٿيل"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "ڪئميرا موجود ناهي"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "حوالي جي معلومات ۽ تفصيل."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "جاري رکو"
 
@@ -1007,7 +1031,12 @@ msgstr "فيڊ جي شايع ٿيڻ جي جاءِ تبديل نه ٿي سگهي"
 msgid "Could not delete the copies"
 msgstr "ڪاپيون ختم نه ٿي سگهيون"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "اهو نه ٿي سگهيو"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "اهو سرور نه ملي سگهيو"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} منتقل ٿيو"
 msgid "Moving to {0}"
 msgstr "{0} ڏانهن منتقل ٿي رهيو آهي"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "خاموش ڪريو"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} کي خاموش ڪريو"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} کي خاموش ڪجي؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "خاموش ڪيل"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "ڪو رسائي نه"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ڪي به رسائي قاعدا ترتيب نه ڏنا ويا. هن وسيلي تائين رسائي ڪنٽرول ڪرڻ لاءِ قاعدا شامل ڪريو."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "ڪو اڪائونٽ ناهي"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "هن سرور تي پنهنجون پاس ڪيز ٻيهر رجسٽر ڪر
 msgid "React and view"
 msgstr "ري ايڪٽ ۽ ڏسو"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "سبب"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "تجويز ڪيل"
@@ -2889,12 +2945,34 @@ msgstr "ورجائي ٿو"
 msgid "Reply"
 msgstr "جواب"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "ٻئي نيٽ ورڪ مان جواب ڏيو"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "{0} کي جواب ڏيو..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "رپورٽ ڪريو"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} جي رپورٽ ڪريو"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} جي رپورٽ ڪجي؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "رپورٽ ٿيل"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "مائڪروفون درخواست جو جواب نه مليو"
 msgid "The passkey request was not answered"
 msgstr "پاس ڪي درخواست جو جواب نه مليو"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "رپورٽ هن تبصري سان گڏ سندن پنهنجي سرور جي ماڊريٽرن ڏانهن وڃي ٿي."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "گهربل مواد نه ملي سگهيو."
@@ -3446,6 +3528,14 @@ msgstr "ھن فيڊ ۾ ھن شخص جا ردعمل حذف ٿي ويندا."
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "هو هاڻي هي فيڊ نه ڏسي سگهندو."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "اهي اڃا توهان کي فالو ڪري سگهن ٿا، پر اهي جيڪي موڪليندا اهو توهان تائين نه پهچندو."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "اهي هاڻي توهان کي فالو نٿا ڪن، ۽ اهي جيڪي موڪليندا اهو توهان تائين نه پهچندو."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "توهان جون تبديليون ضايع ٿي وينديون."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "توهان جو هينڊل"
 

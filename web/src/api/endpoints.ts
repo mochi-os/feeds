@@ -85,6 +85,13 @@ const endpoints = {
         commentId: string,
         asset: string
       ) => `${feedId}/-/${postId}/${commentId}/asset/${asset}`,
+      // The owner's moderation of a comment by a person on another network
+      block: (feedId: string, postId: string, commentId: string) =>
+        `${feedId}/-/${postId}/${commentId}/block`,
+      mute: (feedId: string, postId: string, commentId: string) =>
+        `${feedId}/-/${postId}/${commentId}/mute`,
+      report: (feedId: string, postId: string, commentId: string) =>
+        `${feedId}/-/${postId}/${commentId}/report`,
     },
 
     // Member search (for @mention autocomplete)
@@ -119,6 +126,9 @@ const endpoints = {
     sources: (feedId: string) => `${feedId}/-/sources`,
     sourcesAdd: (feedId: string) => `${feedId}/-/sources/add`,
     follow: (feedId: string) => `${feedId}/-/follow`,
+    reply: (feedId: string) => `${feedId}/-/reply`,
+    // The user's accounts on other networks, by capability
+    accounts: '-/accounts/list',
     publish: (feedId: string) => `${feedId}/-/publish`,
     publishSet: (feedId: string) => `${feedId}/-/publish/set`,
     publishForget: (feedId: string) => `${feedId}/-/publish/forget`,

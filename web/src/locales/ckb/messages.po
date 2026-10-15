@@ -107,6 +107,10 @@ msgstr "ڕێکخستنەکانی {0}"
 msgid "{0} sources"
 msgstr "سەرچاوەکانی {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "{boosts, plural, =1 {Boosted once} other {Boosted # times}}"
+msgstr "{boosts, plural, =1 {یەک جار بڵاوکراوەتەوە} other {# جار بڵاوکراوەتەوە}}"
+
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ڕ} other {#ڕ}}"
@@ -459,6 +463,10 @@ msgstr "هەروەها پۆستە هاوردەکراوەکان لەم سەرچا
 msgid "Also on {0}"
 msgstr "هەروەها لە {0}"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Also reply from"
+msgstr "هەروەها وەڵام بدەرەوە لە"
+
 #: src/features/feeds/constants.ts
 msgid "Amazed"
 msgstr "سەرسام"
@@ -631,9 +639,19 @@ msgstr "بانەر نوێکرایەوە"
 msgid "Binary file not shown"
 msgstr "فایلی دووانەیی پیشان نەدراوە"
 
+#: src/features/feeds/components/comment-thread.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
 msgstr "بلۆککردن"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}"
+msgstr "{author} بلۆک بکە"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Block {author}?"
+msgstr "{author} بلۆک بکرێت؟"
 
 #: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/components/member-list.tsx
@@ -643,6 +661,10 @@ msgstr "بلۆککردنی {name}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block {name}?"
 msgstr "{name} بلۆک بکرێت؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Blocked"
+msgstr "بلۆک کراوە"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -703,6 +725,7 @@ msgstr "کامێرا بەردەست نییە"
 #: src/features/feeds/components/comment-thread.tsx
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/reply-button.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Cancel"
@@ -971,6 +994,7 @@ msgstr "زانیاری و وردەکاری چوارچێوە."
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Continue"
 msgstr "بەردەوامبوون"
 
@@ -1007,7 +1031,12 @@ msgstr "نەتوانرا شوێنی بڵاوکردنەوەی فید بگۆڕدر
 msgid "Could not delete the copies"
 msgstr "نەتوانرا کۆپییەکان بسڕدرێنەوە"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not do that"
+msgstr "ئەمە نەکرا"
+
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Could not find that server"
 msgstr "ئەو ڕاژەکارە نەدۆزرایەوە"
 
@@ -2240,6 +2269,23 @@ msgstr "{field} گواسترایەوە"
 msgid "Moving to {0}"
 msgstr "گواستنەوە بۆ {0}"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute"
+msgstr "بێدەنگکردن"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}"
+msgstr "{author} بێدەنگ بکە"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Mute {author}?"
+msgstr "{author} بێدەنگ بکرێت؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Muted"
+msgstr "بێدەنگکراو"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -2322,6 +2368,11 @@ msgstr "دەستڕاگەیشتن نییە"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "هیچ ڕێسایەکی دەستڕاگەیشتن ڕێکنەخراوە. ڕێسا زیاد بکە بۆ کۆنترۆڵکردنی ئەوەی کێ دەتوانێت دەستی بەم سەرچاوەیە بگات."
+
+#: src/features/feeds/components/feed-posts.tsx
+#: src/features/feeds/components/feed-posts.tsx
+msgid "No account"
+msgstr "هەژمار نییە"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
@@ -2708,6 +2759,11 @@ msgstr "پاسکییەکانت لەسەر ئەم ڕاژەیە دووبارە ت�
 msgid "React and view"
 msgstr "کاردانەوە و بینین"
 
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Reason"
+msgstr "هۆکار"
+
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Recommended"
 msgstr "پێشنیازکراو"
@@ -2889,12 +2945,34 @@ msgstr "دووبارە دەبێتەوە"
 msgid "Reply"
 msgstr "وەڵام"
 
+#: src/features/feeds/components/reply-button.tsx
+#: src/features/feeds/components/reply-button.tsx
+msgid "Reply from another network"
+msgstr "وەڵام بدەرەوە لە تۆڕێکی دیکەوە"
+
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: src/features/feeds/components/comment-thread.tsx
 msgid "Reply to {0}..."
 msgstr "وەڵامدانەوەی {0}..."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report"
+msgstr "ڕاپۆرتکردن"
+
+#: src/features/feeds/components/comment-thread.tsx
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}"
+msgstr "{author} ڕاپۆرت بکە"
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "Report {author}?"
+msgstr "{author} ڕاپۆرت بکرێت؟"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Reported"
+msgstr "ڕاپۆرت کرا"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Requesting access to {permissionDomain}..."
@@ -3431,6 +3509,10 @@ msgstr "داواکاری مایکرۆفۆن وەڵام نەدرایەوە"
 msgid "The passkey request was not answered"
 msgstr "داواکاری پاسکی وەڵام نەدرایەوە"
 
+#: src/features/feeds/components/comment-thread.tsx
+msgid "The report goes to the moderators of their own server, with this comment."
+msgstr "ڕاپۆرتەکە لەگەڵ ئەم لێدوانە دەچێتە لای چاودێرانی ڕاژەی خۆیان."
+
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
 msgstr "ناوەڕۆکی داواکراو نەدۆزرایەوە."
@@ -3446,6 +3528,14 @@ msgstr "کاردانەوەکانی ئەم کەسە لەم فیدەدا دەسڕ�
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "They can no longer view this feed."
 msgstr "لەمەودوا ناتوانێت ئەم فیدە ببینێت."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They can still follow you, but nothing more they send reaches you."
+msgstr "هێشتا دەتوانن شوێنت بکەون، بەڵام هیچی دیکە لەوەی دەینێرن پێت ناگات."
+
+#: src/features/feeds/components/comment-thread.tsx
+msgid "They no longer follow you, and nothing more they send reaches you."
+msgstr "ئیتر شوێنت ناکەون، و هیچی دیکە لەوەی دەینێرن پێت ناگات."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3824,6 +3914,7 @@ msgid "Your changes will be lost."
 msgstr "گۆڕانکارییەکانت لەدەست دەچن."
 
 #: src/features/feeds/components/follow-button.tsx
+#: src/features/feeds/components/reply-button.tsx
 msgid "Your handle"
 msgstr "ناوی بەکارهێنەری تۆ"
 
