@@ -2161,6 +2161,18 @@ def database_upgrade(version):
 		# id in the author column; a source goes through a hosted account;
 		# polls, keyword filters and a follows import keep tables.
 		features_schema_create()
+	if version == 16:
+		# Following and interacting on Bluesky (phase 19): the likes a hosted
+		# account made of posts from Bluesky, and the feeds published as
+		# Bluesky custom feeds.
+		bluesky_schema_create()
+
+def bluesky_schema_create():
+	"""The tables of phase 19, made at creation and by the migration alike:
+	the like record a hosted Bluesky account made of a post from Bluesky, and
+	the generator record a feed is published as from an account."""
+	mochi.db.execute("create table if not exists likes ( post text not null, account text not null, remote text not null, created integer not null, primary key ( post, account ) )")
+	mochi.db.execute("create table if not exists generators ( feed text not null, account text not null, uri text not null, created integer not null, primary key ( feed, account ) )")
 
 def features_schema_create():
 	"""The columns and tables of phase 17, made at creation and by the
@@ -2248,6 +2260,7 @@ def database_create():
 	mochi.db.execute("create table if not exists saved ( id text not null primary key, user text not null, post text not null, data text not null default '', created integer not null, unique ( user, post ) )")
 	publish_schema_create()
 	features_schema_create()
+	bluesky_schema_create()
 	mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
 
 	# Attachments now live in this database, owned by the shared library.
@@ -3461,7 +3474,7 @@ def sanitize_post_data(data):
             out.pop("quote")
     # The fields of a post from another network, and a poll (phase 17): each
     # kept in its known shape only, links made safe, text cut.
-    for key, clean in [("poll", sanitize_poll), ("media", sanitize_media), ("person", sanitize_person), ("boost", sanitize_person), ("emoji", sanitize_emoji)]:
+    for key, clean in [("poll", sanitize_poll), ("media", sanitize_media), ("person", sanitize_person), ("boost", sanitize_person), ("emoji", sanitize_emoji), ("record", sanitize_record)]:
         if data.get(key) != None:
             out = dict(out)
             value = clean(data[key])
@@ -3470,6 +3483,16 @@ def sanitize_post_data(data):
             else:
                 out.pop(key)
     return out
+
+def sanitize_record(record):
+    """The Bluesky record a post came from, {uri, cid}, as a reply, like or
+    boost of it needs (phase 19); None where it is not one."""
+    if type(record) != "dict":
+        return None
+    uri, cid = str(record.get("uri", "") or ""), str(record.get("cid", "") or "")
+    if not uri.startswith("at://") or len(uri) > 1000 or not cid or len(cid) > 200 or not cid.isalnum():
+        return None
+    return {"uri": uri, "cid": cid}
 
 def validate_post_data(data):
     if not data:
@@ -4914,6 +4937,9 @@ def action_post_react(a):
             return
 
         post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
+        # A like of a post from Bluesky is a like record of the user's hosted
+        # account there, taken back with the reaction (phase 19).
+        like_publish(post_data, reaction, a.input("account", ""))
 
         # Broadcast to subscribers
         if can_fanout:
@@ -7163,6 +7189,8 @@ def action_sources_add(a):
 		return sources_add_person(a, feed, url, name)
 	elif source_type == "tag":
 		return sources_add_tag(a, feed, url, name)
+	elif source_type == "bluesky":
+		return sources_add_bluesky(a, feed, url, name)
 	else:
 		a.error.label(400, "errors.invalid_source_type")
 		return
@@ -7417,10 +7445,10 @@ def action_sources_remove(a):
 	mochi.db.execute("delete from sources where id=?", source_id)
 
 	# A person followed through a hosted account is unfollowed, unless another
-	# feed still follows them through it (phase 17).
+	# feed still follows them through it (phases 17 and 19).
 	if source["type"] == "person/posts" and source.get("account"):
 		acc = publish_account(source["account"])
-		if acc and hosted_fediverse(acc) and not person_followed_elsewhere(acc, source["url"], source_id):
+		if acc and acc.get("hosted") and not person_followed_elsewhere(acc, source["url"], source_id):
 			mochi.account.unfollow(acc["id"], source["url"])
 
 	# For feed/posts type, clean up feed data if no longer needed
@@ -8397,10 +8425,14 @@ HOSTED_TYPES = ["fediverse", "bluesky"]
 # The source types an account offers, and every source type polled on a
 # schedule, with the SQL fragment that selects those.
 ACCOUNT_SOURCE_TYPES = ["account/timeline", "account/posts"]
-# The sources a schedule fetches: a person followed through a hosted account
-# (account set) is pushed to instead, and never polled (phase 17).
-POLLED_TYPES = ["rss", "tag/posts", "account/timeline", "account/posts", "person/posts"]
-POLLED_SQL = "(type in ('rss', 'tag/posts', 'account/timeline', 'account/posts') or (type='person/posts' and account=''))"
+# The sources a schedule fetches: a person followed through a hosted fediverse
+# account (account set, the person an https id) is pushed to instead, and
+# never polled (phase 17); a person on Bluesky (a did) is polled whether
+# followed through an account or not, since Bluesky pushes nothing to a
+# follower (phase 19), as are Bluesky custom feeds and lists.
+BLUESKY_FEED_TYPES = ["generator/posts", "list/posts"]
+POLLED_TYPES = ["rss", "tag/posts", "account/timeline", "account/posts", "person/posts", "generator/posts", "list/posts"]
+POLLED_SQL = "(type in ('rss', 'tag/posts', 'account/timeline', 'account/posts', 'generator/posts', 'list/posts') or (type='person/posts' and (account='' or url like 'did:%')))"
 
 # What Bluesky accepts (the constants of its lexicons): a post of 300 graphemes,
 # four images of a megabyte each or one video of fifty, alternative text of a
@@ -8452,6 +8484,9 @@ def publish_account(id):
 
 def hosted_fediverse(acc):
 	return bool(acc.get("hosted")) and acc.get("type") == "fediverse"
+
+def hosted_bluesky(acc):
+	return bool(acc.get("hosted")) and acc.get("type") == "bluesky"
 
 def account_present(acc):
 	"""An account as the client sees it in a publish list or a picker."""
@@ -8668,12 +8703,13 @@ def bluesky_facets(text):
 			facets.append({"index": index, "features": [{"$type": "app.bsky.richtext.facet#tag", "tag": word[1:]}]})
 	return facets
 
-def publish_object(acc, text, link, attachments, source, features=None):
+def publish_object(acc, text, link, attachments, source, features=None, quote=None):
 	"""The object a post becomes on an account's network, in that network's
 	own form (mochi.account.object.create), with the text cut and the
 	attachments that fit; on Mastodon its visibility, content warning,
 	sensitive flag, language and poll (phase 17); on Bluesky its links,
-	mentions and hashtags as facets and its language."""
+	mentions and hashtags as facets, its language, and the Bluesky post it
+	quotes as an embedded record (phase 19)."""
 	features = features or post_features({})
 	limits = mastodon_limits(acc) if acc["type"] == "mastodon" else BLUESKY_LIMITS
 	uploads, omitted = publish_media(acc, attachments, limits)
@@ -8702,11 +8738,21 @@ def publish_object(acc, text, link, attachments, source, features=None):
 		object["facets"] = facets
 	if features["language"]:
 		object["langs"] = [features["language"]]
+	media = None
 	if uploads:
 		if uploads[0]["kind"] == "video":
-			object["embed"] = {"$type": "app.bsky.embed.video", "video": uploads[0]["upload"]["data"], "alt": uploads[0]["description"]}
+			media = {"$type": "app.bsky.embed.video", "video": uploads[0]["upload"]["data"], "alt": uploads[0]["description"]}
 		else:
-			object["embed"] = {"$type": "app.bsky.embed.images", "images": [{"image": u["upload"]["data"], "alt": u["description"]} for u in uploads]}
+			media = {"$type": "app.bsky.embed.images", "images": [{"image": u["upload"]["data"], "alt": u["description"]} for u in uploads]}
+	quoted = None
+	if type(quote) == "dict" and quote.get("network") == "bluesky" and str(quote.get("id", "")).startswith("at://") and quote.get("cid"):
+		quoted = {"$type": "app.bsky.embed.record", "record": {"uri": str(quote["id"]), "cid": str(quote["cid"])}}
+	if quoted and media:
+		object["embed"] = {"$type": "app.bsky.embed.recordWithMedia", "record": quoted, "media": media}
+	elif quoted:
+		object["embed"] = quoted
+	elif media:
+		object["embed"] = media
 	return object
 
 def publish_announce(acc, source):
@@ -8755,6 +8801,10 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 	if source and published_has(feed_id, [source.get("remote", "")]):
 		return []
 	features = post_features(post) if post else post_features({})
+	quote = None
+	if post:
+		data = json.decode(post.get("data", "") or "{}", {})
+		quote = data.get("quote") if type(data) == "dict" else None
 	text = publish_text(body, format)
 	link = post_link(feed_id, post_id)
 	copies = []
@@ -8778,7 +8828,7 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 			if hosted_fediverse(acc):
 				object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source, features)
 			else:
-				object = publish_object(acc, text, link, attachments, source, features)
+				object = publish_object(acc, text, link, attachments, source, features, quote)
 			# A sourced post may wait for the relay's budget on a hosted
 			# Bluesky account (decision 30).
 			result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"], sourced=bool(source))
@@ -8839,9 +8889,14 @@ def publish_forget(feed_id, account_id):
 	return len(rows)
 
 def publish_feed_delete(feed_id):
-	"""A deleted feed takes its copies with it."""
+	"""A deleted feed takes its copies with it, and the Bluesky custom feeds
+	it was published as."""
 	for row in mochi.db.rows("select id from posts where feed=?", feed_id):
 		publish_delete(row["id"])
+	for row in mochi.db.rows("select account, uri from generators where feed=?", feed_id):
+		if publish_account(row["account"]):
+			mochi.account.object.delete(row["account"], row["uri"])
+	mochi.db.execute("delete from generators where feed=?", feed_id)
 	mochi.db.execute("delete from publish where feed=?", feed_id)
 	mochi.db.execute("delete from published where feed=?", feed_id)
 
@@ -8885,7 +8940,65 @@ def action_publish_list(a):
 	feed = publish_feed(a)
 	if not feed:
 		return
-	a.json({"accounts": [account_present(acc) for acc in publish_accounts()], "publish": publish_list(feed["id"]), "copies": publish_counts(feed["id"])})
+	a.json({"accounts": [account_present(acc) for acc in publish_accounts()], "publish": publish_list(feed["id"]), "copies": publish_counts(feed["id"]), "generators": publish_generators(feed["id"])})
+
+def publish_generators(feed_id):
+	"""The generator record the feed is published as from each hosted Bluesky
+	account, by account."""
+	return {row["account"]: row["uri"] for row in mochi.db.rows("select account, uri from generators where feed=?", feed_id)}
+
+def action_generator_set(a):
+	"""Publish the feed as a Bluesky custom feed from one of the owner's hosted
+	Bluesky accounts, or stop: a generator record naming this server, which
+	Bluesky asks for the feed's posts (phase 19)."""
+	feed = publish_feed(a)
+	if not feed:
+		return
+	acc = publish_account(a.input("account", ""))
+	if not acc or not hosted_bluesky(acc):
+		a.error.label(404, "errors.account_not_found")
+		return
+	on = str(a.input("on", "")).lower() in ("true", "1", "on", "yes")
+	existing = mochi.db.row("select uri from generators where feed=? and account=?", feed["id"], acc["id"])
+	if on and not existing:
+		if feed.get("privacy", "public") != "public":
+			a.error.label(400, "errors.feed_not_public")
+			return
+		record = {"$type": "app.bsky.feed.generator", "displayName": text_cut(feed["name"], 24), "description": ""}
+		result = mochi.account.object.create(acc["id"], record, key="generator|" + feed["id"] + "|" + acc["id"])
+		if not result or not result.get("id"):
+			a.error.label(502, "errors.generator_not_published")
+			return
+		mochi.db.execute("insert or replace into generators (feed, account, uri, created) values (?, ?, ?, ?)", feed["id"], acc["id"], str(result["id"]), mochi.time.now())
+	elif not on and existing:
+		mochi.account.object.delete(acc["id"], existing["uri"])
+		mochi.db.execute("delete from generators where feed=? and account=?", feed["id"], acc["id"])
+	a.json({"generators": publish_generators(feed["id"])})
+
+def function_atproto_skeleton(context, account, feed, cursor, limit):
+	"""The posts of a feed published as a Bluesky custom feed, newest first,
+	as the records Bluesky knows them by: a post from Bluesky by its own
+	record, one of the feed's own by its copy through the account (phase 19).
+	The cursor is the created time of the last post answered."""
+	row = mochi.db.row("select feed from generators where account=? and uri=?", account, feed)
+	if not row:
+		return {"posts": []}
+	before = number(cursor) if cursor else 0
+	limit = min(max(number(limit) or 50, 1), 100)
+	sql = "select p.id, p.data, p.created, c.remote as copy from posts p left join copies c on c.post=p.id and c.account=? where p.feed=? and p.visibility!='followers'" + (" and p.created<?" if before else "") + " order by p.created desc limit ?"
+	args = [account, row["feed"]] + ([before] if before else []) + [limit]
+	rows = mochi.db.rows(sql, *args)
+	posts = []
+	for p in rows:
+		record = post_record(p)
+		copy = str(p.get("copy", "") or "")
+		uri = record["uri"] if record else (copy if copy.startswith("at://") else "")
+		if uri:
+			posts.append(uri)
+	out = {"posts": posts}
+	if len(rows) == limit:
+		out["cursor"] = str(rows[-1]["created"])
+	return out
 
 def publish_counts(feed_id):
 	"""How many copies the feed holds on each account."""
@@ -9009,6 +9122,7 @@ def account_item(acc, item):
 	uri = str(post.get("uri", ""))
 	rkey = uri.rsplit("/", 1)[-1] if "/" in uri else ""
 	handle = str(author.get("handle", "") or author.get("did", ""))
+	did = str(author.get("did", "") or "")
 	image = ""
 	embed = post.get("embed") or {}
 	images = embed.get("images") if type(embed) == "dict" else None
@@ -9019,7 +9133,13 @@ def account_item(acc, item):
 	if reason and str(reason.get("$type", "")).endswith("#reasonRepost"):
 		by = reason.get("by") or {}
 		boosted = str(by.get("displayName") or by.get("handle") or "")
-	return {
+	# The labels the labellers the account follows put on the post or its
+	# author (phase 19): a label that hides it drops it, any other travels as
+	# the post's content warning with the sensitive flag.
+	labels = bluesky_labels(post.get("labels"), author.get("labels"))
+	if labels == None:
+		return None
+	out = {
 		"remotes": [uri],
 		"guid": uri,
 		"created": mochi.time.parse(str(record.get("createdAt", ""))) or 0,
@@ -9030,7 +9150,35 @@ def account_item(acc, item):
 		"author": str(author.get("displayName") or handle),
 		"boosted": boosted,
 		"item": {"uri": uri, "cid": str(post.get("cid", ""))},
+		# The person's identifier and the record, for a reply, a like or a
+		# boost of the post from a hosted account (phase 19).
+		"actor": did if mochi.text.valid(did, "author") else "",
+		"remote": uri,
+		"record": {"uri": uri, "cid": str(post.get("cid", ""))},
+		"warning": ", ".join(labels),
+		"sensitive": bool(labels),
 	}
+	if type(record.get("langs")) in ("list", "tuple") and record["langs"]:
+		out["language"] = str(record["langs"][0])
+	return out
+
+def bluesky_labels(post_labels, author_labels):
+	"""The label values on a post and its author: None for a label that hides
+	the post (the hide and takedown labels, and a labeller's negated label
+	drops nothing), else the values, sorted, to show as a warning."""
+	values = {}
+	for labels in (post_labels, author_labels):
+		if type(labels) not in ("list", "tuple"):
+			continue
+		for label in labels:
+			if type(label) != "dict" or label.get("neg"):
+				continue
+			value = str(label.get("val", "") or "")
+			if value in ("!hide", "!takedown", "!suspend"):
+				return None
+			if value and value != "!warn" and value != "!no-unauthenticated":
+				values[value] = True
+	return sorted(values.keys())
 
 def poll_account_source(source, user_id=None, deadline=None):
 	"""Read the newest page of an account source and make posts of what is
@@ -9113,7 +9261,7 @@ def sourced_post(feed, source, acc, item, user_id, notify=True):
 		data["rss"]["shared"] = item["boosted"]
 	# A post from the fediverse carries its author, who boosted it, its media,
 	# its poll and its emoji (phase 17), and a quote of the post it quotes.
-	for key in ["person", "boost", "media", "poll", "emoji"]:
+	for key in ["person", "boost", "media", "poll", "emoji", "record"]:
 		if item.get(key):
 			data[key] = item[key]
 	if item.get("quote"):
@@ -9168,6 +9316,8 @@ def poll_source(source, user_id=None, deadline=None):
 		return poll_account_source(source, user_id, deadline)
 	if source["type"] in PERSON_TYPES:
 		return poll_person_source(source, user_id, deadline)
+	if source["type"] in BLUESKY_FEED_TYPES:
+		return poll_bluesky_feed_source(source, user_id, deadline)
 	return poll_rss_source(source, user_id, deadline)
 
 # === Import ===
@@ -9299,6 +9449,12 @@ def job_accounts():
 		ids[row["account"]] = True
 	for row in mochi.db.rows("select distinct url from sources where type in ('account/timeline', 'account/posts')"):
 		ids[row["url"]] = True
+	# A hosted Bluesky account that follows for a feed has notifications at
+	# the index to fetch (phase 19); a fediverse account's arrive at its inbox.
+	for row in mochi.db.rows("select distinct account from sources where account!=''"):
+		acc = publish_account(row["account"])
+		if acc and hosted_bluesky(acc):
+			ids[row["account"]] = True
 	return [acc for acc in [publish_account(id) for id in ids] if acc]
 
 def ensure_account_jobs():
@@ -9763,27 +9919,87 @@ def reply_note(comment_id, post_id, body):
 	note = {"type": "Note", "content": mochi.text.fediverse(fediverse_plain(body), tags=fediverse_tags_base())["html"], "inReplyTo": target["remote"], "sensitive": False, "mochi:comment": comment_id}
 	return note, target
 
-def reply_publish(account_id, post_id, comment_id, body):
-	"""Publish a comment as a reply from the commenter's own hosted account to
-	the post's copy on the fediverse (decision 31). Answers the copies made,
-	for the comment's event."""
-	if not account_id:
-		return []
-	acc = publish_account(account_id)
-	if not acc or not hosted_fediverse(acc):
-		return []
+def bluesky_reference(acc, uri):
+	"""A Bluesky post as a record reference {uri, cid}, with the root of its
+	thread, read through the account from the index; None when the index does
+	not answer."""
+	answer = mochi.account.request(acc["id"], "GET", "app.bsky.feed.getPosts", query={"uris": uri})
+	data = answer.get("data") if answer and type(answer.get("data")) == "dict" else {}
+	posts = data.get("posts") if listlike(data.get("posts")) else []
+	if not posts or type(posts[0]) != "dict" or not posts[0].get("cid"):
+		return None
+	post = posts[0]
+	reference = {"uri": str(post.get("uri", uri)), "cid": str(post["cid"])}
+	record = post.get("record") if type(post.get("record")) == "dict" else {}
+	reply = record.get("reply") if type(record.get("reply")) == "dict" else {}
+	root = reply.get("root") if type(reply.get("root")) == "dict" else None
+	if root and root.get("uri") and root.get("cid"):
+		return {"reference": reference, "root": {"uri": str(root["uri"]), "cid": str(root["cid"])}}
+	return {"reference": reference, "root": reference}
+
+def reply_record(acc, comment_id, post_id, body):
+	"""The post record a comment is as a reply on Bluesky (phase 19): in reply
+	to the comment it answers where that one is a Bluesky post, else to the
+	post's record - a followed person's post, or the post's own copy through
+	the account - with the thread's root as the network wants it. Answers the
+	record, or None where nothing on Bluesky is answered."""
+	comment = mochi.db.row("select parent from comments where id=?", comment_id)
+	parent = mochi.db.row("select remote from comments where id=?", comment["parent"]) if comment and comment.get("parent") else None
+	uri = ""
+	if parent and str(parent.get("remote", "") or "").startswith("at://"):
+		uri = str(parent["remote"])
+	else:
+		post = mochi.db.row("select * from posts where id=?", post_id)
+		record = post_record(post) if post else None
+		if record:
+			uri = record["uri"]
+		else:
+			copy = mochi.db.row("select remote from copies where post=? and account=?", post_id, acc["id"])
+			if copy and str(copy["remote"]).startswith("at://"):
+				uri = str(copy["remote"])
+	if not uri:
+		return None
+	found = bluesky_reference(acc, uri)
+	if not found:
+		return None
+	text = publish_excerpt(body, BLUESKY_CHARACTERS, "", False)
+	record = {"$type": "app.bsky.feed.post", "text": text, "reply": {"root": found["root"], "parent": found["reference"]}}
+	facets = bluesky_facets(text)
+	if facets:
+		record["facets"] = facets
+	return record
+
+def reply_object(acc, comment_id, post_id, body):
+	"""A comment as the reply an account publishes: a Note on the fediverse, a
+	post record on Bluesky. Answers (object, network) or (None, None)."""
+	if acc.get("type") == "bluesky":
+		return reply_record(acc, comment_id, post_id, body), "bluesky"
 	note, answered = reply_note(comment_id, post_id, body)
 	if not note:
-		return []
+		return None, None
 	target = mochi.account.resolve(answered["address"])
 	if target and target.get("id") and acc.get("url"):
 		note["to"] = [FEDIVERSE_PUBLIC]
 		note["cc"] = [acc["url"] + "/followers", target["id"]]
 		note["tag"] = [{"type": "Mention", "name": target.get("address") or answered["address"], "href": target["id"]}]
-	result = mochi.account.object.create(acc["id"], note, key="reply|" + comment_id + "|" + acc["id"])
+	return note, "fediverse"
+
+def reply_publish(account_id, post_id, comment_id, body):
+	"""Publish a comment as a reply from the commenter's own hosted account to
+	the post's copy or origin on the fediverse or on Bluesky (decision 31).
+	Answers the copies made, for the comment's event."""
+	if not account_id:
+		return []
+	acc = publish_account(account_id)
+	if not acc or not acc.get("hosted"):
+		return []
+	object, network = reply_object(acc, comment_id, post_id, body)
+	if not object:
+		return []
+	result = mochi.account.object.create(acc["id"], object, key="reply|" + comment_id + "|" + acc["id"])
 	if not result or not result.get("id"):
 		return []
-	entry = {"address": acc.get("identifier", ""), "network": "fediverse", "remote": str(result["id"]), "url": str(result.get("url", "") or "")}
+	entry = {"address": acc.get("identifier", ""), "network": network, "remote": str(result["id"]), "url": str(result.get("url", "") or "")}
 	replies_record(comment_id, acc["id"], entry)
 	return [entry]
 
@@ -9795,12 +10011,13 @@ def reply_update(comment_id, body):
 	comment = mochi.db.row("select post from comments where id=?", comment_id)
 	if not comment:
 		return
-	note, _ = reply_note(comment_id, comment["post"], body)
-	if not note:
-		return
 	for r in rows:
-		if publish_account(r["account"]):
-			mochi.account.object.update(r["account"], r["remote"], note)
+		acc = publish_account(r["account"])
+		if not acc:
+			continue
+		object, _ = reply_object(acc, comment_id, comment["post"], body)
+		if object:
+			mochi.account.object.update(r["account"], r["remote"], object)
 
 def reply_delete(comment_id):
 	"""A deleted comment withdraws the replies it went out as."""
@@ -10384,6 +10601,17 @@ def sources_add_person(a, feed, query, name):
 		if mochi.db.exists("select 1 from sources where feed=? and type='person/posts' and url=?", feed["id"], found["id"]):
 			a.error.label(400, "errors.source_exists")
 			return
+		# A user with a hosted Bluesky account follows with it, so the follow
+		# shows on Bluesky; their posts are still read by polling, since the
+		# network pushes nothing to a follower (phase 19). Without one, the
+		# person's public records are read as before.
+		acc = follow_account(a.input("account", ""), "bluesky") if found.get("id") else None
+		if acc:
+			source, count = person_follow_create(feed, found, acc, name, a.user.identity.id)
+			if not source:
+				a.error.label(502, "errors.follow_not_sent")
+				return
+			return {"data": {"source": source, "ingested": count, "state": source_state(source)}}
 		source, count = person_source_create(feed["id"], found["id"], name, a.user.identity.id)
 		return {"data": {"source": source, "ingested": count}}
 	# On the fediverse a user with a hosted account follows with it, and
@@ -10404,6 +10632,79 @@ def sources_add_person(a, feed, query, name):
 		a.error.label(502, "errors.no_feed_for_person")
 		return
 	return sources_add_rss(a, feed, url, name, result)
+
+def bluesky_feed_uri(query):
+	"""The record URI of a Bluesky custom feed or list, from its link on the
+	Bluesky app (profile/<actor>/feed/<key>, profile/<actor>/lists/<key>) or
+	the URI itself; the actor a handle is resolved to its identifier. Answers
+	(type, uri) or (None, None)."""
+	q = query.strip()
+	actor, kind, rkey = "", "", ""
+	if q.startswith("at://"):
+		parts = q[5:].split("/")
+		if len(parts) == 3:
+			actor, rkey = parts[0], parts[2]
+			kind = {"app.bsky.feed.generator": "generator/posts", "app.bsky.graph.list": "list/posts"}.get(parts[1], "")
+	else:
+		parts = q.split("bsky.app/profile/", 1)
+		if len(parts) == 2 and parts[0] in ("https://", "http://"):
+			path = parts[1].split("?", 1)[0].strip("/").split("/")
+			if len(path) == 3:
+				actor, rkey = path[0], path[2]
+				kind = {"feed": "generator/posts", "lists": "list/posts"}.get(path[1], "")
+	if not actor or not kind or not rkey or not mochi.text.valid(rkey, "text") or len(rkey) > 512:
+		return None, None
+	if not actor.startswith("did:"):
+		found = mochi.account.resolve(actor)
+		if not found or found.get("network") != "bluesky" or not found.get("id"):
+			return None, None
+		actor = found["id"]
+	collection = "app.bsky.feed.generator" if kind == "generator/posts" else "app.bsky.graph.list"
+	return kind, "at://" + actor + "/" + collection + "/" + rkey
+
+def sources_add_bluesky(a, feed, query, name):
+	"""A Bluesky custom feed or list as a source, read through one of the
+	user's accounts on Bluesky (the index answers a signed-in account), polled
+	on the sources schedule (phase 19)."""
+	acc = bluesky_account(a.input("account", ""))
+	if not acc:
+		a.error.label(404, "errors.account_not_found")
+		return
+	kind, uri = bluesky_feed_uri(query)
+	if not kind:
+		a.error.label(400, "errors.not_a_bluesky_feed")
+		return
+	if mochi.db.exists("select 1 from sources where feed=? and type=? and url=?", feed["id"], kind, uri):
+		a.error.label(400, "errors.source_exists")
+		return
+	source_id = mochi.uid()
+	now = mochi.time.now()
+	base = 300
+	mochi.db.execute("insert into sources (id, feed, type, url, name, account, credibility, base, max, interval, next, jitter, changed, fetched) values (?, ?, ?, ?, ?, ?, 100, ?, 86400, ?, ?, 60, ?, ?)",
+		source_id, feed["id"], kind, uri, name or uri.rsplit("/", 1)[-1], acc["id"], base, base, now + base + 60, now, now)
+	source = mochi.db.row("select * from sources where id=?", source_id)
+	count, _ = poll_bluesky_feed_source(source, a.user.identity.id, None, False)
+	mochi.schedule.after("schedule_sources_poll", {"feed": feed["id"]}, base)
+	ensure_sources_watchdog()
+	return {"data": {"source": mochi.db.row("select * from sources where id=?", source_id), "ingested": count}}
+
+def poll_bluesky_feed_source(source, user_id=None, deadline=None, notify=True):
+	"""Read the newest page of a Bluesky custom feed or list through the
+	source's account and make posts of what is new. Answers (count, complete)."""
+	now = mochi.time.now()
+	acc = publish_account(source.get("account", "")) or bluesky_account("")
+	new_count, complete = 0, True
+	if acc:
+		if source["type"] == "generator/posts":
+			answer = mochi.account.request(acc["id"], "GET", "app.bsky.feed.getFeed", query={"feed": source["url"], "limit": str(ACCOUNT_PAGE)})
+		else:
+			answer = mochi.account.request(acc["id"], "GET", "app.bsky.feed.getListFeed", query={"list": source["url"], "limit": str(ACCOUNT_PAGE)})
+		data = answer.get("data") if answer and type(answer.get("data")) == "dict" else {}
+		items = data.get("feed") if listlike(data.get("feed")) else []
+		feed = mochi.db.row("select * from feeds where id=?", source["feed"])
+		new_count, complete = ingest_account_items(feed, source, PERSON_ACCOUNT, items, user_id, deadline, notify)
+	source_polled(source, new_count, now)
+	return (new_count, complete)
 
 def person_source_create(feed_id, did, name, user_id):
 	"""The person/posts source row for a Bluesky account, with its newest
@@ -10531,6 +10832,12 @@ def follow_source(feed, follow, user_id, acc=None):
 		did = follow["identifier"]
 		if not did or mochi.db.exists("select 1 from sources where feed=? and type='person/posts' and url=?", feed_id, did):
 			return False
+		# Through the user's hosted Bluesky account where they have one, so the
+		# follow shows on the network (phase 19).
+		hosted = acc if acc and hosted_bluesky(acc) else follow_account("", "bluesky")
+		if hosted:
+			source, _ = person_follow_create(feed, {"id": did, "network": "bluesky"}, hosted, follow["name"], user_id)
+			return bool(source)
 		person_source_create(feed_id, did, follow["name"], user_id)
 		return True
 	found = lookup_person(follow["identifier"]) if follow["identifier"] else None
@@ -10593,10 +10900,11 @@ PERSON_HISTORY = 40
 FILTER_MAXIMUM = 100
 IMPORT_ADDRESSES_MAXIMUM = 5000
 
-def follow_account(wanted):
-	"""The hosted fediverse account a follow goes through: the one named, else
-	the user's first; None where the user has none, or named one they lack."""
-	accounts = [acc for acc in publish_accounts() if hosted_fediverse(acc)]
+def follow_account(wanted, network="fediverse"):
+	"""The hosted account on a network a follow goes through: the one named,
+	else the user's first; None where the user has none, or named one they
+	lack."""
+	accounts = [acc for acc in publish_accounts() if acc.get("hosted") and acc.get("type") == network]
 	for acc in accounts:
 		if wanted and acc["id"] == wanted:
 			return acc
@@ -10604,18 +10912,36 @@ def follow_account(wanted):
 		return None
 	return accounts[0] if accounts else None
 
+def bluesky_account(wanted):
+	"""An account on Bluesky a feed reads through, hosted or linked: the one
+	named, else the user's first hosted one, else their first linked one."""
+	accounts = [acc for acc in publish_accounts() if acc.get("type") == "bluesky"]
+	for acc in accounts:
+		if wanted and acc["id"] == wanted:
+			return acc
+	if wanted:
+		return None
+	hosted = [acc for acc in accounts if acc.get("hosted")]
+	return hosted[0] if hosted else (accounts[0] if accounts else None)
+
 def person_follow_create(feed, found, acc, name, user_id):
 	"""Follow a person as the account and make them a source of the feed,
 	with their newest posts as the source's history (not news, not
-	published). Answers (source, ingested); (None, 0) when the follow could
-	not be sent."""
+	published). A fediverse person's posts are then pushed, so the source is
+	never polled; a Bluesky person's are polled from the moment the source
+	is made. Answers (source, ingested); (None, 0) when the follow could not
+	be sent."""
 	followed = mochi.account.follow(acc["id"], found["id"])
 	if not followed:
 		return None, 0
 	source_id = mochi.uid()
 	now = mochi.time.now()
-	mochi.db.execute("insert into sources (id, feed, type, url, name, account, credibility, base, max, interval, next, jitter, changed, fetched) values (?, ?, 'person/posts', ?, ?, ?, 100, 300, 86400, 300, 0, 60, ?, ?)",
-		source_id, feed["id"], found["id"], name, acc["id"], now, now)
+	next = (now + 300 + 60) if found["network"] == "bluesky" else 0
+	mochi.db.execute("insert into sources (id, feed, type, url, name, account, credibility, base, max, interval, next, jitter, changed, fetched) values (?, ?, 'person/posts', ?, ?, ?, 100, 300, 86400, 300, ?, 60, ?, ?)",
+		source_id, feed["id"], found["id"], name, acc["id"], next, now, now)
+	if next:
+		mochi.schedule.after("schedule_sources_poll", {"feed": feed["id"]}, 300)
+		ensure_sources_watchdog()
 	source = mochi.db.row("select * from sources where id=?", source_id)
 	count = 0
 	page = mochi.account.posts(found["id"], limit=PERSON_HISTORY, signer=acc["id"])
@@ -10628,10 +10954,11 @@ def person_followed_elsewhere(acc, actor, except_source):
 	return mochi.db.exists("select 1 from sources where type='person/posts' and account=? and url=? and id!=?", acc["id"], actor, except_source)
 
 def source_state(source):
-	"""What a pushed source's follow has come to: following, pending the other
-	server's acceptance, or refused (no follow row at all)."""
+	"""What a followed source's follow has come to: following, pending the
+	other server's acceptance, or refused (no follow row at all). On Bluesky a
+	follow needs no acceptance."""
 	acc = publish_account(source.get("account", ""))
-	if not acc or not hosted_fediverse(acc):
+	if not acc or not acc.get("hosted"):
 		return ""
 	rows = mochi.account.following(acc["id"], actor=source["url"]) or []
 	if not rows:
@@ -11168,10 +11495,38 @@ def vote_from_network(acc, post, actor, name):
 
 # === Boosts ===
 
+def post_record(post):
+	"""The Bluesky record a post from Bluesky came from, {uri, cid}, or None."""
+	data = json.decode(post.get("data", "") or "{}", {})
+	record = data.get("record") if type(data) == "dict" else None
+	if type(record) != "dict" or not record.get("uri") or not record.get("cid"):
+		return None
+	return {"uri": str(record["uri"]), "cid": str(record["cid"])}
+
+def like_publish(post, reaction, wanted):
+	"""A like of a post from Bluesky goes out as a like record of the user's
+	hosted Bluesky account - the one named, else their first - and any other
+	reaction, or none, takes a like back (phase 19)."""
+	record = post_record(post)
+	if not record:
+		return
+	acc = follow_account(wanted, "bluesky")
+	if not acc:
+		return
+	existing = mochi.db.row("select remote from likes where post=? and account=?", post["id"], acc["id"])
+	if reaction == "like" and not existing:
+		result = mochi.account.object.create(acc["id"], {"$type": "app.bsky.feed.like", "subject": record}, key="like|" + post["id"] + "|" + acc["id"])
+		if result and result.get("id"):
+			mochi.db.execute("insert or replace into likes (post, account, remote, created) values (?, ?, ?, ?)", post["id"], acc["id"], str(result["id"]), mochi.time.now())
+	elif reaction != "like" and existing:
+		mochi.account.object.delete(acc["id"], existing["remote"])
+		mochi.db.execute("delete from likes where post=? and account=?", post["id"], acc["id"])
+
 def action_post_boost(a):
 	"""Boost a post from another network from one of the user's hosted
-	accounts: an Announce of the original, which credits its author and
-	copies nothing (decision 30), recorded as a copy of the post."""
+	accounts: an Announce of the original on the fediverse, a repost record
+	on Bluesky, which credits its author and copies nothing (decision 30),
+	recorded as a copy of the post."""
 	if not a.user:
 		a.error.label(401, "errors.not_logged_in")
 		return
@@ -11186,14 +11541,16 @@ def action_post_boost(a):
 	if not post.get("remote") or not post.get("author") or mochi.text.valid(post["author"], "entity"):
 		a.error.label(400, "errors.not_from_network")
 		return
-	acc = follow_account(a.input("account", ""))
+	record = post_record(post)
+	network = "bluesky" if record else "fediverse"
+	acc = follow_account(a.input("account", ""), network)
 	if not acc:
 		a.error.label(404, "errors.account_not_found")
 		return
 	if mochi.db.exists("select 1 from copies where post=? and account=?", post["id"], acc["id"]):
 		return {"data": {"copies": copies_present(post["id"])}}
 	person = account_person(post["author"])
-	result = publish_announce(acc, {"remote": post["remote"], "network": "fediverse", "name": person["name"], "link": "", "item": {"id": post["remote"]}, "created": post["created"]})
+	result = publish_announce(acc, {"remote": post["remote"], "network": network, "name": person["name"], "link": "", "item": record or {"id": post["remote"]}, "created": post["created"]})
 	if not result:
 		a.error.label(502, "errors.boost_not_sent")
 		return
@@ -11209,8 +11566,8 @@ def action_post_unboost(a):
 	if not feed or not is_feed_owner(a.user.identity.id, feed):
 		a.error.label(403, "errors.access_denied")
 		return
-	post = mochi.db.row("select id from posts where id=? and feed=?", a.input("post"), feed["id"])
-	acc = follow_account(a.input("account", ""))
+	post = mochi.db.row("select * from posts where id=? and feed=?", a.input("post"), feed["id"])
+	acc = follow_account(a.input("account", ""), "bluesky" if post and post_record(post) else "fediverse") if post else None
 	if not post or not acc:
 		a.error.label(404, "errors.post_not_found")
 		return

@@ -17,7 +17,10 @@
 		"activitypub/object": {"function": "function_activitypub_object"},
 		"activitypub/receive": {"function": "function_activitypub_receive"},
 		// The objects the account pins, for its featured collection.
-		"activitypub/featured": {"function": "function_activitypub_featured"}
+		"activitypub/featured": {"function": "function_activitypub_featured"},
+		// The posts of a feed published as a Bluesky custom feed, asked for by
+		// core's feed generator when Bluesky's index wants the feed (phase 19).
+		"atproto/skeleton": {"function": "function_atproto_skeleton"}
 	},
 
 	"architecture": {"engine": "starlark", "version": 4},
@@ -25,7 +28,7 @@
 	"require": {"version": {"minimum": "2.0.12"}},
 
 	"database": {
-		"schema": 15,
+		"schema": 16,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -104,6 +107,7 @@
 		":feed/-/publish": {"function": "action_publish_list"},
 		":feed/-/publish/set": {"function": "action_publish_set"},
 		":feed/-/publish/forget": {"function": "action_publish_forget"},
+		":feed/-/generator/set": {"function": "action_generator_set"},
 		":feed/-/import": {"function": "action_import"},
 		":feed/-/backups": {"function": "action_backups"},
 		":feed/-/backups/file": {"function": "action_backup_file"},

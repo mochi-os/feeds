@@ -265,6 +265,9 @@ export interface PublishResponse {
   accounts: PublishAccount[]
   publish: string[]
   copies: Record<string, number>
+  // The Bluesky custom feed the feed is published as from each hosted Bluesky
+  // account, by account id.
+  generators?: Record<string, string>
 }
 
 export interface PublishSetResponse {

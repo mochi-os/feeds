@@ -53,6 +53,7 @@ import {
   AtSign,
   FileUp,
   Hash,
+  LayoutList,
   Link2,
   Plus,
   RefreshCw,
@@ -286,6 +287,7 @@ function FeedSourcesPage() {
 // Example addresses, shown as placeholders.
 const TAG_EXAMPLE = '#tag@server.example'
 const PERSON_EXAMPLE = '@name@server.example, name.bsky.social, https://...'
+const BLUESKY_FEED_EXAMPLE = 'https://bsky.app/profile/name.bsky.social/feed/...'
 
 function credibilityHue(credibility: number): number {
   return (credibility / 100) * 120
@@ -311,15 +313,18 @@ function formatInterval(seconds: number): string {
 // its own posts (decision 32) - a public person or community there, by handle
 // or link, which the server follows through the owner's hosted account where
 // they have one (phase 17), else through the person's web feed or, on
-// Bluesky, their post records (the source type person/posts), or a hashtag
-// on a server, polled through its tag feed.
-type SourceKind =
+// Bluesky, their post records (the source type person/posts), a hashtag on a
+// server, polled through its tag feed, or a Bluesky custom feed or list by
+// its link, read through one of the owner's accounts there (phase 19; the
+// source types generator/posts and list/posts).
+export type SourceKind =
   | 'rss'
   | 'feed/posts'
   | 'account/timeline'
   | 'account/posts'
   | 'person'
   | 'tag'
+  | 'bluesky'
 
 interface SourcesPanelProps {
   feedId: string
@@ -462,6 +467,15 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
               <Hash className='me-2 h-4 w-4' />
               <Trans>Hashtag</Trans>
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setAddSourceType('bluesky')
+                setShowAddDialog(true)
+              }}
+            >
+              <LayoutList className='me-2 h-4 w-4' />
+              <Trans>Bluesky feed or list</Trans>
+            </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => importInputRef.current?.click()}>
               <FileUp className='me-2 h-4 w-4' />
               <Trans>Import follows from a file</Trans>
@@ -525,6 +539,9 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                         <UserRound className='text-primary h-4 w-4 shrink-0' />
                       ) : source.type === 'tag/posts' ? (
                         <Hash className='text-primary h-4 w-4 shrink-0' />
+                      ) : source.type === 'generator/posts' ||
+                        source.type === 'list/posts' ? (
+                        <LayoutList className='text-primary h-4 w-4 shrink-0' />
                       ) : (
                         <Link2 className='text-primary h-4 w-4 shrink-0' />
                       )}
@@ -693,7 +710,7 @@ interface AddSourceDialogProps {
   sourceType: SourceKind
 }
 
-function AddSourceDialog({
+export function AddSourceDialog({
   open,
   onOpenChange,
   feedId,
@@ -730,6 +747,16 @@ function AddSourceDialog({
   })
   const hosted: PublishAccount[] = hostedQuery.data ?? []
   const [followAccount, setFollowAccount] = useState('')
+  // The owner's accounts on Bluesky, one of which reads a custom feed or list
+  // (phase 19); offered when they have more than one.
+  const blueskyQuery = useQuery({
+    queryKey: ['feeds', 'bluesky'],
+    queryFn: () => feedsApi.blueskyAccounts(),
+    enabled: open && sourceType === 'bluesky',
+    retry: false,
+  })
+  const bluesky: PublishAccount[] = blueskyQuery.data ?? []
+  const [readAccount, setReadAccount] = useState('')
 
   useEffect(() => {
     if (open) {
@@ -749,7 +776,11 @@ function AddSourceDialog({
         sourceUrl,
         undefined,
         undefined,
-        sourceType === 'person' ? followAccount || undefined : undefined
+        sourceType === 'person'
+          ? followAccount || undefined
+          : sourceType === 'bluesky'
+            ? readAccount || undefined
+            : undefined
       )
       const count = response.data?.ingested ?? 0
       const suggested = response.data?.suggested_credibility
@@ -911,6 +942,8 @@ function AddSourceDialog({
                   <Trans>Follow a person or community</Trans>
                 ) : sourceType === 'tag' ? (
                   <Trans>Follow a hashtag</Trans>
+                ) : sourceType === 'bluesky' ? (
+                  <Trans>Add Bluesky feed or list</Trans>
                 ) : (
                   <Trans>Add Mochi feed</Trans>
                 )}
@@ -944,7 +977,9 @@ function AddSourceDialog({
                           ? PERSON_EXAMPLE
                           : sourceType === 'tag'
                             ? TAG_EXAMPLE
-                            : t`Feed entity ID or fingerprint`
+                            : sourceType === 'bluesky'
+                              ? BLUESKY_FEED_EXAMPLE
+                              : t`Feed entity ID or fingerprint`
                     }
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') void handleSubmit()
@@ -961,6 +996,22 @@ function AddSourceDialog({
                   </SelectTrigger>
                   <SelectContent>
                     {[...hosted]
+                      .sort((a, b) => naturalCompare(a.identifier, b.identifier))
+                      .map((account) => (
+                        <SelectItem key={account.id} value={account.id}>
+                          {account.identifier}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              )}
+              {sourceType === 'bluesky' && bluesky.length > 1 && (
+                <Select value={readAccount} onValueChange={setReadAccount}>
+                  <SelectTrigger aria-label={t`Read with`}>
+                    <SelectValue placeholder={t`Read with`} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[...bluesky]
                       .sort((a, b) => naturalCompare(a.identifier, b.identifier))
                       .map((account) => (
                         <SelectItem key={account.id} value={account.id}>

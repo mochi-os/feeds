@@ -140,6 +140,7 @@ const endpoints = {
     publish: (feedId: string) => `${feedId}/-/publish`,
     publishSet: (feedId: string) => `${feedId}/-/publish/set`,
     publishForget: (feedId: string) => `${feedId}/-/publish/forget`,
+    generatorSet: (feedId: string) => `${feedId}/-/generator/set`,
     importAccount: (feedId: string) => `${feedId}/-/import`,
     backups: (feedId: string) => `${feedId}/-/backups`,
     backupFile: (feedId: string) => `${feedId}/-/backups/file`,

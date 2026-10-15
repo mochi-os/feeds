@@ -27,7 +27,7 @@ import {
   providerName,
   toast,
 } from '@mochi/web'
-import { Archive, Download, MoreHorizontal, X } from 'lucide-react'
+import { Archive, Download, MoreHorizontal, Rss, X } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import type { PublishAccount } from '@/types/feeds'
 
@@ -89,6 +89,24 @@ export function PublishingSection({
       await refetch()
     } catch (err) {
       toast.error(getErrorMessage(err, t`Could not delete the copies`))
+    }
+  }
+
+  // Whether the feed is published as a Bluesky custom feed from a hosted
+  // Bluesky account: a generator record there, which Bluesky asks this server
+  // for the feed's posts through (phase 19).
+  const toggleGenerator = async (account: PublishAccount, on: boolean) => {
+    setBusy(account.id)
+    try {
+      await feedsApi.setGenerator(feedId, account.id, on)
+      await queryClient.invalidateQueries({ queryKey: ['feeds', 'publish', feedId] })
+      toast.success(
+        on ? t`Published as a Bluesky feed` : t`No longer a Bluesky feed`
+      )
+    } catch (err) {
+      toast.error(getErrorMessage(err, t`Could not change the Bluesky feed`))
+    } finally {
+      setBusy(null)
     }
   }
 
@@ -187,6 +205,23 @@ export function PublishingSection({
                       <Archive className='me-2 h-4 w-4' />
                       <Trans>Backups</Trans>
                     </DropdownMenuItem>
+                    {account.hosted &&
+                      account.type === 'bluesky' &&
+                      (data?.generators?.[account.id] ? (
+                        <DropdownMenuItem
+                          onClick={() => void toggleGenerator(account, false)}
+                        >
+                          <Rss className='me-2 h-4 w-4' />
+                          <Trans>Stop publishing as a Bluesky feed</Trans>
+                        </DropdownMenuItem>
+                      ) : (
+                        <DropdownMenuItem
+                          onClick={() => void toggleGenerator(account, true)}
+                        >
+                          <Rss className='me-2 h-4 w-4' />
+                          <Trans>Publish as a Bluesky feed</Trans>
+                        </DropdownMenuItem>
+                      ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <Switch

@@ -15,6 +15,7 @@ const state = vi.hoisted(() => ({
   setPublish: vi.fn(),
   forgetCopies: vi.fn(),
   importAccount: vi.fn(),
+  setGenerator: vi.fn(),
   success: vi.fn(),
   error: vi.fn(),
 }))
@@ -25,6 +26,7 @@ vi.mock('@/api/feeds', () => ({
     setPublish: state.setPublish,
     forgetCopies: state.forgetCopies,
     importAccount: state.importAccount,
+    setGenerator: state.setGenerator,
     getBackups: vi.fn().mockResolvedValue({ files: [] }),
     backupFileUrl: () => '',
   },
@@ -49,6 +51,14 @@ const accounts = [
     identifier: 'alice.bsky.social',
     name: 'Alice',
     server: 'bsky.social',
+  },
+  {
+    id: 'b2',
+    type: 'bluesky',
+    identifier: 'alice.example.com',
+    name: 'Alice',
+    server: 'example.com',
+    hosted: true,
   },
 ]
 
@@ -77,6 +87,7 @@ describe('Publishing section', () => {
     state.setPublish.mockReset()
     state.forgetCopies.mockReset()
     state.importAccount.mockReset()
+    state.setGenerator.mockReset()
     state.success.mockReset()
     state.error.mockReset()
   })
@@ -87,9 +98,59 @@ describe('Publishing section', () => {
     expect(screen.getByText('alice.bsky.social')).toBeTruthy()
     expect(screen.getByText('Mastodon · 3 copies')).toBeTruthy()
     const switches = screen.getAllByRole('switch')
-    expect(switches).toHaveLength(2)
+    expect(switches).toHaveLength(3)
     expect(switches[0]).toHaveAttribute('aria-checked', 'true')
     expect(switches[1]).toHaveAttribute('aria-checked', 'false')
+  })
+
+  it('publishes the feed as a Bluesky feed from a hosted Bluesky account only', async () => {
+    state.setGenerator.mockResolvedValue({ generators: { b2: 'at://x' } })
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('alice.example.com')
+    // A linked Bluesky account is not a generator's home.
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[1]
+    )
+    await screen.findByRole('menuitem', { name: 'Backups' })
+    expect(
+      screen.queryByRole('menuitem', { name: 'Publish as a Bluesky feed' })
+    ).toBeNull()
+    await user.keyboard('{Escape}')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[2]
+    )
+    await user.click(
+      await screen.findByRole('menuitem', { name: 'Publish as a Bluesky feed' })
+    )
+    await waitFor(() =>
+      expect(state.setGenerator).toHaveBeenCalledWith('feed-1', 'b2', true)
+    )
+    expect(state.success).toHaveBeenCalledWith('Published as a Bluesky feed')
+  })
+
+  it('offers to stop publishing where the feed is a Bluesky feed already', async () => {
+    state.getPublish.mockResolvedValue({
+      accounts,
+      publish: [],
+      copies: {},
+      generators: { b2: 'at://did:plc:x/app.bsky.feed.generator/1' },
+    })
+    state.setGenerator.mockResolvedValue({ generators: {} })
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('alice.example.com')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[2]
+    )
+    await user.click(
+      await screen.findByRole('menuitem', {
+        name: 'Stop publishing as a Bluesky feed',
+      })
+    )
+    await waitFor(() =>
+      expect(state.setGenerator).toHaveBeenCalledWith('feed-1', 'b2', false)
+    )
   })
 
   it('switching an account on adds it to the list', async () => {

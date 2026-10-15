@@ -857,6 +857,21 @@ const forgetCopies = async (
     { account }
   )
 
+// Publish the feed as a Bluesky custom feed from a hosted Bluesky account, or
+// stop; answers the custom feeds the feed is published as, by account.
+const setGenerator = async (
+  feedId: string,
+  account: string,
+  on: boolean
+): Promise<{ generators: Record<string, string> }> =>
+  client.post<
+    { generators: Record<string, string> },
+    { account: string; on: string }
+  >(endpoints.feeds.generatorSet(feedId), {
+    account,
+    on: on ? 'true' : 'false',
+  })
+
 // A handle or link looked up from search: a person, a community or a post on
 // another network.
 const lookup = async (query: string): Promise<Lookup> =>
@@ -908,6 +923,16 @@ const hostedAccounts = async (): Promise<PublishAccount[]> => {
     { capability: 'network' }
   )
   return (accounts ?? []).filter((a) => a.hosted && a.type === 'fediverse')
+}
+
+// The owner's accounts on Bluesky, hosted or linked, one of which reads a
+// Bluesky custom feed or list for a feed (phase 19).
+const blueskyAccounts = async (): Promise<PublishAccount[]> => {
+  const accounts = await client.post<PublishAccount[], { capability: string }>(
+    endpoints.feeds.accounts,
+    { capability: 'network' }
+  )
+  return (accounts ?? []).filter((a) => a.type === 'bluesky')
 }
 
 const importAccount = async (
@@ -1266,6 +1291,8 @@ export const feedsApi = {
   lookup,
   setPublish,
   forgetCopies,
+  setGenerator,
+  blueskyAccounts,
   importAccount,
   getBackups,
   backupFileUrl,
