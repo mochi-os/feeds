@@ -55,6 +55,11 @@ msgstr "(Anda)"
 msgid "[not set]"
 msgstr "[tidak diatur]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# suara} one {# suara} other {# suara}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# salinan} other {# salinan}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# berkas diubah} other {# berkas diubah}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# akun yang diikuti diimpor} other {# akun yang diikuti diimpor}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, other {+# bersarang}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# sumber ditambahkan} other {# sumber ditambahkan}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} hari"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} jam"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} menit"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "Aktivitas"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "Tambah"
@@ -351,6 +377,7 @@ msgstr "Tambah feed Mochi"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "Tambah opsi"
 
@@ -684,10 +711,29 @@ msgstr "Memblokir"
 msgid "Board"
 msgstr "Papan"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "Bagikan dari {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "Tingkatkan minat"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "Pembagian dibatalkan"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "Dibagikan"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "Dibagikan oleh {0}"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "Tutup panel / batalkan"
 msgid "Close search"
 msgstr "Tutup pencarian"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "Ditutup"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "Ditutup {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "Ditutup setelah"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "Konten tidak ditemukan."
 msgid "Content not modified"
 msgstr "Konten tidak dimodifikasi"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "Peringatan konten"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "Informasi dan detail kontekstual."
@@ -1023,6 +1086,18 @@ msgstr "Disalin ke clipboard"
 msgid "Copy"
 msgstr "Salin"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "Tidak dapat menambahkan filter"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "Tidak dapat membagikan"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "Tidak dapat mengubah sematan"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "Tidak dapat mengubah tujuan penerbitan umpan"
@@ -1051,6 +1126,14 @@ msgstr "Tidak dapat mengimpor"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "Tidak dapat memuat dokumen ini. Silakan coba lagi nanti."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "Tidak dapat menghapus filter"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "Tidak dapat memberikan suara"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "Gagal mengedit kiriman"
 msgid "Failed to get RSS token"
 msgstr "Gagal mendapatkan token RSS"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "Gagal mengimpor akun yang diikuti"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "Gagal memuat"
@@ -1871,6 +1958,10 @@ msgstr "Berkas"
 msgid "Filtered by tag:"
 msgstr "Disaring berdasarkan tag:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "Filter"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "Datar"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "Ikuti"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "Ikuti {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "Ikuti tagar"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "Ikuti orang atau komunitas"
 
@@ -1910,10 +2006,32 @@ msgstr "Ikuti orang atau komunitas"
 msgid "Follow from another network"
 msgstr "Ikuti dari jaringan lain"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "Permintaan ikuti tertunda"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "Permintaan ikuti ditolak"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "Ikuti utas"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "Ikuti dengan"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "Hanya pengikut"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "Mengikuti"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "Kelompokkan menurut"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Grup: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "Tagar"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "Impor markah"
 msgid "Import follows as sources"
 msgstr "Impor akun yang diikuti sebagai sumber"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "Impor akun yang diikuti dari file"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "Impor postingan"
@@ -2007,6 +2134,12 @@ msgstr "{0} diimpor"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "Sejauh ini {0} diimpor; sisanya menyusul"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "Mengimpor {0} akun yang diikuti; {1} ditambahkan sejauh ini"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "Buka tindakan tampilan"
 msgid "Open view controls"
 msgstr "Buka kontrol tampilan"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "Opsi {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "Pola (regex)"
 msgid "People"
 msgstr "Orang"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "Orang yang Anda kenal"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "Orang atau komunitas"
@@ -2641,6 +2783,18 @@ msgstr "Orang atau komunitas"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "Foto dan video"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "Frasa yang disembunyikan"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "Sematkan postingan"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Disematkan"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "Silakan coba lagi."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "Harap tunggu sebentar, lalu coba lagi."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "Jajak pendapat"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "Postingan dihapus"
 msgid "Post not found"
 msgstr "Postingan tidak ditemukan"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "Postingan disematkan"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "Postingan dilepas sematannya"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "Postingan dan komentar"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Postingan di Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Postingan di fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "Prompt disimpan"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Properti"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "Publik"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "Pengingat"
 msgid "Remove"
 msgstr "Hapus"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Hapus {0}"
@@ -2892,6 +3069,15 @@ msgstr "Hapus item"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "Hapus tautan"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "Hapus opsi {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "Hapus jajak pendapat"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "Kirim email"
 msgid "Send message"
 msgstr "Kirim pesan"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "Media sensitif"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "Serif"
@@ -3254,6 +3445,11 @@ msgstr "Tetapkan asal dan tujuan"
 msgid "Settings"
 msgstr "Pengaturan"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "Beberapa pilihan"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "Tampilkan kelas"
@@ -3262,9 +3458,21 @@ msgstr "Tampilkan kelas"
 msgid "Show fields"
 msgstr "Tampilkan bidang"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "Tampilkan lebih sedikit"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "Tampilkan lebih banyak"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Tampilkan hanya komentar pada gambar ini"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "Tampilkan media sensitif"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "Prompt tag"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "Tag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "Batalkan pembagian"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "Amerika Serikat"
 msgid "Unknown"
 msgstr "Tidak diketahui"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "Tidak terdaftar"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "Lepas sematan postingan"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "Hanya lihat"
 msgid "View the image this comment is about"
 msgstr "Lihat gambar yang dibahas komentar ini"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "Visibilitas"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "Perekaman suara tidak didukung di browser ini"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "Beri suara"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

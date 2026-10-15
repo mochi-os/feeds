@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
+import type { PostFeatures } from '@/types'
 import {
   arraysEqual,
   jsonValueUnchanged,
@@ -15,6 +16,8 @@ export interface FeedPostEditOriginal {
   attachmentIds: string[]
   // Caption per attachment id; absent means uncaptioned.
   captions: Record<string, string>
+  // Visibility, content warning and sensitive flag as the post has them.
+  features?: PostFeatures
 }
 
 export interface FeedPostEditDraft {
@@ -25,6 +28,17 @@ export interface FeedPostEditDraft {
   // Keyed by order entry (attachment id or "new:N"). Existing ids always
   // appear, so clearing a caption reaches the server as an empty string.
   captions: Record<string, string>
+  features?: PostFeatures
+}
+
+// A post's features as the editor compares them: unset means public, no
+// warning, not sensitive.
+export function normalizeFeatures(features?: PostFeatures): PostFeatures {
+  return {
+    visibility: features?.visibility ?? 'public',
+    warning: (features?.warning ?? '').trim(),
+    sensitive: !!features?.sensitive,
+  }
 }
 
 function normalizePostData(data: PostData | undefined): PostData | undefined {
@@ -40,6 +54,14 @@ export function isFeedPostEditUnchanged(
   original: FeedPostEditOriginal,
   draft: FeedPostEditDraft
 ): boolean {
+  if (
+    !jsonValueUnchanged(
+      normalizeFeatures(original.features),
+      normalizeFeatures(draft.features)
+    )
+  ) {
+    return false
+  }
   if (!textUnchanged(draft.body, original.body)) return false
   if (
     !jsonValueUnchanged(
@@ -68,6 +90,7 @@ export function buildFeedPostEditDraft(editing: {
   // for new ones; `fileKey` maps a new file to that key.
   captions: Record<string, string>
   fileKey: (file: File) => string
+  features?: PostFeatures
 }): FeedPostEditDraft {
   const order: string[] = []
   const newFiles: File[] = []
@@ -93,6 +116,7 @@ export function buildFeedPostEditDraft(editing: {
     order,
     newFiles,
     captions,
+    features: editing.features,
   }
 }
 
@@ -100,6 +124,9 @@ export function feedPostEditOriginalFromPost(post: {
   body: string
   data?: PostData
   attachments?: Array<{ id: string; caption?: string }>
+  visibility?: PostFeatures['visibility']
+  warning?: string
+  sensitive?: boolean
 }): FeedPostEditOriginal {
   const captions: Record<string, string> = {}
   for (const att of post.attachments ?? []) {
@@ -110,5 +137,10 @@ export function feedPostEditOriginalFromPost(post: {
     data: post.data,
     attachmentIds: (post.attachments ?? []).map((att) => att.id),
     captions,
+    features: {
+      visibility: post.visibility,
+      warning: post.warning,
+      sensitive: post.sensitive,
+    },
   }
 }

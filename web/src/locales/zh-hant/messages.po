@@ -55,6 +55,11 @@ msgstr "(你)"
 msgid "[not set]"
 msgstr "[未設定]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# 票} one {# 票} other {# 票}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# 個副本} other {# 個副本}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# 個檔案已變更} other {# 個檔案已變更}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {已匯入 # 個追蹤的帳戶} other {已匯入 # 個追蹤的帳戶}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, other {+# 個巢狀}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {已新增 # 個來源} other {已新增 # 個來源}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} 天"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} 小時"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} 分鐘"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "動態"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "新增"
@@ -351,6 +377,7 @@ msgstr "新增 Mochi 資訊流"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "新增選項"
 
@@ -684,10 +711,29 @@ msgstr "阻擋"
 msgid "Board"
 msgstr "看板"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "以 {0} 轉發"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "提升興趣"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "已取消轉發"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "已轉發"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} 已轉發"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "關閉面板 / 取消"
 msgid "Close search"
 msgstr "關閉搜尋"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "已結束"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "於 {0} 結束"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "持續時間"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "找不到內容。"
 msgid "Content not modified"
 msgstr "內容未修改"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "內容警告"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "情境資訊與詳細資料。"
@@ -1023,6 +1086,18 @@ msgstr "已複製到剪貼簿"
 msgid "Copy"
 msgstr "複製"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "無法新增篩選器"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "無法轉發"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "無法變更釘選"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "無法變更資訊流的發布位置"
@@ -1051,6 +1126,14 @@ msgstr "無法匯入"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "無法載入此文件,請稍後再試。"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "無法移除篩選器"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "無法投票"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "編輯貼文失敗"
 msgid "Failed to get RSS token"
 msgstr "取得 RSS 權杖失敗"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "無法匯入追蹤的帳戶"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "載入失敗"
@@ -1871,6 +1958,10 @@ msgstr "檔案"
 msgid "Filtered by tag:"
 msgstr "依標籤篩選:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "篩選器"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "扁平"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "追蹤"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "追蹤 {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "追蹤主題標籤"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "追蹤使用者或社群"
 
@@ -1910,10 +2006,32 @@ msgstr "追蹤使用者或社群"
 msgid "Follow from another network"
 msgstr "從其他網路追蹤"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "追蹤待確認"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "追蹤遭拒"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "追蹤討論串"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "追蹤身分"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "僅限追蹤者"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "已追蹤"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "分組依據"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "群組：{0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "主題標籤"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "匯入書籤"
 msgid "Import follows as sources"
 msgstr "將追蹤的帳戶匯入為來源"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "從檔案匯入追蹤的帳戶"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "匯入貼文"
@@ -2007,6 +2134,12 @@ msgstr "已匯入 {0} 項"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "已匯入 {0} 項，其餘將陸續匯入"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "正在匯入 {0} 個追蹤的帳戶；目前已新增 {1} 個"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "開啟檢視動作"
 msgid "Open view controls"
 msgstr "開啟檢視控制項"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "選項 {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "格式(正規表示式)"
 msgid "People"
 msgstr "聯絡人"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "您認識的人"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "使用者或社群"
@@ -2641,6 +2783,18 @@ msgstr "使用者或社群"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "相片和影片"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "要隱藏的詞語"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "釘選貼文"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "已釘選"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "請再試一次。"
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "請稍候片刻，然後再試一次。"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "投票"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "已刪除貼文"
 msgid "Post not found"
 msgstr "找不到貼文"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "貼文已釘選"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "貼文已取消釘選"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "貼文和留言"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Bluesky 上的貼文"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "聯邦宇宙上的貼文"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "已儲存提示"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "屬性"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "公開"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "提醒"
 msgid "Remove"
 msgstr "移除"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "移除 {0}"
@@ -2892,6 +3069,15 @@ msgstr "移除項目"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "移除連結"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "移除選項 {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "移除投票"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "傳送郵件"
 msgid "Send message"
 msgstr "傳送訊息"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "敏感媒體"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "襯線體"
@@ -3254,6 +3445,11 @@ msgstr "設定出發地與目的地"
 msgid "Settings"
 msgstr "設定"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "可複選"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "顯示類別"
@@ -3262,9 +3458,21 @@ msgstr "顯示類別"
 msgid "Show fields"
 msgstr "顯示欄位"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "顯示較少"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "顯示更多"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "僅顯示這張圖片的評論"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "顯示敏感媒體"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "標籤提示"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "標籤"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "取消轉發"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "美國"
 msgid "Unknown"
 msgstr "未知"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "不公開列出"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "取消釘選貼文"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "僅檢視"
 msgid "View the image this comment is about"
 msgstr "查看此評論所指的圖片"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "可見性"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "此瀏覽器不支援語音錄製"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "送出投票"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

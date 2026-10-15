@@ -55,6 +55,11 @@ msgstr "(நீங்கள்)"
 msgid "[not set]"
 msgstr "[அமைக்கப்படவில்லை]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# வாக்கு} one {# வாக்கு} other {# வாக்குகள்}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# நகல்} other {# நகல்கள்}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# கோப்பு மாற்றப்பட்டது} other {# கோப்புகள் மாற்றப்பட்டன}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# பின்தொடரல் இறக்குமதி செய்யப்பட்டது} other {# பின்தொடரல்கள் இறக்குமதி செய்யப்பட்டன}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# உள்ளமை} other {+# உள்ளமை}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# மூலம் சேர்க்கப்பட்டது} other {# மூலங்கள் சேர்க்கப்பட்டன}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} நாட்கள்"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} மணி நேரம்"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} நிமிடங்கள்"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "செயல்பாடு"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "சேர்"
@@ -351,6 +377,7 @@ msgstr "Mochi ஃபீட் சேர்"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "விருப்பம் சேர்"
 
@@ -684,10 +711,29 @@ msgstr "தடுக்கிறது"
 msgid "Board"
 msgstr "பலகை"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "{0}-இலிருந்து பூஸ்ட் செய்"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "ஆர்வத்தை அதிகரி"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "பூஸ்ட் திரும்பப் பெறப்பட்டது"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "பூஸ்ட் செய்யப்பட்டது"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} பூஸ்ட் செய்தார்"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "பலகத்தை மூடு / ரத்து"
 msgid "Close search"
 msgstr "தேடலை மூடு"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "மூடப்பட்டது"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0} அன்று மூடப்படும்"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "இதன் பிறகு மூடப்படும்"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "உள்ளடக்கம் கிடைக்கவில்லை."
 msgid "Content not modified"
 msgstr "உள்ளடக்கம் மாற்றப்படவில்லை"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "உள்ளடக்க எச்சரிக்கை"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "சூழல் சார்ந்த தகவல் மற்றும் விவரங்கள்."
@@ -1023,6 +1086,18 @@ msgstr "கிளிப்போர்டுக்கு நகலெடுக�
 msgid "Copy"
 msgstr "நகலெடு"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "வடிகட்டியைச் சேர்க்க முடியவில்லை"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "பூஸ்ட் செய்ய முடியவில்லை"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "பின்னை மாற்ற முடியவில்லை"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "ஊட்டம் வெளியிடும் இடத்தை மாற்ற முடியவில்லை"
@@ -1051,6 +1126,14 @@ msgstr "இறக்குமதி செய்ய முடியவில்�
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "இந்த ஆவணத்தை ஏற்ற முடியவில்லை. பிறகு மீண்டும் முயற்சிக்கவும்."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "வடிகட்டியை அகற்ற முடியவில்லை"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "வாக்களிக்க முடியவில்லை"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "பதிவைத் திருத்த முடியவில்�
 msgid "Failed to get RSS token"
 msgstr "RSS டோக்கனைப் பெற முடியவில்லை"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "பின்தொடரும் கணக்குகளை இறக்குமதி செய்ய முடியவில்லை"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "ஏற்ற முடியவில்லை"
@@ -1871,6 +1958,10 @@ msgstr "கோப்புகள்"
 msgid "Filtered by tag:"
 msgstr "டேக் மூலம் வடிகட்டப்பட்டது:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "வடிகட்டிகள்"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "தட்டையானது"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "பின்தொடர்"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0} ஐப் பின்தொடர்"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "ஒரு ஹேஷ்டேக்கைப் பின்தொடர்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "ஒரு நபரை அல்லது சமூகத்தைப் பின்தொடர்"
 
@@ -1910,10 +2006,32 @@ msgstr "ஒரு நபரை அல்லது சமூகத்தைப்
 msgid "Follow from another network"
 msgstr "வேறொரு பிணையத்திலிருந்து பின்தொடர்"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "பின்தொடர்தல் நிலுவையில்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "பின்தொடர்தல் மறுக்கப்பட்டது"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "இழையைப் பின்தொடர்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "இதன் மூலம் பின்தொடர்"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "பின்தொடர்பவர்கள் மட்டும்"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "பின்தொடர்கிறீர்கள்"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "இதன்படி தொகுக்கவும்"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "குழு: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "ஹேஷ்டேக்"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "புத்தகக்குறிகளை இறக்குமத�
 msgid "Import follows as sources"
 msgstr "பின்தொடரும் கணக்குகளை மூலங்களாக இறக்குமதி செய்"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "கோப்பிலிருந்து பின்தொடரும் கணக்குகளை இறக்குமதி செய்"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "பதிவுகளை இறக்குமதி செய்"
@@ -2007,6 +2134,12 @@ msgstr "{0} இறக்குமதி செய்யப்பட்டன"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "இதுவரை {0} இறக்குமதி செய்யப்பட்டன; மீதமுள்ளவை தொடரும்"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "{0} பின்தொடரல்கள் இறக்குமதி செய்யப்படுகின்றன; இதுவரை {1} சேர்க்கப்பட்டன"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "காட்சி செயல்களைத் திறக்கவ�
 msgid "Open view controls"
 msgstr "காட்சி கட்டுப்பாடுகளைத் திறக்கவும்"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "விருப்பம் {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "வடிவம் (regex)"
 msgid "People"
 msgstr "மக்கள்"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "உங்களுக்குத் தெரிந்தவர்கள்"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "நபர் அல்லது சமூகம்"
@@ -2641,6 +2783,18 @@ msgstr "நபர் அல்லது சமூகம்"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "புகைப்படங்களும் வீடியோக்களும்"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "மறைக்க வேண்டிய சொற்றொடர்"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "பதிவைப் பின் செய்"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Pin செய்யப்பட்டது"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "தயவுசெய்து மீண்டும் முயற்�
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "சிறிது நேரம் காத்திருந்து மீண்டும் முயற்சிக்கவும்."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "கருத்துக்கணிப்பு"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "பதிவு நீக்கப்பட்டது"
 msgid "Post not found"
 msgstr "பதிவு கிடைக்கவில்லை"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "பதிவு pin செய்யப்பட்டது"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "பதிவு unpin செய்யப்பட்டது"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "பதிவுகள் மற்றும் கருத்துக�
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Bluesky இல் உள்ள பதிவுகள்"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "fediverse-இல் உள்ள பதிவுகள்"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "தூண்டுதல் சேமிக்கப்பட்டத�
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "பண்புகள்"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "பொது"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "நினைவூட்டல்"
 msgid "Remove"
 msgstr "அகற்று"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0}-ஐ அகற்று"
@@ -2892,6 +3069,15 @@ msgstr "உருப்படியை அகற்று"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "இணைப்பை அகற்று"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "விருப்பம் {0}-ஐ அகற்று"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "கருத்துக்கணிப்பை அகற்று"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "மின்னஞ்சல் அனுப்பு"
 msgid "Send message"
 msgstr "செய்தியை அனுப்பு"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "உணர்திறன் மிக்க ஊடகம்"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "செரிஃப்"
@@ -3254,6 +3445,11 @@ msgstr "துவக்கம் மற்றும் சேருமிடத�
 msgid "Settings"
 msgstr "அமைப்புகள்"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "பல தேர்வுகள்"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "வகுப்புகளை காட்டு"
@@ -3262,9 +3458,21 @@ msgstr "வகுப்புகளை காட்டு"
 msgid "Show fields"
 msgstr "புலங்களை காட்டு"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "குறைவாகக் காட்டு"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "மேலும் காட்டு"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "இந்தப் படத்தின் கருத்துகளை மட்டும் காட்டு"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "உணர்திறன் மிக்க ஊடகத்தைக் காட்டு"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "குறிச்சொல் வினவல்"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "டேக்குகள்"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "பூஸ்டைத் திரும்பப் பெறு"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "ஐக்கிய அமெரிக்கா"
 msgid "Unknown"
 msgstr "தெரியாதது"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "பட்டியலிடப்படாதது"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "பதிவின் பின்னை நீக்கு"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "காட்சி மட்டும்"
 msgid "View the image this comment is about"
 msgstr "இந்தக் கருத்து எந்தப் படத்தைப் பற்றியதோ அதைப் பார்க்கவும்"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "தெரிவுநிலை"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "இந்த உலாவியில் குரல் பதிவு ஆதரிக்கப்படவில்லை"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "வாக்களி"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

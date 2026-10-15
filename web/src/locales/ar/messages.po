@@ -55,6 +55,11 @@ msgstr "(أنت)"
 msgid "[not set]"
 msgstr "[غير محدد]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {صوت واحد} zero {# صوت} one {صوت واحد} two {صوتان} few {# أصوات} many {# صوتًا} other {# صوت}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, zero {# نسخة} one {نسخة واحدة} two {نسختا�
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, zero {لم يتغير أي ملف} one {تغير ملف واحد} two {تغير ملفان} few {تغيرت # ملفات} many {تغير # ملفًا} other {تغير # ملف}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, zero {تم استيراد # حساب متابَع} one {تم استيراد حساب متابَع واحد} two {تم استيراد حسابين متابَعين} few {تم استيراد # حسابات متابَعة} many {تم استيراد # حسابًا متابَعًا} other {تم استيراد # حساب متابَع}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, zero {+# متداخل} one {+# متداخل} two {+# متد�
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, zero {تمت إضافة # مصدر} one {تمت إضافة مصدر واحد} two {تمت إضافة مصدرين} few {تمت إضافة # مصادر} many {تمت إضافة # مصدرًا} other {تمت إضافة # مصدر}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} أيام"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} ساعات"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} دقائق"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "النشاط"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "إضافة"
@@ -351,6 +377,7 @@ msgstr "إضافة خلاصة Mochi"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "إضافة خيار"
 
@@ -684,10 +711,29 @@ msgstr "يحظر"
 msgid "Board"
 msgstr "اللوحة"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "إعادة النشر من {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "تعزيز الاهتمام"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "تم التراجع عن إعادة النشر"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "تمت إعادة النشر"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "أعاد نشره {0}"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "إغلاق اللوحة / إلغاء"
 msgid "Close search"
 msgstr "إغلاق البحث"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "مغلق"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "يُغلق في {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "يُغلق بعد"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "لم يتم العثور على المحتوى."
 msgid "Content not modified"
 msgstr "لم يتم تعديل المحتوى"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "تحذير المحتوى"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "معلومات وتفاصيل سياقية."
@@ -1023,6 +1086,18 @@ msgstr "تم النسخ إلى الحافظة"
 msgid "Copy"
 msgstr "نسخ"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "تعذّرت إضافة الفلتر"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "تعذّرت إعادة النشر"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "تعذّر تغيير التثبيت"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "تعذّر تغيير مكان نشر التغذية"
@@ -1051,6 +1126,14 @@ msgstr "تعذّر الاستيراد"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "تعذّر تحميل هذا المستند. يرجى المحاولة مرة أخرى لاحقاً."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "تعذّرت إزالة الفلتر"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "تعذّر التصويت"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "فشل تعديل المنشور"
 msgid "Failed to get RSS token"
 msgstr "فشل الحصول على رمز RSS"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "فشل استيراد الحسابات المتابَعة"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "فشل التحميل"
@@ -1871,6 +1958,10 @@ msgstr "الملفات"
 msgid "Filtered by tag:"
 msgstr "مصفّى حسب الوسم:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "الفلاتر"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "مسطح"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "متابعة"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "متابعة {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "متابعة وسم"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "متابعة شخص أو مجتمع"
 
@@ -1910,10 +2006,32 @@ msgstr "متابعة شخص أو مجتمع"
 msgid "Follow from another network"
 msgstr "المتابعة من شبكة أخرى"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "المتابعة قيد الانتظار"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "رُفضت المتابعة"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "متابعة الموضوع"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "المتابعة باستخدام"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "المتابعون فقط"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "متابَع"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "تجميع حسب"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "المجموعة: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "وسم"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "استيراد الإشارات المرجعية"
 msgid "Import follows as sources"
 msgstr "استيراد الحسابات المتابَعة كمصادر"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "استيراد الحسابات المتابَعة من ملف"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "استيراد المنشورات"
@@ -2007,6 +2134,12 @@ msgstr "تم استيراد {0}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "تم استيراد {0} حتى الآن، والبقية تتبع"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "جارٍ استيراد {0} من الحسابات المتابَعة؛ أُضيف {1} حتى الآن"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "فتح إجراءات العرض"
 msgid "Open view controls"
 msgstr "فتح أدوات التحكم في العرض"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "الخيار {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "النمط (تعبير منتظم)"
 msgid "People"
 msgstr "الأشخاص"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "أشخاص تعرفهم"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "شخص أو مجتمع"
@@ -2641,6 +2783,18 @@ msgstr "شخص أو مجتمع"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "الصور والفيديوهات"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "العبارة المراد إخفاؤها"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "تثبيت المنشور"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "مثبت"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "يرجى المحاولة مرة أخرى."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "يرجى الانتظار قليلاً ثم إعادة المحاولة."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "استطلاع"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "تم حذف المنشور"
 msgid "Post not found"
 msgstr "المنشور غير موجود"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "تم تثبيت المنشور"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "تم إلغاء تثبيت المنشور"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "المنشورات والتعليقات"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "منشورات على Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "منشورات على Fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "تم حفظ الموجه"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "الخصائص"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "عام"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "التذكير"
 msgid "Remove"
 msgstr "إزالة"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "إزالة {0}"
@@ -2892,6 +3069,15 @@ msgstr "إزالة العنصر"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "إزالة الرابط"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "إزالة الخيار {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "إزالة الاستطلاع"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "إرسال بريد إلكتروني"
 msgid "Send message"
 msgstr "إرسال رسالة"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "وسائط حساسة"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "سيريف"
@@ -3254,6 +3445,11 @@ msgstr "تعيين المنشأ والوجهة"
 msgid "Settings"
 msgstr "الإعدادات"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "خيارات متعددة"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "عرض الفئات"
@@ -3262,9 +3458,21 @@ msgstr "عرض الفئات"
 msgid "Show fields"
 msgstr "عرض الحقول"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "عرض أقل"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "عرض المزيد"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "إظهار التعليقات على هذه الصورة فقط"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "عرض الوسائط الحساسة"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "موجّه الوسوم"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "الوسوم"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "التراجع عن إعادة النشر"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "الولايات المتحدة"
 msgid "Unknown"
 msgstr "غير معروف"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "غير مدرج"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "إلغاء تثبيت المنشور"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "عرض فقط"
 msgid "View the image this comment is about"
 msgstr "عرض الصورة التي يدور حولها هذا التعليق"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "الظهور"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "التسجيل الصوتي غير مدعوم في هذا المتصفح"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "تصويت"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -101,7 +101,21 @@ export interface Post {
   // Whether the signed-in reader follows the post; only the single-post view
   // says.
   following?: boolean
+  // The post's features (phase 17): who may see it, its content warning and
+  // sensitive flag, when it was pinned (0 for not), its language, and for a
+  // post from another network its author's id and its id there.
+  visibility?: PostVisibility
+  warning?: string
+  sensitive?: number
+  pinned?: number
+  language?: string
+  author?: string
+  remote?: string
+  // The options the reader voted for in the post's poll.
+  voted?: number[]
 }
+
+export type PostVisibility = 'public' | 'unlisted' | 'followers'
 
 // Client-side post for display
 export interface FeedPost {
@@ -132,6 +146,31 @@ export interface FeedPost {
   boosts?: number
   score?: number
   following?: boolean
+  visibility?: PostVisibility
+  warning?: string
+  sensitive?: boolean
+  pinned?: number
+  language?: string
+  // For a post from another network: its author's id and its id there.
+  authorId?: string
+  remote?: string
+  voted?: number[]
+}
+
+// The poll a post is made with: its options, whether several may be chosen,
+// and how long it runs in seconds.
+export interface PostPollInput {
+  options: string[]
+  multiple?: boolean
+  duration?: number
+}
+
+// The features a post is made or edited with.
+export interface PostFeatures {
+  visibility?: PostVisibility
+  warning?: string
+  sensitive?: boolean
+  language?: string
 }
 
 // Slim point-in-time snapshot stored for the "Saved" (read-later) feature.
@@ -169,6 +208,8 @@ export interface CreatePostRequest {
   // The accounts this post publishes to, overriding the feed's list; absent
   // leaves it to the feed.
   accounts?: string[]
+  features?: PostFeatures
+  poll?: PostPollInput
 }
 
 export interface CreatePostResponse {
@@ -198,6 +239,7 @@ export interface EditPostRequest {
   order?: string[] // order list with existing IDs and "new:N" placeholders for new files
   files?: File[] // new files to add
   captions?: Record<string, string> // keyed by attachment id or "new:N" placeholder
+  features?: PostFeatures
 }
 
 export interface EditPostResponse {

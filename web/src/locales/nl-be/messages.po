@@ -55,6 +55,11 @@ msgstr "(jij)"
 msgid "[not set]"
 msgstr "[niet ingesteld]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# stem} one {# stem} other {# stemmen}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# kopie} other {# kopieën}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# bestand gewijzigd} other {# bestanden gewijzigd}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# gevolgd account geïmporteerd} other {# gevolgde accounts geïmporteerd}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# genest} other {+# genest}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# bron toegevoegd} other {# bronnen toegevoegd}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} dagen"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} uur"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} minuten"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "Activiteit"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "Toevoegen"
@@ -351,6 +377,7 @@ msgstr "Mochi-feed toevoegen"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "Optie toevoegen"
 
@@ -684,10 +711,29 @@ msgstr "Blokkeert"
 msgid "Board"
 msgstr "Bord"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "Boosten vanaf {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "Interesse versterken"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "Boost ingetrokken"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "Geboost"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "Geboost door {0}"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "Paneel sluiten / annuleren"
 msgid "Close search"
 msgstr "Zoekopdracht sluiten"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "Gesloten"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "Sluit op {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "Sluit na"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "Inhoud niet gevonden."
 msgid "Content not modified"
 msgstr "Inhoud niet gewijzigd"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "Inhoudswaarschuwing"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "Contextuele informatie en details."
@@ -1023,6 +1086,18 @@ msgstr "Gekopieerd naar klembord"
 msgid "Copy"
 msgstr "Kopiëren"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "Kon het filter niet toevoegen"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "Kon niet boosten"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "Kon het vastmaken niet wijzigen"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "Kon niet wijzigen waar de feed publiceert"
@@ -1051,6 +1126,14 @@ msgstr "Kon niet importeren"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "Kon dit document niet laden. Probeer het later opnieuw."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "Kon het filter niet verwijderen"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "Kon niet stemmen"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "Bericht bewerken mislukt"
 msgid "Failed to get RSS token"
 msgstr "RSS-token ophalen mislukt"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "Gevolgde accounts importeren mislukt"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "Laden mislukt"
@@ -1871,6 +1958,10 @@ msgstr "Bestanden"
 msgid "Filtered by tag:"
 msgstr "Gefilterd op tag:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "Filters"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "Plat"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "Volgen"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0} volgen"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "Een hashtag volgen"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "Een persoon of gemeenschap volgen"
 
@@ -1910,10 +2006,32 @@ msgstr "Een persoon of gemeenschap volgen"
 msgid "Follow from another network"
 msgstr "Volgen vanaf een ander netwerk"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "Volgverzoek in behandeling"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "Volgverzoek geweigerd"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "Thread volgen"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "Volgen met"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "Alleen volgers"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "Gevolgd"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "Groeperen op"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Groep: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "Hashtag"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "Bladwijzers importeren"
 msgid "Import follows as sources"
 msgstr "Gevolgde accounts als bronnen importeren"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "Gevolgde accounts uit een bestand importeren"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "Berichten importeren"
@@ -2007,6 +2134,12 @@ msgstr "{0} geïmporteerd"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "Tot nu toe {0} geïmporteerd; de rest volgt"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "{0} gevolgde accounts importeren; tot nu toe {1} toegevoegd"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "Weergaveacties openen"
 msgid "Open view controls"
 msgstr "Weergavebediening openen"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "Optie {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "Patroon (regex)"
 msgid "People"
 msgstr "Personen"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "Mensen die u kent"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "Persoon of gemeenschap"
@@ -2641,6 +2783,18 @@ msgstr "Persoon of gemeenschap"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "Foto's en video's"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "Te verbergen woordgroep"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "Bericht vastmaken"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Vastgemaakt"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "Probeer het opnieuw."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "Wacht even en probeer het opnieuw."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "Peiling"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "Bericht verwijderd"
 msgid "Post not found"
 msgstr "Bericht niet gevonden"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "Bericht vastgemaakt"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "Bericht losgemaakt"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "Berichten en reacties"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Berichten op Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Berichten op de fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "Prompt opgeslagen"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Eigenschappen"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "Publiek"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "Herinnering"
 msgid "Remove"
 msgstr "Verwijderen"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} verwijderen"
@@ -2892,6 +3069,15 @@ msgstr "Item verwijderen"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "Link verwijderen"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "Optie {0} verwijderen"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "Peiling verwijderen"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "E-mail verzenden"
 msgid "Send message"
 msgstr "Bericht versturen"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "Gevoelige media"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "Schreefletter"
@@ -3254,6 +3445,11 @@ msgstr "Stel herkomst en bestemming in"
 msgid "Settings"
 msgstr "Instellingen"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "Meerdere keuzes"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "Klassen tonen"
@@ -3262,9 +3458,21 @@ msgstr "Klassen tonen"
 msgid "Show fields"
 msgstr "Velden tonen"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "Minder tonen"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "Meer tonen"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Alleen reacties op deze afbeelding tonen"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "Gevoelige media tonen"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "Tagprompt"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "Tags"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "Boost intrekken"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "Verenigde Staten"
 msgid "Unknown"
 msgstr "Onbekend"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "Niet vermeld"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "Bericht losmaken"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "Alleen-lezen"
 msgid "View the image this comment is about"
 msgstr "Bekijk de afbeelding waar deze reactie over gaat"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "Zichtbaarheid"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "Spraakopname wordt niet ondersteund in deze browser"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "Stemmen"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
+import type { PostFeatures, PostPollInput } from '@/types'
 import { useLingui } from '@lingui/react/macro'
 import {
   AuthenticatedLayout,
@@ -96,6 +97,8 @@ function FeedsLayoutInner() {
       files: File[]
       captions: string[]
       accounts?: string[]
+      features?: PostFeatures
+      poll?: PostPollInput
     }) => {
       try {
         const payload = {
@@ -105,6 +108,8 @@ function FeedsLayoutInner() {
           files: input.files,
           captions: input.captions,
           accounts: input.accounts,
+          features: input.features,
+          poll: input.poll,
         }
         if (input.files.length) {
           await upload(

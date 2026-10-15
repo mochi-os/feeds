@@ -55,6 +55,11 @@ msgstr "(អ្នក)"
 msgid "[not set]"
 msgstr "[មិនបានកំណត់]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# សំឡេងឆ្នោត} one {# សំឡេងឆ្នោត} other {# សំឡេងឆ្នោត}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {ច្បាប់ចម្លង #} other {ច្ប�
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {បានផ្លាស់ប្ដូរឯកសារ #} other {បានផ្លាស់ប្ដូរឯកសារ #}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {បាននាំចូលគណនីដែលតាមដាន #} other {បាននាំចូលគណនីដែលតាមដាន #}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, other {+# ជាន់ក្នុង}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {បានបន្ថែមប្រភព #} other {បានបន្ថែមប្រភព #}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} ថ្ងៃ"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} ម៉ោង"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} នាទី"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "សកម្មភាព"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "បន្ថែម"
@@ -351,6 +377,7 @@ msgstr "បន្ថែមមតិព័ត៌មាន Mochi"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "បន្ថែមជម្រើស"
 
@@ -684,10 +711,29 @@ msgstr "ប្លុក"
 msgid "Board"
 msgstr "ក្តារ"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "ចែករំលែកពី {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "បង្កើនចំណាប់អារម្មណ៍"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "បានដកការចែករំលែកវិញ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "បានចែករំលែក"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "ចែករំលែកដោយ {0}"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "បិទផ្ទាំង / បោះបង់"
 msgid "Close search"
 msgstr "បិទការស្វែងរក"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "បានបិទ"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "បិទនៅ {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "បិទបន្ទាប់ពី"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "រកមិនឃើញមាតិកា។"
 msgid "Content not modified"
 msgstr "មាតិកាមិនបានកែប្រែ"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "ការព្រមានអំពីខ្លឹមសារ"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "ព័ត៌មាន និងព័ត៌មានលម្អិតតាមបរិបទ។"
@@ -1023,6 +1086,18 @@ msgstr "បានចម្លងទៅក្ដារតម្បៀតខ្ទ
 msgid "Copy"
 msgstr "ចម្លង"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "មិនអាចបន្ថែមតម្រងបានទេ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "មិនអាចចែករំលែកបានទេ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "មិនអាចផ្លាស់ប្ដូរការខ្ទាស់បានទេ"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "មិនអាចប្ដូរកន្លែងបោះផ្សាយរបស់ព័ត៌មានបង្ហាញបានទេ"
@@ -1051,6 +1126,14 @@ msgstr "មិនអាចនាំចូលបានទេ"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "មិនអាចផ្ទុកឯកសារនេះ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "មិនអាចដកតម្រងចេញបានទេ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "មិនអាចបោះឆ្នោតបានទេ"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "បរាជ័យក្នុងការកែសម្រួលកា
 msgid "Failed to get RSS token"
 msgstr "បរាជ័យក្នុងការទទួលយកថូខឹន RSS"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "បរាជ័យក្នុងការនាំចូលគណនីដែលតាមដាន"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "បរាជ័យក្នុងការផ្ទុក"
@@ -1871,6 +1958,10 @@ msgstr "ឯកសារ"
 msgid "Filtered by tag:"
 msgstr "តម្រងតាមស្លាក៖"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "តម្រង"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "រាបស្មើ"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "តាមដាន"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "តាមដាន {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "តាមដានហាស់ថេក"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "តាមដានមនុស្ស ឬសហគមន៍"
 
@@ -1910,10 +2006,32 @@ msgstr "តាមដានមនុស្ស ឬសហគមន៍"
 msgid "Follow from another network"
 msgstr "តាមដានពីបណ្តាញផ្សេង"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "ការតាមដានកំពុងរង់ចាំ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "ការតាមដានត្រូវបានបដិសេធ"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "តាមដានខ្សែប្រធានបទ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "តាមដានដោយប្រើ"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "សម្រាប់តែអ្នកតាមដាន"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "កំពុងតាមដាន"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "ដាក់ជាក្រុមតាម"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "ក្រុម៖ {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "ហាស់ថេក"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "នាំចូលសញ្ញាចំណាំ"
 msgid "Import follows as sources"
 msgstr "នាំចូលគណនីដែលតាមដានជាប្រភព"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "នាំចូលគណនីដែលតាមដានពីឯកសារ"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "នាំចូលការបង្ហោះ"
@@ -2007,6 +2134,12 @@ msgstr "បាននាំចូល {0}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "បាននាំចូល {0} ហើយ; ដែលនៅសល់នឹងមកបន្ទាប់"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "កំពុងនាំចូលគណនីដែលតាមដានចំនួន {0}; បានបន្ថែម {1} ហើយ"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "បើកសកម្មភាពទិដ្ឋភាព"
 msgid "Open view controls"
 msgstr "បើកការគ្រប់គ្រងទិដ្ឋភាព"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "ជម្រើស {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "លំនាំ (regex)"
 msgid "People"
 msgstr "មនុស្ស"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "មនុស្សដែលអ្នកស្គាល់"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "មនុស្ស ឬសហគមន៍"
@@ -2641,6 +2783,18 @@ msgstr "មនុស្ស ឬសហគមន៍"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "រូបថត និងវីដេអូ"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "ឃ្លាដែលត្រូវលាក់"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "ខ្ទាស់ការប្រកាស"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "បានខ្ទាស់"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "សូមព្យាយាមម្តងទៀត។"
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "សូមរង់ចាំបន្តិច ហើយព្យាយាមម្តងទៀត។"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "ការស្ទង់មតិ"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "បានលុបប្រកាស"
 msgid "Post not found"
 msgstr "រកមិនឃើញប្រកាស"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "បានខ្ទាស់ប្រកាស"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "បានដកការខ្ទាស់ប្រកាស"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "ប្រកាស និងមតិយោបល់"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "ការបង្ហោះនៅលើ Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "ការប្រកាសនៅលើ fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "បានរក្សាទុកការសួរ"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "លក្ខណៈសម្បត្តិ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "សាធារណៈ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "ការរំលឹក"
 msgid "Remove"
 msgstr "យកចេញ"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "យក {0} ចេញ"
@@ -2892,6 +3069,15 @@ msgstr "យកធាតុចេញ"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "លុបតំណ"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "យកជម្រើស {0} ចេញ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "យកការស្ទង់មតិចេញ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "ផ្ញើអ៊ីមែល"
 msgid "Send message"
 msgstr "ផ្ញើសារ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "មេឌៀរសើប"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "សេរីហ្វ"
@@ -3254,6 +3445,11 @@ msgstr "កំណត់ចំណុចចេញដំណើរ និងគោ�
 msgid "Settings"
 msgstr "ការកំណត់"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "ជម្រើសច្រើន"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "បង្ហាញថ្នាក់"
@@ -3262,9 +3458,21 @@ msgstr "បង្ហាញថ្នាក់"
 msgid "Show fields"
 msgstr "បង្ហាញវាល"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "បង្ហាញតិច"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "បង្ហាញបន្ថែម"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "បង្ហាញតែមតិលើរូបភាពនេះ"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "បង្ហាញមេឌៀរសើប"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "ការសួរស្លាក"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "ស្លាក"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "ដកការចែករំលែកវិញ"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "សហរដ្ឋអាមេរិក"
 msgid "Unknown"
 msgstr "មិនស្គាល់"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "មិនបានរាយបញ្ជី"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "ដកខ្ទាស់ការប្រកាស"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "មើលតែប៉ុណ្ណោះ"
 msgid "View the image this comment is about"
 msgstr "មើលរូបភាពដែលមតិនេះនិយាយអំពី"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "ភាពមើលឃើញ"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "កម្មវិធីរុករកនេះមិនគាំទ្រការថតសំឡេងទេ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "បោះឆ្នោត"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

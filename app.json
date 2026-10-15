@@ -15,7 +15,9 @@
 		// An object a feed published as a hosted fediverse account, asked for
 		// by core's ActivityPub engine when another server fetches it.
 		"activitypub/object": {"function": "function_activitypub_object"},
-		"activitypub/receive": {"function": "function_activitypub_receive"}
+		"activitypub/receive": {"function": "function_activitypub_receive"},
+		// The objects the account pins, for its featured collection.
+		"activitypub/featured": {"function": "function_activitypub_featured"}
 	},
 
 	"architecture": {"engine": "starlark", "version": 4},
@@ -23,7 +25,7 @@
 	"require": {"version": {"minimum": "2.0.12"}},
 
 	"database": {
-		"schema": 14,
+		"schema": 15,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -87,6 +89,18 @@
 		":feed/-/:post/:comment/block": {"function": "action_comment_block"},
 		":feed/-/:post/:comment/mute": {"function": "action_comment_mute"},
 		":feed/-/:post/:comment/report": {"function": "action_comment_report"},
+		// Phase 17: pins, votes and boosts on a post; keyword filters; a follow
+		// list imported; the contacts with handles elsewhere.
+		":feed/-/:post/pin": {"function": "action_post_pin"},
+		":feed/-/:post/unpin": {"function": "action_post_unpin"},
+		":feed/-/:post/vote": {"function": "action_poll_vote"},
+		":feed/-/:post/boost": {"function": "action_post_boost"},
+		":feed/-/:post/unboost": {"function": "action_post_unboost"},
+		":feed/-/filters": {"function": "action_filters_list"},
+		":feed/-/filters/add": {"function": "action_filters_add"},
+		":feed/-/filters/remove": {"function": "action_filters_remove"},
+		":feed/-/sources/import": {"function": "action_sources_import"},
+		"-/people": {"function": "action_people"},
 		":feed/-/publish": {"function": "action_publish_list"},
 		":feed/-/publish/set": {"function": "action_publish_set"},
 		":feed/-/publish/forget": {"function": "action_publish_forget"},
@@ -168,6 +182,9 @@
 		"post/credibility": {"function": "event_post_credibility"},
 		"post/react": {"function": "event_post_reaction"},
 		"post/react/submit": {"function": "event_post_react_submit"},
+		"post/pin": {"function": "event_post_pin"},
+		"poll/vote": {"function": "event_poll_vote"},
+		"poll/update": {"function": "event_poll_update"},
 		"subscribe": {"function": "event_subscribe"},
 		"unsubscribe": {"function": "event_unsubscribe"},
 		"sync/complete": {"function": "event_sync_complete"},

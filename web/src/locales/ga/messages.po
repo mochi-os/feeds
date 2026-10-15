@@ -55,6 +55,11 @@ msgstr "(tusa)"
 msgid "[not set]"
 msgstr "[gan socrú]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# vóta} one {# vóta} two {# vóta} few {# vóta} many {# vóta} other {# vóta}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# chóip} two {# chóip} few {# chóip} many {# gcóip}
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# chomhad athraithe} two {# chomhad athraithe} few {# chomhad athraithe} many {# gcomhad athraithe} other {# comhad athraithe}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {Iompórtáladh # cuntas a leantar} two {Iompórtáladh # chuntas a leantar} few {Iompórtáladh # chuntas a leantar} many {Iompórtáladh # gcuntas a leantar} other {Iompórtáladh # cuntas a leantar}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# neadaithe} two {+# neadaithe} few {+# neadaithe} man
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Cuireadh # fhoinse leis} two {Cuireadh # fhoinse leis} few {Cuireadh # fhoinse leis} many {Cuireadh # bhfoinse leis} other {Cuireadh # foinse leis}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} lá"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} uair an chloig"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} nóiméad"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "Gníomhaíocht"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "Cuir leis"
@@ -351,6 +377,7 @@ msgstr "Cuir fotha Mochi leis"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "Cuir rogha leis"
 
@@ -684,10 +711,29 @@ msgstr "Bloic"
 msgid "Board"
 msgstr "Clár"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "Treisigh ó {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "Spreag spéis"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "Treisiú tarraingthe siar"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "Treisithe"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "Treisithe ag {0}"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "Dún painéal / cealaigh"
 msgid "Close search"
 msgstr "Dún cuardach"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "Dúnta"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "Dúntar {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "Dúntar tar éis"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "Níor aimsíodh an t-ábhar."
 msgid "Content not modified"
 msgstr "Níor athraíodh an t-ábhar"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "Rabhadh ábhair"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "Eolas comhthéacsúil agus sonraí."
@@ -1023,6 +1086,18 @@ msgstr "Cóipeáilte chuig an ngearrthaisce"
 msgid "Copy"
 msgstr "Cóipeáil"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "Níorbh fhéidir an scagaire a chur leis"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "Níorbh fhéidir treisiú"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "Níorbh fhéidir an phionnáil a athrú"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "Níorbh fhéidir an áit a bhfoilsíonn an fotha a athrú"
@@ -1051,6 +1126,14 @@ msgstr "Níorbh fhéidir iompórtáil"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "Níorbh fhéidir an cháipéis seo a luchtú. Bain triail eile as ar ball."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "Níorbh fhéidir an scagaire a bhaint"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "Níorbh fhéidir vótáil"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "Theip ar phostáil a chur in eagar"
 msgid "Failed to get RSS token"
 msgstr "Theip ar chomhartha RSS a fháil"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "Theip ar iompórtáil na gcuntas a leantar"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "Theip ar luchtú"
@@ -1871,6 +1958,10 @@ msgstr "Comhaid"
 msgid "Filtered by tag:"
 msgstr "Scagtha de réir clibe:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "Scagairí"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "Cothrom"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "Lean"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "Lean {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "Lean haischlib"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "Lean duine nó pobal"
 
@@ -1910,10 +2006,32 @@ msgstr "Lean duine nó pobal"
 msgid "Follow from another network"
 msgstr "Lean ó líonra eile"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "Leanúint ar feitheamh"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "Leanúint diúltaithe"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "Lean an snáithe"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "Lean le"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "Lucht leanúna amháin"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "Á leanúint"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "Grúpáil de réir"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Grúpa: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "Haischlib"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "Iompórtáil leabharmharcanna"
 msgid "Import follows as sources"
 msgstr "Iompórtáil na cuntais a leantar mar fhoinsí"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "Iompórtáil cuntais a leantar ó chomhad"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "Iompórtáil postálacha"
@@ -2007,6 +2134,12 @@ msgstr "Iompórtáilte: {0}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "Iompórtáilte go dtí seo: {0}; tiocfaidh an chuid eile"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "Ag iompórtáil {0} cuntas a leantar; {1} curtha leis go dtí seo"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "Oscail gníomhartha amhairc"
 msgid "Open view controls"
 msgstr "Oscail rialuithe amhairc"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "Rogha {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "Patrún (regex)"
 msgid "People"
 msgstr "Daoine"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "Daoine a bhfuil aithne agat orthu"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "Duine nó pobal"
@@ -2641,6 +2783,18 @@ msgstr "Duine nó pobal"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "Grianghraif agus físeáin"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "Frása le folú"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "Pionnáil postáil"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Pionnáilte"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "Bain triail eile as."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "Fan nóiméad agus bain triail eile as, le do thoil."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "Pobalbhreith"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "Postáil scriosta"
 msgid "Post not found"
 msgstr "Níor aimsíodh an phostáil"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "Postáil pionnáilte"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "Postáil dípionnáilte"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "Postálacha agus tráchtanna"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Postálacha ar Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Postálacha ar an Fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "Leid sábháilte"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Airíonna"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "Poiblí"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "Meabhrúchán"
 msgid "Remove"
 msgstr "Bain"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Bain {0}"
@@ -2892,6 +3069,15 @@ msgstr "Bain mír"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "Bain an nasc"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "Bain rogha {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "Bain pobalbhreith"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "Seol ríomhphost"
 msgid "Send message"
 msgstr "Seol teachtaireacht"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "Meáin íogaire"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "Le serif"
@@ -3254,6 +3445,11 @@ msgstr "Socraigh an bunús agus an ceann scríbe"
 msgid "Settings"
 msgstr "Socruithe"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "Roghanna iolracha"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "Taispeáin ranganna"
@@ -3262,9 +3458,21 @@ msgstr "Taispeáin ranganna"
 msgid "Show fields"
 msgstr "Taispeáin réimsí"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "Taispeáin níos lú"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "Taispeáin níos mó"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Ná taispeáin ach tuairimí ar an íomhá seo"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "Taispeáin meáin íogaire"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "Leid clibe"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "Clibeanna"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "Tarraing an treisiú siar"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "Stáit Aontaithe"
 msgid "Unknown"
 msgstr "Anaithnid"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "Neamhliostaithe"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "Díphionnáil postáil"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "Féach amháin"
 msgid "View the image this comment is about"
 msgstr "Féach ar an íomhá a bhfuil an trácht seo fúithi"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "Infheictheacht"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "Ní thacaítear le taifeadadh gutha sa bhrabhsálaí seo"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "Vótáil"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -57,6 +57,7 @@ import {
 import { mapFeedsToSummaries } from '@/api/adapters'
 import endpoints from '@/api/endpoints'
 import { feedsApi, type AccessRule } from '@/api/feeds'
+import { FiltersSection } from '@/features/feeds/components/filters-section'
 import { PublishingSection } from '@/features/feeds/components/publishing-section'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
@@ -468,6 +469,8 @@ function GeneralTab({
           privacy={feed.privacy ?? 'public'}
         />
       )}
+
+      <FiltersSection feedId={feed.id} />
 
       {feed.isOwner ? (
         <AiSettingsSection

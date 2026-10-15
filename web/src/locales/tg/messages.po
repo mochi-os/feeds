@@ -55,6 +55,11 @@ msgstr "(шумо)"
 msgid "[not set]"
 msgstr "[таъин нашудааст]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# овоз} one {# овоз} other {# овоз}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# нусха} other {# нусха}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# файл тағйир ёфт} other {# файл тағйир ёфт}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# обуна ворид карда шуд} other {# обуна ворид карда шуд}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# дохилӣ} other {+# дохилӣ}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# манбаъ илова шуд} other {# манбаъ илова шуд}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} рӯз"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} соат"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} дақиқа"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "Фаъолият"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "Илова кардан"
@@ -351,6 +377,7 @@ msgstr "Иловаи навори Mochi"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "Иловаи имкон"
 
@@ -684,10 +711,29 @@ msgstr "Блокҳо"
 msgid "Board"
 msgstr "Тахта"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "Мубодила аз {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "Афзоиши таваҷҷуҳ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "Мубодила бекор карда шуд"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "Мубодила шуд"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} мубодила кард"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "Пӯшидани панел / бекор кардан"
 msgid "Close search"
 msgstr "Пӯшидани ҷустуҷӯ"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "Баста шуд"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0} баста мешавад"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "Пас аз ин баста мешавад"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "Мундариҷа ёфт нашуд."
 msgid "Content not modified"
 msgstr "Мундариҷа тағйир дода нашуд"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "Огоҳии мундариҷа"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "Маълумоти заминавӣ ва тафсилот."
@@ -1023,6 +1086,18 @@ msgstr "Ба буфер нусхабардорӣ шуд"
 msgid "Copy"
 msgstr "Нусхабардорӣ"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "Филтрро илова кардан нашуд"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "Мубодила кардан нашуд"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "Часпониданро тағйир додан нашуд"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "Ҷои нашри фидро тағйир додан нашуд"
@@ -1051,6 +1126,14 @@ msgstr "Ворид кардан нашуд"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "Ин ҳуҷҷатро бор карда натавонист. Лутфан баъдтар такрор кунед."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "Филтрро хориҷ кардан нашуд"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "Овоз додан нашуд"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "Таҳрири паём ба анҷом нарасид"
 msgid "Failed to get RSS token"
 msgstr "Гирифтани токени RSS ба анҷом нарасид"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "Воридоти обунаҳо ба анҷом нарасид"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "Боркунӣ ба анҷом нарасид"
@@ -1871,6 +1958,10 @@ msgstr "Файлҳо"
 msgid "Filtered by tag:"
 msgstr "Бо нишона филтр карда шуд:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "Филтрҳо"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "Ҳамвор"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "Обуна шудан"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "Обуна ба {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "Обуна шудан ба хештег"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "Обуна ба шахс ё ҷомеа"
 
@@ -1910,10 +2006,32 @@ msgstr "Обуна ба шахс ё ҷомеа"
 msgid "Follow from another network"
 msgstr "Аз шабакаи дигар обуна шудан"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "Обуна дар интизор"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "Обуна рад карда шуд"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "Пайгирии сӯҳбат"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "Обуна бо ҳисоб"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "Танҳо обуначиён"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "Обуна шудаед"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "Гурӯҳбандӣ аз рӯи"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Гурӯҳ: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "Хештег"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "Воридоти хатчӯбҳо"
 msgid "Import follows as sources"
 msgstr "Воридоти обунаҳо ҳамчун манбаъ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "Ворид кардани обунаҳо аз файл"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "Воридоти постҳо"
@@ -2007,6 +2134,12 @@ msgstr "{0} ворид карда шуд"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "То ҳол {0} ворид карда шуд; боқимонда баъдтар ворид мешавад"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "{0} обуна ворид карда мешавад; то ҳол {1} илова шуд"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "Кушодани амалҳои намоиш"
 msgid "Open view controls"
 msgstr "Кушодани идораҳои намоиш"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "Вариант {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "Намуна (regex)"
 msgid "People"
 msgstr "Одамон"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "Одамоне, ки мешиносед"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "Шахс ё ҷомеа"
@@ -2641,6 +2783,18 @@ msgstr "Шахс ё ҷомеа"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "Суратҳо ва видеоҳо"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "Ибора барои пинҳон кардан"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "Часпонидани пост"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Часпонидашуда"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "Лутфан, бори дигар кӯшиш кунед."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "Лутфан каме интизор шавед ва аз нав кӯшиш кунед."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "Пурсиш"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "Пост нест карда шуд"
 msgid "Post not found"
 msgstr "Пост ёфт нашуд"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "Пост часпонда шуд"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "Пост ҷудо карда шуд"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "Постҳо ва шарҳҳо"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Постҳо дар Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Постҳо дар федиверс"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "Дархост захира шуд"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Хусусиятҳо"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "Ҷамъиятӣ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "Ёдоварӣ"
 msgid "Remove"
 msgstr "Хориҷ кардан"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Хориҷ кардани {0}"
@@ -2892,6 +3069,15 @@ msgstr "Хориҷ кардани ашё"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "Истинодро тоза кунед"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "Хориҷ кардани варианти {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "Хориҷ кардани пурсиш"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "Имейл фиристодан"
 msgid "Send message"
 msgstr "Паём фиристодан"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "Медиаи ҳассос"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "Сериф"
@@ -3254,6 +3445,11 @@ msgstr "Сарчашма ва таъиноти манзилро таъин ку�
 msgid "Settings"
 msgstr "Танзимот"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "Якчанд интихоб"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "Синфҳоро нишон додан"
@@ -3262,9 +3458,21 @@ msgstr "Синфҳоро нишон додан"
 msgid "Show fields"
 msgstr "Майдонҳоро нишон додан"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "Камтар нишон додан"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "Бештар нишон додан"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Танҳо шарҳҳои ин тасвирро нишон додан"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "Нишон додани медиаи ҳассос"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "Дархости барчасп"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "Барчаспҳо"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "Бекор кардани мубодила"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "Иёлоти Муттаҳида"
 msgid "Unknown"
 msgstr "Номаълум"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "Дар рӯйхат нест"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "Бекор кардани часпонидани пост"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "Танҳо назар"
 msgid "View the image this comment is about"
 msgstr "Тасвиреро, ки ин шарҳ дар бораи он аст, бинед"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "Намоёнӣ"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "Сабти овоз дар ин браузер дастгирӣ намешавад"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "Овоз додан"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -5,7 +5,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
+import type {
+  FeedPermissions,
+  FeedPost,
+  PostFeatures,
+  ReactionId,
+} from '@/types'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Button,
@@ -305,7 +310,8 @@ function SinglePostPage() {
       data?: PostData,
       order?: string[],
       files?: File[],
-      captions?: Record<string, string>
+      captions?: Record<string, string>,
+      features?: PostFeatures
     ): Promise<boolean> => {
       if (
         isFeedPostEditUnchanged(original, {
@@ -314,6 +320,7 @@ function SinglePostPage() {
           order: order ?? [],
           newFiles: files ?? [],
           captions: captions ?? {},
+          features,
         })
       ) {
         return true
@@ -327,6 +334,7 @@ function SinglePostPage() {
           order,
           files,
           captions,
+          features,
         }
         if (files?.length) {
           await uploadEdit(

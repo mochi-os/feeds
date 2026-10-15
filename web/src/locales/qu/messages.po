@@ -55,6 +55,11 @@ msgstr "(qam)"
 msgid "[not set]"
 msgstr "[mana churasqa]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# voto} one {# voto} other {# votokuna}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# copia} other {# copiakuna}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# archivo tikrasqa} other {# archivokuna tikrasqa}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# qatipasqa importasqa} other {# qatipasqakuna importasqa}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# ukhupi} other {+# ukhupi}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# pukyu yapasqa} other {# pukyukuna yapasqa}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} p'unchaw"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} hora"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} minuto"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "Kuyuriy"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "Yapay"
@@ -351,6 +377,7 @@ msgstr "Mochi feed yapay"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "Akllana yapay"
 
@@ -684,10 +711,29 @@ msgstr "Hark'aykuna"
 msgid "Board"
 msgstr "Tabla"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "{0}manta mast'ariy"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "Munay yapay"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "Mast'ariyqa kutichisqa"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "Mast'arisqa"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} mast'arirqan"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "Panel wichq'ay / mana ruway"
 msgid "Close search"
 msgstr "Maskayta wichq'ay"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "Wichq'asqa"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0} wichq'akunqa"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "Wichq'akunqa qhipaman"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "Manam contenido tarikunchu."
 msgid "Content not modified"
 msgstr "Contenido mana hukchasqachu"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "Contenidomanta willakuy"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "Contexto willariy hinaspa detallekuna."
@@ -1023,6 +1086,18 @@ msgstr "Clipboard-man copiasqa"
 msgid "Copy"
 msgstr "Copiay"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "Mana filtrota yapayta atinchu"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "Mana mast'ariyta atinchu"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "Mana fijayta tikrayta atinchu"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "Mana feedpa maypi churasqanta hukchayta atinchu"
@@ -1051,6 +1126,14 @@ msgstr "Mana importayta atinchu"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "Kay documentota mana cargayta atikurqanchu. Qhipaman kutimanta ruway."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "Mana filtrota qichuyta atinchu"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "Mana votayta atinchu"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "Mana qillqata hukchayta atinchu"
 msgid "Failed to get RSS token"
 msgstr "Mana RSS tokenta chaskiyta atinchu"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "Mana qatipasqa cuentakunata importayta atinchu"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "Mana cargayta atinchu"
@@ -1871,6 +1958,10 @@ msgstr "Archivokuna"
 msgid "Filtered by tag:"
 msgstr "Unanchawan filtrasqa:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "Filtrokuna"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "Pampa"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "Qatipay"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0}-ta qatipay"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "Huk etiquetata qatipay"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "Huk runata utaq aylluta qatipay"
 
@@ -1910,10 +2006,32 @@ msgstr "Huk runata utaq aylluta qatipay"
 msgid "Follow from another network"
 msgstr "Huk redmanta qatipay"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "Qatipayqa suyachkan"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "Qatipayqa mana chaskisqa"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "Hilota qatipay"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "Kaywan qatipay"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "Qatiqkunallapaq"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "Qatipachkanki"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "Kayman hina huñuchiy"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Huñu: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "Etiqueta"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "Marcadorkunata importay"
 msgid "Import follows as sources"
 msgstr "Qatipasqa cuentakunata pukyu hina importay"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "Qatipasqa cuentakunata huk archivomanta importay"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "Qillqakunata importay"
@@ -2007,6 +2134,12 @@ msgstr "{0} importasqa"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "Kunankama {0} importasqa; puchuqkunaqa qhipaman hamunqa"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "{0} qatipasqakunata importachkan; kunankama {1} yapasqa"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "Vista ruwaykunata kichay"
 msgid "Open view controls"
 msgstr "Vista controlkunata kichay"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "Akllana {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "Patrón (regex)"
 msgid "People"
 msgstr "Runakuna"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "Riqsisqayki runakuna"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "Runa utaq ayllu"
@@ -2641,6 +2783,18 @@ msgstr "Runa utaq ayllu"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "Fotokuna videokunapas"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "Pakanapaq rimay"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "Qillqata fijay"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Fijasqa"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "Ama hina kaspa, huk kutita ruway."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "Ama hina kaspa, huk ratulla suyaykuy, hinaspa watiqmanta ruwaykuy."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "Tapukuy"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "Qillqa wischusqa"
 msgid "Post not found"
 msgstr "Qillqa mana tarisqachu"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "Qillqa fijasqa"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "Qillqa mana fijasqaña"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "Qillqakuna comentariokunawan"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Bluesky-pi qillqakuna"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Fediverse-pi qillqakuna"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "Prompt waqaychasqa"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Kayninkuna"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "Público"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "Yuyarichiq"
 msgid "Remove"
 msgstr "Qichuy"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0}-ta qichuy"
@@ -2892,6 +3069,15 @@ msgstr "Itemta qichuy"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "T'inkita qichuy"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "{0} akllanata qichuy"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "Tapukuyta qichuy"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "Email apachiy"
 msgid "Send message"
 msgstr "Willakuyta apachiy"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "Sensible multimedia"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "Serif"
@@ -3254,6 +3445,11 @@ msgstr "Origenta destinotawan churay"
 msgid "Settings"
 msgstr "Wakichiykuna"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "Achka akllanakuna"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "Clasekunata rikuchiy"
@@ -3262,9 +3458,21 @@ msgstr "Clasekunata rikuchiy"
 msgid "Show fields"
 msgstr "Campokunata rikuchiy"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "Pisita rikuchiy"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "Astawan rikuchiy"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Kay imagenpa comentariokunallata rikuchiy"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "Sensible multimediata rikuchiy"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "Unancha prompt"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "Unanchakuna"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "Mast'ariyta kutichiy"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "Hukllachasqa Suyukuna"
 msgid "Unknown"
 msgstr "Mana riqsisqa"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "Mana listapi"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "Qillqamanta fijayta qichuy"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "Qhawayllapaq"
 msgid "View the image this comment is about"
 msgstr "Kay comentario mayqin imagenmantachus chayta qhaway"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "Rikukuynin"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "Kay navegadorpiqa manam kunka grabay atikunchu"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "Votay"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

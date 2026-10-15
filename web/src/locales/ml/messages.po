@@ -55,6 +55,11 @@ msgstr "(നിങ്ങൾ)"
 msgid "[not set]"
 msgstr "[സജ്ജമാക്കിയിട്ടില്ല]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# വോട്ട്} one {# വോട്ട്} other {# വോട്ടുകൾ}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# പകർപ്പ്} other {# പകർപ്പു
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ഫയൽ മാറ്റി} other {# ഫയലുകൾ മാറ്റി}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {പിന്തുടരുന്ന # അക്കൗണ്ട് ഇമ്പോർട്ട് ചെയ്തു} other {പിന്തുടരുന്ന # അക്കൗണ്ടുകൾ ഇമ്പോർട്ട് ചെയ്തു}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# നെസ്റ്റഡ്} other {+# നെസ്�
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# സ്രോതസ്സ് ചേർത്തു} other {# സ്രോതസ്സുകൾ ചേർത്തു}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} ദിവസം"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} മണിക്കൂർ"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} മിനിറ്റ്"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "പ്രവർത്തനം"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "ചേർക്കുക"
@@ -351,6 +377,7 @@ msgstr "Mochi ഫീഡ് ചേർക്കുക"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "ഓപ്ഷൻ ചേർക്കുക"
 
@@ -684,10 +711,29 @@ msgstr "തടയുന്നു"
 msgid "Board"
 msgstr "ബോർഡ്"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "{0}-ൽ നിന്ന് ബൂസ്റ്റ് ചെയ്യുക"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "താൽപ്പര്യം വർദ്ധിപ്പിക്കുക"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "ബൂസ്റ്റ് പിൻവലിച്ചു"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "ബൂസ്റ്റ് ചെയ്തു"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} ബൂസ്റ്റ് ചെയ്തത്"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "പാനൽ അടയ്ക്കുക / റദ്ദാക്കു�
 msgid "Close search"
 msgstr "തിരയൽ അടയ്ക്കുക"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "അടച്ചു"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0}-ന് അടയ്ക്കും"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "ഇതിനുശേഷം അടയ്ക്കും"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "ഉള്ളടക്കം കണ്ടെത്തിയില്ല."
 msgid "Content not modified"
 msgstr "ഉള്ളടക്കം പരിഷ്കരിച്ചിട്ടില്ല"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "ഉള്ളടക്ക മുന്നറിയിപ്പ്"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "സന്ദർഭോചിത വിവരങ്ങളും വിശദാംശങ്ങളും."
@@ -1023,6 +1086,18 @@ msgstr "ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത�
 msgid "Copy"
 msgstr "പകർത്തുക"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "ഫിൽട്ടർ ചേർക്കാൻ കഴിഞ്ഞില്ല"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "ബൂസ്റ്റ് ചെയ്യാൻ കഴിഞ്ഞില്ല"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "പിൻ മാറ്റാൻ കഴിഞ്ഞില്ല"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "ഫീഡ് പ്രസിദ്ധീകരിക്കുന്ന സ്ഥലം മാറ്റാൻ കഴിഞ്ഞില്ല"
@@ -1051,6 +1126,14 @@ msgstr "ഇമ്പോർട്ട് ചെയ്യാൻ കഴിഞ്ഞ�
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "ഈ ഡോക്യുമെന്റ് ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല. ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "ഫിൽട്ടർ നീക്കം ചെയ്യാൻ കഴിഞ്ഞില്ല"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "വോട്ട് ചെയ്യാൻ കഴിഞ്ഞില്ല"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "പോസ്റ്റ് എഡിറ്റ് ചെയ്യുന്�
 msgid "Failed to get RSS token"
 msgstr "RSS ടോക്കൺ നേടുന്നതിൽ പരാജയപ്പെട്ടു"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "പിന്തുടരുന്ന അക്കൗണ്ടുകൾ ഇമ്പോർട്ട് ചെയ്യാനായില്ല"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "ലോഡുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
@@ -1871,6 +1958,10 @@ msgstr "ഫയലുകൾ"
 msgid "Filtered by tag:"
 msgstr "ടാഗ് പ്രകാരം ഫിൽട്ടർ ചെയ്തത്:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "ഫിൽട്ടറുകൾ"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "പരന്നത്"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "പിന്തുടരുക"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0}-നെ പിന്തുടരുക"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "ഒരു ഹാഷ്‌ടാഗ് പിന്തുടരുക"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "ഒരു വ്യക്തിയെയോ കമ്മ്യൂണിറ്റിയെയോ പിന്തുടരുക"
 
@@ -1910,10 +2006,32 @@ msgstr "ഒരു വ്യക്തിയെയോ കമ്മ്യൂണി�
 msgid "Follow from another network"
 msgstr "മറ്റൊരു നെറ്റ്‌വർക്കിൽ നിന്ന് പിന്തുടരുക"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "പിന്തുടരൽ തീർപ്പാക്കാനുണ്ട്"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "പിന്തുടരൽ നിരസിച്ചു"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "ത്രെഡ് പിന്തുടരുക"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "ഇതുപയോഗിച്ച് പിന്തുടരുക"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "ഫോളോവേഴ്സിന് മാത്രം"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "പിന്തുടരുന്നു"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "ഇത് പ്രകാരം ഗ്രൂപ്പുചെയ്യ�
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "ഗ്രൂപ്പ്: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "ഹാഷ്‌ടാഗ്"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "ബുക്ക്മാർക്കുകൾ ഇമ്പോർട്�
 msgid "Import follows as sources"
 msgstr "പിന്തുടരുന്ന അക്കൗണ്ടുകൾ സ്രോതസ്സുകളായി ഇമ്പോർട്ട് ചെയ്യുക"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "ഒരു ഫയലിൽ നിന്ന് പിന്തുടരുന്ന അക്കൗണ്ടുകൾ ഇമ്പോർട്ട് ചെയ്യുക"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "പോസ്റ്റുകൾ ഇമ്പോർട്ട് ചെയ്യുക"
@@ -2007,6 +2134,12 @@ msgstr "{0} ഇമ്പോർട്ട് ചെയ്തു"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "ഇതുവരെ {0} ഇമ്പോർട്ട് ചെയ്തു; ബാക്കിയുള്ളവ പിന്നാലെ വരും"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "പിന്തുടരുന്ന {0} അക്കൗണ്ടുകൾ ഇമ്പോർട്ട് ചെയ്യുന്നു; ഇതുവരെ {1} ചേർത്തു"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "വ്യൂ പ്രവർത്തനങ്ങൾ തുറക്ക�
 msgid "Open view controls"
 msgstr "വ്യൂ നിയന്ത്രണങ്ങൾ തുറക്കുക"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "ഓപ്ഷൻ {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "പാറ്റേൺ (regex)"
 msgid "People"
 msgstr "ആളുകൾ"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "നിങ്ങൾക്ക് അറിയാവുന്ന ആളുകൾ"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "വ്യക്തി അല്ലെങ്കിൽ കമ്മ്യൂണിറ്റി"
@@ -2641,6 +2783,18 @@ msgstr "വ്യക്തി അല്ലെങ്കിൽ കമ്മ്യ�
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "ഫോട്ടോകളും വീഡിയോകളും"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "മറയ്ക്കേണ്ട വാക്യം"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "പോസ്റ്റ് പിൻ ചെയ്യുക"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "പിൻ ചെയ്തു"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "ദയവായി വീണ്ടും ശ്രമിക്കുക.
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "അൽപ്പനേരം കാത്തിരുന്ന് വീണ്ടും ശ്രമിക്കുക."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "വോട്ടെടുപ്പ്"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "പോസ്റ്റ് ഇല്ലാതാക്കി"
 msgid "Post not found"
 msgstr "പോസ്റ്റ് കണ്ടെത്തിയില്ല"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "പോസ്റ്റ് പിൻ ചെയ്തു"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "പോസ്റ്റ് അൺപിൻ ചെയ്തു"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "പോസ്റ്റുകളും അഭിപ്രായങ്ങ�
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Bluesky-ലെ പോസ്റ്റുകൾ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "ഫെഡിവേഴ്സിലെ പോസ്റ്റുകൾ"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "പ്രോംപ്റ്റ് സേവ് ചെയ്തു"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "സവിശേഷതകൾ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "പൊതു"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "ഓർമ്മപ്പെടുത്തൽ"
 msgid "Remove"
 msgstr "നീക്കം ചെയ്യുക"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} നീക്കം ചെയ്യുക"
@@ -2892,6 +3069,15 @@ msgstr "ഇനം നീക്കം ചെയ്യുക"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "ലിങ്ക് നീക്കം ചെയ്യുക"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "ഓപ്ഷൻ {0} നീക്കം ചെയ്യുക"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "വോട്ടെടുപ്പ് നീക്കം ചെയ്യുക"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "ഇമെയിൽ അയയ്ക്കുക"
 msgid "Send message"
 msgstr "സന്ദേശം അയയ്ക്കുക"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "സെൻസിറ്റീവ് മീഡിയ"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "സെരിഫ്"
@@ -3254,6 +3445,11 @@ msgstr "ഉത്ഭവവും ലക്ഷ്യസ്ഥാനവും സ�
 msgid "Settings"
 msgstr "ക്രമീകരണങ്ങൾ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "ഒന്നിലധികം തിരഞ്ഞെടുപ്പുകൾ"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "ക്ലാസുകൾ കാണിക്കുക"
@@ -3262,9 +3458,21 @@ msgstr "ക്ലാസുകൾ കാണിക്കുക"
 msgid "Show fields"
 msgstr "ഫീൽഡുകൾ കാണിക്കുക"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "കുറച്ച് കാണിക്കുക"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "കൂടുതൽ കാണിക്കുക"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ഈ ചിത്രത്തിലെ അഭിപ്രായങ്ങൾ മാത്രം കാണിക്കുക"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "സെൻസിറ്റീവ് മീഡിയ കാണിക്കുക"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "ടാഗ് പ്രോംപ്റ്റ്"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "ടാഗുകൾ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "ബൂസ്റ്റ് പിൻവലിക്കുക"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "യുണൈറ്റഡ് സ്റ്റേറ്റ്സ്"
 msgid "Unknown"
 msgstr "അജ്ഞാതം"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "ലിസ്റ്റ് ചെയ്യാത്തത്"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "പോസ്റ്റ് അൺപിൻ ചെയ്യുക"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "കാണുക മാത്രം"
 msgid "View the image this comment is about"
 msgstr "ഈ അഭിപ്രായം ഏത് ചിത്രത്തെക്കുറിച്ചാണെന്ന് കാണുക"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "ദൃശ്യത"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "ഈ ബ്രൗസറിൽ വോയ്സ് റെക്കോർഡിംഗ് പിന്തുണയ്ക്കുന്നില്ല"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "വോട്ട് ചെയ്യുക"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

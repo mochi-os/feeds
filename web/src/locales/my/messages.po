@@ -55,6 +55,11 @@ msgstr "(သင်)"
 msgid "[not set]"
 msgstr "[မသတ်မှတ်ရသေး]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {မဲ #} one {မဲ #} other {မဲ #}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {မိတ္တူ #ခု} other {မိတ္တူ #
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {ဖိုင် # ခု ပြောင်းလဲခဲ့သည်} other {ဖိုင် # ခု ပြောင်းလဲခဲ့သည်}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {စောင့်ကြည့်မှု # ခု တင်သွင်းပြီး} other {စောင့်ကြည့်မှု # ခု တင်သွင်းပြီး}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, other {+# ခု အတွင်း}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {အရင်းအမြစ် #ခု ထည့်ပြီး} other {အရင်းအမြစ် #ခု ထည့်ပြီး}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} ရက်"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "နာရီ {0}"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "မိနစ် {0}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "လှုပ်ရှားမှု"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "ထည့်မည်"
@@ -351,6 +377,7 @@ msgstr "Mochi ဖိဒ် ထည့်မည်"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "ရွေးချယ်စရာ ထည့်မည်"
 
@@ -684,10 +711,29 @@ msgstr "ပိတ်ဆို့မှုများ"
 msgid "Board"
 msgstr "ဘုတ်"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "{0} မှ မျှဝေမည်"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "စိတ်ဝင်စားမှု မြှင့်တင်မည်"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "မျှဝေမှု ပြန်ရုပ်သိမ်းပြီး"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "မျှဝေပြီးပါပြီ"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} က မျှဝေထားသည်"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "ပန်နယ် ပိတ်မည် / မလုပ်တော့�
 msgid "Close search"
 msgstr "ရှာဖွေမှု ပိတ်မည်"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "ပိတ်ပြီး"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0} တွင် ပိတ်မည်"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "ပိတ်မည့်အချိန်"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "အကြောင်းအရာ မတွေ့ပါ။"
 msgid "Content not modified"
 msgstr "အကြောင်းအရာ မပြောင်းပါ"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "အကြောင်းအရာ သတိပေးချက်"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "ဆက်စပ်အချက်အလက်နှင့် အသေးစိတ်များ။"
@@ -1023,6 +1086,18 @@ msgstr "ကလစ်ဘုတ်သို့ ကူးပြီး"
 msgid "Copy"
 msgstr "ကူးမည်"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "စစ်ထုတ်မှု ထည့်၍ မရပါ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "မျှဝေ၍ မရပါ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "ပင်ထိုးမှုကို ပြောင်း၍ မရပါ"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "ဖိဒ် ထုတ်ဝေသည့်နေရာကို ပြောင်း၍ မရပါ"
@@ -1051,6 +1126,14 @@ msgstr "တင်သွင်း၍ မရပါ"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "ဤစာရွက်စာတမ်းကို ဖွင့်၍ မရပါ။ နောက်မှ ထပ်စမ်းကြည့်ပါ။"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "စစ်ထုတ်မှုကို ဖယ်ရှား၍ မရပါ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "မဲပေး၍ မရပါ"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "ပို့စ် တည်းဖြတ်၍ မရပါ"
 msgid "Failed to get RSS token"
 msgstr "RSS တိုကင် ရယူ၍ မရပါ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "စောင့်ကြည့်ထားသော အကောင့်များကို တင်သွင်း၍ မရပါ"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "တင်၍ မရပါ"
@@ -1871,6 +1958,10 @@ msgstr "ဖိုင်များ"
 msgid "Filtered by tag:"
 msgstr "တဂ်အလိုက် စိစစ်ထား -"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "စစ်ထုတ်မှုများ"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "ပြားသော"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "စောင့်ကြည့်မည်"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0} ကို စောင့်ကြည့်မည်"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "ဟက်ရှ်တက်ကို စောင့်ကြည့်မည်"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "လူ သို့မဟုတ် အသိုင်းအဝိုင်းကို စောင့်ကြည့်မည်"
 
@@ -1910,10 +2006,32 @@ msgstr "လူ သို့မဟုတ် အသိုင်းအဝိုင�
 msgid "Follow from another network"
 msgstr "အခြားကွန်ရက်မှ စောင့်ကြည့်မည်"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "စောင့်ကြည့်မှု ဆိုင်းငံ့ထားသည်"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "စောင့်ကြည့်မှု ငြင်းပယ်ခံရသည်"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "စကားဝိုင်းကို လိုက်ကြည့်မည်"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "စောင့်ကြည့်မည့် အကောင့်"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "နောက်လိုက်များသာ"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "စောင့်ကြည့်နေသည်"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "အလိုက် အုပ်စုဖွဲ့ရန်"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "အုပ်စု- {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "ဟက်ရှ်တက်"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "စာညှပ်များ တင်သွင်းမည်"
 msgid "Import follows as sources"
 msgstr "စောင့်ကြည့်ထားသော အကောင့်များကို အရင်းအမြစ်အဖြစ် တင်သွင်းမည်"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "ဖိုင်မှ စောင့်ကြည့်ထားသော အကောင့်များကို တင်သွင်းမည်"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "ပို့စ်များ တင်သွင်းမည်"
@@ -2007,6 +2134,12 @@ msgstr "{0} ခု တင်သွင်းပြီး"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "ယခုထိ {0} ခု တင်သွင်းပြီး၊ ကျန်သည်များ နောက်မှ လာမည်"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "စောင့်ကြည့်မှု {0} ခုကို တင်သွင်းနေသည်၊ ယခုထိ {1} ခု ထည့်ပြီး"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "ကြည့်ရှုမှု လုပ်ဆောင်ချက�
 msgid "Open view controls"
 msgstr "ကြည့်ရှုမှု ထိန်းချုပ်မှုများကို ဖွင့်"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "ရွေးချယ်စရာ {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "ပုံစံ (regex)"
 msgid "People"
 msgstr "လူများ"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "သင်သိသော လူများ"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "လူ သို့မဟုတ် အသိုင်းအဝိုင်း"
@@ -2641,6 +2783,18 @@ msgstr "လူ သို့မဟုတ် အသိုင်းအဝိုင�
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "ဓာတ်ပုံနှင့် ဗီဒီယိုများ"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "ဖျောက်မည့် စကားစု"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "ပို့စ်ကို ပင်ထိုးမည်"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Pin ထားသည်"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "ကျေးဇူးပြု၍ ထပ်ကြိုးစားပ�
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "ကျေးဇူးပြု၍ ခဏစောင့်ပြီး ထပ်စမ်းကြည့်ပါ။"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "စစ်တမ်း"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "ပို့စ် ဖျက်ပြီးပါပြီ"
 msgid "Post not found"
 msgstr "ပို့စ် မတွေ့ပါ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "ပို့စ် pin လုပ်ပြီးပါပြီ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "ပို့စ် ပိုစ်ဖြုတ်ပြီးပါပြီ"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "ပို့စ်နှင့် comment များ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Bluesky ရှိ ပို့စ်များ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Fediverse ရှိ ပို့စ်များ"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "ညွှန်ကြားချက် သိမ်းပြီးပ�
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "ဂုဏ်သတ္တိများ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "အများသုံး"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "သတိပေးချက်"
 msgid "Remove"
 msgstr "ဖယ်ရှား"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} ဖယ်ရှား"
@@ -2892,6 +3069,15 @@ msgstr "အရာ ဖယ်ရှား"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "လင့်ခ် ဖယ်ရှားရန်"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "ရွေးချယ်စရာ {0} ဖယ်ရှားမည်"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "စစ်တမ်း ဖယ်ရှားမည်"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "အီးမေးလ်ပို့ရန်"
 msgid "Send message"
 msgstr "မက်ဆေ့ပို့မည်"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "ထိခိုက်လွယ်သော မီဒီယာ"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "ဆာရစ်ဖ်"
@@ -3254,6 +3445,11 @@ msgstr "မူရင်းနှင့် ဦးတည်ရာ သတ်မှ�
 msgid "Settings"
 msgstr "ဆက်တင်များ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "ရွေးချယ်မှု အများအပြား"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "Class များ ပြမည်"
@@ -3262,9 +3458,21 @@ msgstr "Class များ ပြမည်"
 msgid "Show fields"
 msgstr "ကွက်လပ်များ ပြမည်"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "လျှော့ပြရန်"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "ပိုပြရန်"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ဤပုံအပေါ် မှတ်ချက်များကိုသာ ပြရန်"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "ထိခိုက်လွယ်သော မီဒီယာကို ပြရန်"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "တက်ဂ် ညွှန်ကြားချက်"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "တက်ဂ်များ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "မျှဝေမှုကို ပြန်ရုပ်သိမ်းမည်"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "အမေရိကန်ပြည်ထောင်စု"
 msgid "Unknown"
 msgstr "မသိရသော"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "စာရင်းမသွင်းထား"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "ပို့စ်ကို ပင်ဖြုတ်မည်"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "ကြည့်ရှုရုံသာ"
 msgid "View the image this comment is about"
 msgstr "ဤမှတ်ချက် ဆိုင်သောပုံကို ကြည့်ရန်"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "မြင်နိုင်မှု"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "ဤဘရောက်ဇာတွင် အသံဖမ်းယူခြင်းကို မထောက်ပံ့ပါ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "မဲပေးမည်"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

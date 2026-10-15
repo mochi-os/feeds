@@ -55,6 +55,11 @@ msgstr "(توهان)"
 msgid "[not set]"
 msgstr "[نه مقرر]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# ووٽ} one {# ووٽ} other {# ووٽ}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# ڪاپي} other {# ڪاپيون}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# فائل تبديل ٿي} other {# فائلون تبديل ٿيون}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# فالو درآمد ٿيو} other {# فالو درآمد ٿيا}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# ذيلي} other {+# ذيلي}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# ماخذ شامل ڪيو ويو} other {# ماخذ شامل ڪيا ويا}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} ڏينهن"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} ڪلاڪ"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} منٽ"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "سرگرمي"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "شامل ڪريو"
@@ -351,6 +377,7 @@ msgstr "Mochi فيڊ شامل ڪريو"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "اختيار شامل ڪريو"
 
@@ -684,10 +711,29 @@ msgstr "بلاڪ"
 msgid "Board"
 msgstr "بورڊ"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "{0} مان بوسٽ ڪريو"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "دلچسپي وڌايو"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "بوسٽ واپس ورتو ويو"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "بوسٽ ٿيو"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} بوسٽ ڪيو"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "پينل بند ڪريو / منسوخ"
 msgid "Close search"
 msgstr "ڳولا بند ڪريو"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "بند"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0} تي بند ٿيندو"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "کان پوءِ بند ٿيندو"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "مواد نه مليو."
 msgid "Content not modified"
 msgstr "مواد تبديل نه ٿيو"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "مواد جي خبرداري"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "حوالي جي معلومات ۽ تفصيل."
@@ -1023,6 +1086,18 @@ msgstr "ڪلپ بورڊ تي ڪاپي ٿيو"
 msgid "Copy"
 msgstr "ڪاپي ڪريو"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "فلٽر شامل نه ٿي سگهيو"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "بوسٽ نه ٿي سگهيو"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "پن تبديل نه ٿي سگهيو"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "فيڊ جي شايع ٿيڻ جي جاءِ تبديل نه ٿي سگهي"
@@ -1051,6 +1126,14 @@ msgstr "درآمد نه ٿي سگهي"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "هي دستاويز لوڊ نه ٿي سگهيو. مهرباني ڪري بعد ۾ ٻيهر ڪوشش ڪريو."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "فلٽر هٽائي نه سگهيو"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "ووٽ نه ڏئي سگهيو"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "پوسٽ ۾ ترميم ڪرڻ ۾ ناڪام"
 msgid "Failed to get RSS token"
 msgstr "RSS ٽوڪن حاصل ڪرڻ ۾ ناڪام"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "فالو ڪيل اڪائونٽ درآمد ڪرڻ ۾ ناڪام"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "لوڊ ڪرڻ ۾ ناڪام"
@@ -1871,6 +1958,10 @@ msgstr "فائلون"
 msgid "Filtered by tag:"
 msgstr "ٽيگ سان فلٽر ٿيل:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "فلٽر"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "هموار"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "فالو ڪريو"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0} کي فالو ڪريو"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "هيش ٽيگ فالو ڪريو"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "ڪنهن شخص يا برادري کي فالو ڪريو"
 
@@ -1910,10 +2006,32 @@ msgstr "ڪنهن شخص يا برادري کي فالو ڪريو"
 msgid "Follow from another network"
 msgstr "ٻئي نيٽ ورڪ مان فالو ڪريو"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "فالو التوا ۾"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "فالو رد ٿيو"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "سلسلي جي پيروي ڪريو"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "هن سان فالو ڪريو"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "صرف فالوورز"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "فالو ڪري رهيا آهيو"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "گروپ بندي ڪريو"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "گروپ: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "هيش ٽيگ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "بوڪ مارڪ درآمد ڪريو"
 msgid "Import follows as sources"
 msgstr "فالو ڪيل اڪائونٽ ماخذ طور درآمد ڪريو"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "فائل مان فالو ڪيل اڪائونٽ درآمد ڪريو"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "پوسٽون درآمد ڪريو"
@@ -2007,6 +2134,12 @@ msgstr "{0} درآمد ڪيا ويا"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "اڃا تائين {0} درآمد ڪيا ويا؛ باقي پوءِ ايندا"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "{0} فالو درآمد ٿي رهيا آهن؛ اڃا تائين {1} شامل ٿيا"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "ڏيک ڪارناما کوليو"
 msgid "Open view controls"
 msgstr "ڏيک ڪنٽرول کوليو"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "اختيار {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "نمونو (regex)"
 msgid "People"
 msgstr "ماڻهو"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "ماڻهو جن کي توهان ڄاڻو ٿا"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "شخص يا برادري"
@@ -2641,6 +2783,18 @@ msgstr "شخص يا برادري"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "تصويرون ۽ وڊيوز"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "لڪائڻ جو جملو"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "پوسٽ پن ڪريو"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "پن ٿيل"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "مهرباني ڪري ٻيهر ڪوشش ڪريو."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "مهرباني ڪري ٿورو انتظار ڪريو ۽ ٻيهر ڪوشش ڪريو."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "راءِ شماري"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "پوسٽ حذف ٿي"
 msgid "Post not found"
 msgstr "پوسٽ نه ملي"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "پوسٽ پن ٿي"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "پوسٽ ان پن ٿي"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "پوسٽون ۽ تبصرا"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Bluesky تي پوسٽون"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Fediverse تي پوسٽون"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "پرامپٽ محفوظ ٿيو"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "خاصيتون"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "عوامي"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "ياددهاني"
 msgid "Remove"
 msgstr "هٽايو"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} هٽايو"
@@ -2892,6 +3069,15 @@ msgstr "شيءِ هٽايو"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "لنڪ هٽايو"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "اختيار {0} هٽايو"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "راءِ شماري هٽايو"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "اي ميل موڪليو"
 msgid "Send message"
 msgstr "پيغام موڪليو"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "حساس ميڊيا"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "سيرف"
@@ -3254,6 +3445,11 @@ msgstr "اصل ۽ منزل مقرر ڪريو"
 msgid "Settings"
 msgstr "سيٽنگون"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "ڪيترائي انتخاب"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "ڪلاسز ڏيکاريو"
@@ -3262,9 +3458,21 @@ msgstr "ڪلاسز ڏيکاريو"
 msgid "Show fields"
 msgstr "فيلڊ ڏيکاريو"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "گهٽ ڏيکاريو"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "وڌيڪ ڏيکاريو"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "صرف هن تصوير جا تبصرا ڏيکاريو"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "حساس ميڊيا ڏيکاريو"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "ٽيگ پرامپٽ"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "ٽيگ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "بوسٽ واپس وٺو"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "آمريڪا"
 msgid "Unknown"
 msgstr "اڻڄاتل"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "غير فهرست ٿيل"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "پوسٽ ان پن ڪريو"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "صرف ڏسڻ"
 msgid "View the image this comment is about"
 msgstr "اها تصوير ڏسو جنهن بابت هي تبصرو آهي"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "نمائش"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "هن برائوزر ۾ آواز جي رڪارڊنگ جي سهولت ناهي"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "ووٽ ڏيو"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

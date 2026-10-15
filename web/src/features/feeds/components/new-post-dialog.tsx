@@ -3,7 +3,8 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
-import type { FeedSummary } from '@/types'
+import type { FeedSummary, PostFeatures, PostPollInput } from '@/types'
+import { useLingui as useLinguiCore } from '@lingui/react'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Button,
@@ -46,9 +47,10 @@ import {
   type ComposerItem,
   type Upload,
 } from '@mochi/web'
-import { X, MapPin, Plane, FilePlus2, Send } from 'lucide-react'
+import { X, MapPin, Plane, FilePlus2, Send, Vote } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { feedsApi } from '@/api/feeds'
+import { PollEditor, PostFeaturesFields, pollValid } from './post-features'
 
 type NewPostDialogProps = {
   feeds: FeedSummary[]
@@ -59,6 +61,8 @@ type NewPostDialogProps = {
     files: File[]
     captions: string[]
     accounts?: string[]
+    features?: PostFeatures
+    poll?: PostPollInput
   }) => void | Promise<void>
   /** Controlled open state */
   open?: boolean
@@ -83,6 +87,10 @@ type NewPostFormState = {
   // The accounts on other networks this post goes to, once the writer has
   // changed the feed's own list; null leaves it to the feed.
   accounts: string[] | null
+  // Visibility, content warning and sensitive flag; a poll while one is
+  // being made (phase 17).
+  features: PostFeatures
+  poll: PostPollInput | null
 }
 
 type PlacePickerMode = 'checkin' | null
@@ -99,6 +107,8 @@ export function NewPostDialog({
   progress,
 }: NewPostDialogProps) {
   const { t } = useLingui()
+  // The post's language is the writer's own, as the composer runs in it.
+  const { i18n } = useLinguiCore()
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
   const [travellingPickerOpen, setTravellingPickerOpen] = useState(false)
@@ -115,6 +125,8 @@ export function NewPostDialog({
     files: [],
     captions: {},
     accounts: null,
+    features: {},
+    poll: null,
   }))
   const attachmentPreviewUrls = useImageObjectUrls(form.files)
   // Where the chosen feed publishes: offered as switches on a public feed the
@@ -236,6 +248,7 @@ export function NewPostDialog({
   const hasOversizedFile = form.files.some(
     (file) => file.size > MAX_ATTACHMENT_SIZE
   )
+  const pollOk = pollValid(form.poll)
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   // A rejected post keeps its draft and offers it back.
@@ -249,7 +262,8 @@ export function NewPostDialog({
   })
 
   const submit = useCallback(async () => {
-    if (!form.feedId || !hasContent || hasOversizedFile || isSubmitting) return
+    if (!form.feedId || !hasContent || hasOversizedFile || !pollOk || isSubmitting)
+      return
 
     // Build clean data object - only include travelling if complete
     const cleanData: PostData = {}
@@ -273,6 +287,17 @@ export function NewPostDialog({
           (file) => form.captions[pendingFileKey(file)] ?? ''
         ),
         accounts: form.accounts ?? undefined,
+        features: {
+          ...form.features,
+          language: form.features.language ?? i18n.locale.split('-')[0],
+        },
+        poll: form.poll
+          ? {
+              options: form.poll.options.map((o) => o.trim()),
+              multiple: form.poll.multiple,
+              duration: form.poll.duration ?? 86400,
+            }
+          : undefined,
       })
       setForm((prev) => ({
         ...prev,
@@ -281,6 +306,8 @@ export function NewPostDialog({
         files: [],
         captions: {},
         accounts: null,
+        features: {},
+        poll: null,
       }))
       setIsOpen(false)
     } catch {
@@ -295,8 +322,10 @@ export function NewPostDialog({
     hasContent,
     hasOversizedFile,
     hasTravelling,
+    i18n.locale,
     isSubmitting,
     onSubmit,
+    pollOk,
     setIsOpen,
   ])
 
@@ -429,6 +458,22 @@ export function NewPostDialog({
                 />
               </div>
 
+              <PostFeaturesFields
+                value={form.features}
+                onChange={(features) =>
+                  setForm((prev) => ({ ...prev, features }))
+                }
+                idPrefix='legacy-post'
+              />
+
+              {form.poll && (
+                <PollEditor
+                  value={form.poll}
+                  onChange={(poll) => setForm((prev) => ({ ...prev, poll }))}
+                  onRemove={() => setForm((prev) => ({ ...prev, poll: null }))}
+                />
+              )}
+
               {/* Location display */}
               {(form.data.checkin || form.data.travelling) && (
                 <div className='space-y-2'>
@@ -525,6 +570,22 @@ export function NewPostDialog({
                   <Plane className='size-4' />
                   <Trans>Travelling</Trans>
                 </Button>
+                {!form.poll && (
+                  <Button
+                    type='button'
+                    variant='outline'
+                    size='sm'
+                    onClick={() =>
+                      setForm((prev) => ({
+                        ...prev,
+                        poll: { options: ['', ''], multiple: false, duration: 86400 },
+                      }))
+                    }
+                  >
+                    <Vote className='size-4' />
+                    <Trans>Poll</Trans>
+                  </Button>
+                )}
               </div>
 
               {/* Attachments. The add tile is the last cell of the grid rather
@@ -596,7 +657,9 @@ export function NewPostDialog({
                 type='submit'
                 loading={isSubmitting}
                 icon={<Send className='size-4' />}
-                disabled={!form.feedId || !hasContent || hasOversizedFile}
+                disabled={
+                  !form.feedId || !hasContent || hasOversizedFile || !pollOk
+                }
               >
                 <Trans>Post</Trans>
               </Button>

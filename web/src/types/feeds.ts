@@ -200,6 +200,40 @@ export interface Source {
   ttl: number
   fetched: number
   transform: string
+  // The hosted account a person is followed through, and how the follow
+  // stands: following, pending the other server's acceptance, or refused.
+  account?: string
+  state?: 'following' | 'pending' | 'refused' | ''
+}
+
+// A keyword filter on a feed: posts naming the phrase are hidden.
+export interface Filter {
+  id: string
+  phrase: string
+  created: number
+}
+
+// Someone the user knows, from their contacts, with a handle on another
+// network: offered as a person to follow.
+export interface Person {
+  contact: string
+  name: string
+  handle: string
+  network: string
+  id?: string
+  avatar?: string
+  page?: string
+  address?: string
+  person?: string
+  followed: boolean
+}
+
+// What a follow list import answered: how many sources were made so far,
+// whether more follow in the background, and how many addresses there were.
+export interface ImportFollowsResponse {
+  imported: number
+  more: boolean
+  total: number
 }
 
 // Client-side feed summary for display

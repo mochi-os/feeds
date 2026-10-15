@@ -12,6 +12,7 @@ import {
   useAttachmentError,
   type PostData,
 } from '@mochi/web'
+import type { PostFeatures } from '@/types'
 import { feedsApi } from '@/api/feeds'
 import {
   isFeedPostEditUnchanged,
@@ -35,7 +36,8 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
       data?: PostData,
       order?: string[],
       files?: File[],
-      captions?: Record<string, string>
+      captions?: Record<string, string>,
+      features?: PostFeatures
     ): Promise<boolean> => {
       if (
         isFeedPostEditUnchanged(original, {
@@ -44,6 +46,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
           order: order ?? [],
           newFiles: files ?? [],
           captions: captions ?? {},
+          features,
         })
       ) {
         return true
@@ -56,6 +59,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         order,
         files,
         captions,
+        features,
       }
       try {
         if (files?.length) {

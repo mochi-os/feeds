@@ -55,6 +55,11 @@ msgstr "(ìwọ)"
 msgid "[not set]"
 msgstr "[kò sí]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {ìbò #} one {ìbò #} other {ìbò #}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {ẹ̀dà #} other {ẹ̀dà #}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {fáìlì # yípadà} other {àwọn fáìlì # yípadà}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {A kó ìtẹ̀lé # wọlé} other {A kó ìtẹ̀lé # wọlé}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, other {+# nínú}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {A ti fi orísun # kún} other {A ti fi orísun # kún}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "ọjọ́ {0}"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "wákàtí {0}"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "ìṣẹ́jú {0}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "Ìgbòkègbodò"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "Fi kún"
@@ -351,6 +377,7 @@ msgstr "Fi feed Mochi kún"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "Fi àṣàyàn kún"
 
@@ -684,10 +711,29 @@ msgstr "Dí"
 msgid "Board"
 msgstr "Pátákó"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "Gbé e ga láti {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "Mú ìfẹ́ pọ̀"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "A ti yí ìgbéga padà"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "A ti gbé e ga"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} ló gbé e ga"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "Tì pánẹ́ẹ̀lì / fagilé"
 msgid "Close search"
 msgstr "Ti àwárí"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "Ó ti parí"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "Yóò parí ní {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "Yóò parí lẹ́yìn"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "Kò rí àkóónú."
 msgid "Content not modified"
 msgstr "A kò ṣe àtúnyẹ̀wò àkóónú"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "Ìkìlọ̀ àkóónú"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "Ìròyìn àti ẹ̀kúnrẹ́rẹ́ ipò."
@@ -1023,6 +1086,18 @@ msgstr "A ti ṣe àdàkọ sí clipboard"
 msgid "Copy"
 msgstr "Ṣe àdàkọ"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "Kò lè fi àsẹ́ kún"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "Kò lè gbé e ga"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "Kò lè yí pin padà"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "Kò ṣeé ṣe láti yí ibi tí fíìdì ń tẹ̀jáde sí padà"
@@ -1051,6 +1126,14 @@ msgstr "Kò ṣeé ṣe láti kó wọlé"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "Kò lè kó ìwé yìí. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "Kò lè yọ àsẹ́ náà kúrò"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "Kò lè dìbò"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "Kò lè ṣàtúnṣe ìfìránṣẹ́"
 msgid "Failed to get RSS token"
 msgstr "Kò lè rí token RSS"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "Kíkó àwọn tí o ń tẹ̀lé wọlé kùnà"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "Kò lè ṣílọ̀"
@@ -1871,6 +1958,10 @@ msgstr "Àwọn fáìlì"
 msgid "Filtered by tag:"
 msgstr "Tí a yọ́ nípa tag:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "Àwọn àsẹ́"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "Pẹ̀tẹ́lẹ̀"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "Tẹ̀lé"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "Tẹ̀lé {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "Tẹ̀lé hashtag kan"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "Tẹ̀lé ènìyàn tàbí àwùjọ kan"
 
@@ -1910,10 +2006,32 @@ msgstr "Tẹ̀lé ènìyàn tàbí àwùjọ kan"
 msgid "Follow from another network"
 msgstr "Tẹ̀lé láti nẹ́tíwọ́kì mìíràn"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "Ìtẹ̀lé ń dúró"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "A kọ ìtẹ̀lé"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "Tẹ̀lé òwò ìjíròrò"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "Tẹ̀lé pẹ̀lú"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "Àwọn olùtẹ̀lé nìkan"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "Ò ń tẹ̀lé"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "Ṣàkójọ nípa"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Ẹgbẹ́: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "Hashtag"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "Kó àwọn àmì-ìwé wọlé"
 msgid "Import follows as sources"
 msgstr "Kó àwọn tí o ń tẹ̀lé wọlé gẹ́gẹ́ bí orísun"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "Kó àwọn tí o ń tẹ̀lé wọlé láti fáìlì"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "Kó àwọn ìfìránṣẹ́ wọlé"
@@ -2007,6 +2134,12 @@ msgstr "A ti kó {0} wọlé"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "A ti kó {0} wọlé báyìí; àwọn yòókù ń bọ̀"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "A ń kó ìtẹ̀lé {0} wọlé; a ti fi {1} kún báyìí"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "Ṣí àwọn iṣẹ́ ìwò"
 msgid "Open view controls"
 msgstr "Ṣí àwọn ìṣàkóso ìwò"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "Àṣàyàn {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "Àpẹẹrẹ (regex)"
 msgid "People"
 msgstr "Àwọn ènìyàn"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "Àwọn ènìyàn tí o mọ̀"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "Ènìyàn tàbí àwùjọ"
@@ -2641,6 +2783,18 @@ msgstr "Ènìyàn tàbí àwùjọ"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "Àwọn fọ́tò àti fídíò"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "Gbólóhùn láti fi pamọ́"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "Tẹ̀ ìfìránṣẹ́"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Ti tẹ̀"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "Jọ̀wọ́ dúró díẹ̀ kí o sì gbìyànjú lẹ́ẹ̀kansí."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "Ìdìbò"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "A ti pa ìfìránṣẹ́ rẹ́"
 msgid "Post not found"
 msgstr "A kò rí ìfìránṣẹ́"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "A ti tẹ̀ ìfìránṣẹ́"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "A ti yọ ìtẹ̀ ìfìránṣẹ́ kúrò"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "Àwọn ìfìránṣẹ́ àti àlàyé"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Àwọn ìfìránṣẹ́ lórí Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Àwọn ìfìránṣẹ́ lórí fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "A ti tọ́jú prompt"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Àwọn àmì"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "Gbangba"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "Ìránnilétí"
 msgid "Remove"
 msgstr "Yọ kúrò"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Yọ {0} kúrò"
@@ -2892,6 +3069,15 @@ msgstr "Yọ item kúrò"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "Yọ ọ̀nà ìjápọ̀ kúrò"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "Yọ àṣàyàn {0} kúrò"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "Yọ ìdìbò kúrò"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "Fi ímeèlì ránṣẹ́"
 msgid "Send message"
 msgstr "Fi ìránṣẹ́ ránṣẹ́"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "Mídíà tó lè kàn ní"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "Serif"
@@ -3254,6 +3445,11 @@ msgstr "Ṣètò ibi tí o ti wá àti ibi tí o ń lọ"
 msgid "Settings"
 msgstr "Àwọn ìṣètò"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "Àṣàyàn púpọ̀"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "Fi àwọn classes hàn"
@@ -3262,9 +3458,21 @@ msgstr "Fi àwọn classes hàn"
 msgid "Show fields"
 msgstr "Fi àwọn aaye hàn"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "Fi díẹ̀ hàn"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "Fi púpọ̀ sí i hàn"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Fi àwọn ọ̀rọ̀ lórí àwòrán yìí nìkan hàn"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "Fi mídíà tó lè kàn ní hàn"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "Ìtọ́ni àmì"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "Àwọn àmì"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "Yí ìgbéga padà"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "Orílẹ̀-èdè Amẹ́ríkà"
 msgid "Unknown"
 msgstr "Aláìmọ̀"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "Kò sí nínú àkójọ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "Yọ pin ìfìránṣẹ́ kúrò"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "Wíwò nìkan"
 msgid "View the image this comment is about"
 msgstr "Wo àwòrán tí ọ̀rọ̀ yìí dá lé"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "Ìhàn"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "Aṣàwákiri yìí kò ṣe àtìlẹ́yìn fún gbigbasilẹ ohùn"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "Dìbò"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -55,6 +55,11 @@ msgstr "(나)"
 msgid "[not set]"
 msgstr "[설정 안 됨]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {#표} one {#표} other {#표}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {사본 #개} other {사본 #개}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {#개 파일 변경됨} other {#개 파일 변경됨}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {팔로우 #개를 가져왔어요} other {팔로우 #개를 가져왔어요}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, other {+# 중첩}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {소스 #개를 추가했어요} other {소스 #개를 추가했어요}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0}일"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0}시간"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0}분"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "활동"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "추가"
@@ -351,6 +377,7 @@ msgstr "Mochi 피드 추가"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "옵션 추가"
 
@@ -684,10 +711,29 @@ msgstr "차단"
 msgid "Board"
 msgstr "보드"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "{0}(으)로 부스트"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "관심도 부스트"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "부스트를 취소했어요"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "부스트했어요"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0}님이 부스트함"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "패널 닫기 / 취소"
 msgid "Close search"
 msgstr "검색 닫기"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "마감됨"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0} 마감"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "마감까지"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "콘텐츠를 찾을 수 없어요."
 msgid "Content not modified"
 msgstr "콘텐츠가 수정되지 않았어요"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "콘텐츠 경고"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "맥락 정보 및 세부 사항."
@@ -1023,6 +1086,18 @@ msgstr "클립보드에 복사되었어요"
 msgid "Copy"
 msgstr "복사"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "필터를 추가할 수 없었어요"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "부스트할 수 없었어요"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "고정을 변경할 수 없었어요"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "피드 게시 위치를 변경할 수 없었어요"
@@ -1051,6 +1126,14 @@ msgstr "가져올 수 없었어요"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "이 문서를 불러올 수 없었습니다. 잠시 후 다시 시도해 주세요."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "필터를 제거할 수 없었어요"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "투표할 수 없었어요"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "게시물 편집에 실패했어요"
 msgid "Failed to get RSS token"
 msgstr "RSS 토큰을 가져오지 못했어요"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "팔로우 목록을 가져오지 못했어요"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "불러오기에 실패했어요"
@@ -1871,6 +1958,10 @@ msgstr "파일"
 msgid "Filtered by tag:"
 msgstr "태그로 필터링됨:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "필터"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "평면"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "팔로우"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0} 팔로우"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "해시태그 팔로우"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "사람 또는 커뮤니티 팔로우"
 
@@ -1910,10 +2006,32 @@ msgstr "사람 또는 커뮤니티 팔로우"
 msgid "Follow from another network"
 msgstr "다른 네트워크에서 팔로우"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "팔로우 대기 중"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "팔로우 거절됨"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "스레드 팔로우"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "팔로우할 계정"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "팔로워만"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "팔로우 중"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "그룹화 기준"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "그룹: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "해시태그"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "북마크 가져오기"
 msgid "Import follows as sources"
 msgstr "팔로우 목록을 소스로 가져오기"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "파일에서 팔로우 목록 가져오기"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "게시물 가져오기"
@@ -2007,6 +2134,12 @@ msgstr "{0}개를 가져왔어요"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "지금까지 {0}개를 가져왔어요. 나머지도 곧 가져와요"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "팔로우 {0}개를 가져오는 중, 지금까지 {1}개 추가됨"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "보기 작업 열기"
 msgid "Open view controls"
 msgstr "보기 컨트롤 열기"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "옵션 {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "패턴 (정규식)"
 msgid "People"
 msgstr "사람"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "아는 사람"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "사람 또는 커뮤니티"
@@ -2641,6 +2783,18 @@ msgstr "사람 또는 커뮤니티"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "사진 및 동영상"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "숨길 문구"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "게시물 고정"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "고정됨"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "다시 시도해 주세요."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "잠시 후 다시 시도해 주세요."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "투표"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "게시물이 삭제되었어요"
 msgid "Post not found"
 msgstr "게시물을 찾을 수 없어요"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "게시물이 고정되었어요"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "게시물 고정이 해제되었어요"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "게시물 및 댓글"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Bluesky 게시물"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "페디버스의 게시물"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "프롬프트가 저장되었어요"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "속성"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "공개"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "알림"
 msgid "Remove"
 msgstr "제거"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} 제거"
@@ -2892,6 +3069,15 @@ msgstr "항목 제거"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "링크 제거"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "옵션 {0} 제거"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "투표 제거"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "이메일 보내기"
 msgid "Send message"
 msgstr "메시지 보내기"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "민감한 미디어"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "세리프"
@@ -3254,6 +3445,11 @@ msgstr "출발지와 도착지 설정"
 msgid "Settings"
 msgstr "설정"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "복수 선택"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "클래스 표시"
@@ -3262,9 +3458,21 @@ msgstr "클래스 표시"
 msgid "Show fields"
 msgstr "필드 표시"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "간략히 보기"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "더 보기"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "이 이미지의 댓글만 표시"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "민감한 미디어 보기"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "태그 프롬프트"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "태그"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "부스트 취소"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "미국"
 msgid "Unknown"
 msgstr "알 수 없음"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "미등재"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "게시물 고정 해제"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "보기 전용"
 msgid "View the image this comment is about"
 msgstr "이 댓글이 가리키는 이미지 보기"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "공개 범위"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "이 브라우저에서는 음성 녹음이 지원되지 않습니다"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "투표하기"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

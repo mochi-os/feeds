@@ -11,6 +11,7 @@ import { Rss } from 'lucide-react'
 import endpoints from '@/api/endpoints'
 import { feedsApi } from '@/api/feeds'
 import { LookupResult } from '@/features/feeds/components/lookup-result'
+import { PeopleToFollow } from '@/features/feeds/components/people-to-follow'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 export const Route = createFileRoute('/_authenticated/find')({
@@ -88,6 +89,7 @@ function FindFeedsPage() {
       initialQuery={link}
       resolveUri={resolveUri}
       supplement={(query) => <LookupResult query={query} />}
+      aside={<PeopleToFollow />}
       onSubscribe={handleSubscribe}
       subscribedIds={subscribedFeedIds}
       entityClass='feed'

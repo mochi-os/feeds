@@ -55,6 +55,11 @@ msgstr "(דו)"
 msgid "[not set]"
 msgstr "[נישט געשטעלט]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# שטים} one {# שטים} other {# שטימען}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# קאָפּיע} other {# קאָפּיעס}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# טעקע געענדערט} other {# טעקעס געענדערט}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# נאָכגעפֿאָלגטע אימפּאָרטירט} other {# נאָכגעפֿאָלגטע אימפּאָרטירט}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# אײַנגענעסטיקט} other {+# אײַנגענ
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# מקור צוגעלייגט} other {# מקורים צוגעלייגט}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} טעג"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} שעות"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} מינוטן"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "אַקטיוויטעט"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "צולייגן"
@@ -351,6 +377,7 @@ msgstr "צולייגן Mochi פֿיד"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "צולייגן אָפּציע"
 
@@ -684,10 +711,29 @@ msgstr "בלאָקירט"
 msgid "Board"
 msgstr "ברעט"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "פֿאַרשפּרייטן פֿון {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "פֿאַרשטאַרקן אינטערעס"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "פֿאַרשפּרייטונג צוריקגענומען"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "פֿאַרשפּרייט"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "פֿאַרשפּרייט דורך {0}"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "פֿאַרמאַכן פּאַנעל / אָפּזאָגן"
 msgid "Close search"
 msgstr "פֿאַרמאַכן זוכן"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "פֿאַרמאַכט"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "פֿאַרמאַכט זיך {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "פֿאַרמאַכט זיך נאָך"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "אינהאַלט נישט געפֿונען."
 msgid "Content not modified"
 msgstr "אינהאַלט נישט מאָדיפֿיצירט"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "אינהאַלט־וואָרענונג"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "קאָנטעקסטועלע אינפֿאָרמאַציע און פּרטים."
@@ -1023,6 +1086,18 @@ msgstr "קאָפּירט צו קליפּברעט"
 msgid "Copy"
 msgstr "קאָפּירן"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "ניט געלונגען צוצולייגן דעם פֿילטער"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "ניט געלונגען צו פֿאַרשפּרייטן"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "ניט געלונגען צו טוישן די פֿעסטמאַכונג"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "ניט געלונגען צו ענדערן וווּ דער פֿיד פּובליקירט"
@@ -1051,6 +1126,14 @@ msgstr "ניט געלונגען צו אימפּאָרטירן"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "האָט נישט געקאָנט לאָדן דעם דאָקומענט. פּרובירט שפּעטער ווידער."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "ניט געלונגען אַראָפּצונעמען דעם פֿילטער"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "ניט געלונגען צו שטימען"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "ניט געלונגען צו רעדאַקטירן בײַטראָג"
 msgid "Failed to get RSS token"
 msgstr "ניט געלונגען צו באַקומען RSS־טאָקען"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "ניט געלונגען צו אימפּאָרטירן נאָכגעפֿאָלגטע קאָנטעס"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "ניט געלונגען צו לאָדן"
@@ -1871,6 +1958,10 @@ msgstr "פֿײַלן"
 msgid "Filtered by tag:"
 msgstr "געפֿילטערט לויט טאַג:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "פֿילטערס"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "פלאַך"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "נאָכפֿאָלגן"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "נאָכפֿאָלגן {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "נאָכפֿאָלגן אַ האַשטאַג"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "נאָכפֿאָלגן אַ מענטש אָדער קהילה"
 
@@ -1910,10 +2006,32 @@ msgstr "נאָכפֿאָלגן אַ מענטש אָדער קהילה"
 msgid "Follow from another network"
 msgstr "נאָכפֿאָלגן פֿון אַן אַנדער נעץ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "נאָכפֿאָלגן וואַרט"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "נאָכפֿאָלגן אָפּגעוואָרפֿן"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "פֿאָלג נאָך דעם פֿאָדעם"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "נאָכפֿאָלגן מיט"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "נאָר נאָכפֿאָלגער"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "פֿאָלגט נאָך"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "גרופּירן לויט"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "גרופּע: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "האַשטאַג"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "אימפּאָרטירן לייענצייכנס"
 msgid "Import follows as sources"
 msgstr "אימפּאָרטירן נאָכגעפֿאָלגטע קאָנטעס ווי מקורים"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "אימפּאָרטירן נאָכגעפֿאָלגטע קאָנטעס פֿון אַ טעקע"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "אימפּאָרטירן פּאָסטן"
@@ -2007,6 +2134,12 @@ msgstr "{0} אימפּאָרטירט"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "ביז איצט {0} אימפּאָרטירט; די איבעריקע קומען שפּעטער"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "אימפּאָרטירט {0} נאָכגעפֿאָלגטע; ביז איצט צוגעלייגט {1}"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "עפֿן קוק אַקציעס"
 msgid "Open view controls"
 msgstr "עפֿן קוק קאָנטראָלן"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "אָפּציע {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "מוסטער (regex)"
 msgid "People"
 msgstr "מענטשן"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "מענטשן וואָס איר קענט"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "מענטש אָדער קהילה"
@@ -2641,6 +2783,18 @@ msgstr "מענטש אָדער קהילה"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "בילדער און ווידעאָס"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "פֿראַזע צו באַהאַלטן"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "פֿעסטמאַכן פּאָסט"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "פֿעסטגעמאַכט"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "ביטע פּרוביר ווידער."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "ביטע וואַרט אַ מאָמענט און פּרוּווט ווידער."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "אַנקעטע"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "פּאָסט אויסגעמעקט"
 msgid "Post not found"
 msgstr "פּאָסט ניט געפֿונען"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "פּאָסט פֿעסטגעמאַכט"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "פּאָסט אַראָפּגענומען"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "פּאָסטן און באַמערקונגען"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "פּאָסטן אויף Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "פּאָסטן אויפֿן fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "פּראָמפּט אויפֿגעהיט"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "אייגנשאַפֿטן"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "עפֿנטלעך"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "דערמאָנונג"
 msgid "Remove"
 msgstr "אַראָפּנעמען"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "אַראָפּנעמען {0}"
@@ -2892,6 +3069,15 @@ msgstr "אַראָפּנעמען עלעמענט"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "אַראָפּנעמען לינק"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "אַראָפּנעמען אָפּציע {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "אַראָפּנעמען אַנקעטע"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "שיק בליצפּאָסט"
 msgid "Send message"
 msgstr "שיק אַ מעלדונג"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "סענסיטיווע מעדיע"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "סעריף"
@@ -3254,6 +3445,11 @@ msgstr "שטעל אָנהייב און ציל"
 msgid "Settings"
 msgstr "אײַנשטעלונגען"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "עטלעכע ברירות"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "ווײַז קלאַסן"
@@ -3262,9 +3458,21 @@ msgstr "ווײַז קלאַסן"
 msgid "Show fields"
 msgstr "ווײַז פֿעלדער"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "ווײַזן ווייניקער"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "ווײַזן מער"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ווײַזן נאָר קאָמענטאַרן אויף דעם בילד"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "ווײַזן סענסיטיווע מעדיע"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "טאַג־בעט"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "טאַגן"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "צוריקנעמען די פֿאַרשפּרייטונג"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "פֿאַראייניקטע שטאַטן"
 msgid "Unknown"
 msgstr "אומבאַקאַנט"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "ניט אויסגערעכנט"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "אַראָפּנעמען פֿעסטמאַכונג"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "בלויז זען"
 msgid "View the image this comment is about"
 msgstr "זען דאָס בילד וועגן וועלכן דער קאָמענטאַר איז"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "זעיִקייט"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "קול רעקאָרדירונג ווערט נישט געשטיצט אין דעם בלעטערער"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "שטימען"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -61,6 +61,14 @@ const endpoints = {
         `${feedId}/-/${postId}/follow`,
       unfollow: (feedId: string, postId: string) =>
         `${feedId}/-/${postId}/unfollow`,
+      // Phase 17: pinning, a vote in the post's poll, a boost from one of
+      // the owner's hosted accounts
+      pin: (feedId: string, postId: string) => `${feedId}/-/${postId}/pin`,
+      unpin: (feedId: string, postId: string) => `${feedId}/-/${postId}/unpin`,
+      vote: (feedId: string, postId: string) => `${feedId}/-/${postId}/vote`,
+      boost: (feedId: string, postId: string) => `${feedId}/-/${postId}/boost`,
+      unboost: (feedId: string, postId: string) =>
+        `${feedId}/-/${postId}/unboost`,
     },
 
     // Read tracking
@@ -138,6 +146,13 @@ const endpoints = {
     sourcesEdit: (feedId: string) => `${feedId}/-/sources/edit`,
     sourcesRemove: (feedId: string) => `${feedId}/-/sources/remove`,
     sourcesPoll: (feedId: string) => `${feedId}/-/sources/poll`,
+    sourcesImport: (feedId: string) => `${feedId}/-/sources/import`,
+    // Keyword filters on a feed
+    filters: (feedId: string) => `${feedId}/-/filters`,
+    filtersAdd: (feedId: string) => `${feedId}/-/filters/add`,
+    filtersRemove: (feedId: string) => `${feedId}/-/filters/remove`,
+    // The user's contacts with a handle elsewhere, to follow
+    people: '-/people',
 
     // RSS
     rssToken: '-/rss/token',

@@ -55,6 +55,11 @@ msgstr "(ਤੁਸੀਂ)"
 msgid "[not set]"
 msgstr "[ਸੈੱਟ ਨਹੀਂ]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# ਵੋਟ} one {# ਵੋਟ} other {# ਵੋਟਾਂ}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# ਕਾਪੀ} other {# ਕਾਪੀਆਂ}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ਫ਼ਾਈਲ ਬਦਲੀ} other {# ਫ਼ਾਈਲਾਂ ਬਦਲੀਆਂ}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# ਫਾਲੋ ਕੀਤਾ ਖਾਤਾ ਆਯਾਤ ਕੀਤਾ} other {# ਫਾਲੋ ਕੀਤੇ ਖਾਤੇ ਆਯਾਤ ਕੀਤੇ}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# ਨੈਸਟਡ} other {+# ਨੈਸਟਡ}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# ਸਰੋਤ ਜੋੜਿਆ ਗਿਆ} other {# ਸਰੋਤ ਜੋੜੇ ਗਏ}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} ਦਿਨ"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} ਘੰਟੇ"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} ਮਿੰਟ"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "ਗਤੀਵਿਧੀ"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "ਜੋੜੋ"
@@ -351,6 +377,7 @@ msgstr "Mochi ਫੀਡ ਜੋੜੋ"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "ਵਿਕਲਪ ਜੋੜੋ"
 
@@ -684,10 +711,29 @@ msgstr "ਬਲੌਕ ਕਰਦਾ ਹੈ"
 msgid "Board"
 msgstr "ਬੋਰਡ"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "{0} ਤੋਂ ਬੂਸਟ ਕਰੋ"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "ਦਿਲਚਸਪੀ ਵਧਾਓ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "ਬੂਸਟ ਵਾਪਸ ਲਿਆ ਗਿਆ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "ਬੂਸਟ ਕੀਤਾ"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "{0} ਵੱਲੋਂ ਬੂਸਟ ਕੀਤਾ"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "ਪੈਨਲ ਬੰਦ ਕਰੋ / ਰੱਦ ਕਰੋ"
 msgid "Close search"
 msgstr "ਖੋਜ ਬੰਦ ਕਰੋ"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "ਬੰਦ"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0} ਨੂੰ ਬੰਦ ਹੋਵੇਗਾ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "ਇੰਨੇ ਸਮੇਂ ਬਾਅਦ ਬੰਦ ਹੋਵੇਗਾ"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "ਸਮੱਗਰੀ ਨਹੀਂ ਮਿਲੀ।"
 msgid "Content not modified"
 msgstr "ਸਮੱਗਰੀ ਸੋਧੀ ਨਹੀਂ ਗਈ"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "ਸਮੱਗਰੀ ਚੇਤਾਵਨੀ"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "ਪ੍ਰਸੰਗਿਕ ਜਾਣਕਾਰੀ ਅਤੇ ਵੇਰਵੇ।"
@@ -1023,6 +1086,18 @@ msgstr "ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕਾਪੀ ਹੋਇਆ"
 msgid "Copy"
 msgstr "ਕਾਪੀ ਕਰੋ"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "ਫਿਲਟਰ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "ਬੂਸਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "ਪਿਨ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "ਫੀਡ ਕਿੱਥੇ ਪ੍ਰਕਾਸ਼ਿਤ ਹੁੰਦੀ ਹੈ, ਇਹ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ"
@@ -1051,6 +1126,14 @@ msgstr "ਆਯਾਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "ਇਹ ਦਸਤਾਵੇਜ਼ ਲੋਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "ਫਿਲਟਰ ਹਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "ਵੋਟ ਨਹੀਂ ਪਾਈ ਜਾ ਸਕੀ"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "ਪੋਸਟ ਸੰਪਾਦਿਤ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
 msgid "Failed to get RSS token"
 msgstr "RSS ਟੋਕਨ ਪ੍ਰਾਪਤ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "ਫਾਲੋ ਕੀਤੇ ਖਾਤੇ ਆਯਾਤ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "ਲੋਡ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
@@ -1871,6 +1958,10 @@ msgstr "ਫਾਈਲਾਂ"
 msgid "Filtered by tag:"
 msgstr "ਟੈਗ ਨਾਲ ਫਿਲਟਰ ਕੀਤਾ:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "ਫਿਲਟਰ"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "ਸਮਤਲ"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "ਫਾਲੋ ਕਰੋ"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0} ਨੂੰ ਫਾਲੋ ਕਰੋ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "ਹੈਸ਼ਟੈਗ ਫਾਲੋ ਕਰੋ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "ਕਿਸੇ ਵਿਅਕਤੀ ਜਾਂ ਭਾਈਚਾਰੇ ਨੂੰ ਫਾਲੋ ਕਰੋ"
 
@@ -1910,10 +2006,32 @@ msgstr "ਕਿਸੇ ਵਿਅਕਤੀ ਜਾਂ ਭਾਈਚਾਰੇ ਨੂ�
 msgid "Follow from another network"
 msgstr "ਕਿਸੇ ਹੋਰ ਨੈੱਟਵਰਕ ਤੋਂ ਫਾਲੋ ਕਰੋ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "ਫਾਲੋ ਬਕਾਇਆ ਹੈ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "ਫਾਲੋ ਰੱਦ ਕੀਤਾ ਗਿਆ"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "ਥ੍ਰੈੱਡ ਫਾਲੋ ਕਰੋ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "ਇਸ ਨਾਲ ਫਾਲੋ ਕਰੋ"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "ਸਿਰਫ਼ ਫਾਲੋਅਰ"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "ਫਾਲੋ ਕਰ ਰਹੇ ਹੋ"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "ਇਸ ਅਨੁਸਾਰ ਗਰੁੱਪ ਕਰੋ"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "ਸਮੂਹ: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "ਹੈਸ਼ਟੈਗ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "ਬੁੱਕਮਾਰਕ ਆਯਾਤ ਕਰੋ"
 msgid "Import follows as sources"
 msgstr "ਫਾਲੋ ਕੀਤੇ ਖਾਤੇ ਸਰੋਤਾਂ ਵਜੋਂ ਆਯਾਤ ਕਰੋ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "ਫ਼ਾਈਲ ਤੋਂ ਫਾਲੋ ਕੀਤੇ ਖਾਤੇ ਆਯਾਤ ਕਰੋ"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "ਪੋਸਟਾਂ ਆਯਾਤ ਕਰੋ"
@@ -2007,6 +2134,12 @@ msgstr "{0} ਆਯਾਤ ਕੀਤੇ ਗਏ"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "ਹੁਣ ਤੱਕ {0} ਆਯਾਤ ਕੀਤੇ ਗਏ; ਬਾਕੀ ਬਾਅਦ ਵਿੱਚ ਆਉਣਗੇ"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "{0} ਫਾਲੋ ਕੀਤੇ ਖਾਤੇ ਆਯਾਤ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ; ਹੁਣ ਤੱਕ {1} ਜੋੜੇ ਗਏ"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "ਵਿਊ ਐਕਸ਼ਨ ਖੋਲ੍ਹੋ"
 msgid "Open view controls"
 msgstr "ਵਿਊ ਕੰਟਰੋਲ ਖੋਲ੍ਹੋ"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "ਵਿਕਲਪ {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "ਪੈਟਰਨ (regex)"
 msgid "People"
 msgstr "ਲੋਕ"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "ਲੋਕ ਜਿਨ੍ਹਾਂ ਨੂੰ ਤੁਸੀਂ ਜਾਣਦੇ ਹੋ"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "ਵਿਅਕਤੀ ਜਾਂ ਭਾਈਚਾਰਾ"
@@ -2641,6 +2783,18 @@ msgstr "ਵਿਅਕਤੀ ਜਾਂ ਭਾਈਚਾਰਾ"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "ਫੋਟੋਆਂ ਅਤੇ ਵੀਡੀਓ"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "ਲੁਕਾਉਣ ਲਈ ਵਾਕਾਂਸ਼"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "ਪੋਸਟ ਪਿਨ ਕਰੋ"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "ਪਿਨ ਕੀਤਾ ਹੋਇਆ"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ �
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "ਕਿਰਪਾ ਕਰਕੇ ਥੋੜ੍ਹੀ ਦੇਰ ਉਡੀਕ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "ਪੋਲ"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "ਪੋਸਟ ਮਿਟਾਈ ਗਈ"
 msgid "Post not found"
 msgstr "ਪੋਸਟ ਨਹੀਂ ਮਿਲੀ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "ਪੋਸਟ ਪਿਨ ਕੀਤੀ ਗਈ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "ਪੋਸਟ ਅਨਪਿਨ ਕੀਤੀ ਗਈ"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "ਪੋਸਟਾਂ ਅਤੇ ਟਿੱਪਣੀਆਂ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Bluesky 'ਤੇ ਪੋਸਟਾਂ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "ਫ਼ੈਡੀਵਰਸ 'ਤੇ ਪੋਸਟਾਂ"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "ਪ੍ਰਾਂਪਟ ਸੇਵ ਹੋ ਗਿਆ"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "ਜਨਤਕ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "ਰਿਮਾਈਂਡਰ"
 msgid "Remove"
 msgstr "ਹਟਾਓ"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0} ਹਟਾਓ"
@@ -2892,6 +3069,15 @@ msgstr "ਆਈਟਮ ਹਟਾਓ"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "ਲਿੰਕ ਹਟਾਓ"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "ਵਿਕਲਪ {0} ਹਟਾਓ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "ਪੋਲ ਹਟਾਓ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "ਈਮੇਲ ਭੇਜੋ"
 msgid "Send message"
 msgstr "ਸੁਨੇਹਾ ਭੇਜੋ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "ਸੰਵੇਦਨਸ਼ੀਲ ਮੀਡੀਆ"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "ਸੈਰੀਫ"
@@ -3254,6 +3445,11 @@ msgstr "ਮੁੱਢ ਅਤੇ ਮੰਜ਼ਿਲ ਸੈੱਟ ਕਰੋ"
 msgid "Settings"
 msgstr "ਸੈਟਿੰਗਾਂ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "ਕਈ ਚੋਣਾਂ"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "ਕਲਾਸਾਂ ਦਿਖਾਓ"
@@ -3262,9 +3458,21 @@ msgstr "ਕਲਾਸਾਂ ਦਿਖਾਓ"
 msgid "Show fields"
 msgstr "ਫੀਲਡ ਦਿਖਾਓ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "ਘੱਟ ਦਿਖਾਓ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "ਹੋਰ ਦਿਖਾਓ"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ਸਿਰਫ਼ ਇਸ ਤਸਵੀਰ ਦੀਆਂ ਟਿੱਪਣੀਆਂ ਦਿਖਾਓ"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "ਸੰਵੇਦਨਸ਼ੀਲ ਮੀਡੀਆ ਦਿਖਾਓ"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "ਟੈਗ ਪ੍ਰੋਂਪਟ"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "ਟੈਗ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "ਬੂਸਟ ਵਾਪਸ ਲਓ"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "ਸੰਯੁਕਤ ਰਾਜ"
 msgid "Unknown"
 msgstr "ਅਣਜਾਣ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "ਗੈਰ-ਸੂਚੀਬੱਧ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "ਪੋਸਟ ਅਨ-ਪਿੰਨ ਕਰੋ"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "ਸਿਰਫ਼ ਦੇਖੋ"
 msgid "View the image this comment is about"
 msgstr "ਉਹ ਤਸਵੀਰ ਦੇਖੋ ਜਿਸ ਬਾਰੇ ਇਹ ਟਿੱਪਣੀ ਹੈ"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "ਦਿੱਖ"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "ਇਸ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਵੌਇਸ ਰਿਕਾਰਡਿੰਗ ਸਮਰਥਿਤ ਨਹੀਂ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "ਵੋਟ ਪਾਓ"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

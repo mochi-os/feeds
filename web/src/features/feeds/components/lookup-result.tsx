@@ -111,7 +111,7 @@ export function LookupResult({ query }: { query: string }) {
 }
 
 // The feeds the user owns, one of which takes the person as a source.
-function FollowMenu({ query, label }: { query: string; label: string }) {
+export function FollowMenu({ query, label }: { query: string; label: string }) {
   const { t } = useLingui()
   const feeds = useFeedsStore((state) => state.feeds).filter((f) => f.isOwner)
   const [busy, setBusy] = useState(false)

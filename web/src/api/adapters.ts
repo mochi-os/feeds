@@ -207,5 +207,13 @@ export const mapPosts = (
     boosts: post.boosts,
     score: post.score,
     following: post.following,
+    visibility: post.visibility,
+    warning: post.warning || undefined,
+    sensitive: !!post.sensitive,
+    pinned: post.pinned,
+    language: post.language || undefined,
+    authorId: post.author || undefined,
+    remote: post.remote || undefined,
+    voted: post.voted,
   }))
 }

@@ -10,7 +10,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import type {
   Attachment as AttachmentData,
@@ -18,9 +18,10 @@ import type {
   FeedPermissions,
   FeedPost,
   PostCopy,
+  PostFeatures,
+  PublishAccount,
   ReactionId,
 } from '@/types'
-import type { PublishAccount } from '@/types'
 import { t } from '@lingui/core/macro'
 import { Plural, Trans } from '@lingui/react/macro'
 import {
@@ -83,11 +84,16 @@ import {
   Bell,
   BellRing,
   Check,
+  ChevronDown,
+  ChevronUp,
   MapPin,
   MessageSquare,
   MoreHorizontal,
   Pencil,
+  Pin,
+  PinOff,
   Plane,
+  Repeat2,
   Trash2,
   X,
 } from 'lucide-react'
@@ -107,10 +113,15 @@ import {
   extractImgAttrs,
   stripHtml,
   safeHref,
+  replaceEmoji,
 } from '../utils'
 import { AttachmentComments } from './attachment-comments'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
+import { PostFeaturesFields } from './post-features'
+import { PostHeadline } from './post-headline'
+import { PostMedia } from './post-media'
+import { PostPoll } from './post-poll'
 import { ReactionBar } from './reaction-bar'
 import { ReplyButton } from './reply-button'
 import { SavedButton } from './saved-button'
@@ -158,7 +169,8 @@ type FeedPostsProps = {
     data?: PostData,
     order?: string[],
     files?: File[],
-    captions?: Record<string, string>
+    captions?: Record<string, string>,
+    features?: PostFeatures
   ) => boolean | Promise<boolean>
   /** Byte progress of an in-flight post-edit upload */
   editProgress?: Upload | null
@@ -515,8 +527,10 @@ export function FeedPosts({
   // with such a copy is shown, and the account chosen per post.
   const [replyAccounts, setReplyAccounts] = useState<PublishAccount[]>([])
   const [replyFrom, setReplyFrom] = useState<Record<string, string>>({})
-  const anyFediverseCopy = posts.some((p) =>
-    p.copies?.some((copy) => copy.network === 'fediverse')
+  const anyFediverseCopy = posts.some(
+    (p) =>
+      p.copies?.some((copy) => copy.network === 'fediverse') ||
+      (!!p.remote && !!p.authorId)
   )
   useEffect(() => {
     if (!isLoggedIn || readOnly || !anyFediverseCopy) return
@@ -551,6 +565,56 @@ export function FeedPosts({
     },
     [onAddComment, replyFrom]
   )
+
+  // Pinning a post of the owner's feed, and boosting a post from another
+  // network from the owner's hosted account (phase 17); the list re-reads
+  // the feed's posts once the server has them.
+  const queryClient = useQueryClient()
+  const reloadPosts = useCallback(
+    (feedId: string) =>
+      queryClient.invalidateQueries({ queryKey: ['posts', feedId] }),
+    [queryClient]
+  )
+  const pinPost = useCallback(
+    async (post: FeedPost) => {
+      try {
+        await feedsApi.pinPost(post.feedId, post.id, !post.pinned)
+        await reloadPosts(post.feedId)
+        toast.success(post.pinned ? t`Post unpinned` : t`Post pinned`)
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Could not change the pin`))
+      }
+    },
+    [reloadPosts]
+  )
+  const boostAccount = replyAccounts[0]
+  const isBoosted = useCallback(
+    (post: FeedPost) =>
+      !!boostAccount &&
+      !!post.copies?.some(
+        (copy) =>
+          copy.network === 'fediverse' &&
+          copy.address === boostAccount.identifier
+      ),
+    [boostAccount]
+  )
+  const boostPost = useCallback(
+    async (post: FeedPost) => {
+      if (!boostAccount) return
+      const boosted = isBoosted(post)
+      try {
+        await feedsApi.boostPost(post.feedId, post.id, boostAccount.id, !boosted)
+        await reloadPosts(post.feedId)
+        toast.success(boosted ? t`Boost taken back` : t`Boosted`)
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Could not boost`))
+      }
+    },
+    [boostAccount, isBoosted, reloadPosts]
+  )
+  // A post behind a content warning shows its warning until the reader asks
+  // for the rest.
+  const [revealed, setRevealed] = useState<Record<string, boolean>>({})
 
   // The owner's moderation of a comment by a person on another network.
   const moderateComment = useCallback(
@@ -675,6 +739,8 @@ export function FeedPosts({
     // Keyed by attachment id (existing) or pendingFileKey (new), so neither
     // removal nor reorder can re-attach a caption to the wrong item.
     captions: Record<string, string>
+    // Visibility, content warning and sensitive flag (phase 17).
+    features: PostFeatures
   } | null>(null)
   // What to run once a dirty edit has actually been given up: open another
   // post's editor, or follow the navigation that was held back.
@@ -697,6 +763,11 @@ export function FeedPosts({
           att.caption ? [[att.id, att.caption]] : []
         )
       ),
+      features: {
+        visibility: post.visibility ?? 'public',
+        warning: post.warning ?? '',
+        sensitive: !!post.sensitive,
+      },
     })
   }, [])
 
@@ -834,7 +905,8 @@ export function FeedPosts({
           draft.data,
           draft.order,
           draft.newFiles,
-          draft.captions
+          draft.captions,
+          draft.features
         )
         if (saved) setEditingPost(null)
         else setEditFailed(true)
@@ -1125,6 +1197,13 @@ export function FeedPosts({
                       rows={4}
                       autoFocus
                     />
+                    <PostFeaturesFields
+                      value={editingPost.features}
+                      onChange={(features) =>
+                        setEditingPost({ ...editingPost, features })
+                      }
+                      idPrefix={`edit-${post.id}`}
+                    />
 
                     {/* Location display */}
                     {(editingPost.data.checkin ||
@@ -1363,6 +1442,37 @@ export function FeedPosts({
                   </div>
                 ) : post.body.trim() || hasRssTitle ? (
                   <>
+                    <PostHeadline post={post} />
+                    {post.warning && (
+                      <div className='flex flex-wrap items-center gap-2 text-sm'>
+                        <span className='font-medium'>{post.warning}</span>
+                        <Button
+                          type='button'
+                          variant='outline'
+                          size='sm'
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setRevealed((current) => ({
+                              ...current,
+                              [post.id]: !current[post.id],
+                            }))
+                          }}
+                        >
+                          {revealed[post.id] ? (
+                            <ChevronUp className='size-4' />
+                          ) : (
+                            <ChevronDown className='size-4' />
+                          )}
+                          {revealed[post.id] ? (
+                            <Trans>Show less</Trans>
+                          ) : (
+                            <Trans>Show more</Trans>
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                    {(!post.warning || revealed[post.id]) && (
+                    <>
                     {hasRssTitle && (
                       <div>
                         <a
@@ -1455,13 +1565,43 @@ export function FeedPosts({
                             <div
                               className={`prose prose-sm dark:prose-invert text-foreground prose-a:text-primary prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:ps-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:ps-6 prose-ol:marker:text-foreground prose-li:my-1 [&_th]:border-border [&_td]:border-border max-w-none [&_table]:my-3 [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:px-3 [&_td]:py-2 [&_th]:border [&_th]:px-3 [&_th]:py-2 [&_th]:text-start [&_th]:font-semibold [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
                               dangerouslySetInnerHTML={{
-                                __html: embedVideos(rawHtml),
+                                __html: replaceEmoji(
+                                  embedVideos(rawHtml),
+                                  post.data?.emoji
+                                ),
                               }}
                             />
                           )}
                         </>
                       )
                     })()}
+                    {post.data?.media && post.data.media.length > 0 && (
+                      <PostMedia
+                        media={post.data.media}
+                        sensitive={post.sensitive}
+                      />
+                    )}
+                    {post.data?.poll && (
+                      <PostPoll
+                        feedId={post.feedId}
+                        postId={post.id}
+                        poll={post.data.poll}
+                        voted={post.voted}
+                        canVote={
+                          isLoggedIn &&
+                          !readOnly &&
+                          (usePerPostPermissions
+                            ? post.isOwner ||
+                              post.permissions?.react ||
+                              post.permissions?.comment ||
+                              !post.permissions
+                            : !!canReact)
+                        }
+                        onVoted={() => void reloadPosts(post.feedId)}
+                      />
+                    )}
+                    </>
+                    )}
                   </>
                 ) : null}
 
@@ -1489,6 +1629,7 @@ export function FeedPosts({
 
                 {/* Maps and attachments row */}
                 {editingPost?.id !== post.id &&
+                  (!post.warning || revealed[post.id]) &&
                   (post.data?.checkin ||
                     post.data?.travelling ||
                     (post.attachments && post.attachments.length > 0)) && (
@@ -1804,6 +1945,47 @@ export function FeedPosts({
                                       <Pencil className='me-2 size-4' />
                                       <Trans>Edit post</Trans>
                                     </DropdownMenuItem>
+                                    {isFeedOwner && (
+                                      <DropdownMenuItem
+                                        onClick={(e) => {
+                                          e.preventDefault()
+                                          e.stopPropagation()
+                                          void pinPost(post)
+                                        }}
+                                      >
+                                        {post.pinned ? (
+                                          <PinOff className='me-2 size-4' />
+                                        ) : (
+                                          <Pin className='me-2 size-4' />
+                                        )}
+                                        {post.pinned ? (
+                                          <Trans>Unpin post</Trans>
+                                        ) : (
+                                          <Trans>Pin post</Trans>
+                                        )}
+                                      </DropdownMenuItem>
+                                    )}
+                                    {isFeedOwner &&
+                                      boostAccount &&
+                                      post.remote &&
+                                      post.authorId && (
+                                        <DropdownMenuItem
+                                          onClick={(e) => {
+                                            e.preventDefault()
+                                            e.stopPropagation()
+                                            void boostPost(post)
+                                          }}
+                                        >
+                                          <Repeat2 className='me-2 size-4' />
+                                          {isBoosted(post) ? (
+                                            <Trans>Take the boost back</Trans>
+                                          ) : (
+                                            <Trans>
+                                              Boost from {boostAccount.identifier}
+                                            </Trans>
+                                          )}
+                                        </DropdownMenuItem>
+                                      )}
                                     <DropdownMenuItem
                                       onClick={(e) => {
                                         e.preventDefault()
@@ -1830,9 +2012,10 @@ export function FeedPosts({
                 {commentingOn === post.id && (
                   <div onClick={(e) => e.stopPropagation()}>
                     {replyAccounts.length > 0 &&
-                      post.copies?.some(
+                      (post.copies?.some(
                         (copy) => copy.network === 'fediverse'
-                      ) && (
+                      ) ||
+                        (post.remote && post.authorId)) && (
                         <div className='mb-2 flex items-center gap-2 text-xs'>
                           <Label htmlFor={`reply-from-${post.id}`}>
                             <Trans>Also reply from</Trans>

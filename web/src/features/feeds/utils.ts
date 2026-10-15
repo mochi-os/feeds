@@ -322,3 +322,23 @@ export function patchPostReaction<
     ...applyReaction(post.reactions, post.userReaction, reaction),
   }
 }
+
+// A custom emoji is written :name: in a post from another network and shown
+// as the picture its server publishes (phase 17). Applied after sanitising:
+// the addresses were made safe on the way in, and the sanitiser keeps no
+// attribute that sizes an image inline.
+export function replaceEmoji(
+  html: string,
+  emoji: Array<{ name: string; url: string }> | undefined
+): string {
+  if (!emoji || emoji.length === 0) return html
+  const byName = new Map(emoji.map((e) => [e.name, e.url]))
+  return html.replace(/:([A-Za-z0-9_+-]{1,100}):/g, (match, name: string) => {
+    const url = byName.get(name)
+    if (!url) return match
+    const safe = safeHref(url)
+    if (!safe) return match
+    const title = `:${name}:`.replace(/"/g, '&quot;')
+    return `<img src="${safe}" alt="${title}" title="${title}" width="20" height="20" referrerpolicy="no-referrer" style="display:inline;vertical-align:middle;max-width:20px">`
+  })
+}

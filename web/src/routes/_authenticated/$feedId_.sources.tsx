@@ -3,6 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import type { PublishAccount } from '@/types/feeds'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useFeeds } from '@/hooks'
@@ -50,6 +51,8 @@ import {
   Calendar,
   Check,
   AtSign,
+  FileUp,
+  Hash,
   Link2,
   Plus,
   RefreshCw,
@@ -280,6 +283,10 @@ function FeedSourcesPage() {
   )
 }
 
+// Example addresses, shown as placeholders.
+const TAG_EXAMPLE = '#tag@server.example'
+const PERSON_EXAMPLE = '@name@server.example, name.bsky.social, https://...'
+
 function credibilityHue(credibility: number): number {
   return (credibility / 100) * 120
 }
@@ -301,15 +308,18 @@ function formatInterval(seconds: number): string {
 
 // The kinds of source a feed takes from the dialog: an RSS feed, another Mochi
 // feed, one of the owner's accounts on another network - its home timeline or
-// its own posts (decision 32) - or a public person or community there, by
-// handle or link, which the server follows through their web feed or, on
-// Bluesky, their post records (the source type person/posts).
+// its own posts (decision 32) - a public person or community there, by handle
+// or link, which the server follows through the owner's hosted account where
+// they have one (phase 17), else through the person's web feed or, on
+// Bluesky, their post records (the source type person/posts), or a hashtag
+// on a server, polled through its tag feed.
 type SourceKind =
   | 'rss'
   | 'feed/posts'
   | 'account/timeline'
   | 'account/posts'
   | 'person'
+  | 'tag'
 
 interface SourcesPanelProps {
   feedId: string
@@ -352,6 +362,26 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
       await refetchSources()
     } catch (err) {
       toast.error(getErrorMessage(err, t`Failed to add memories source`))
+    }
+  }
+
+  // A Mastodon export of follows (following_accounts.csv), read here and sent
+  // as text: each address becomes a source.
+  const importInputRef = useRef<HTMLInputElement>(null)
+  const handleImport = async (file: File) => {
+    try {
+      const answer = await feedsApi.importFollows(feedId, await file.text())
+      toast.success(
+        answer.more
+          ? t`Importing ${answer.total} follows; ${answer.imported} added so far`
+          : plural(answer.imported, {
+              one: '# follow imported',
+              other: '# follows imported',
+            })
+      )
+      await refetchSources()
+    } catch (err) {
+      toast.error(getErrorMessage(err, t`Failed to import follows`))
     }
   }
 
@@ -423,6 +453,19 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
               <UserRound className='me-2 h-4 w-4' />
               <Trans>Person or community</Trans>
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setAddSourceType('tag')
+                setShowAddDialog(true)
+              }}
+            >
+              <Hash className='me-2 h-4 w-4' />
+              <Trans>Hashtag</Trans>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => importInputRef.current?.click()}>
+              <FileUp className='me-2 h-4 w-4' />
+              <Trans>Import follows from a file</Trans>
+            </DropdownMenuItem>
             {!hasMemoriesSource && (
               <DropdownMenuItem onSelect={() => void handleAddMemories()}>
                 <Calendar className='me-2 h-4 w-4' />
@@ -434,6 +477,17 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
       }
     >
       <div className='space-y-4'>
+        <input
+          ref={importInputRef}
+          type='file'
+          accept='.csv,text/csv,text/plain'
+          className='hidden'
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            e.target.value = ''
+            if (file) void handleImport(file)
+          }}
+        />
         {isLoading ? (
           <div className='space-y-3'>
             <Skeleton className='h-16 w-full rounded-lg' />
@@ -469,12 +523,24 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                         <AtSign className='text-primary h-4 w-4 shrink-0' />
                       ) : source.type === 'person/posts' ? (
                         <UserRound className='text-primary h-4 w-4 shrink-0' />
+                      ) : source.type === 'tag/posts' ? (
+                        <Hash className='text-primary h-4 w-4 shrink-0' />
                       ) : (
                         <Link2 className='text-primary h-4 w-4 shrink-0' />
                       )}
                       <span className='truncate text-sm font-medium'>
                         {source.name}
                       </span>
+                      {source.state === 'pending' && (
+                        <span className='bg-muted text-muted-foreground inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium'>
+                          <Trans>Follow pending</Trans>
+                        </span>
+                      )}
+                      {source.state === 'refused' && (
+                        <span className='bg-destructive/10 text-destructive inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium'>
+                          <Trans>Follow refused</Trans>
+                        </span>
+                      )}
                       {source.type === 'rss' && (
                         <span
                           className='inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium'
@@ -507,8 +573,12 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                           <Trans>Account timeline</Trans>
                         ) : source.type === 'account/posts' ? (
                           <Trans>Account posts</Trans>
+                        ) : source.type === 'person/posts' && source.account ? (
+                          <Trans>Posts on the fediverse</Trans>
                         ) : source.type === 'person/posts' ? (
                           <Trans>Posts on Bluesky</Trans>
+                        ) : source.type === 'tag/posts' ? (
+                          <Trans>Hashtag</Trans>
                         ) : (
                           <Trans>Mochi feed</Trans>
                         )}
@@ -535,7 +605,8 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                   </div>
                   <div className='ms-2 flex shrink-0 items-center gap-1'>
                     {(source.type === 'rss' ||
-                      source.type === 'person/posts' ||
+                      source.type === 'tag/posts' ||
+                      (source.type === 'person/posts' && !source.account) ||
                       source.type === 'feed/memories') && (
                       <Button
                         variant='ghost'
@@ -649,6 +720,16 @@ function AddSourceDialog({
     retry: false,
   })
   const accounts = publishQuery.data?.accounts ?? []
+  // The owner's hosted fediverse accounts, one of which follows a person
+  // there (phase 17); offered when they have more than one.
+  const hostedQuery = useQuery({
+    queryKey: ['feeds', 'hosted'],
+    queryFn: () => feedsApi.hostedAccounts(),
+    enabled: open && sourceType === 'person',
+    retry: false,
+  })
+  const hosted: PublishAccount[] = hostedQuery.data ?? []
+  const [followAccount, setFollowAccount] = useState('')
 
   useEffect(() => {
     if (open) {
@@ -662,7 +743,14 @@ function AddSourceDialog({
 
   const addSource = async (sourceUrl: string): Promise<boolean> => {
     try {
-      const response = await feedsApi.addSource(feedId, sourceType, sourceUrl)
+      const response = await feedsApi.addSource(
+        feedId,
+        sourceType,
+        sourceUrl,
+        undefined,
+        undefined,
+        sourceType === 'person' ? followAccount || undefined : undefined
+      )
       const count = response.data?.ingested ?? 0
       const suggested = response.data?.suggested_credibility
       const msg =
@@ -821,6 +909,8 @@ function AddSourceDialog({
                   <Trans>Add account posts</Trans>
                 ) : sourceType === 'person' ? (
                   <Trans>Follow a person or community</Trans>
+                ) : sourceType === 'tag' ? (
+                  <Trans>Follow a hashtag</Trans>
                 ) : (
                   <Trans>Add Mochi feed</Trans>
                 )}
@@ -851,8 +941,10 @@ function AddSourceDialog({
                       sourceType === 'rss'
                         ? 'https://example.com/feed.xml'
                         : sourceType === 'person'
-                          ? '@name@server.example, name.bsky.social, https://...'
-                          : t`Feed entity ID or fingerprint`
+                          ? PERSON_EXAMPLE
+                          : sourceType === 'tag'
+                            ? TAG_EXAMPLE
+                            : t`Feed entity ID or fingerprint`
                     }
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') void handleSubmit()
@@ -861,6 +953,22 @@ function AddSourceDialog({
                     autoFocus
                   />
                 </div>
+              )}
+              {sourceType === 'person' && hosted.length > 1 && (
+                <Select value={followAccount} onValueChange={setFollowAccount}>
+                  <SelectTrigger aria-label={t`Follow with`}>
+                    <SelectValue placeholder={t`Follow with`} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[...hosted]
+                      .sort((a, b) => naturalCompare(a.identifier, b.identifier))
+                      .map((account) => (
+                        <SelectItem key={account.id} value={account.id}>
+                          {account.identifier}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
               )}
               {permissionDomain && (
                 <p className='text-muted-foreground text-sm'>

@@ -55,6 +55,11 @@ msgstr "(እርስዎ)"
 msgid "[not set]"
 msgstr "[አልተዘጋጀም]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# ድምጽ} one {# ድምጽ} other {# ድምጾች}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# ቅጂ} other {# ቅጂዎች}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ፋይል ተቀይሯል} other {# ፋይሎች ተቀይረዋል}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {# የሚከተሉት መለያ ገብቷል} other {# የሚከተሏቸው መለያዎች ገብተዋል}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# ውስጠኛ} other {+# ውስጠኛ}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# ምንጭ ተጨምሯል} other {# ምንጮች ተጨምረዋል}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} ቀናት"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} ሰዓታት"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} ደቂቃዎች"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "እንቅስቃሴ"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "ጨምር"
@@ -351,6 +377,7 @@ msgstr "Mochi ፊድ ያክሉ"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "አማራጭ ጨምር"
 
@@ -684,10 +711,29 @@ msgstr "ይገድባል"
 msgid "Board"
 msgstr "ሰሌዳ"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "ከ{0} አጋራ"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "ፍላጎትን አሳድግ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "ማጋራቱ ተሰርዟል"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "ተጋርቷል"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "በ{0} ተጋርቷል"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "ፓነል ዝጋ / ሰርዝ"
 msgid "Close search"
 msgstr "ፍለጋን ዝጋ"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "ተዘግቷል"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "{0} ይዘጋል"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "የሚዘጋበት ጊዜ"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "ይዘቱ አልተገኘም።"
 msgid "Content not modified"
 msgstr "ይዘት አልተስተካከለም"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "የይዘት ማስጠንቀቂያ"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "የአውድ መረጃና ዝርዝሮች።"
@@ -1023,6 +1086,18 @@ msgstr "ወደ ቅንጥብ ሰሌዳ ተቀድቷል"
 msgid "Copy"
 msgstr "ቅዳ"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "ማጣሪያውን ማከል አልተቻለም"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "ማጋራት አልተቻለም"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "መሰኪያውን መቀየር አልተቻለም"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "ፊዱ የሚያትምበትን ቦታ መቀየር አልተቻለም"
@@ -1051,6 +1126,14 @@ msgstr "ማስመጣት አልተቻለም"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "ይህን ሰነድ መጫን አልተቻለም። እባክዎ በኋላ እንደገና ይሞክሩ።"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "ማጣሪያውን ማስወገድ አልተቻለም"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "ድምጽ መስጠት አልተቻለም"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "ልጥፍ ማስተካከል አልተሳካም"
 msgid "Failed to get RSS token"
 msgstr "የRSS ቶከን ማግኘት አልተሳካም"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "የሚከተሏቸውን መለያዎች ማስመጣት አልተሳካም"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "መጫን አልተሳካም"
@@ -1871,6 +1958,10 @@ msgstr "ፋይሎች"
 msgid "Filtered by tag:"
 msgstr "በመለያ ተጣርቷል:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "ማጣሪያዎች"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "ጠፍጣፋ"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "ተከተል"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "{0}ን ተከተል"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "ሃሽታግ ተከተል"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "ሰውን ወይም ማህበረሰብን ተከተል"
 
@@ -1910,10 +2006,32 @@ msgstr "ሰውን ወይም ማህበረሰብን ተከተል"
 msgid "Follow from another network"
 msgstr "ከሌላ አውታረ መረብ ይከተሉ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "መከተል በመጠባበቅ ላይ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "መከተል ተቀባይነት አላገኘም"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "ክሩን ተከተል"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "የሚከተሉበት መለያ"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "ለተከታዮች ብቻ"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "እየተከተሉ ነው"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "በቡድን ይመድቡ"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "ቡድን፦ {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "ሃሽታግ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "ዕልባቶችን አስመጣ"
 msgid "Import follows as sources"
 msgstr "የሚከተሏቸውን መለያዎች እንደ ምንጮች አስመጣ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "የሚከተሏቸውን መለያዎች ከፋይል አስመጣ"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "ልጥፎችን አስመጣ"
@@ -2007,6 +2134,12 @@ msgstr "{0} ገብተዋል"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "እስካሁን {0} ገብተዋል፤ የቀሩት ይከተላሉ"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "{0} የሚከተሏቸው መለያዎች በማስመጣት ላይ፤ እስካሁን {1} ታክለዋል"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "የእይታ ድርጊቶችን ክፈት"
 msgid "Open view controls"
 msgstr "የእይታ መቆጣጠሪያዎችን ክፈት"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "አማራጭ {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "ስርዓተ-ጥለት (regex)"
 msgid "People"
 msgstr "ሰዎች"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "የሚያውቋቸው ሰዎች"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "ሰው ወይም ማህበረሰብ"
@@ -2641,6 +2783,18 @@ msgstr "ሰው ወይም ማህበረሰብ"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "ፎቶዎች እና ቪዲዮዎች"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "የሚደበቅ ሐረግ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "ልጥፉን ሰካ"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "ተሰክቷል"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "እባክዎ እንደገና ይሞክሩ።"
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "እባክዎ ትንሽ ይጠብቁና እንደገና ይሞክሩ።"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "የሕዝብ አስተያየት"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "ልጥፍ ተሰርዟል"
 msgid "Post not found"
 msgstr "ልጥፍ አልተገኘም"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "ልጥፍ ተሰክቷል"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "ልጥፍ ተነቅሏል"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "ልጥፎች እና አስተያየቶች"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "በBluesky ላይ ያሉ ልጥፎች"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "በFediverse ላይ ያሉ ልጥፎች"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "ጥያቄ ተቀምጧል"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "ባህሪያት"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "ሕዝባዊ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "አስታዋሽ"
 msgid "Remove"
 msgstr "አስወግድ"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "{0}ን አስወግድ"
@@ -2892,6 +3069,15 @@ msgstr "ንጥል አስወግድ"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "አገናኙን አስወግድ"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "አማራጭ {0}ን አስወግድ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "የሕዝብ አስተያየቱን አስወግድ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "ኢሜይል ላክ"
 msgid "Send message"
 msgstr "መልዕክት ይላኩ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "ስሱ ሚዲያ"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "ሰሪፍ"
@@ -3254,6 +3445,11 @@ msgstr "መነሻ እና መድረሻ ያዘጋጁ"
 msgid "Settings"
 msgstr "ቅንብሮች"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "ብዙ ምርጫዎች"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "ክፍሎችን አሳይ"
@@ -3262,9 +3458,21 @@ msgstr "ክፍሎችን አሳይ"
 msgid "Show fields"
 msgstr "መስኮችን አሳይ"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "ያነሰ አሳይ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "ተጨማሪ አሳይ"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "በዚህ ምስል ላይ ያሉ አስተያየቶችን ብቻ አሳይ"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "ስሱ ሚዲያ አሳይ"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "የመለያ መመሪያ"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "መለያዎች"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "ማጋራቱን ሰርዝ"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "ዩናይትድ ስቴትስ"
 msgid "Unknown"
 msgstr "ያልታወቀ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "ያልተዘረዘረ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "የልጥፉን ሰክነት ያንሱ"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "እይታ ብቻ"
 msgid "View the image this comment is about"
 msgstr "ይህ አስተያየት የሚመለከተውን ምስል ይመልከቱ"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "ታይነት"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "በዚህ አሳሽ ውስጥ የድምፅ ቀረጻ አይደገፍም"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "ድምጽ ስጥ"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -55,6 +55,11 @@ msgstr "(wena)"
 msgid "[not set]"
 msgstr "[ayisetwanga]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {ivoti e-#} one {ivoti e-#} other {iivoti ezi-#}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {ikopi e-#} other {iikopi ezi-#}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {ifayile e-# itshintshile} other {iifayile ezi-# zitshintshile}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {Kungeniswe i-akhawunti e-# olandela yona} other {Kungeniswe ii-akhawunti ezi-# olandela zona}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, one {+# efakiweyo} other {+# ezifakiweyo}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Kongezwe umthombo o-#} other {Kongezwe imithombo eyi-#}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "iintsuku ezingu-{0}"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "Iiyure ezi-{0}"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "Imizuzu eyi-{0}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "Umsebenzi"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "Yongeza"
@@ -351,6 +377,7 @@ msgstr "Yongeza ifidi yeMochi"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "Yongeza ukhetho"
 
@@ -684,10 +711,29 @@ msgstr "Iyavimba"
 msgid "Board"
 msgstr "Ibhodi"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "Khuthaza usuka ku-{0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "Khulisa umdla"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "Ukukhuthaza kurhoxisiwe"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "Ikhuthaziwe"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "Ikhuthazwe ngu-{0}"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "Vala iphaneli / rhoxisa"
 msgid "Close search"
 msgstr "Vala ukukhangela"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "Ivaliwe"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "Ivala nge-{0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "Ixesha lokuvala"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "Umxholo awufunyanwanga."
 msgid "Content not modified"
 msgstr "Umxholo awulungiswanga"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "Isilumkiso somxholo"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "Ulwazi nenkcukacha zomxholo."
@@ -1023,6 +1086,18 @@ msgstr "Kukotshelwe kwibhodi yokukotshela"
 msgid "Copy"
 msgstr "Kotshela"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "Ayikwazanga ukongeza isihluzi"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "Ayikwazanga ukukhuthaza"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "Ayikwazanga ukutshintsha ukuncamathisa"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "Akukwazekanga ukutshintsha apho ifidi ipapasha khona"
@@ -1051,6 +1126,14 @@ msgstr "Akukwazekanga ukungenisa"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "Akukwazekanga ukulayisha olu xwebhu. Nceda uzame kwakhona kamva."
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "Ayikwazanga ukususa isihluzi"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "Ayikwazanga ukuvota"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "Ayiphumelelanga ukuhlela umyalezo"
 msgid "Failed to get RSS token"
 msgstr "Ayiphumelelanga ukufumana ithokheni ye-RSS"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "Ayiphumelelanga ukungenisa ii-akhawunti olandela zona"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "Ayiphumelelanga ukulayisha"
@@ -1871,6 +1958,10 @@ msgstr "Iifayile"
 msgid "Filtered by tag:"
 msgstr "Kuhluzwe ngethegi:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "Izihluzi"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "Isicaba"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "Landela"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "Landela u-{0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "Landela ihashtag"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "Landela umntu okanye uluntu"
 
@@ -1910,10 +2006,32 @@ msgstr "Landela umntu okanye uluntu"
 msgid "Follow from another network"
 msgstr "Landela kolunye uthungelwano"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "Ukulandela kulindile"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "Ukulandela kwaliwe"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "Landela umsonto"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "I-akhawunti yokulandela"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "Abalandeli kuphela"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "Uyalandela"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "Qoqa nge-"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "Iqela: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "Ihashtag"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "Ngenisa iibhukimaki"
 msgid "Import follows as sources"
 msgstr "Ngenisa abalandelwayo njengemithombo"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "Ngenisa ii-akhawunti olandela zona kwifayile"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "Ngenisa iimpapasho"
@@ -2007,6 +2134,12 @@ msgstr "Kungeniswe {0}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "Kungeniswe {0} ukuza kuthi ga ngoku; okunye kuza kulandela"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "Kungeniswa ii-akhawunti ezili-{0} olandela zona; sele kongezwe ezi-{1}"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "Vula izenzo zenkangeleko"
 msgid "Open view controls"
 msgstr "Vula izilawuli zenkangeleko"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "Ukhetho {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "Ipateni (regex)"
 msgid "People"
 msgstr "Abantu"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "Abantu obaziyo"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "Umntu okanye uluntu"
@@ -2641,6 +2783,18 @@ msgstr "Umntu okanye uluntu"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "Iifoto neevidiyo"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "Ibinzana lokufihla"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "Ncamathisa iposti"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "Incamathiselwe"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "Nceda uzame kwakhona."
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "Nceda ulinde umzuzwana uze uzame kwakhona."
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "Uvoto"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "Umyalezo ucimiwe"
 msgid "Post not found"
 msgstr "Umyalezo awufumaneki"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "Umyalezo uncanyathiselwe"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "Umyalezo ususiwe ekuncanyathisweni"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "Imiyalezo nezimvo"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "Iimpapasho ku-Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "Iiposti kwi-fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "Isikhumbuzi sigciniwe"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "Iimpawu"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "Esidlangalaleni"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "Isikhumbuzo"
 msgid "Remove"
 msgstr "Susa"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "Susa {0}"
@@ -2892,6 +3069,15 @@ msgstr "Susa into"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "Susa ikhonkco"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "Susa ukhetho {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "Susa uvoto"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "Thumela i-imeyile"
 msgid "Send message"
 msgstr "Thumela umyalezo"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "Imidiya ebuthathaka"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "Iserif"
@@ -3254,6 +3445,11 @@ msgstr "Misa indawo yokuqala neyokugqibela"
 msgid "Settings"
 msgstr "Iisetingi"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "Ukhetho oluninzi"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "Bonisa iiklasi"
@@ -3262,9 +3458,21 @@ msgstr "Bonisa iiklasi"
 msgid "Show fields"
 msgstr "Bonisa iindawo"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "Bonisa okuncinci"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "Bonisa ngakumbi"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Bonisa kuphela izimvo ngalo mfanekiso"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "Bonisa imidiya ebuthathaka"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "Isikhokelo sethegi"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "Iiletile"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "Rhoxisa ukukhuthaza"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "IiZwe eziManyeneyo zaseMelika"
 msgid "Unknown"
 msgstr "Akwaziwa"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "Ayidweliswanga"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "Susa iposti kwiipini"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "Bonisa kuphela"
 msgid "View the image this comment is about"
 msgstr "Jonga umfanekiso olu luvo luthetha ngawo"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "Ukubonakala"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "Ushicilelo lwelizwi aluxhaswa kule bhrawuza"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "Vota"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

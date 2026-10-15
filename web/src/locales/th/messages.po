@@ -55,6 +55,11 @@ msgstr "(คุณ)"
 msgid "[not set]"
 msgstr "[ไม่ได้ตั้ง]"
 
+#. placeholder {0}: poll.voters
+#: src/features/feeds/components/post-poll.tsx
+msgid "{0, plural, =1 {# vote} one {# vote} other {# votes}}"
+msgstr "{0, plural, =1 {# คะแนน} one {# คะแนน} other {# คะแนน}}"
+
 #. placeholder {0}: data.copies[account.id]
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {# copy} other {# copies}}"
@@ -64,6 +69,11 @@ msgstr "{0, plural, one {# สำเนา} other {# สำเนา}}"
 #: ../../../lib/web/src/components/diff-viewer.tsx
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {เปลี่ยนแปลง # ไฟล์} other {เปลี่ยนแปลง # ไฟล์}}"
+
+#. placeholder {0}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# follow imported} other {# follows imported}}"
+msgstr "{0, plural, one {นำเข้าบัญชีที่ติดตาม # รายการแล้ว} other {นำเข้าบัญชีที่ติดตาม # รายการแล้ว}}"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx
@@ -94,6 +104,21 @@ msgstr "{0, plural, other {+# ที่ซ้อนอยู่}}"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {เพิ่ม # แหล่งที่มาแล้ว} other {เพิ่ม # แหล่งที่มาแล้ว}}"
+
+#. placeholder {0}: seconds / 86400
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} days"
+msgstr "{0} วัน"
+
+#. placeholder {0}: seconds / 3600
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} hours"
+msgstr "{0} ชั่วโมง"
+
+#. placeholder {0}: seconds / 60
+#: src/features/feeds/components/post-features.tsx
+msgid "{0} minutes"
+msgstr "{0} นาที"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -284,6 +309,7 @@ msgstr "กิจกรรม"
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/features/accounts/account-add.tsx
+#: src/features/feeds/components/filters-section.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add"
 msgstr "เพิ่ม"
@@ -351,6 +377,7 @@ msgstr "เพิ่มฟีด Mochi"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
 msgid "Add option"
 msgstr "เพิ่มตัวเลือก"
 
@@ -684,10 +711,29 @@ msgstr "บล็อก"
 msgid "Board"
 msgstr "กระดาน"
 
+#. placeholder {0}: boostAccount.identifier
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost from {0}"
+msgstr "บูสต์จาก {0}"
+
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Boost interest"
 msgstr "เพิ่มความสนใจ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boost taken back"
+msgstr "เลิกบูสต์แล้ว"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Boosted"
+msgstr "บูสต์แล้ว"
+
+#. placeholder {0}: boost.name || boost.address
+#: src/features/feeds/components/post-headline.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Boosted by {0}"
+msgstr "บูสต์โดย {0}"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Border colour"
@@ -881,6 +927,19 @@ msgstr "ปิดแผง / ยกเลิก"
 msgid "Close search"
 msgstr "ปิดการค้นหา"
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closed"
+msgstr "ปิดแล้ว"
+
+#. placeholder {0}: formatTimestamp(poll.expires)
+#: src/features/feeds/components/post-poll.tsx
+msgid "Closes {0}"
+msgstr "ปิด {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Closes after"
+msgstr "ปิดหลังจาก"
+
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/comment-tree-layout.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -988,6 +1047,10 @@ msgstr "ไม่พบเนื้อหา"
 msgid "Content not modified"
 msgstr "ไม่มีการแก้ไขเนื้อหา"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Content warning"
+msgstr "คำเตือนเนื้อหา"
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx
 msgid "Contextual information and details."
 msgstr "ข้อมูลบริบทและรายละเอียด"
@@ -1023,6 +1086,18 @@ msgstr "คัดลอกไปยังคลิปบอร์ดแล้ว
 msgid "Copy"
 msgstr "คัดลอก"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not add the filter"
+msgstr "ไม่สามารถเพิ่มตัวกรองได้"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not boost"
+msgstr "ไม่สามารถบูสต์ได้"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Could not change the pin"
+msgstr "ไม่สามารถเปลี่ยนการปักหมุดได้"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Could not change where the feed publishes"
 msgstr "ไม่สามารถเปลี่ยนตำแหน่งที่ฟีดเผยแพร่ได้"
@@ -1051,6 +1126,14 @@ msgstr "ไม่สามารถนำเข้าได้"
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
 msgstr "ไม่สามารถโหลดเอกสารนี้ได้ โปรดลองอีกครั้งในภายหลัง"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Could not remove the filter"
+msgstr "ไม่สามารถลบตัวกรองได้"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Could not vote"
+msgstr "ไม่สามารถลงคะแนนได้"
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
@@ -1575,6 +1658,10 @@ msgstr "ไม่สามารถแก้ไขโพสต์ได้"
 msgid "Failed to get RSS token"
 msgstr "ไม่สามารถรับโทเคน RSS ได้"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Failed to import follows"
+msgstr "นำเข้าบัญชีที่ติดตามไม่สำเร็จ"
+
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
 msgstr "ไม่สามารถโหลดได้"
@@ -1871,6 +1958,10 @@ msgstr "ไฟล์"
 msgid "Filtered by tag:"
 msgstr "กรองตามแท็ก:"
 
+#: src/features/feeds/components/filters-section.tsx
+msgid "Filters"
+msgstr "ตัวกรอง"
+
 #: src/components/layout/feeds-layout.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Find feeds"
@@ -1894,6 +1985,7 @@ msgstr "แบน"
 
 #: src/features/feeds/components/follow-button.tsx
 #: src/features/feeds/components/lookup-result.tsx
+#: src/features/feeds/components/people-to-follow.tsx
 msgid "Follow"
 msgstr "ติดตาม"
 
@@ -1903,6 +1995,10 @@ msgid "Follow {0}"
 msgstr "ติดตาม {0}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow a hashtag"
+msgstr "ติดตามแฮชแท็ก"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow a person or community"
 msgstr "ติดตามบุคคลหรือชุมชน"
 
@@ -1910,10 +2006,32 @@ msgstr "ติดตามบุคคลหรือชุมชน"
 msgid "Follow from another network"
 msgstr "ติดตามจากเครือข่ายอื่น"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow pending"
+msgstr "รอการติดตาม"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow refused"
+msgstr "การติดตามถูกปฏิเสธ"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Follow thread"
 msgstr "ติดตามเธรด"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow with"
+msgstr "ติดตามด้วย"
+
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgid "Followers only"
+msgstr "เฉพาะผู้ติดตาม"
+
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "Following"
+msgstr "กำลังติดตาม"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Friday"
@@ -1952,6 +2070,11 @@ msgstr "จัดกลุ่มตาม"
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Group: {0}"
 msgstr "กลุ่ม: {0}"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Hashtag"
+msgstr "แฮชแท็ก"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -1994,6 +2117,10 @@ msgstr "นำเข้าบุ๊กมาร์ก"
 msgid "Import follows as sources"
 msgstr "นำเข้าบัญชีที่ติดตามเป็นแหล่งที่มา"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Import follows from a file"
+msgstr "นำเข้าบัญชีที่ติดตามจากไฟล์"
+
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Import posts"
 msgstr "นำเข้าโพสต์"
@@ -2007,6 +2134,12 @@ msgstr "นำเข้าแล้ว {0} รายการ"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "Imported {0} so far; the rest follow"
 msgstr "นำเข้าแล้ว {0} รายการ ส่วนที่เหลือจะตามมา"
+
+#. placeholder {0}: answer.total
+#. placeholder {1}: answer.imported
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing {0} follows; {1} added so far"
+msgstr "กำลังนำเข้าบัญชีที่ติดตาม {0} รายการ เพิ่มแล้ว {1} รายการ"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2583,6 +2716,11 @@ msgstr "เปิดการดำเนินการของมุมมอ
 msgid "Open view controls"
 msgstr "เปิดตัวควบคุมมุมมอง"
 
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Option {0}"
+msgstr "ตัวเลือก {0}"
+
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Option name"
@@ -2633,6 +2771,10 @@ msgstr "รูปแบบ (regex)"
 msgid "People"
 msgstr "ผู้คน"
 
+#: src/features/feeds/components/people-to-follow.tsx
+msgid "People you know"
+msgstr "คนที่คุณรู้จัก"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Person or community"
 msgstr "บุคคลหรือชุมชน"
@@ -2641,6 +2783,18 @@ msgstr "บุคคลหรือชุมชน"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Photos and videos"
 msgstr "รูปภาพและวิดีโอ"
+
+#: src/features/feeds/components/filters-section.tsx
+msgid "Phrase to hide"
+msgstr "วลีที่จะซ่อน"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Pin post"
+msgstr "ปักหมุดโพสต์"
+
+#: src/features/feeds/components/post-headline.tsx
+msgid "Pinned"
+msgstr "ปักหมุดแล้ว"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -2655,6 +2809,11 @@ msgstr "โปรดลองอีกครั้ง"
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Please wait a moment and try again."
 msgstr "โปรดรอสักครู่แล้วลองอีกครั้ง"
+
+#: src/features/feeds/components/new-post-dialog.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Poll"
+msgstr "โพล"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2682,6 +2841,14 @@ msgstr "ลบโพสต์แล้ว"
 msgid "Post not found"
 msgstr "ไม่พบโพสต์"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post pinned"
+msgstr "ปักหมุดโพสต์แล้ว"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Post unpinned"
+msgstr "ยกเลิกการปักหมุดโพสต์แล้ว"
+
 #: src/features/feeds/hooks/use-post-handlers.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Post updated"
@@ -2698,6 +2865,10 @@ msgstr "โพสต์และความคิดเห็น"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Posts on Bluesky"
 msgstr "โพสต์บน Bluesky"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Posts on the fediverse"
+msgstr "โพสต์บน fediverse"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2728,6 +2899,10 @@ msgstr "บันทึกพรอมต์แล้ว"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
 msgstr "คุณสมบัติ"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Public"
+msgstr "สาธารณะ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
@@ -2831,7 +3006,9 @@ msgstr "การแจ้งเตือน"
 msgid "Remove"
 msgstr "ลบ"
 
+#. placeholder {0}: filter.phrase
 #. placeholder {0}: reaction.label
+#: src/features/feeds/components/filters-section.tsx
 #: src/features/feeds/components/reaction-bar.tsx
 msgid "Remove {0}"
 msgstr "ลบ {0}"
@@ -2892,6 +3069,15 @@ msgstr "ลบรายการ"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Remove link"
 msgstr "ลบลิงก์"
+
+#. placeholder {0}: index + 1
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove option {0}"
+msgstr "ลบตัวเลือก {0}"
+
+#: src/features/feeds/components/post-features.tsx
+msgid "Remove poll"
+msgstr "ลบโพล"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove source"
@@ -3217,6 +3403,11 @@ msgstr "ส่งอีเมล"
 msgid "Send message"
 msgstr "ส่งข้อความ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Sensitive media"
+msgstr "สื่อที่ละเอียดอ่อน"
+
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Serif"
 msgstr "เซริฟ"
@@ -3254,6 +3445,11 @@ msgstr "ตั้งค่าต้นทางและปลายทาง"
 msgid "Settings"
 msgstr "การตั้งค่า"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-features.tsx
+msgid "Several choices"
+msgstr "เลือกได้หลายข้อ"
+
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
 msgstr "แสดงคลาส"
@@ -3262,9 +3458,21 @@ msgstr "แสดงคลาส"
 msgid "Show fields"
 msgstr "แสดงฟิลด์"
 
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show less"
+msgstr "แสดงน้อยลง"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show more"
+msgstr "แสดงเพิ่มเติม"
+
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "แสดงเฉพาะความคิดเห็นต่อรูปนี้"
+
+#: src/features/feeds/components/post-media.tsx
+msgid "Show sensitive media"
+msgstr "แสดงสื่อที่ละเอียดอ่อน"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Show this help"
@@ -3452,6 +3660,10 @@ msgstr "พรอมต์แท็ก"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
 msgstr "แท็ก"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Take the boost back"
+msgstr "เลิกบูสต์"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3719,6 +3931,16 @@ msgstr "สหรัฐอเมริกา"
 msgid "Unknown"
 msgstr "ไม่ทราบ"
 
+#: src/features/feeds/components/post-features.tsx
+#: src/features/feeds/components/post-headline.tsx
+msgctxt "post visibility"
+msgid "Unlisted"
+msgstr "ไม่อยู่ในรายการ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Unpin post"
+msgstr "เลิกปักหมุดโพสต์"
+
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3842,9 +4064,17 @@ msgstr "ดูอย่างเดียว"
 msgid "View the image this comment is about"
 msgstr "ดูรูปที่ความคิดเห็นนี้กล่าวถึง"
 
+#: src/features/feeds/components/post-features.tsx
+msgid "Visibility"
+msgstr "การมองเห็น"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Voice recording is not supported in this browser"
 msgstr "เบราว์เซอร์นี้ไม่รองรับการบันทึกเสียง"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Vote"
+msgstr "ลงคะแนน"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

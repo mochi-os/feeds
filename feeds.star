@@ -2154,6 +2154,28 @@ def database_upgrade(version):
 		if "boosts" not in [c["name"] for c in mochi.db.table("posts")]:
 			mochi.db.execute("alter table posts add column boosts integer not null default 0")
 		replies_schema_create()
+	if version == 15:
+		# Following on the fediverse (phase 17): a post carries its
+		# visibility, content warning, sensitive flag, pin, language and,
+		# for a post from another network, its id there, with its author's
+		# id in the author column; a source goes through a hosted account;
+		# polls, keyword filters and a follows import keep tables.
+		features_schema_create()
+
+def features_schema_create():
+	"""The columns and tables of phase 17, made at creation and by the
+	migration alike."""
+	columns = [c["name"] for c in mochi.db.table("posts")]
+	for column, definition in [("visibility", "text not null default 'public'"), ("warning", "text not null default ''"), ("sensitive", "integer not null default 0"), ("pinned", "integer not null default 0"), ("language", "text not null default ''"), ("remote", "text not null default ''")]:
+		if column not in columns:
+			mochi.db.execute("alter table posts add column " + column + " " + definition)
+	mochi.db.execute("create index if not exists posts_remote on posts( remote )")
+	if "account" not in [c["name"] for c in mochi.db.table("sources")]:
+		mochi.db.execute("alter table sources add column account text not null default ''")
+	mochi.db.execute("create table if not exists votes ( post text not null, option integer not null, voter text not null, created integer not null, primary key ( post, option, voter ) )")
+	mochi.db.execute("create table if not exists filters ( id text not null primary key, feed text not null, phrase text not null, created integer not null )")
+	mochi.db.execute("create index if not exists filters_feed on filters( feed )")
+	mochi.db.execute("create table if not exists imports ( id text not null primary key, feed text not null, account text not null default '', addresses text not null, position integer not null default 0, created integer not null )")
 
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
@@ -2225,6 +2247,7 @@ def database_create():
 
 	mochi.db.execute("create table if not exists saved ( id text not null primary key, user text not null, post text not null, data text not null default '', created integer not null, unique ( user, post ) )")
 	publish_schema_create()
+	features_schema_create()
 	mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
 
 	# Attachments now live in this database, owned by the shared library.
@@ -2604,16 +2627,26 @@ def action_view(a):
 		unread_filter = " and read = 0 and created > coalesce((select f2.read from feeds f2 where f2.id=feed), 0)"
 		unread_filter_p = " and p.read = 0 and p.created > coalesce((select read from feeds f2 where f2.id = p.feed), 0)"
 
+	# What the viewer may see (phase 17): a followers-only post for the owner
+	# and the subscribers, and nothing a keyword filter of theirs hides. The
+	# listing across every subscribed feed is a subscriber's by construction.
+	subscribed = bool(feed_data) and (is_feed_owner(user_id, feed_data) or bool(user_id and is_user_subscribed(user_id, feed_data["id"])))
+	hidden_filter = (visibility_sql("", user_id, subscribed) if feed_data else "") + filters_sql("", "feed")
+	hidden_filter_p = (visibility_sql("p.", user_id, subscribed) if feed_data else "") + filters_sql("p.", "p.feed")
+
 	# SQL expression for effective relevance score (pre-computed interest score × novelty × time decay)
 	now_ts = mochi.time.now()
 	score_expr = "coalesce(ps.score, 0) * (p.novelty / 100.0) * (24.0 / ((" + str(now_ts) + " - p.created) / 3600.0 + 24.0))"
 
 	if post_id:
 		# Verify post belongs to an accessible feed
-		post_feed = mochi.db.row("select feed from posts where id=?", post_id)
+		post_feed = mochi.db.row("select feed, visibility from posts where id=?", post_id)
 		if post_feed:
 			pf_data = feed_by_id(user_id, post_feed["feed"])
 			if not pf_data or not check_access(a, pf_data["id"], "view"):
+				a.error.label(403, "errors.not_allowed_view_post")
+				return
+			if not post_visible(post_feed, user_id, is_feed_owner(user_id, pf_data) or bool(user_id and is_user_subscribed(user_id, pf_data["id"]))):
 				a.error.label(403, "errors.not_allowed_view_post")
 				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
@@ -2630,17 +2663,17 @@ def action_view(a):
 			placeholders = ", ".join(["?" for t in valid_tags])
 			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
 			posts = mochi.db.rows(
-				"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ? and " + tag_filter + unread_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
+				"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ? and " + tag_filter + unread_filter_p + hidden_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
 				user_id, feed_data["id"], valid_tags, limit + 1, offset)
 	elif relevance_sort and feed_data:
 		# Relevance sort for a single feed
 		posts = mochi.db.rows(
-			"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ?" + unread_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
+			"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ?" + unread_filter_p + hidden_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
 			user_id, feed_data["id"], limit + 1, offset)
 	elif relevance_sort and not feed_data:
 		# Relevance sort across all subscribed feeds
 		posts = mochi.db.rows(
-			"select p.*, " + score_expr + " as effective_score from posts p inner join subscribers s on p.feed = s.feed left join post_scores ps on p.id = ps.post and ps.viewer = ? where s.id = ?" + unread_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
+			"select p.*, " + score_expr + " as effective_score from posts p inner join subscribers s on p.feed = s.feed left join post_scores ps on p.id = ps.post and ps.viewer = ? where s.id = ?" + unread_filter_p + hidden_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
 			user_id, user_id, limit + 1, offset)
 	elif feed_data and len(tags) > 0:
 		# Tag filter without relevance sort
@@ -2656,14 +2689,14 @@ def action_view(a):
 			placeholders = ", ".join(["?" for t in valid_tags])
 			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
 			if before:
-				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + unread_filter_p + " and p.created<? order by " + p_order + " limit ?", feed_data["id"], valid_tags, before, limit + 1)
+				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + unread_filter_p + hidden_filter_p + " and p.created<? order by " + p_order + " limit ?", feed_data["id"], valid_tags, before, limit + 1)
 			else:
-				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + unread_filter_p + " order by " + p_order + " limit ?", feed_data["id"], valid_tags, limit + 1)
+				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + unread_filter_p + hidden_filter_p + " order by " + p_order + " limit ?", feed_data["id"], valid_tags, limit + 1)
 	elif feed_data:
 		if before:
-			posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + " and created<? order by " + order_by + " limit ?", feed_data["id"], before, limit + 1)
+			posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + hidden_filter + " and created<? order by " + order_by + " limit ?", feed_data["id"], before, limit + 1)
 		else:
-			posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + " order by " + order_by + " limit ?", feed_data["id"], limit + 1)
+			posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + hidden_filter + " order by " + order_by + " limit ?", feed_data["id"], limit + 1)
 	else:
 		# All subscribed feeds without relevance sort
 		if len(tags) > 0:
@@ -2679,13 +2712,13 @@ def action_view(a):
 				placeholders = ", ".join(["?" for t in valid_tags])
 				tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
 				if before:
-					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + " and p.created<? order by " + p_order + " limit ?", user_id, valid_tags, before, limit + 1)
+					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + hidden_filter_p + " and p.created<? order by " + p_order + " limit ?", user_id, valid_tags, before, limit + 1)
 				else:
-					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + " order by " + p_order + " limit ?", user_id, valid_tags, limit + 1)
+					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + hidden_filter_p + " order by " + p_order + " limit ?", user_id, valid_tags, limit + 1)
 		elif before:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ?" + unread_filter_p + " and p.created<? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ?" + unread_filter_p + hidden_filter_p + " and p.created<? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
 		else:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ?" + unread_filter_p + " order by " + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ?" + unread_filter_p + hidden_filter_p + " order by " + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
 
 	# Check if there are more posts
 	has_more = len(posts) > limit
@@ -2820,6 +2853,9 @@ def action_view(a):
 			rss = posts[i]["data"]["rss"]
 			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
 		posts[i]["copies"] = copies_by_post.get(posts[i]["id"], [])
+		# The viewer's own vote in the post's poll (phase 17).
+		if user_id and posts[i]["data"].get("poll"):
+			posts[i]["voted"] = [row["option"] for row in mochi.db.rows("select option from votes where post=? and voter=? order by option", posts[i]["id"], user_id)]
 
 		# Add tags
 		posts[i]["tags"] = enrich_tags(tags_by_post.get(posts[i]["id"], []), interest_map)
@@ -3423,6 +3459,16 @@ def sanitize_post_data(data):
             out["quote"] = clean
         else:
             out.pop("quote")
+    # The fields of a post from another network, and a poll (phase 17): each
+    # kept in its known shape only, links made safe, text cut.
+    for key, clean in [("poll", sanitize_poll), ("media", sanitize_media), ("person", sanitize_person), ("boost", sanitize_person), ("emoji", sanitize_emoji)]:
+        if data.get(key) != None:
+            out = dict(out)
+            value = clean(data[key])
+            if value:
+                out[key] = value
+            else:
+                out.pop(key)
     return out
 
 def validate_post_data(data):
@@ -3443,7 +3489,239 @@ def validate_post_data(data):
             return False
         if not travelling.get("destination") or not validate_place(travelling["destination"]):
             return False
+    for key in ["poll", "person", "boost"]:
+        if data.get(key) != None and type(data[key]) != "dict":
+            return False
+    for key in ["media", "emoji"]:
+        if data.get(key) != None and not listlike(data[key]):
+            return False
+    if data.get("poll") != None and not sanitize_poll(data["poll"]):
+        return False
     return True
+
+# === Post features (the federation plan, phase 17) ===
+#
+# What Mastodon expects of a post and feeds lacked: per-post visibility, a
+# content warning and the sensitive flag, a poll, a pin, the language, and
+# for a post from another network its media, its author, who boosted it and
+# the custom emoji its text names. The columns hold what is queried
+# (visibility, warning, sensitive, pinned, language, remote); the rest rides
+# in data. Each travels to Mochi subscribers as a field on the post events,
+# which an older release ignores (decided 2026-10-07).
+
+VISIBILITIES = ["public", "unlisted", "followers"]
+WARNING_MAXIMUM = 500
+POLL_OPTIONS_MINIMUM = 2
+POLL_OPTIONS_MAXIMUM = 8
+POLL_OPTION_MAXIMUM = 100
+POLL_DURATION_MINIMUM = 300
+POLL_DURATION_MAXIMUM = 7 * 86400
+MEDIA_MAXIMUM = 8
+EMOJI_MAXIMUM = 50
+
+def valid_language(value):
+    """A language tag as a post carries it: a two or three letter language,
+    with a region or script after a hyphen at most."""
+    if type(value) != "string" or not value or len(value) > 12:
+        return False
+    parts = value.split("-")
+    if len(parts) > 2 or not parts[0].isalpha() or len(parts[0]) < 2 or len(parts[0]) > 3:
+        return False
+    return len(parts) == 1 or (parts[1].isalnum() and len(parts[1]) >= 2 and len(parts[1]) <= 4)
+
+def sanitize_poll(poll):
+    """A poll as it is kept: its options with their counts, whether several
+    may be chosen, when it closes and how many have voted. None where it is
+    not a poll."""
+    if type(poll) != "dict" or not listlike(poll.get("options")):
+        return None
+    options = []
+    for raw in poll["options"]:
+        if type(raw) == "string":
+            raw = {"name": raw}
+        if type(raw) != "dict":
+            return None
+        name = str(raw.get("name", "") or "").strip()
+        if not name or not mochi.text.valid(name, "line"):
+            return None
+        options.append({"name": text_cut(name, POLL_OPTION_MAXIMUM), "votes": max(number(raw.get("votes", 0)), 0)})
+    if len(options) < POLL_OPTIONS_MINIMUM or len(options) > POLL_OPTIONS_MAXIMUM:
+        return None
+    return {"options": options, "multiple": bool(poll.get("multiple")), "expires": max(number(poll.get("expires", 0)), 0), "voters": max(number(poll.get("voters", 0)), 0)}
+
+def sanitize_media(media):
+    """The media of a post on another network, by their addresses there."""
+    if not listlike(media):
+        return None
+    out = []
+    for raw in list(media)[:MEDIA_MAXIMUM]:
+        if type(raw) != "dict":
+            continue
+        url = safe_link(str(raw.get("url", "") or ""))
+        if not url:
+            continue
+        kind = str(raw.get("type", "") or "")
+        if kind not in ("image", "video", "audio", "file"):
+            kind = "file"
+        item = {"url": url, "type": kind}
+        name = str(raw.get("name", "") or "")
+        if name:
+            item["name"] = text_cut(name, 1500)
+        blurhash = str(raw.get("blurhash", "") or "")
+        if blurhash and len(blurhash) <= 100:
+            item["blurhash"] = blurhash
+        for key in ["width", "height"]:
+            if number(raw.get(key, 0)) > 0:
+                item[key] = number(raw[key])
+        out.append(item)
+    return out or None
+
+def sanitize_person(person):
+    """A person on another network as a post names them: their id, name,
+    address, page and avatar."""
+    if type(person) != "dict":
+        return None
+    out = {}
+    for key in ["id", "address"]:
+        value = str(person.get(key, "") or "")
+        if value and len(value) <= 2048:
+            out[key] = value
+    name = str(person.get("name", "") or "")
+    if name:
+        out["name"] = text_cut(name, 200)
+    for key in ["page", "avatar"]:
+        value = safe_link(str(person.get(key, "") or ""))
+        if value:
+            out[key] = value
+    return out if out.get("id") or out.get("name") else None
+
+def sanitize_emoji(emoji):
+    """The custom emoji a post's text names, each a shortcode and its picture."""
+    if not listlike(emoji):
+        return None
+    out = []
+    for raw in list(emoji)[:EMOJI_MAXIMUM]:
+        if type(raw) != "dict":
+            continue
+        name = str(raw.get("name", "") or "").strip(":")
+        url = safe_link(str(raw.get("url", "") or ""))
+        if not name or len(name) > 100 or not url or not mochi.text.valid(name, "line"):
+            continue
+        out.append({"name": name, "url": url})
+    return out or None
+
+def post_features_input(a):
+    """The features a post form carries, each absent when the form says
+    nothing. Answers (features, poll, ok): the columns to write, the poll for
+    the post's data, and whether the form was valid."""
+    features = {}
+    visibility = a.input("visibility")
+    if visibility != None:
+        if visibility not in VISIBILITIES:
+            return None, None, False
+        features["visibility"] = visibility
+    warning = a.input("warning")
+    if warning != None:
+        warning = warning.strip()
+        if warning and (not mochi.text.valid(warning, "line") or len(warning) > WARNING_MAXIMUM):
+            return None, None, False
+        features["warning"] = warning
+    sensitive = a.input("sensitive")
+    if sensitive != None:
+        features["sensitive"] = 1 if sensitive in ("1", "true", "on") else 0
+    language = a.input("language")
+    if language != None:
+        if language and not valid_language(language):
+            return None, None, False
+        features["language"] = language.lower()
+    poll = None
+    raw = a.input("poll")
+    if raw:
+        decoded = json.decode(raw, None)
+        poll = sanitize_poll(decoded) if type(decoded) == "dict" else None
+        if not poll:
+            return None, None, False
+        duration = number(decoded.get("duration", 0))
+        if duration:
+            if duration < POLL_DURATION_MINIMUM or duration > POLL_DURATION_MAXIMUM:
+                return None, None, False
+            poll["expires"] = mochi.time.now() + duration
+        for option in poll["options"]:
+            option["votes"] = 0
+        poll["voters"] = 0
+    return features, poll, True
+
+def post_features_event(e):
+    """The features a post event carries, validated; None for an event that
+    carries an invalid one."""
+    features = {}
+    visibility = e.content("visibility")
+    if visibility != None:
+        if visibility not in VISIBILITIES:
+            return None
+        features["visibility"] = visibility
+    warning = e.content("warning")
+    if warning != None:
+        if type(warning) != "string" or (warning and (not mochi.text.valid(warning, "line") or len(warning) > WARNING_MAXIMUM)):
+            return None
+        features["warning"] = warning
+    sensitive = e.content("sensitive")
+    if sensitive != None:
+        features["sensitive"] = 1 if sensitive else 0
+    language = e.content("language")
+    if language != None:
+        if type(language) != "string" or (language and not valid_language(language)):
+            return None
+        features["language"] = language.lower()
+    pinned = e.content("pinned")
+    if pinned != None:
+        features["pinned"] = max(number(pinned), 0)
+    return features
+
+def features_sql(features):
+    """The set clause and arguments writing features to a posts row."""
+    if not features:
+        return "", []
+    return ", ".join([key + "=?" for key in features]), [features[key] for key in features]
+
+def post_features(post):
+    """A post's features as the network form and the client read them."""
+    data = post.get("data")
+    if type(data) == "string":
+        data = json.decode(data, None) if data else None
+    data = data if type(data) == "dict" else {}
+    return {
+        "visibility": post.get("visibility") or "public",
+        "warning": post.get("warning") or "",
+        "sensitive": bool(post.get("sensitive")),
+        "pinned": number(post.get("pinned", 0)),
+        "language": post.get("language") or "",
+        "poll": data.get("poll"),
+    }
+
+def post_event_features(post):
+    """A post's features as a post event carries them."""
+    features = post_features(post)
+    return {"visibility": features["visibility"], "warning": features["warning"], "sensitive": features["sensitive"], "language": features["language"], "pinned": features["pinned"]}
+
+def post_visible(post, viewer, subscribed):
+    """Whether a viewer may see a post of a feed they may view: a public or
+    unlisted post always; a followers-only post when they are the owner or a
+    subscriber."""
+    if (post.get("visibility") or "public") != "followers":
+        return True
+    return bool(viewer) and subscribed
+
+def visibility_sql(prefix, viewer, subscribed):
+    """The where clause keeping a listing to what the viewer may see."""
+    if viewer and subscribed:
+        return ""
+    return " and " + prefix + "visibility!='followers'"
+
+def filters_sql(prefix, feed_column):
+    """The where clause hiding posts whose text names a phrase the viewer
+    filters on the feed (keyword filters)."""
+    return " and not exists (select 1 from filters f where f.feed=" + feed_column + " and instr(lower(" + prefix + "body), lower(f.phrase))>0)"
 
 def action_post_create(a):
     if not a.user:
@@ -3506,6 +3784,15 @@ def action_post_create(a):
         a.error.label(400, "errors.invalid_accounts")
         return
 
+    # Visibility, content warning, sensitive flag, language and poll (phase 17).
+    features, poll, features_ok = post_features_input(a)
+    if not features_ok:
+        a.error.label(400, "errors.invalid_data")
+        return
+    if poll:
+        data = dict(data) if data else {}
+        data["poll"] = poll
+
     # A link to a post on another network is quoted: its text, image and
     # author travel with the post, so subscribers see the quote as the writer
     # did.
@@ -3524,6 +3811,9 @@ def action_post_create(a):
     mmdd = compute_mmdd(now)
     mochi.db.execute("insert into posts (id, feed, body, data, created, updated, mmdd, author, read) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
         post_uid, feed_id, body, data_value, now, now, mmdd, user_id, now)
+    if features:
+        clause, values = features_sql(features)
+        mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_uid]))
     mochi.db.commit.fire("posts", "insert", post_uid)
     set_feed_updated(feed_id)
 
@@ -3535,10 +3825,12 @@ def action_post_create(a):
 
     # Copies on the accounts the feed publishes to, or those the writer chose
     # for this post; subscribers learn of them with the post (decision 31).
-    copies = publish_post(feed, post_uid, body, "markdown", attachments, accounts)
+    post = mochi.db.row("select * from posts where id=?", post_uid)
+    copies = publish_post(feed, post_uid, body, "markdown", attachments, accounts, None, post)
 
     # Send post to subscribers with attachment metadata piggybacked
     post_event = {"id": post_uid, "created": now, "body": body}
+    post_event.update(post_event_features(post))
     if data:
         post_event["data"] = data
     if attachments:
@@ -3693,9 +3985,26 @@ def action_post_edit(a):
 			a.error.label(403, "errors.not_allowed_edit_post")
 			return
 
+		# Visibility, content warning, sensitive flag and language may change;
+		# a poll stays as it was made, with the votes it has.
+		features, _, features_ok = post_features_input(a)
+		if not features_ok:
+			a.error.label(400, "errors.invalid_data")
+			return
+		existing = json.decode(post.get("data", "") or "{}", None) or {}
+		if type(existing) == "dict" and existing.get("poll"):
+			data = dict(data) if data else {}
+			data["poll"] = existing["poll"]
+		elif data and data.get("poll"):
+			data = dict(data)
+			data.pop("poll")
+
 		now = mochi.time.now()
 		data_value = json.encode(data) if data else ""
 		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
+		if features:
+			clause, values = features_sql(features)
+			mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
 		mochi.db.commit.fire("posts", "update", post_id)
 
 
@@ -3780,11 +4089,13 @@ def action_post_edit(a):
 			if att["id"] in captions and captions[att["id"]] != att.get("caption", ""):
 				attachment_update(att["id"], captions[att["id"]], att.get("description", ""))
 
+		post = mochi.db.row("select * from posts where id=?", post_id)
 		edit_event = {"post": post_id, "body": body, "edited": now}
+		edit_event.update(post_event_features(post))
 		if data:
 			edit_event["data"] = data
 		edit_event["attachments"] = attachment_list(post_id, info["id"])
-		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"])
+		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post)
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 
 		# post/edit WebSocket notification is fired by the commit hook on
@@ -5507,9 +5818,31 @@ def event_post_create(e): # feeds_post_create_event
 		data = sanitize_post_data(data)
 		data_str = json.encode(data)
 
+	# The post's features (phase 17), and for a post from another network its
+	# author's id and its id there.
+	features = post_features_event(e)
+	if features == None:
+		mochi.log.info("Feed dropping post with invalid features")
+		return
+	author = e.content("author")
+	if author != None:
+		if type(author) != "string" or (author and not mochi.text.valid(author, "author")):
+			mochi.log.info("Feed dropping post with invalid author")
+			return
+		features["author"] = author
+	remote = e.content("remote")
+	if remote != None:
+		if type(remote) != "string" or len(remote) > 2048:
+			mochi.log.info("Feed dropping post with invalid remote id")
+			return
+		features["remote"] = remote
+
 	mmdd = compute_mmdd(post["created"])
 	credibility = e.content("credibility") or 100
 	mochi.db.execute("insert into posts ( id, feed, body, data, created, updated, mmdd, credibility ) values ( ?, ?, ?, ?, ?, ?, ?, ? ) on conflict(id) do update set body=excluded.body, data=excluded.data, created=excluded.created, updated=excluded.updated, mmdd=excluded.mmdd, credibility=excluded.credibility", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"], mmdd, credibility)
+	if features:
+		clause, values = features_sql(features)
+		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post["id"]]))
 	mochi.db.commit.fire("posts", "insert", post["id"])
 
 	# Store attachment metadata from the event
@@ -5615,8 +5948,15 @@ def event_post_edit(e):
 			mochi.log.info("Feed dropping post edit with invalid post data")
 			return
 		data_value = json.encode(sanitize_post_data(data))
+	features = post_features_event(e)
+	if features == None:
+		mochi.log.info("Feed dropping post edit with invalid features")
+		return
 
 	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, edited, edited, post_id)
+	if features:
+		clause, values = features_sql(features)
+		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
 	mochi.db.commit.fire("posts", "update", post_id)
 	if e.content("copies") != None:
 		copies_store(post_id, e.content("copies"))
@@ -6716,6 +7056,11 @@ def action_sources_list(a):
 		return
 
 	sources = mochi.db.rows("select * from sources where feed=?", feed["id"])
+	# A source following a person through a hosted account says how the
+	# follow stands (phase 17).
+	for source in sources:
+		if source["type"] == "person/posts" and source.get("account"):
+			source["state"] = source_state(source)
 	return {"data": {"sources": sources}}
 
 # Edit a source (owner only)
@@ -6816,6 +7161,8 @@ def action_sources_add(a):
 		return sources_add_account(a, feed, source_type, url, name)
 	elif source_type == "person":
 		return sources_add_person(a, feed, url, name)
+	elif source_type == "tag":
+		return sources_add_tag(a, feed, url, name)
 	else:
 		a.error.label(400, "errors.invalid_source_type")
 		return
@@ -7069,6 +7416,13 @@ def action_sources_remove(a):
 	mochi.db.execute("delete from source_posts where source=?", source_id)
 	mochi.db.execute("delete from sources where id=?", source_id)
 
+	# A person followed through a hosted account is unfollowed, unless another
+	# feed still follows them through it (phase 17).
+	if source["type"] == "person/posts" and source.get("account"):
+		acc = publish_account(source["account"])
+		if acc and hosted_fediverse(acc) and not person_followed_elsewhere(acc, source["url"], source_id):
+			mochi.account.unfollow(acc["id"], source["url"])
+
 	# For feed/posts type, clean up feed data if no longer needed
 	if source["type"] == "feed/posts":
 		source_feed_id = source["url"]
@@ -7085,8 +7439,8 @@ def action_sources_remove(a):
 			rss_tokens_revoke(source_feed_id)
 			mochi.db.execute("delete from feeds where id=?", source_feed_id)
 
-	# Cancel scheduled polls only if no RSS sources remain on this feed
-	if not mochi.db.exists("select 1 from sources where feed=? and type='rss'", feed_id):
+	# Cancel scheduled polls only if no polled sources remain on this feed
+	if not mochi.db.exists("select 1 from sources where feed=? and " + POLLED_SQL, feed_id):
 		scheduled = mochi.schedule.list()
 		for se in scheduled:
 			if se.event == "schedule_sources_poll" and se.data.get("feed") == feed_id:
@@ -7874,22 +8228,23 @@ def action_rss_all(a):
 	for f in all_feeds:
 		feed_names[f["id"]] = f["name"]
 
+	# Public posts only: a web feed is read by anyone holding its address.
 	if mode == "all":
 		rows = mochi.db.rows("""
 			select 'post' as type, p.id, p.feed, '' as author, p.body, p.created
 			from posts p inner join subscribers s on p.feed = s.feed
-			where s.id = ?
+			where s.id = ? and p.visibility='public'
 			union all
 			select 'comment' as type, c.id, c.feed, c.name as author, c.body, c.created
-			from comments c inner join subscribers s on c.feed = s.feed
-			where s.id = ?
+			from comments c inner join subscribers s on c.feed = s.feed inner join posts p on p.id = c.post
+			where s.id = ? and p.visibility='public'
 			order by created desc limit 100
 		""", user_id, user_id)
 	else:
 		rows = mochi.db.rows("""
 			select 'post' as type, p.id, p.feed, '' as author, p.body, p.created
 			from posts p inner join subscribers s on p.feed = s.feed
-			where s.id = ?
+			where s.id = ? and p.visibility='public'
 			order by p.created desc limit 50
 		""", user_id)
 
@@ -7973,16 +8328,17 @@ def action_rss(a):
 	a.print('<link>' + escape_xml(a.origin + '/feeds/' + fingerprint) + '</link>\n')
 	a.print('<description>' + escape_xml(mochi.app.label("rss.feed.description", name=feed_name)) + '</description>\n')
 
+	# Public posts only: a web feed is read by anyone holding its address.
 	if mode == "all":
 		# Interleave posts and comments by date
 		rows = mochi.db.rows("""
-			select 'post' as type, id, '' as author, body, created from posts where feed=?
+			select 'post' as type, id, '' as author, body, created from posts where feed=? and visibility='public'
 			union all
-			select 'comment' as type, id, name as author, body, created from comments where feed=?
+			select 'comment' as type, id, name as author, body, created from comments where feed=? and post in (select id from posts where feed=? and visibility='public')
 			order by created desc limit 100
-		""", feed_id, feed_id)
+		""", feed_id, feed_id, feed_id)
 	else:
-		rows = mochi.db.rows("select 'post' as type, id, '' as author, body, created from posts where feed=? order by created desc limit 50", feed_id)
+		rows = mochi.db.rows("select 'post' as type, id, '' as author, body, created from posts where feed=? and visibility='public' order by created desc limit 50", feed_id)
 
 	if rows:
 		a.print('<lastBuildDate>' + mochi.time.local(rows[0]["created"], "rfc822") + '</lastBuildDate>\n')
@@ -8041,8 +8397,10 @@ HOSTED_TYPES = ["fediverse"]
 # The source types an account offers, and every source type polled on a
 # schedule, with the SQL fragment that selects those.
 ACCOUNT_SOURCE_TYPES = ["account/timeline", "account/posts"]
-POLLED_TYPES = ["rss", "account/timeline", "account/posts", "person/posts"]
-POLLED_SQL = "type in ('rss', 'account/timeline', 'account/posts', 'person/posts')"
+# The sources a schedule fetches: a person followed through a hosted account
+# (account set) is pushed to instead, and never polled (phase 17).
+POLLED_TYPES = ["rss", "tag/posts", "account/timeline", "account/posts", "person/posts"]
+POLLED_SQL = "(type in ('rss', 'tag/posts', 'account/timeline', 'account/posts') or (type='person/posts' and account=''))"
 
 # What Bluesky accepts (the constants of its lexicons): a post of 300 graphemes,
 # four images of a megabyte each or one video of fifty, alternative text of a
@@ -8285,10 +8643,12 @@ BLUESKY_LIMITS = {"characters": BLUESKY_CHARACTERS, "images": BLUESKY_IMAGES, "v
 
 # === Publishing ===
 
-def publish_object(acc, text, link, attachments, source):
+def publish_object(acc, text, link, attachments, source, features=None):
 	"""The object a post becomes on an account's network, in that network's
 	own form (mochi.account.object.create), with the text cut and the
-	attachments that fit."""
+	attachments that fit, and on Mastodon its visibility, content warning,
+	sensitive flag, language and poll (phase 17)."""
+	features = features or post_features({})
 	limits = mastodon_limits(acc) if acc["type"] == "mastodon" else BLUESKY_LIMITS
 	uploads, omitted = publish_media(acc, attachments, limits)
 	if source:
@@ -8296,9 +8656,19 @@ def publish_object(acc, text, link, attachments, source):
 		link = source.get("link", "") or link
 	body = publish_excerpt(text, limits["characters"], link, omitted or bool(source))
 	if acc["type"] == "mastodon":
-		object = {"status": body, "visibility": "public"}
+		object = {"status": body, "visibility": {"followers": "private"}.get(features["visibility"], features["visibility"])}
 		if uploads:
 			object["media_ids"] = [u["upload"]["id"] for u in uploads]
+		if features["warning"]:
+			object["spoiler_text"] = features["warning"]
+		if features["sensitive"]:
+			object["sensitive"] = True
+		if features["language"]:
+			object["language"] = features["language"].split("-")[0]
+		poll = features.get("poll")
+		if poll and not uploads:
+			expires = max(number(poll.get("expires", 0)) - mochi.time.now(), POLL_DURATION_MINIMUM)
+			object["poll"] = {"options": [o["name"] for o in poll["options"]], "expires_in": expires, "multiple": bool(poll.get("multiple"))}
 		return object
 	object = {"$type": "app.bsky.feed.post", "text": body}
 	facets = []
@@ -8319,6 +8689,12 @@ def publish_announce(acc, source):
 	network's own share of the original (decision 30): a boost on Mastodon, a
 	repost on Bluesky. Answers {id, url} or None."""
 	item = source.get("item") or {}
+	if hosted_fediverse(acc):
+		# An Announce of the original from the hosted account (phase 17).
+		remote = str(item.get("id", "") or source.get("remote", ""))
+		if not remote:
+			return None
+		return mochi.account.announce(acc["id"], remote)
 	if acc["type"] == "mastodon":
 		status = str(item.get("id", ""))
 		if not status:
@@ -8335,12 +8711,14 @@ def publish_announce(acc, source):
 def mastodon_copy(status):
 	return {"id": str(status.get("id", "")), "url": str(status.get("url", "") or status.get("uri", ""))}
 
-def publish_post(feed, post_id, body, format, attachments, accounts=None, source=None):
+def publish_post(feed, post_id, body, format, attachments, accounts=None, source=None, post=None):
 	"""Publish a post to the accounts given, else the feed's list; a public
 	feed only (decision 27). A sourced post (source: remote, name, link,
 	network, item, transformed, created) never goes back to the account it
 	came from nor out again as a copy already published, and only to accounts
-	added before it arrived (decision 30). Answers the copies made."""
+	added before it arrived (decision 30). A post that is not public goes to
+	the networks that have a visibility (the fediverse, Mastodon) and not to
+	Bluesky. Answers the copies made."""
 	if feed.get("privacy", "public") != "public":
 		return []
 	feed_id = feed["id"]
@@ -8351,6 +8729,7 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 		return []
 	if source and published_has(feed_id, [source.get("remote", "")]):
 		return []
+	features = post_features(post) if post else post_features({})
 	text = publish_text(body, format)
 	link = post_link(feed_id, post_id)
 	copies = []
@@ -8363,6 +8742,8 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 				continue
 			if number(row.get("created", 0)) > number(source.get("created", 0)):
 				continue
+		if features["visibility"] != "public" and acc["type"] not in ("fediverse", "mastodon"):
+			continue
 		if mochi.db.exists("select 1 from copies where post=? and account=?", post_id, acc["id"]):
 			continue
 		result = None
@@ -8370,9 +8751,9 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 			result = publish_announce(acc, source)
 		if not result:
 			if hosted_fediverse(acc):
-				object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source)
+				object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source, features)
 			else:
-				object = publish_object(acc, text, link, attachments, source)
+				object = publish_object(acc, text, link, attachments, source, features)
 			result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"])
 		if not result:
 			mochi.log.warn("Feeds could not publish post %s to %s", post_id, acc.get("identifier", acc["id"]))
@@ -8384,12 +8765,13 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 		published_record(feed_id, source.get("remote", ""))
 	return copies
 
-def publish_update(feed, post_id, body, format, attachments):
+def publish_update(feed, post_id, body, format, attachments, post=None):
 	"""A new version of a post reaches each copy (decision 25), copies on
 	accounts since removed from the list included."""
 	rows = mochi.db.rows("select account, remote from copies where post=? and account!=''", post_id)
 	if not rows:
 		return copies_present(post_id)
+	features = post_features(post if post else (mochi.db.row("select * from posts where id=?", post_id) or {}))
 	text = publish_text(body, format)
 	link = post_link(feed["id"], post_id)
 	for row in rows:
@@ -8397,9 +8779,9 @@ def publish_update(feed, post_id, body, format, attachments):
 		if not acc:
 			continue
 		if hosted_fediverse(acc):
-			object = fediverse_note(acc, feed, post_id, body, format, link, attachments, None)
+			object = fediverse_note(acc, feed, post_id, body, format, link, attachments, None, features)
 		else:
-			object = publish_object(acc, text, link, attachments, None)
+			object = publish_object(acc, text, link, attachments, None, features)
 		result = mochi.account.object.update(acc["id"], row["remote"], object)
 		if not result:
 			mochi.log.warn("Feeds could not update the copy of post %s on %s", post_id, acc.get("identifier", acc["id"]))
@@ -8564,6 +8946,8 @@ def account_item(acc, item):
 	announce. None for an item that is not a post."""
 	if type(item) != "dict":
 		return None
+	if acc["type"] == "fediverse":
+		return fediverse_item(acc, item)
 	if acc["type"] == "mastodon":
 		status = item
 		boosted = ""
@@ -8700,12 +9084,28 @@ def sourced_post(feed, source, acc, item, user_id, notify=True):
 		data["rss"]["image"] = item["image"]
 	if item["boosted"]:
 		data["rss"]["shared"] = item["boosted"]
+	# A post from the fediverse carries its author, who boosted it, its media,
+	# its poll and its emoji (phase 17), and a quote of the post it quotes.
+	for key in ["person", "boost", "media", "poll", "emoji"]:
+		if item.get(key):
+			data[key] = item[key]
+	if item.get("quote"):
+		quote = sanitize_quote(mochi.url.quote(item["quote"]))
+		if quote:
+			data["quote"] = quote
+	data = sanitize_post_data(data)
+	features = {}
+	if item.get("actor"):
+		features = {"author": item["actor"], "remote": item.get("remote", ""), "visibility": item.get("visibility") or "public", "warning": item.get("warning", ""), "sensitive": 1 if item.get("sensitive") else 0, "language": item.get("language", "")}
 	created = item["created"] or mochi.time.now()
 	post_id = mochi.uid()
 	mmdd = compute_mmdd(created)
 	credibility = source.get("credibility", 100)
 	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		post_id, feed_id, body, json.encode(data), "markdown" if transformed else "text", created, created, mmdd, credibility)
+	if features:
+		clause, values = features_sql(features)
+		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
 	mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?) on conflict do nothing", source["id"], post_id, item["guid"])
 	winner = mochi.db.row("select post from source_posts where source=? and guid=?", source["id"], item["guid"])
 	if not winner or winner["post"] != post_id:
@@ -8713,6 +9113,7 @@ def sourced_post(feed, source, acc, item, user_id, notify=True):
 		return False
 	mochi.db.commit.fire("posts", "insert", post_id)
 	post_event = {"id": post_id, "created": created, "body": body, "data": data, "credibility": credibility}
+	post_event.update(features)
 	copies = publish_post(feed, post_id, body, "text", [], None, {
 		"remote": item["guid"], "name": author, "link": link, "network": acc["type"], "account": acc["id"],
 		"item": item["item"], "transformed": transformed, "created": created,
@@ -8844,12 +9245,16 @@ def import_post(feed, item):
 def schedule_import(e):
 	if e.source != "schedule":
 		return
+	user_id = e.user.identity.id if e.user else None
+	kind = e.data.get("kind", "")
+	if kind == "file":
+		import_file_step(e.data.get("import", ""), user_id)
+		return
 	feed = mochi.db.row("select * from feeds where id=?", e.data.get("feed", ""))
 	acc = publish_account(e.data.get("account", ""))
-	kind = e.data.get("kind", "")
 	if not feed or not acc or kind not in IMPORT_KINDS:
 		return
-	import_step(feed, acc, kind, e.data.get("cursor", ""), e.user.identity.id if e.user else None)
+	import_step(feed, acc, kind, e.data.get("cursor", ""), user_id)
 
 # === The accounts' jobs: notifications and backup ===
 
@@ -9116,18 +9521,44 @@ def fediverse_plain(text):
 		lines.append(line.replace("<", "&lt;"))
 	return "\n\n".join(lines)
 
-def fediverse_note(acc, feed, post_id, body, format, link, attachments, source):
+def fediverse_note(acc, feed, post_id, body, format, link, attachments, source, features=None):
 	"""The Note a post becomes on a hosted fediverse account: the text as HTML
 	with mentions and hashtags linked and tagged, the attachments that fit, the
 	post's page as its url, and a sourced post's origin named first (decision
-	30). Core gives it its id, its author and its time, and the public
+	30). Its content warning is the summary, its sensitive flag travels, its
+	language names the content's, a poll makes it a Question, and its
+	visibility sets the addressing: public to the public with the followers
+	told, unlisted the other way about, followers-only to the followers alone
+	(phase 17). Core gives it its id, its author and its time, and the public
 	addressing unless the Note carries its own: it does when someone is
 	mentioned, so that their server is told too."""
+	features = features or post_features({})
 	text = sourced_text(source, body) if source else body
 	if format != "markdown":
 		text = fediverse_plain(text)
 	rendered = mochi.text.fediverse(text, tags=fediverse_tags_base())
-	note = {"type": "Note", "content": rendered["html"], "sensitive": False}
+	note = {"type": "Note", "content": rendered["html"], "sensitive": bool(features["sensitive"]) or bool(features["warning"])}
+	if features["warning"]:
+		note["summary"] = features["warning"]
+	if features["language"]:
+		note["contentMap"] = {features["language"]: rendered["html"]}
+	poll = features.get("poll")
+	if poll:
+		note["type"] = "Question"
+		options = [{"type": "Note", "name": o["name"], "replies": {"type": "Collection", "totalItems": number(o.get("votes", 0))}} for o in poll["options"]]
+		note["anyOf" if poll.get("multiple") else "oneOf"] = options
+		note["votersCount"] = number(poll.get("voters", 0))
+		if number(poll.get("expires", 0)) > 0:
+			note["endTime"] = mochi.time.local(number(poll["expires"]), "rfc3339", timezone="UTC")
+			if number(poll["expires"]) <= mochi.time.now():
+				note["closed"] = note["endTime"]
+	if acc.get("url") and features["visibility"] != "public":
+		if features["visibility"] == "unlisted":
+			note["to"] = [acc["url"] + "/followers"]
+			note["cc"] = [FEDIVERSE_PUBLIC]
+		else:
+			note["to"] = [acc["url"] + "/followers"]
+			note["cc"] = []
 	if link:
 		note["url"] = link
 	if source and source.get("link"):
@@ -9150,8 +9581,11 @@ def fediverse_note(acc, feed, post_id, body, format, link, attachments, source):
 	if tags:
 		note["tag"] = tags
 	if mentioned and acc.get("url"):
-		note["to"] = [FEDIVERSE_PUBLIC]
-		note["cc"] = [acc["url"] + "/followers"] + mentioned
+		if features["visibility"] == "public":
+			note["to"] = [FEDIVERSE_PUBLIC]
+			note["cc"] = [acc["url"] + "/followers"] + mentioned
+		else:
+			note["cc"] = (note.get("cc") or []) + mentioned
 	documents = fediverse_attachments(feed["id"], attachments or [])
 	if documents:
 		note["attachment"] = documents
@@ -9179,7 +9613,12 @@ def function_activitypub_object(context, account, id):
 	acc = mochi.account.get(account)
 	if not acc:
 		return None
-	return fediverse_note(acc, feed, post["id"], post["body"], post.get("format", "markdown"), post_link(feed["id"], post["id"]), attachment_list(post["id"]), source)
+	return fediverse_note(acc, feed, post["id"], post["body"], post.get("format", "markdown"), post_link(feed["id"], post["id"]), attachment_list(post["id"]), source, post_features(post))
+
+def function_activitypub_featured(context, account):
+	"""The objects a hosted account pins: the copies of the pinned posts of
+	the feeds publishing to it, newest pin first."""
+	return [row["remote"] for row in mochi.db.rows("select c.remote from copies c join posts p on p.id=c.post where c.account=? and p.pinned>0 order by p.pinned desc", account)]
 
 def follow_accounts(feed_id):
 	"""The hosted accounts a feed publishes to, as a visitor sees them: the
@@ -9287,6 +9726,12 @@ def reply_note(comment_id, post_id, body):
 	else:
 		target = mochi.db.row("select address, remote from copies where post=? and network='fediverse' order by created limit 1", post_id)
 	if not target:
+		# A post from a followed person (phase 17): the reply answers the
+		# original, by its id on their server.
+		post = mochi.db.row("select author, remote from posts where id=?", post_id)
+		if post and post.get("remote") and post.get("author") and not mochi.text.valid(post["author"], "entity"):
+			target = {"address": post["author"], "remote": post["remote"]}
+	if not target:
 		return None, None
 	note = {"type": "Note", "content": mochi.text.fediverse(fediverse_plain(body), tags=fediverse_tags_base())["html"], "inReplyTo": target["remote"], "sensitive": False, "mochi:comment": comment_id}
 	return note, target
@@ -9362,7 +9807,7 @@ def account_person(actor):
 	name = str(found.get("name") or found.get("address") or found.get("username") or "")
 	if not name:
 		name = actor.split("/")[-1] or actor
-	return {"name": name[:100], "page": safe_link(str(found.get("url", "") or "")), "address": str(found.get("address", "") or "")}
+	return {"name": name[:100], "page": safe_link(str(found.get("url", "") or "")), "address": str(found.get("address", "") or ""), "avatar": safe_link(str(found.get("avatar", "") or ""))}
 
 def account_notify(acc, label, name, body, url, event):
 	"""A notification about the account to the bell, under the accounts topic."""
@@ -9507,6 +9952,10 @@ def function_activitypub_receive(context, account, activities):
 		if type(activity) != "dict" or not actor:
 			continue
 		object = activity.get("object")
+		# What a followed person sends comes first (phase 17): their posts and
+		# boosts, their edits and deletions of them, their move.
+		if kind in ("Create", "Announce", "Update", "Delete", "Move") and followed_received(acc, actor, kind, activity):
+			continue
 		if kind == "Follow":
 			person = account_person(actor)
 			account_notify(acc, "notifications.account.followed", person["name"], person["address"], person["page"], "follow:" + actor)
@@ -9558,6 +10007,11 @@ def fediverse_created(acc, actor, note):
 		return
 	post = target if kind == "post" else mochi.db.row("select * from posts where id=?", target["post"])
 	if not post:
+		return
+	# A vote in a poll the account published: a Note with the option's name
+	# and no content, in reply to the Question (phase 17).
+	if kind == "post" and note.get("name") and not str(note.get("content", "") or "").strip() and poll_of(post):
+		vote_from_network(acc, post, actor, str(note.get("name")))
 		return
 	if not fediverse_may_comment(acc, post["feed"], actor):
 		mochi.log.info("Feeds dropping a reply from %s: not allowed to comment on feed %s", actor, post["feed"])
@@ -9905,6 +10359,19 @@ def sources_add_person(a, feed, query, name):
 			return
 		source, count = person_source_create(feed["id"], found["id"], name, a.user.identity.id)
 		return {"data": {"source": source, "ingested": count}}
+	# On the fediverse a user with a hosted account follows with it, and
+	# their posts arrive as they are made (phase 17); without one, through
+	# the person's web feed.
+	acc = follow_account(a.input("account", "")) if found["network"] == "fediverse" and found.get("id") else None
+	if acc:
+		if mochi.db.exists("select 1 from sources where feed=? and type='person/posts' and url=?", feed["id"], found["id"]):
+			a.error.label(400, "errors.source_exists")
+			return
+		source, count = person_follow_create(feed, found, acc, name, a.user.identity.id)
+		if not source:
+			a.error.label(502, "errors.follow_not_sent")
+			return
+		return {"data": {"source": source, "ingested": count, "state": source_state(source)}}
 	url, result = person_feed(found)
 	if not url:
 		a.error.label(502, "errors.no_feed_for_person")
@@ -10028,9 +10495,10 @@ def import_follows_page(acc, cursor):
 	follows = [{"network": "bluesky", "identifier": str(f.get("did", "") or ""), "name": str(f.get("displayName") or f.get("handle") or "")} for f in (data.get("follows") or []) if type(f) == "dict"]
 	return {"items": follows, "cursor": str(data.get("cursor", "") or "") if follows else ""}
 
-def follow_source(feed, follow, user_id):
-	"""One follow as a source of the feed, unless the feed has it already.
-	Answers whether a source was added."""
+def follow_source(feed, follow, user_id, acc=None):
+	"""One follow as a source of the feed, unless the feed has it already:
+	through the hosted account given where the person is on the fediverse,
+	else through their web feed. Answers whether a source was added."""
 	feed_id = feed["id"]
 	if follow["network"] == "bluesky":
 		did = follow["identifier"]
@@ -10041,6 +10509,11 @@ def follow_source(feed, follow, user_id):
 	found = lookup_person(follow["identifier"]) if follow["identifier"] else None
 	if not found or found["kind"] == "post":
 		return False
+	if acc and found["network"] == "fediverse" and found.get("id"):
+		if mochi.db.exists("select 1 from sources where feed=? and type='person/posts' and url=?", feed_id, found["id"]):
+			return False
+		source, _ = person_follow_create(feed, found, acc, follow["name"] or found["name"], user_id)
+		return bool(source)
 	url, result = person_feed(found)
 	if not url or mochi.db.exists("select 1 from sources where feed=? and url=?", feed_id, url):
 		return False
@@ -10069,3 +10542,785 @@ def import_follows_step(feed, acc, cursor, user_id):
 		return (count, False)
 	mochi.schedule.after("schedule_import", {"feed": feed["id"], "account": acc["id"], "kind": "follows", "cursor": next + "#0"}, 2)
 	return (count, True)
+
+# === Following on the fediverse (the federation plan, phase 17) ===
+#
+# A person on the fediverse is followed as one of the user's hosted accounts:
+# the Follow goes out from the account, their server accepts it - or waits,
+# for a locked account, which the source shows as pending - and from then on
+# what they post reaches the inbox addressed to their followers, which core
+# routes to the account and hands to activitypub/receive. Each post becomes
+# a post of the feed the source belongs to, as an RSS item does: with the
+# person's own id as its author, its id on the network, its content warning
+# and sensitive flag, its language, its media, its poll, the custom emoji it
+# names and, for a boost, who boosted it. A pushed source is never polled;
+# its history is the person's outbox, read once when the source is added,
+# not news and not published. A hashtag has no push on the fediverse, so it
+# is a polled source over a server's tag feed. A user with no hosted account
+# follows through the person's web feed as before (phase 13). Replying to a
+# followed person's post is a comment on it here that goes out from the
+# commenter's hosted account in reply to the original; voting in their poll
+# a Note naming the option, to its author alone, as the network has it.
+
+PERSON_HISTORY = 40
+FILTER_MAXIMUM = 100
+IMPORT_ADDRESSES_MAXIMUM = 5000
+
+def follow_account(wanted):
+	"""The hosted fediverse account a follow goes through: the one named, else
+	the user's first; None where the user has none, or named one they lack."""
+	accounts = [acc for acc in publish_accounts() if hosted_fediverse(acc)]
+	for acc in accounts:
+		if wanted and acc["id"] == wanted:
+			return acc
+	if wanted:
+		return None
+	return accounts[0] if accounts else None
+
+def person_follow_create(feed, found, acc, name, user_id):
+	"""Follow a person as the account and make them a source of the feed,
+	with their newest posts as the source's history (not news, not
+	published). Answers (source, ingested); (None, 0) when the follow could
+	not be sent."""
+	followed = mochi.account.follow(acc["id"], found["id"])
+	if not followed:
+		return None, 0
+	source_id = mochi.uid()
+	now = mochi.time.now()
+	mochi.db.execute("insert into sources (id, feed, type, url, name, account, credibility, base, max, interval, next, jitter, changed, fetched) values (?, ?, 'person/posts', ?, ?, ?, 100, 300, 86400, 300, 0, 60, ?, ?)",
+		source_id, feed["id"], found["id"], name, acc["id"], now, now)
+	source = mochi.db.row("select * from sources where id=?", source_id)
+	count = 0
+	page = mochi.account.posts(found["id"], limit=PERSON_HISTORY, signer=acc["id"])
+	if page and listlike(page.get("items")):
+		count, _ = ingest_account_items(feed, source, acc, page["items"], user_id, None, False)
+	return source, count
+
+def person_followed_elsewhere(acc, actor, except_source):
+	"""Whether another feed still follows the person through the account."""
+	return mochi.db.exists("select 1 from sources where type='person/posts' and account=? and url=? and id!=?", acc["id"], actor, except_source)
+
+def source_state(source):
+	"""What a pushed source's follow has come to: following, pending the other
+	server's acceptance, or refused (no follow row at all)."""
+	acc = publish_account(source.get("account", ""))
+	if not acc or not hosted_fediverse(acc):
+		return ""
+	rows = mochi.account.following(acc["id"], actor=source["url"]) or []
+	if not rows:
+		return "refused"
+	return "following" if number(rows[0].get("accepted", 0)) > 0 else "pending"
+
+def object_url(value):
+	"""An object's url property as a safe link: a string, the first of a list,
+	or a Link's href."""
+	if type(value) == "string":
+		return safe_link(value)
+	if type(value) == "list":
+		for v in value:
+			found = object_url(v)
+			if found:
+				return found
+		return ""
+	if type(value) == "dict":
+		return safe_link(str(value.get("href", "") or value.get("id", "") or ""))
+	return ""
+
+def listlike(value):
+	"""Whether a value is a list: core hands a JSON array to Starlark as a
+	tuple, a form or a peer as a list."""
+	return type(value) in ("list", "tuple")
+
+def object_list(value):
+	"""A property that is one object or a list of them, as a list."""
+	if listlike(value):
+		return list(value)
+	if value == None:
+		return []
+	return [value]
+
+def object_media(note):
+	"""A Note's attachments as the media a post shows: each by its address on
+	the network, its kind, its description and its blurhash."""
+	media = []
+	for att in object_list(note.get("attachment")):
+		if type(att) != "dict":
+			continue
+		url = object_url(att.get("url")) or object_url(att.get("href"))
+		if not url:
+			continue
+		kind = str(att.get("mediaType", "") or "")
+		if kind.startswith("image/") or str(att.get("type", "")) == "Image":
+			media_kind = "image"
+		elif kind.startswith("video/") or str(att.get("type", "")) == "Video":
+			media_kind = "video"
+		elif kind.startswith("audio/") or str(att.get("type", "")) == "Audio":
+			media_kind = "audio"
+		else:
+			media_kind = "file"
+		item = {"url": url, "type": media_kind}
+		name = str(att.get("name", "") or att.get("summary", "") or "")
+		if name:
+			item["name"] = name
+		if att.get("blurhash"):
+			item["blurhash"] = str(att["blurhash"])
+		for key in ["width", "height"]:
+			if number(att.get(key, 0)) > 0:
+				item[key] = number(att[key])
+		media.append(item)
+	return media
+
+def object_poll(note):
+	"""A Question's options with their counts, when it closes and how many
+	voted; None for a Note that is not one."""
+	if str(note.get("type", "") or "") != "Question":
+		return None
+	multiple = listlike(note.get("anyOf"))
+	options = []
+	for option in object_list(note.get("anyOf") if multiple else note.get("oneOf")):
+		if type(option) != "dict":
+			continue
+		replies = option.get("replies") if type(option.get("replies")) == "dict" else {}
+		options.append({"name": str(option.get("name", "") or ""), "votes": number(replies.get("totalItems", 0))})
+	poll = sanitize_poll({"options": options, "multiple": multiple, "voters": number(note.get("votersCount", 0))})
+	if not poll:
+		return None
+	if note.get("endTime"):
+		poll["expires"] = mochi.time.parse(str(note["endTime"])) or 0
+	if note.get("closed") and not poll["expires"]:
+		poll["expires"] = mochi.time.parse(str(note["closed"])) or mochi.time.now()
+	return poll
+
+def object_emoji(note):
+	"""The custom emoji a Note's tags name."""
+	emoji = []
+	for tag in object_list(note.get("tag")):
+		if type(tag) != "dict" or str(tag.get("type", "") or "") != "Emoji":
+			continue
+		icon = tag.get("icon") if type(tag.get("icon")) == "dict" else {}
+		url = object_url(icon.get("url"))
+		name = str(tag.get("name", "") or "").strip(":")
+		if name and url:
+			emoji.append({"name": name, "url": url})
+	return emoji
+
+def object_visibility(note):
+	"""A Note's visibility from its addressing: public when the public is
+	addressed, unlisted when only told, followers-only otherwise."""
+	if FEDIVERSE_PUBLIC in object_list(note.get("to")) or "as:Public" in object_list(note.get("to")) or "Public" in object_list(note.get("to")):
+		return "public"
+	if FEDIVERSE_PUBLIC in object_list(note.get("cc")) or "as:Public" in object_list(note.get("cc")) or "Public" in object_list(note.get("cc")):
+		return "unlisted"
+	return "followers"
+
+def fediverse_item(acc, raw):
+	"""A post from the fediverse as a sourced item: a Note, Article, Page or
+	Question as the person's server gives it, or an Announce of one, read as
+	the account. None for anything else, and for a reply."""
+	if type(raw) != "dict":
+		return None
+	kind = str(raw.get("type", "") or "")
+	note = raw
+	booster = None
+	if kind == "Announce":
+		object_id = object_id_of(raw.get("object"))
+		if not object_id:
+			return None
+		note = raw["object"] if type(raw.get("object")) == "dict" else mochi.account.object.read(acc["id"], object_id)
+		if type(note) != "dict":
+			return None
+		by = str(raw.get("actor", "") or "")
+		if by and mochi.text.valid(by, "author") and not mochi.text.valid(by, "entity"):
+			booster = account_person(by)
+			booster["id"] = by
+		kind = str(note.get("type", "") or "")
+	if kind not in ("Note", "Article", "Page", "Question") or note.get("inReplyTo"):
+		return None
+	remote = object_id_of(note)
+	actor = object_id_of(note.get("attributedTo"))
+	if not remote or len(remote) > 2000 or not actor or not mochi.text.valid(actor, "author") or mochi.text.valid(actor, "entity"):
+		mochi.log.debug("Feeds fediverse_item: %s by %s is not a post of a person", remote, actor)
+		return None
+	person = account_person(actor)
+	person["id"] = actor
+	html = mochi.text.clean(str(note.get("content", "") or ""))
+	text = strip_html(html)
+	title = str(note.get("name", "") or "") if kind in ("Article", "Page") else ""
+	if title:
+		text = (title + "\n\n" + text) if text else title
+	media = object_media(note)
+	image = ""
+	for m in media:
+		if m["type"] == "image":
+			image = m["url"]
+			break
+	warning = strip_html(str(note.get("summary", "") or "")).strip()
+	languages = note.get("contentMap") if type(note.get("contentMap")) == "dict" else {}
+	language = ""
+	for key in languages:
+		if valid_language(str(key)):
+			language = str(key).lower()
+			break
+	quote = object_url(note.get("quote")) or object_url(note.get("quoteUrl")) or object_url(note.get("_misskey_quote"))
+	return {
+		"remotes": [remote], "guid": remote, "created": fediverse_time(note.get("published")), "text": text, "html": html,
+		"link": object_url(note.get("url")) or remote, "image": image, "author": person["name"], "boosted": booster["name"] if booster else "",
+		"item": {"id": remote},
+		"actor": actor, "person": person, "boost": booster, "remote": remote, "visibility": object_visibility(note),
+		"warning": text_cut(warning, WARNING_MAXIMUM), "sensitive": 1 if note.get("sensitive") else 0, "language": language,
+		"media": media, "poll": object_poll(note), "emoji": object_emoji(note), "quote": quote,
+	}
+
+# === What a followed person sends ===
+
+def followed_source(acc, actor):
+	"""The source following a person through the account, or None."""
+	return mochi.db.row("select * from sources where type='person/posts' and account=? and url=?", acc["id"], actor)
+
+def sourced_remote(remote):
+	"""The post here that a post on the network became, or None."""
+	if not remote:
+		return None
+	return mochi.db.row("select * from posts where remote=?", remote)
+
+def followed_received(acc, actor, kind, activity):
+	"""An activity by a person a feed follows through the account: their post
+	or boost becomes a post of the feed, their edit and deletion follow it,
+	and their move takes the source with them. Answers whether the activity
+	was taken as a followed person's."""
+	source = followed_source(acc, actor)
+	object = activity.get("object")
+	mochi.log.debug("Feeds followed_received %s from %s: source %s", kind, actor, source["id"] if source else "none")
+	if kind == "Move":
+		target = object_id_of(activity.get("target"))
+		if target and mochi.text.valid(target, "author"):
+			followed_moved(acc, actor, target)
+		return True
+	if kind == "Create" and source and type(object) == "dict" and not object.get("inReplyTo"):
+		followed_post(acc, source, object)
+		return True
+	if kind == "Announce" and source:
+		ours, _ = fediverse_target(acc["id"], object_id_of(object))
+		if ours:
+			return False
+		followed_post(acc, source, activity)
+		return True
+	if kind == "Update" and type(object) == "dict":
+		post = sourced_remote(object_id_of(object))
+		if post and post.get("author") == actor:
+			followed_updated(acc, post, object)
+			return True
+	if kind == "Delete":
+		post = sourced_remote(object_id_of(object))
+		if post and post.get("author") == actor:
+			sourced_post_delete(post)
+			return True
+	return False
+
+def followed_post(acc, source, raw):
+	"""A followed person's post or boost as a post of the source's feed."""
+	feed = mochi.db.row("select * from feeds where id=?", source["feed"])
+	if not feed:
+		return
+	ingest_account_items(feed, source, acc, [raw], None, None)
+
+def followed_updated(acc, post, note):
+	"""A followed person's edit of their post, or their poll's new counts,
+	applied here and fanned out to the subscribers."""
+	item = fediverse_item(acc, note)
+	if not item:
+		return
+	data = json.decode(post.get("data", "") or "{}", None) or {}
+	if type(data) != "dict":
+		data = {}
+	rss = data.get("rss") if type(data.get("rss")) == "dict" else {}
+	rss = dict(rss)
+	rss.update({"link": item["link"], "html": item["html"], "source": item["author"]})
+	if item["image"]:
+		rss["image"] = item["image"]
+	data["rss"] = rss
+	for key in ["person", "media", "poll", "emoji"]:
+		if item.get(key):
+			data[key] = item[key]
+		else:
+			data.pop(key, None)
+	data = sanitize_post_data(data)
+	body = "\n\n".join([p for p in [item["text"], item["link"]] if p])
+	edited = fediverse_time(note.get("updated"))
+	features = {"visibility": item["visibility"], "warning": item["warning"], "sensitive": item["sensitive"], "language": item["language"]}
+	clause, values = features_sql(features)
+	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=?, " + clause + " where id=?", *([body, json.encode(data), edited, edited] + values + [post["id"]]))
+	mochi.db.commit.fire("posts", "update", post["id"])
+	set_feed_updated(post["feed"])
+	event = {"post": post["id"], "body": body, "edited": edited, "data": data}
+	event.update(features)
+	broadcast_event(post["feed"], "post/edit", event, "")
+
+def sourced_post_delete(post):
+	"""A post from a source gone from the network: deleted here with what
+	hangs off it, and the subscribers told, as the owner's deletion is."""
+	post_id, feed_id = post["id"], post["feed"]
+	publish_delete(post_id)
+	mochi.db.execute("delete from tags where object=?", post_id)
+	mochi.db.execute("delete from reactions where post=?", post_id)
+	for c in mochi.db.rows("select id from comments where post=?", post_id):
+		reply_delete(c["id"])
+	mochi.db.execute("delete from comments where post=?", post_id)
+	mochi.db.execute("delete from post_scores where post=?", post_id)
+	mochi.db.execute("delete from votes where post=?", post_id)
+	mochi.db.execute("delete from source_posts where post=?", post_id)
+	attachment_clear(post_id)
+	mochi.db.execute("delete from posts where id=?", post_id)
+	mochi.db.execute("delete from follows where post=?", post_id)
+	broadcast_event(feed_id, "post/delete", {"post": post_id}, "")
+	broadcast_websocket(feed_id, {"type": "post/delete", "feed": feed_id, "post": post_id, "sender": ""})
+
+def followed_moved(acc, actor, target):
+	"""A followed person has moved: every source following them through the
+	account follows the new identity, which core has already sent the Follow
+	to."""
+	person = account_person(target)
+	for source in mochi.db.rows("select id, name from sources where type='person/posts' and account=? and url=?", acc["id"], actor):
+		mochi.db.execute("update sources set url=?, name=? where id=?", target, person["name"] or source["name"], source["id"])
+
+# === Hashtags ===
+
+def tag_parse(query):
+	"""A hashtag on a server, written #tag@host, tag@host or as the server's
+	tag page: (base, tag) with base the server's address, or (None, None)."""
+	q = query.strip()
+	if q.startswith("https://") or q.startswith("http://"):
+		scheme, rest = q.split("://", 1)
+		parts = rest.split("/")
+		if len(parts) >= 3 and parts[1] == "tags":
+			return scheme + "://" + parts[0].lower(), parts[2].split("?", 1)[0].split(".", 1)[0]
+		return None, None
+	if q.startswith("#"):
+		q = q[1:]
+	if "@" not in q:
+		return None, None
+	tag, _, host = q.rpartition("@")
+	host = host.lower()
+	if not tag or not host or "." not in host or " " in q:
+		return None, None
+	for c in tag.elems():
+		if not (c.isalnum() or c == "_"):
+			return None, None
+	return "https://" + host, tag
+
+def sources_add_tag(a, feed, query, name):
+	"""Follow a hashtag on a server through its tag feed, polled as any web
+	feed is: no server pushes hashtags."""
+	base, tag = tag_parse(query)
+	if not base or not tag:
+		a.error.label(400, "errors.invalid_hashtag")
+		return
+	host = base.split("://", 1)[1]
+	url = base + "/tags/" + tag + ".rss"
+	if mochi.db.exists("select 1 from sources where feed=? and url=?", feed["id"], url):
+		a.error.label(400, "errors.source_exists")
+		return
+	result = mochi.rss.fetch(url, {})
+	status = result.get("status", 0)
+	if status < 200 or status >= 300 or not (result.get("items") or result.get("title")):
+		a.error.label(502, "errors.no_feed_for_tag")
+		return
+	source, count = rss_source_create(feed["id"], url, name or ("#" + tag + "@" + host), result, a.user.identity.id)
+	mochi.db.execute("update sources set type='tag/posts' where id=?", source["id"])
+	return {"data": {"source": mochi.db.row("select * from sources where id=?", source["id"]), "ingested": count}}
+
+# === Pins ===
+
+def action_post_pin(a):
+	return pin_set(a, True)
+
+def action_post_unpin(a):
+	return pin_set(a, False)
+
+def pin_set(a, pinned):
+	"""Pin a post of a feed the user owns, or unpin it: shown first, named in
+	the featured collection of the accounts it was published to, and told to
+	the subscribers."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	feed = get_feed(a)
+	if not feed or not is_feed_owner(a.user.identity.id, feed):
+		a.error.label(403, "errors.access_denied")
+		return
+	post = mochi.db.row("select * from posts where id=? and feed=?", a.input("post"), feed["id"])
+	if not post:
+		a.error.label(404, "errors.post_not_found")
+		return
+	value = mochi.time.now() if pinned else 0
+	mochi.db.execute("update posts set pinned=? where id=?", value, post["id"])
+	mochi.db.commit.fire("posts", "update", post["id"])
+	broadcast_event(feed["id"], "post/pin", {"post": post["id"], "pinned": value}, a.user.identity.id)
+	return {"data": {"post": post["id"], "pinned": value}}
+
+def event_post_pin(e):
+	"""A pin or unpin by the owner, as a subscriber takes it."""
+	feed_data = feed_by_id(e.user.identity.id, e.header("from"))
+	if not feed_data:
+		return
+	post_id = e.content("post")
+	if not mochi.text.valid(post_id, "id"):
+		return
+	mochi.db.execute("update posts set pinned=? where id=? and feed=?", max(number(e.content("pinned")), 0), post_id, feed_data["id"])
+	mochi.db.commit.fire("posts", "update", post_id)
+
+# === Polls ===
+
+def poll_of(post):
+	"""A post's poll, or None."""
+	data = json.decode(post.get("data", "") or "{}", None) if type(post.get("data")) == "string" else post.get("data")
+	if type(data) != "dict":
+		return None
+	return data.get("poll") if type(data.get("poll")) == "dict" else None
+
+def poll_open(poll):
+	expires = number(poll.get("expires", 0))
+	return not expires or expires > mochi.time.now()
+
+def poll_options_input(a, poll):
+	"""The options a vote names, as indexes, validated against the poll:
+	None where invalid."""
+	raw = a.inputs("option")
+	options = []
+	for value in raw:
+		if not decimal(value):
+			return None
+		index = int(value)
+		if index < 0 or index >= len(poll["options"]) or index in options:
+			return None
+		options.append(index)
+	if not options or (len(options) > 1 and not poll.get("multiple")):
+		return None
+	return options
+
+def poll_vote_apply(post, voter, options):
+	"""Record a voter's choice on a post the user holds the record of and
+	recount: the votes by option and the voters in all. Answers the poll."""
+	mochi.db.execute("delete from votes where post=? and voter=?", post["id"], voter)
+	now = mochi.time.now()
+	for index in options:
+		mochi.db.execute("insert or ignore into votes (post, option, voter, created) values (?, ?, ?, ?)", post["id"], index, voter, now)
+	return poll_recount(post)
+
+def poll_recount(post):
+	"""The poll's counts from the votes held, written to the post and fanned
+	out to the subscribers."""
+	poll = poll_of(post)
+	if not poll:
+		return None
+	for index in range(len(poll["options"])):
+		poll["options"][index]["votes"] = mochi.db.row("select count(*) as n from votes where post=? and option=?", post["id"], index)["n"]
+	poll["voters"] = mochi.db.row("select count(distinct voter) as n from votes where post=?", post["id"])["n"]
+	poll_write(post, poll)
+	broadcast_event(post["feed"], "poll/update", {"post": post["id"], "poll": poll}, "")
+	broadcast_websocket(post["feed"], {"type": "post/edit", "feed": post["feed"], "post": post["id"]})
+	return poll
+
+def poll_write(post, poll):
+	data = json.decode(post.get("data", "") or "{}", None) or {}
+	if type(data) != "dict":
+		data = {}
+	data["poll"] = poll
+	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post["id"])
+	mochi.db.commit.fire("posts", "update", post["id"])
+
+def action_poll_vote(a):
+	"""Vote in a post's poll: on a feed the user owns, recorded and recounted
+	here; on a subscribed feed, sent to the owner, who holds the record; on a
+	post from another network, sent to its author as the network has it."""
+	if not a.user or not a.user.identity or not a.user.identity.id:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	user_id = a.user.identity.id
+	feed = feed_by_id(user_id, a.input("feed"))
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	if not check_access(a, feed["id"], "react"):
+		a.error.label(403, "errors.access_denied")
+		return
+	post = mochi.db.row("select * from posts where id=? and feed=?", a.input("post"), feed["id"])
+	poll = poll_of(post) if post else None
+	if not poll:
+		a.error.label(404, "errors.no_poll")
+		return
+	if not poll_open(poll):
+		a.error.label(400, "errors.poll_closed")
+		return
+	options = poll_options_input(a, poll)
+	if options == None:
+		a.error.label(400, "errors.invalid_option")
+		return
+	if owned(feed["id"]):
+		if post.get("remote") and post.get("author") and not mochi.text.valid(post["author"], "entity"):
+			# A followed person's poll: the vote goes to them; their Update
+			# brings the counts back.
+			if not remote_poll_vote(post, options):
+				a.error.label(502, "errors.vote_not_sent")
+				return
+		poll = poll_vote_apply(post, user_id, options)
+	else:
+		mochi.db.execute("delete from votes where post=? and voter=?", post["id"], user_id)
+		for index in options:
+			mochi.db.execute("insert or ignore into votes (post, option, voter, created) values (?, ?, ?, ?)", post["id"], index, user_id, mochi.time.now())
+		mochi.message.send({"from": user_id, "to": feed["id"], "service": "feeds", "event": "poll/vote"}, {"post": post["id"], "options": options, "name": a.user.identity.name})
+	return {"data": {"post": post["id"], "poll": poll, "voted": options}}
+
+def remote_poll_vote(post, options):
+	"""Our vote in a followed person's poll: a Note naming each chosen option,
+	in reply to the Question and addressed to its author alone, from the
+	account the source goes through. Answers whether it was sent."""
+	source = mochi.db.row("select account from sources where type='person/posts' and url=? and account!='' limit 1", post["author"])
+	acc = publish_account(source["account"]) if source else None
+	if not acc or not hosted_fediverse(acc):
+		return False
+	poll = poll_of(post)
+	sent = False
+	for index in options:
+		note = {"type": "Note", "name": poll["options"][index]["name"], "inReplyTo": post["remote"], "to": [post["author"]], "cc": []}
+		if mochi.account.object.create(acc["id"], note, key="vote|" + post["id"] + "|" + str(index) + "|" + acc["id"]):
+			sent = True
+	return sent
+
+def event_poll_vote(e):
+	"""A subscriber's vote, as the owner takes it: recorded and recounted."""
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("to"))
+	if not feed_data:
+		return
+	sender = e.header("from")
+	post = mochi.db.row("select * from posts where id=? and feed=?", e.content("post"), feed_data["id"])
+	poll = poll_of(post) if post else None
+	if not poll or not poll_open(poll) or not check_event_access(sender, feed_data["id"], "react"):
+		return
+	raw = e.content("options")
+	if not listlike(raw) or not raw or (len(raw) > 1 and not poll.get("multiple")):
+		return
+	options = []
+	for value in raw:
+		index = number(value, -1)
+		if index < 0 or index >= len(poll["options"]) or index in options:
+			return
+		options.append(index)
+	poll_vote_apply(post, sender, options)
+
+def event_poll_update(e):
+	"""The owner's recount, as a subscriber takes it."""
+	feed_data = feed_by_id(e.user.identity.id, e.header("from"))
+	if not feed_data:
+		return
+	post = mochi.db.row("select * from posts where id=? and feed=?", e.content("post"), feed_data["id"])
+	poll = sanitize_poll(e.content("poll")) if post else None
+	if not poll:
+		return
+	held = poll_of(post)
+	if held and len(held["options"]) != len(poll["options"]):
+		return
+	poll_write(post, poll)
+
+def vote_from_network(acc, post, actor, name):
+	"""A follower's vote in a poll the account published: a Note naming the
+	option, recorded by their id."""
+	poll = poll_of(post)
+	if not poll or not poll_open(poll):
+		return
+	for index in range(len(poll["options"])):
+		if poll["options"][index]["name"] == name:
+			existing = [row["option"] for row in mochi.db.rows("select option from votes where post=? and voter=?", post["id"], actor)]
+			if index in existing:
+				return
+			if existing and not poll.get("multiple"):
+				return
+			poll_vote_apply(post, actor, existing + [index])
+			return
+
+# === Boosts ===
+
+def action_post_boost(a):
+	"""Boost a post from another network from one of the user's hosted
+	accounts: an Announce of the original, which credits its author and
+	copies nothing (decision 30), recorded as a copy of the post."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	feed = get_feed(a)
+	if not feed or not is_feed_owner(a.user.identity.id, feed):
+		a.error.label(403, "errors.access_denied")
+		return
+	post = mochi.db.row("select * from posts where id=? and feed=?", a.input("post"), feed["id"])
+	if not post:
+		a.error.label(404, "errors.post_not_found")
+		return
+	if not post.get("remote") or not post.get("author") or mochi.text.valid(post["author"], "entity"):
+		a.error.label(400, "errors.not_from_network")
+		return
+	acc = follow_account(a.input("account", ""))
+	if not acc:
+		a.error.label(404, "errors.account_not_found")
+		return
+	if mochi.db.exists("select 1 from copies where post=? and account=?", post["id"], acc["id"]):
+		return {"data": {"copies": copies_present(post["id"])}}
+	person = account_person(post["author"])
+	result = publish_announce(acc, {"remote": post["remote"], "network": "fediverse", "name": person["name"], "link": "", "item": {"id": post["remote"]}, "created": post["created"]})
+	if not result:
+		a.error.label(502, "errors.boost_not_sent")
+		return
+	copy_record(feed["id"], post["id"], acc, result)
+	return {"data": {"copies": copies_present(post["id"])}}
+
+def action_post_unboost(a):
+	"""Take a boost back: the Announce is undone and the copy forgotten."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	feed = get_feed(a)
+	if not feed or not is_feed_owner(a.user.identity.id, feed):
+		a.error.label(403, "errors.access_denied")
+		return
+	post = mochi.db.row("select id from posts where id=? and feed=?", a.input("post"), feed["id"])
+	acc = follow_account(a.input("account", ""))
+	if not post or not acc:
+		a.error.label(404, "errors.post_not_found")
+		return
+	row = mochi.db.row("select remote from copies where post=? and account=?", post["id"], acc["id"])
+	if row:
+		mochi.account.object.delete(acc["id"], row["remote"])
+		mochi.db.execute("delete from copies where post=? and account=?", post["id"], acc["id"])
+	return {"data": {"copies": copies_present(post["id"])}}
+
+# === Keyword filters ===
+
+def filters_feed(a):
+	"""The feed a filter belongs to: one the user owns or subscribes to."""
+	if not a.user or not a.user.identity or not a.user.identity.id:
+		a.error.label(401, "errors.not_logged_in")
+		return None
+	feed = get_feed(a)
+	if not feed or not check_access(a, feed["id"], "view"):
+		a.error.label(404, "errors.feed_not_found")
+		return None
+	return feed
+
+def action_filters_list(a):
+	feed = filters_feed(a)
+	if not feed:
+		return
+	return {"data": {"filters": mochi.db.rows("select id, phrase, created from filters where feed=? order by created", feed["id"])}}
+
+def action_filters_add(a):
+	feed = filters_feed(a)
+	if not feed:
+		return
+	phrase = (a.input("phrase") or "").strip()
+	if not phrase or len(phrase) > FILTER_MAXIMUM or not mochi.text.valid(phrase, "line"):
+		a.error.label(400, "errors.invalid_phrase")
+		return
+	if mochi.db.exists("select 1 from filters where feed=? and lower(phrase)=lower(?)", feed["id"], phrase):
+		return {"data": {"filters": mochi.db.rows("select id, phrase, created from filters where feed=? order by created", feed["id"])}}
+	mochi.db.execute("insert into filters (id, feed, phrase, created) values (?, ?, ?, ?)", mochi.uid(), feed["id"], phrase, mochi.time.now())
+	return {"data": {"filters": mochi.db.rows("select id, phrase, created from filters where feed=? order by created", feed["id"])}}
+
+def action_filters_remove(a):
+	feed = filters_feed(a)
+	if not feed:
+		return
+	if not mochi.db.exists("select 1 from filters where id=? and feed=?", a.input("filter"), feed["id"]):
+		a.error.label(404, "errors.filter_not_found")
+		return
+	mochi.db.execute("delete from filters where id=? and feed=?", a.input("filter"), feed["id"])
+	return {"data": {"filters": mochi.db.rows("select id, phrase, created from filters where feed=? order by created", feed["id"])}}
+
+# === Importing a follow list ===
+
+def import_addresses(text):
+	"""The addresses in a Mastodon export of follows (following_accounts.csv:
+	"Account address,Show boosts,Notify on new posts,Languages"), or one
+	address a line."""
+	addresses = []
+	seen = {}
+	for line in text.replace("\r", "").split("\n"):
+		field = line.split(",", 1)[0].strip().strip('"')
+		if not field or field.lower() == "account address" or " " in field:
+			continue
+		if field not in seen:
+			seen[field] = True
+			addresses.append(field)
+		if len(addresses) >= IMPORT_ADDRESSES_MAXIMUM:
+			break
+	return addresses
+
+def action_sources_import(a):
+	"""Follow everyone in a Mastodon export of follows into the feed, as
+	sources: the first within this request's budget, the rest in scheduled
+	steps. Answers how many were added so far and whether more follow."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	feed = get_feed(a)
+	if not feed or not is_feed_owner(a.user.identity.id, feed):
+		a.error.label(403, "errors.access_denied")
+		return
+	addresses = import_addresses(a.input("addresses") or "")
+	if not addresses:
+		a.error.label(400, "errors.no_addresses")
+		return
+	acc = follow_account(a.input("account", ""))
+	import_id = mochi.uid()
+	mochi.db.execute("insert into imports (id, feed, account, addresses, position, created) values (?, ?, ?, ?, 0, ?)", import_id, feed["id"], acc["id"] if acc else "", json.encode(addresses), mochi.time.now())
+	count, more = import_file_step(import_id, a.user.identity.id)
+	return {"data": {"imported": count, "more": more, "total": len(addresses)}}
+
+def import_file_step(import_id, user_id):
+	"""A step of a follow list import: the addresses from where the last step
+	stopped, each a source, until the step's budget is spent; the next step
+	is booked for the rest. Answers (count, more)."""
+	row = mochi.db.row("select * from imports where id=?", import_id)
+	if not row:
+		return (0, False)
+	feed = mochi.db.row("select * from feeds where id=?", row["feed"])
+	addresses = json.decode(row["addresses"], None) or []
+	if not feed or type(addresses) != "list":
+		mochi.db.execute("delete from imports where id=?", import_id)
+		return (0, False)
+	acc = publish_account(row["account"]) if row["account"] else None
+	deadline = mochi.time.now() + FOLLOWS_BUDGET
+	count = 0
+	position = row["position"]
+	while position < len(addresses):
+		if mochi.time.now() >= deadline:
+			mochi.db.execute("update imports set position=? where id=?", position, import_id)
+			mochi.schedule.after("schedule_import", {"feed": feed["id"], "kind": "file", "import": import_id}, 2)
+			return (count, True)
+		if follow_source(feed, {"network": "fediverse", "identifier": str(addresses[position]), "name": ""}, user_id, acc):
+			count += 1
+		position += 1
+	mochi.db.execute("delete from imports where id=?", import_id)
+	return (count, False)
+
+# === People the user knows ===
+
+def action_people(a):
+	"""The user's contacts with a handle on another network, for the search
+	page to offer as people to follow: each with whether a feed follows them
+	already."""
+	if not a.user or not a.user.identity or not a.user.identity.id:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	people = mochi.service.call("people", "handles") or []
+	out = []
+	for person in people:
+		if type(person) != "dict":
+			continue
+		identifier = str(person.get("id", "") or "")
+		followed = bool(identifier) and mochi.db.exists("select 1 from sources where type='person/posts' and url=?", identifier)
+		if not followed and person.get("handle"):
+			followed = mochi.db.exists("select 1 from sources where type='rss' and name=?", str(person.get("name", "")))
+		entry = dict(person)
+		entry["followed"] = followed
+		out.append(entry)
+	return {"data": {"people": out}}

@@ -30,10 +30,14 @@ import type {
   ViewFeedResponse,
   Source,
 } from '@/types'
+import type { PostCopy, PostFeatures } from '@/types/posts'
 import type {
   BackupsResponse,
+  Filter,
+  ImportFollowsResponse,
   ImportResponse,
   Lookup,
+  Person,
   PublishAccount,
   PublishResponse,
   PublishSetResponse,
@@ -321,6 +325,106 @@ const renameFeed = async (
   return toDataResponse<RenameFeedResponse['data']>(response, 'rename feed')
 }
 
+// A post's features as the form carries them (phase 17): each only when the
+// composer set it, so an edit that says nothing leaves the post's own.
+function appendFeatures(formData: FormData, features?: PostFeatures) {
+  if (!features) return
+  if (features.visibility) formData.append('visibility', features.visibility)
+  if (features.warning !== undefined)
+    formData.append('warning', features.warning)
+  if (features.sensitive !== undefined)
+    formData.append('sensitive', features.sensitive ? 'true' : 'false')
+  if (features.language) formData.append('language', features.language)
+}
+
+// Pin a post of a feed the user owns, or unpin it.
+const pinPost = async (
+  feedId: string,
+  postId: string,
+  pinned: boolean
+): Promise<{ post: string; pinned: number }> =>
+  client.post<{ post: string; pinned: number }, { feed: string; post: string }>(
+    pinned
+      ? endpoints.feeds.post.pin(feedId, postId)
+      : endpoints.feeds.post.unpin(feedId, postId),
+    { feed: feedId, post: postId }
+  )
+
+// Vote in a post's poll: the chosen options, by index.
+const votePoll = async (
+  feedId: string,
+  postId: string,
+  options: number[]
+): Promise<{ post: string; voted: number[] }> => {
+  const formData = new FormData()
+  formData.append('feed', feedId)
+  formData.append('post', postId)
+  for (const option of options) formData.append('option', String(option))
+  return client.post<{ post: string; voted: number[] }, FormData>(
+    endpoints.feeds.post.vote(feedId, postId),
+    formData,
+    { headers: { 'Content-Type': undefined } }
+  )
+}
+
+// Boost a post from another network from one of the owner's hosted accounts,
+// or take the boost back.
+const boostPost = async (
+  feedId: string,
+  postId: string,
+  account: string,
+  boosted: boolean
+): Promise<{ copies: PostCopy[] }> =>
+  client.post<
+    { copies: PostCopy[] },
+    { feed: string; post: string; account: string }
+  >(
+    boosted
+      ? endpoints.feeds.post.boost(feedId, postId)
+      : endpoints.feeds.post.unboost(feedId, postId),
+    { feed: feedId, post: postId, account }
+  )
+
+// Keyword filters on a feed.
+const getFilters = async (feedId: string): Promise<{ filters: Filter[] }> =>
+  client.get<{ filters: Filter[] }>(endpoints.feeds.filters(feedId), {
+    params: { feed: feedId },
+  })
+
+const addFilter = async (
+  feedId: string,
+  phrase: string
+): Promise<{ filters: Filter[] }> =>
+  client.post<{ filters: Filter[] }, { feed: string; phrase: string }>(
+    endpoints.feeds.filtersAdd(feedId),
+    { feed: feedId, phrase }
+  )
+
+const removeFilter = async (
+  feedId: string,
+  filter: string
+): Promise<{ filters: Filter[] }> =>
+  client.post<{ filters: Filter[] }, { feed: string; filter: string }>(
+    endpoints.feeds.filtersRemove(feedId),
+    { feed: feedId, filter }
+  )
+
+// Follow everyone in a Mastodon export of follows (following_accounts.csv)
+// into the feed, as sources.
+const importFollows = async (
+  feedId: string,
+  addresses: string,
+  account?: string
+): Promise<ImportFollowsResponse> =>
+  client.post<ImportFollowsResponse, Record<string, string>>(
+    endpoints.feeds.sourcesImport(feedId),
+    { feed: feedId, addresses, ...(account ? { account } : {}) }
+  )
+
+// The user's contacts with a handle on another network, to follow.
+const people = async (): Promise<{ people: Person[] }> =>
+  client.get<{ people: Person[] }>(endpoints.feeds.people)
+
 const createPost = async (
   payload: CreatePostRequest,
   onProgress?: (event: AxiosProgressEvent) => void
@@ -346,6 +450,10 @@ const createPost = async (
   }
   if (payload.accounts) {
     formData.append('accounts', JSON.stringify(payload.accounts))
+  }
+  appendFeatures(formData, payload.features)
+  if (payload.poll) {
+    formData.append('poll', JSON.stringify(payload.poll))
   }
 
   const response = await client.post<
@@ -411,6 +519,7 @@ const editPost = async (
   if (payload.captions && Object.keys(payload.captions).length > 0) {
     formData.append('captions', JSON.stringify(payload.captions))
   }
+  appendFeatures(formData, payload.features)
 
   const response = await client.post<
     EditPostResponse | EditPostResponse['data'],
@@ -836,11 +945,14 @@ const addSource = async (
   type: string,
   url: string,
   name?: string,
-  server?: string
+  server?: string,
+  account?: string
 ): Promise<SourceAddResponse> => {
   const payload: Record<string, string> = { feed: feedId, type, url }
   if (name) payload.name = name
   if (server) payload.server = server
+  // The hosted account a person on the fediverse is followed through.
+  if (account) payload.account = account
 
   const response = await client.post<
     SourceAddResponse | SourceAddResponse['data'],
@@ -1162,6 +1274,14 @@ export const feedsApi = {
   editSource,
   removeSource,
   pollSource,
+  importFollows,
+  pinPost,
+  votePoll,
+  boostPost,
+  getFilters,
+  addFilter,
+  removeFilter,
+  people,
   addPostTag,
   setAiSettings,
   getAiPrompts,
