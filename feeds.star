@@ -10196,6 +10196,10 @@ def function_activitypub_receive(context, account, activities):
 		if type(activity) != "dict" or not actor:
 			continue
 		object = activity.get("object")
+		# A direct message is chat's, kept as a conversation (phase 22); a
+		# vote in a poll comes direct too, and stays here.
+		if kind == "Create" and type(object) == "dict" and object_direct(object) and not poll_vote_shaped(object):
+			continue
 		# What a followed person sends comes first (phase 17): their posts and
 		# boosts, their edits and deletions of them, their move.
 		if kind in ("Create", "Announce", "Update", "Delete", "Move") and followed_received(acc, actor, kind, activity):
@@ -11066,6 +11070,21 @@ def object_visibility(note):
 	if FEDIVERSE_PUBLIC in object_list(note.get("cc")) or "as:Public" in object_list(note.get("cc")) or "Public" in object_list(note.get("cc")):
 		return "unlisted"
 	return "followers"
+
+def object_direct(note):
+	"""Whether a Note is a direct message: addressed to neither the public nor
+	anyone's followers. A Note addressed to no one says nothing either way."""
+	addresses = [object_id_of(x) for x in object_list(note.get("to")) + object_list(note.get("cc"))]
+	if not addresses or object_visibility(note) != "followers":
+		return False
+	for address in addresses:
+		if address.endswith("/followers"):
+			return False
+	return True
+
+def poll_vote_shaped(note):
+	"""Whether a Note has a poll vote's shape: an option's name and no content."""
+	return bool(note.get("name")) and not str(note.get("content", "") or "").strip()
 
 def fediverse_item(acc, raw):
 	"""A post from the fediverse as a sourced item: a Note, Article, Page or
