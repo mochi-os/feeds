@@ -9,6 +9,7 @@ import { Plural, Trans } from '@lingui/react/macro'
 import {
   Button,
   CommentBox,
+  CommentShareButton,
   CommentTreeLayout,
   ConfirmDialog,
   EntityAvatar,
@@ -82,6 +83,8 @@ type CommentThreadProps = {
    * comments showing.
    */
   onOpenAttachment?: (attachmentId: string) => void
+  /** The full address of a comment, for its Share button. */
+  shareUrl?: (commentId: string) => string
 }
 
 export function CommentThread({
@@ -107,6 +110,7 @@ export function CommentThread({
   canManageComments = false,
   onSearchPeople,
   onOpenAttachment,
+  shareUrl,
 }: CommentThreadProps) {
   const { formatTimestamp } = useFormat()
   const [collapsed, setCollapsed] = useState(false)
@@ -399,6 +403,13 @@ export function CommentThread({
                     </Tooltip>
                   )}
 
+                  {shareUrl && (
+                    <CommentShareButton
+                      url={shareUrl(comment.id)}
+                      className={`${iconActionButtonClass} [&>svg]:size-4`}
+                    />
+                  )}
+
                   {canEditComment && (
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -591,6 +602,7 @@ export function CommentThread({
           canManageComments={canManageComments}
           onSearchPeople={onSearchPeople}
           onOpenAttachment={onOpenAttachment}
+          shareUrl={shareUrl}
         />
       ))}
     </>
@@ -603,6 +615,7 @@ export function CommentThread({
       isCollapsed={collapsed}
       onToggleCollapse={() => setCollapsed(!collapsed)}
       hasChildren={hasReplies}
+      commentId={comment.id}
       avatar={avatar}
       content={content}
       collapsedContent={collapsedContent}

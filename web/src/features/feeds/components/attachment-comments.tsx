@@ -50,6 +50,8 @@ export function AttachmentComments({
           // The panel shows the whole scoped set; the inline "view N more"
           // collapse is for the post card, not a focused view.
           isExpanded
+          // A comment the page is opened on belongs to the inline thread.
+          focusedComment={undefined}
           filter={
             showAll
               ? undefined
