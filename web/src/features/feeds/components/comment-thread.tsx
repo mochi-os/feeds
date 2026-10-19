@@ -249,7 +249,10 @@ export function CommentThread({
     <div className='space-y-2 md:space-y-1.5'>
       {/* Per-row hover group - only this comment's row, not children */}
       <div className='group/row'>
-        <div className='flex h-5 items-center gap-2 text-xs'>
+        <div
+          data-comment-header=''
+          className='flex h-5 items-center gap-2 text-xs'
+        >
           {authorName}
           <span className='text-muted-foreground'>·</span>
           <span className='text-muted-foreground'>
