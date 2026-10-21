@@ -58,12 +58,20 @@ strip_html_breaks = [
 # translated generic error with the detail logged; a far-end app answer passes
 # through unchanged.
 def remote_error(a, response, code=502):
+	fail(a, remote_failure(response, code))
+
+# remote_failure is a remote's refusal as the (status, label) a helper
+# answers: the remote sends a stable label key, localised in the caller's
+# language.
+def remote_failure(response, code=502):
 	if response.get("transport"):
 		mochi.log.info("Remote transport error: %s", response.get("error", ""))
-		a.error.label(response.get("code", code), "errors.remote")
-	else:
-		# The remote sends a stable label key; localise it in the caller's language.
-		a.error.label(response.get("code", code), response.get("error", "errors.remote"))
+		return (response.get("code", code), "errors.remote")
+	return (response.get("code", code), response.get("error", "errors.remote"))
+
+# fail answers a helper's refusal, (status, label), as an action's error.
+def fail(a, failure):
+	a.error.label(failure[0], failure[1])
 
 def strip_html(text):
 	if not text:
@@ -225,10 +233,15 @@ def access_denied(user_id, resource, operation):
     return False
 
 def check_access(a, feed_id, operation):
-    resource = "feed/" + feed_id
     user = None
     if a.user and a.user.identity:
         user = a.user.identity.id
+    return check_access_user(user, feed_id, operation)
+
+# check_access for a user named by their identity, or None for an anonymous
+# caller: what an app's function, which has no request, checks with.
+def check_access_user(user, feed_id, operation):
+    resource = "feed/" + feed_id
 
     # One call, not five. Each mochi.access.check pays a fixed per-call cost in
     # core - a users.db identity lookup, a db_app_system open, access_setup, a
@@ -2018,13 +2031,17 @@ def action_saved_add(a):
 	if not data or json.decode(data, None) == None:
 		a.error.label(400, "errors.invalid_data")
 		return
-	user = a.user.identity.id
+	saved_set(a.user.identity.id, post, data)
+	return {"data": {"saved": True}}
+
+# saved_set saves a post for the user with the data its saved view shows,
+# or changes that data where it is saved.
+def saved_set(user, post, data):
 	existing = mochi.db.row("select id from saved where user=? and post=?", user, post)
 	if existing:
 		mochi.db.execute("update saved set data=? where id=?", data, existing["id"])
 	else:
 		mochi.db.execute("insert or ignore into saved ( id, user, post, data, created ) values ( ?, ?, ?, ?, ? )", mochi.uid(), user, post, data, mochi.time.now())
-	return {"data": {"saved": True}}
 
 # Remove a saved post. Idempotent: removing a post that is not saved is a no-op.
 def action_saved_remove(a):
@@ -3152,8 +3169,10 @@ def function_list(context):
     return [{"id": r["id"], "name": r["name"], "privacy": r["privacy"], "fingerprint": r["fingerprint"]}
         for r in mochi.db.rows("select id, name, privacy, fingerprint from feeds") if r["id"] in owned]
 
-def function_create(context, name, privacy="public"):
-    """Make a feed for the caller, publishing to nothing yet. Answers {id, name, fingerprint}, or None when it cannot."""
+def function_create(context, name, privacy="public", account=""):
+    """Make a feed for the caller, publishing to the account named alone, as
+    a home feed made when an app signs in does (decision 42), or to nothing
+    yet. Answers {id, name, fingerprint}, or None when it cannot."""
     if not name or not mochi.text.valid(name, "name") or privacy not in ["public", "private"]:
         return None
     identity = service_identity()
@@ -3162,6 +3181,9 @@ def function_create(context, name, privacy="public"):
     entity = feed_create(identity["id"], identity.get("name", ""), name, privacy, True)
     if not entity:
         return None
+    if account and privacy == "public" and publish_account(account):
+        publish_add(entity, account, mochi.time.now())
+        ensure_account_jobs()
     return {"id": entity, "name": name, "fingerprint": mochi.entity.fingerprint(entity) or ""}
 
 def action_search(a): # feeds_search
@@ -3746,6 +3768,74 @@ def filters_sql(prefix, feed_column):
     filters on the feed (keyword filters)."""
     return " and not exists (select 1 from filters f where f.feed=" + feed_column + " and instr(lower(" + prefix + "body), lower(f.phrase))>0)"
 
+# post_create keeps a post the feed's owner writes, in markdown or plain
+# text, with the attachments save(post) keeps for it, publishes it to the
+# feed's accounts or those named, sends it to the subscribers and copies it
+# into the feeds that take this one as a source. Answers (post id,
+# attachments, None), or (None, None, failure).
+def post_create(feed, user_id, user_name, body, data, features, accounts, save, format="markdown"):
+	feed_id = feed["id"]
+	post_uid = mochi.uid()
+	if mochi.db.exists("select id from posts where id=?", post_uid):
+		return None, None, (500, "errors.duplicate_id")
+
+	now = mochi.time.now()
+	data_value = json.encode(data) if data else ""
+	mmdd = compute_mmdd(now)
+	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, author, read) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		post_uid, feed_id, body, data_value, format, now, now, mmdd, user_id, now)
+	if features:
+		clause, values = features_sql(features)
+		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_uid]))
+	mochi.db.commit.fire("posts", "insert", post_uid)
+	set_feed_updated(feed_id)
+
+	# Get subscribers for notification
+	subscribers = mochi.db.rows("select id from subscribers where feed=? and id!=?", feed_id, user_id)
+
+	# Save any uploaded attachments locally
+	attachments = save(post_uid)
+
+	# Copies on the accounts the feed publishes to, or those the writer chose
+	# for this post; subscribers learn of them with the post (decision 31).
+	post = mochi.db.row("select * from posts where id=?", post_uid)
+	copies = publish_post(feed, post_uid, body, format, attachments, accounts, None, post)
+
+	# Send post to subscribers with attachment metadata piggybacked
+	post_event = {"id": post_uid, "created": now, "body": body, "format": format}
+	post_event.update(post_event_features(post))
+	if data:
+		post_event["data"] = data
+	if attachments:
+		post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "caption": att.get("caption", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
+	if copies:
+		post_event["copies"] = copies
+	broadcast_event(feed_id, "post/create", post_event, user_id)
+	if body:
+		notify_mentions(feed_id, post_uid, body, user_id, user_name)
+
+	# post/create WebSocket notification is fired by the commit hook on the
+	# insert above (see mochi.db.commit.fire / on_db_commit).
+
+	# Copy post into any local aggregating feeds that use this feed as a source
+	sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", feed_id)
+	for source in sources:
+		copy_id = mochi.uid()
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
+			copy_id, source["feed"], body, data_value, now, now, mmdd)
+		mochi.db.commit.fire("posts", "insert", copy_id)
+		mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
+			source["id"], copy_id, post_uid)
+		set_feed_updated(source["feed"])
+		publish_sourced(source["feed"], copy_id, body, "text", {"remote": post_uid, "name": feed.get("name", ""), "link": post_link(feed_id, post_uid), "network": "mochi", "created": now})
+
+	# Schedule AI tagging
+	if feed.get("ai_mode", ""):
+		mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_uid}, 0)
+
+	follow(feed_id, post_uid)
+	return post_uid, attachments, None
+
 def action_post_create(a):
     if not a.user:
         a.error.label(401, "errors.not_logged_in")
@@ -3824,66 +3914,10 @@ def action_post_create(a):
         data = dict(data) if data else {}
         data["quote"] = quote
 
-    post_uid = mochi.uid()
-    if mochi.db.exists("select id from posts where id=?", post_uid):
-        a.error.label(500, "errors.duplicate_id")
+    post_uid, attachments, failure = post_create(feed, user_id, a.user.identity.name, body, data, features, accounts, lambda post: attachment_save(a, post, captions=captions))
+    if failure:
+        fail(a, failure)
         return
-
-    now = mochi.time.now()
-    data_value = json.encode(data) if data else ""
-    mmdd = compute_mmdd(now)
-    mochi.db.execute("insert into posts (id, feed, body, data, created, updated, mmdd, author, read) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        post_uid, feed_id, body, data_value, now, now, mmdd, user_id, now)
-    if features:
-        clause, values = features_sql(features)
-        mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_uid]))
-    mochi.db.commit.fire("posts", "insert", post_uid)
-    set_feed_updated(feed_id)
-
-    # Get subscribers for notification
-    subscribers = mochi.db.rows("select id from subscribers where feed=? and id!=?", feed_id, user_id)
-
-    # Save any uploaded attachments locally
-    attachments = attachment_save(a, post_uid, captions=captions)
-
-    # Copies on the accounts the feed publishes to, or those the writer chose
-    # for this post; subscribers learn of them with the post (decision 31).
-    post = mochi.db.row("select * from posts where id=?", post_uid)
-    copies = publish_post(feed, post_uid, body, "markdown", attachments, accounts, None, post)
-
-    # Send post to subscribers with attachment metadata piggybacked
-    post_event = {"id": post_uid, "created": now, "body": body}
-    post_event.update(post_event_features(post))
-    if data:
-        post_event["data"] = data
-    if attachments:
-        post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "caption": att.get("caption", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
-    if copies:
-        post_event["copies"] = copies
-    broadcast_event(feed_id, "post/create", post_event, user_id)
-    if body:
-        notify_mentions(feed_id, post_uid, body, user_id, a.user.identity.name)
-
-    # post/create WebSocket notification is fired by the commit hook on the
-    # insert above (see mochi.db.commit.fire / on_db_commit).
-
-    # Copy post into any local aggregating feeds that use this feed as a source
-    sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", feed_id)
-    for source in sources:
-        copy_id = mochi.uid()
-        mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
-            copy_id, source["feed"], body, data_value, now, now, mmdd)
-        mochi.db.commit.fire("posts", "insert", copy_id)
-        mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
-            source["id"], copy_id, post_uid)
-        set_feed_updated(source["feed"])
-        publish_sourced(source["feed"], copy_id, body, "text", {"remote": post_uid, "name": feed.get("name", ""), "link": post_link(feed_id, post_uid), "network": "mochi", "created": now})
-
-    # Schedule AI tagging
-    if feed.get("ai_mode", ""):
-        mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_uid}, 0)
-
-    follow(feed_id, post_uid)
     return {
         "data": {
             "id": post_uid,
@@ -3965,6 +3999,79 @@ def action_read_all_class(a):
 	return {"data": {"ok": True, "read": now, "feeds": len(feed_ids)}}
 
 # Edit a post (owner only)
+# post_edit changes a post: on a feed the user owns, a post they wrote or
+# one in a feed they manage, its text, data and features, with change(post,
+# feed) changing its attachments, published again and sent to the
+# subscribers; in a feed of someone else's, asked of its owner. A poll stays
+# as it was made, with its votes. Answers (result, None) or (None, failure).
+def post_edit(feed_id, post_id, user_id, body, data, features, change):
+	info = feed_by_id(user_id, feed_id)
+	if not info:
+		return None, (404, "errors.feed_not_found")
+
+	if owned(info["id"]):
+		# Local feed - edit directly
+		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
+		if not post:
+			return None, (404, "errors.post_not_found")
+
+		if post.get("author") != user_id and not check_access_user(user_id, info["id"], "manage"):
+			return None, (403, "errors.not_allowed_edit_post")
+
+		existing = json.decode(post.get("data", "") or "{}", None) or {}
+		if type(existing) == "dict" and existing.get("poll"):
+			data = dict(data) if data else {}
+			data["poll"] = existing["poll"]
+		elif data and data.get("poll"):
+			data = dict(data)
+			data.pop("poll")
+
+		now = mochi.time.now()
+		data_value = json.encode(data) if data else ""
+		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
+		if features:
+			clause, values = features_sql(features)
+			mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
+		mochi.db.commit.fire("posts", "update", post_id)
+
+		failure = change(post_id, info)
+		if failure:
+			return None, failure
+
+		post = mochi.db.row("select * from posts where id=?", post_id)
+		edit_event = {"post": post_id, "body": body, "edited": now}
+		edit_event.update(post_event_features(post))
+		if data:
+			edit_event["data"] = data
+		edit_event["attachments"] = attachment_list(post_id, info["id"])
+		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post)
+		broadcast_event(info["id"], "post/edit", edit_event, user_id)
+
+		# post/edit WebSocket notification is fired by the commit hook on
+		# the update above (see mochi.db.commit.fire / on_db_commit).
+
+		# Re-tag with AI if enabled
+		if info.get("ai_mode", ""):
+			mochi.db.execute("delete from tags where object=? and source='ai'", post_id)
+			mochi.schedule.after("schedule_ai_tag", {"feed": info["id"], "post": post_id}, 0)
+
+		return {"success": True}, None
+
+	elif info.get("server"):
+		# Remote feed - send edit to owner
+		peer = mochi.remote.peer(info["server"])
+		if not peer:
+			return None, (502, "errors.unable_to_connect")
+		payload = {"feed": feed_id, "post": post_id, "body": body}
+		if data:
+			payload["data"] = data
+		response = mochi.remote.request(feed_id, "feeds", "post/edit", payload, peer)
+		if response.get("error"):
+			return None, remote_failure(response, 403)
+		return response or {"success": True}, None
+
+	return None, (403, "errors.not_allowed")
+
 def action_post_edit(a):
 	if not a.user:
 		a.error.label(401, "errors.not_logged_in")
@@ -3992,46 +4099,15 @@ def action_post_edit(a):
 		# every subscriber.
 		data = sanitize_post_data(data)
 
-	info = feed_by_id(user_id, feed_id)
-	if not info:
-		a.error.label(404, "errors.feed_not_found")
+	# Visibility, content warning, sensitive flag and language may change.
+	features, _, features_ok = post_features_input(a)
+	if not features_ok:
+		a.error.label(400, "errors.invalid_data")
 		return
 
-	if owned(info["id"]):
-		# Local feed - edit directly
-		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
-		if not post:
-			a.error.label(404, "errors.post_not_found")
-			return
-
-		if post.get("author") != user_id and not check_access(a, info["id"], "manage"):
-			a.error.label(403, "errors.not_allowed_edit_post")
-			return
-
-		# Visibility, content warning, sensitive flag and language may change;
-		# a poll stays as it was made, with the votes it has.
-		features, _, features_ok = post_features_input(a)
-		if not features_ok:
-			a.error.label(400, "errors.invalid_data")
-			return
-		existing = json.decode(post.get("data", "") or "{}", None) or {}
-		if type(existing) == "dict" and existing.get("poll"):
-			data = dict(data) if data else {}
-			data["poll"] = existing["poll"]
-		elif data and data.get("poll"):
-			data = dict(data)
-			data.pop("poll")
-
-		now = mochi.time.now()
-		data_value = json.encode(data) if data else ""
-		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
-		if features:
-			clause, values = features_sql(features)
-			mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
-		mochi.db.commit.fire("posts", "update", post_id)
-
-
-		# Handle attachment changes
+	def change(post_id, info):
+		"""The attachment changes the form asks for, the answer to a
+		failing one."""
 		# Order list includes existing IDs and "new:N" placeholders for new files.
 		# The web client sends it as one JSON array, so an empty array - every
 		# attachment removed - still arrives. Older clients send one field per
@@ -4041,8 +4117,7 @@ def action_post_edit(a):
 		if len(order) == 1 and order[0].startswith("["):
 			decoded = json.decode(order[0], None)
 			if type(decoded) != "list":
-				a.error.label(400, "errors.invalid_data")
-				return
+				return (400, "errors.invalid_data")
 			order = [str(item) for item in decoded]
 			cleared = len(order) == 0
 
@@ -4053,13 +4128,11 @@ def action_post_edit(a):
 		if captions_raw:
 			decoded = json.decode(captions_raw, None)
 			if type(decoded) != "dict" or len(decoded) > 100:
-				a.error.label(400, "errors.invalid_data")
-				return
+				return (400, "errors.invalid_data")
 			for key in decoded:
 				caption = str(decoded[key])
 				if len(caption) > 1000:
-					a.error.label(400, "errors.invalid_data")
-					return
+					return (400, "errors.invalid_data")
 				captions[key] = caption
 
 		# Save new attachments first (if any files were uploaded), with their
@@ -4084,26 +4157,7 @@ def action_post_edit(a):
 				final_order.append(item)
 
 		if final_order or cleared:
-			# Delete attachments not in the final order
-			existing = attachment_list(post_id, info["id"])
-			for att in existing:
-				if att["id"] not in final_order:
-					attachment_delete(att["id"])
-					# Comments anchored to a removed image keep their text and
-					# become plain comments; a remark is not deleted with the
-					# photo it was about.
-					mochi.db.execute("update comments set attachment='' where post=? and attachment=?", post_id, att["id"])
-
-			# Reorder attachments belonging to this post (positions start at 1). A
-			# caller-supplied id naming another post's attachment is skipped, so
-			# it cannot be re-ranked through this route (#318).
-			held = [att["id"] for att in existing] + [att["id"] for att in new_attachments]
-			position = 0
-			for att_id in final_order:
-				if att_id not in held:
-					continue
-				position += 1
-				attachment_move(att_id, position)
+			attachments_keep(post_id, info["id"], final_order, new_attachments)
 
 		# Caption edits on attachments the post already holds. Bound to this
 		# post's own rows, so an id from another post cannot be annotated
@@ -4111,68 +4165,56 @@ def action_post_edit(a):
 		for att in attachment_list(post_id, info["id"]):
 			if att["id"] in captions and captions[att["id"]] != att.get("caption", ""):
 				attachment_update(att["id"], captions[att["id"]], att.get("description", ""))
+		return None
 
-		post = mochi.db.row("select * from posts where id=?", post_id)
-		edit_event = {"post": post_id, "body": body, "edited": now}
-		edit_event.update(post_event_features(post))
-		if data:
-			edit_event["data"] = data
-		edit_event["attachments"] = attachment_list(post_id, info["id"])
-		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post)
-		broadcast_event(info["id"], "post/edit", edit_event, user_id)
+	result, failure = post_edit(feed_id, post_id, user_id, body, data, features, change)
+	if failure:
+		fail(a, failure)
+		return
+	return {"data": result}
 
-		# post/edit WebSocket notification is fired by the commit hook on
-		# the update above (see mochi.db.commit.fire / on_db_commit).
+# attachments_keep keeps a post's attachments in the order given, its own
+# and those just added, and lets the rest go.
+def attachments_keep(post_id, feed_id, final_order, new_attachments):
+	# Delete attachments not in the final order
+	existing = attachment_list(post_id, feed_id)
+	for att in existing:
+		if att["id"] not in final_order:
+			attachment_delete(att["id"])
+			# Comments anchored to a removed image keep their text and
+			# become plain comments; a remark is not deleted with the
+			# photo it was about.
+			mochi.db.execute("update comments set attachment='' where post=? and attachment=?", post_id, att["id"])
 
-		# Re-tag with AI if enabled
-		if info.get("ai_mode", ""):
-			mochi.db.execute("delete from tags where object=? and source='ai'", post_id)
-			mochi.schedule.after("schedule_ai_tag", {"feed": info["id"], "post": post_id}, 0)
-
-		return {"data": {"success": True}}
-
-	elif info.get("server"):
-		# Remote feed - send edit to owner
-		peer = mochi.remote.peer(info["server"])
-		if not peer:
-			a.error.label(502, "errors.unable_to_connect")
-			return
-		payload = {"feed": feed_id, "post": post_id, "body": body}
-		if data:
-			payload["data"] = data
-		response = mochi.remote.request(feed_id, "feeds", "post/edit", payload, peer)
-		if response.get("error"):
-			remote_error(a, response, 403)
-			return
-		return {"data": response or {"success": True}}
-
-	a.error.label(403, "errors.not_allowed")
+	# Reorder attachments belonging to this post (positions start at 1). A
+	# caller-supplied id naming another post's attachment is skipped, so
+	# it cannot be re-ranked through this route (#318).
+	held = [att["id"] for att in existing] + [att["id"] for att in new_attachments]
+	position = 0
+	for att_id in final_order:
+		if att_id not in held:
+			continue
+		position += 1
+		attachment_move(att_id, position)
 
 # Delete a post (owner only)
-def action_post_delete(a):
-	if not a.user:
-		a.error.label(401, "errors.not_logged_in")
-		return
-	user_id = a.user.identity.id
-
-	feed_id = a.input("feed")
-	post_id = a.input("post")
-
+# post_delete deletes a post the user wrote, or one in a feed they manage:
+# with its comments, reactions, attachments and copies, here and for the
+# subscribers; in a feed of someone else's, asked of its owner. Answers
+# (result, None) or (None, failure).
+def post_delete(feed_id, post_id, user_id):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
-		a.error.label(404, "errors.feed_not_found")
-		return
+		return None, (404, "errors.feed_not_found")
 
 	if owned(info["id"]):
 		# Local feed - delete directly
 		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
 		if not post:
-			a.error.label(404, "errors.post_not_found")
-			return
+			return None, (404, "errors.post_not_found")
 
-		if post.get("author") != user_id and not check_access(a, info["id"], "manage"):
-			a.error.label(403, "errors.not_allowed_delete_post")
-			return
+		if post.get("author") != user_id and not check_access_user(user_id, info["id"], "manage"):
+			return None, (403, "errors.not_allowed_delete_post")
 
 
 		publish_delete(post_id)
@@ -4192,21 +4234,34 @@ def action_post_delete(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "post/delete", "feed": info["id"], "post": post_id, "sender": user_id})
 
-		return {"data": {"success": True}}
+		return {"success": True}, None
 
 	elif info.get("server"):
 		# Remote feed - send delete to owner
 		peer = mochi.remote.peer(info["server"])
 		if not peer:
-			a.error.label(502, "errors.unable_to_connect")
-			return
+			return None, (502, "errors.unable_to_connect")
 		response = mochi.remote.request(feed_id, "feeds", "post/delete", {"feed": feed_id, "post": post_id}, peer)
 		if response.get("error"):
-			remote_error(a, response, 403)
-			return
-		return {"data": response or {"success": True}}
+			return None, remote_failure(response, 403)
+		return response or {"success": True}, None
 
-	a.error.label(403, "errors.not_allowed")
+	return None, (403, "errors.not_allowed")
+
+def action_post_delete(a):
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	user_id = a.user.identity.id
+
+	feed_id = a.input("feed")
+	post_id = a.input("post")
+
+	result, failure = post_delete(feed_id, post_id, user_id)
+	if failure:
+		fail(a, failure)
+		return
+	return {"data": result}
 
 def action_subscribe(a): # feeds_subscribe
 	if not a.user.identity.id:
@@ -4501,6 +4556,139 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name, comment=""):
 				{"post": post_id, "comment": comment, "title": post_excerpt, "excerpt": excerpt, "author": author_name, "url": url}
 			)
 
+# comment_create keeps a comment the user writes on a post: on a feed they
+# own, kept and sent to the subscribers; on one they follow, sent to its
+# owner, with a copy kept where they hold the post. save(comment) keeps the
+# comment's attachments; account is the account the reply also goes out
+# from, where they chose one (decision 31). Answers ({id, feed, post}, None)
+# or (None, failure).
+def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor_input, account, input_id, save):
+	# Get local feed data if available
+	feed = None
+	if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
+		feed = feed_by_id(user_id, feed_id)
+
+	# If feed exists locally AND we own it, handle locally
+	if feed and owned(feed["id"]):
+		feed_id = feed["id"]
+		can_fanout = is_feed_owner(user_id, feed)
+
+		if not check_access_user(user_id, feed_id, "comment"):
+			return None, (403, "errors.access_denied")
+
+		if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed_id):
+			return None, (404, "errors.post_not_found")
+
+		# Only check parent exists if this is a reply to another comment (parent_id not empty)
+		if parent_id and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
+			return None, (404, "errors.parent_not_found")
+
+		# A named anchor must be one of this post's own attachments; a
+		# reference the post does not hold is an error, not a silent drop -
+		# the client asked to anchor and would otherwise believe it had.
+		anchor = comment_anchor(post_id, feed_id, anchor_input)
+		if anchor_input and not anchor:
+			return None, (400, "errors.attachment_not_found")
+
+		uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
+		if mochi.db.exists("select id from comments where id=?", uid):
+			return None, (500, "errors.duplicate_id")
+
+		now = mochi.time.now()
+		mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			uid, feed_id, post_id, parent_id, user_id, user_name, body, now, anchor)
+		mochi.db.commit.fire("comments", "insert", uid)
+
+		# Save comment attachments locally
+		attachments = save(uid)
+		# The reply from the commenter's own account, where they chose one
+		# (decision 31).
+		copies = reply_publish(account, post_id, uid, body)
+
+		set_post_updated(post_id)
+		set_feed_updated(feed_id)
+
+		# Broadcast to subscribers with attachment metadata
+		comment_event = {"id": uid, "post": post_id, "parent": parent_id, "created": now,
+			 "subscriber": user_id, "name": user_name, "body": body, "attachment": anchor}
+		if attachments:
+			comment_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
+		if copies:
+			comment_event["copies"] = copies
+		if can_fanout:
+			broadcast_event(feed_id, "comment/create", comment_event, user_id)
+			if body:
+				notify_mentions(feed_id, post_id, body, user_id, user_name, uid)
+
+		# comment/create WebSocket notification is fired by the commit hook
+		# above (see mochi.db.commit.fire / on_db_commit).
+
+		follow(feed["id"], post_id)
+		return {"id": uid, "feed": feed_visible(feed, is_feed_owner(user_id, feed)), "post": post_id}, None
+
+	# Subscribed feed or remote feed - forward via P2P to owner
+	# Use feed ID from local record if available, otherwise resolve from input
+	target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
+	
+	if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
+		# Could not resolve to valid entity ID
+		return None, (404, "errors.feed_not_found")
+
+	if not mochi.text.valid(post_id, "id"):
+		return None, (400, "errors.invalid_post_id")
+
+	# Generate comment ID locally (similar to forums pattern)
+	uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
+	now = mochi.time.now()
+
+	# The anchor is forwarded for the OWNER to judge against the post's rows;
+	# locally it is only kept if the subscriber's copy of the post holds it,
+	# so a mistyped id never renders as a chip here either.
+	anchor = comment_anchor(post_id, target_feed_id, anchor_input)
+
+	# The files are saved first: the owner pulls their bytes from this server
+	# while it answers, and its fetch responder finds the feed through the
+	# comment row - so a subscriber who holds the post writes that row before
+	# asking. The row references the feed and post rows, which a viewer who
+	# never subscribed does not hold - the insert failed the foreign key and
+	# the request was never sent - and an owner who refuses must leave no
+	# copy behind, so a refusal deletes it again.
+	attachments = save(uid)
+	held = bool(feed) and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id)
+	if held:
+		mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
+			uid, target_feed_id, post_id, parent_id, user_id, user_name, body, now, anchor)
+
+	# Send comment to feed owner with attachment metadata, and with the reply
+	# it went out as from the commenter's own account (decision 31): the
+	# reply first, so the owner can match it when it arrives by the network.
+	submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": user_name, "attachment": anchor_input}
+	if attachments:
+		submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
+	copies = reply_publish(account, post_id, uid, body)
+	if copies:
+		submit_data["copies"] = copies
+
+	# Use the stream request/response path here instead of message.send.
+	# In some remote-view contexts the request is handled outside the subscriber's
+	# local user ownership context, which makes message.send reject the "from"
+	# entity with "invalid from header".
+	response = mochi.remote.request(target_feed_id, "feeds", "comment/add", submit_data)
+	if response.get("error"):
+		attachment_clear(uid)
+		if held:
+			mochi.db.execute("delete from comments where id=? and feed=?", uid, target_feed_id)
+		mochi.log.info("comment_create: remote request failed: %s", response.get("error"))
+		return None, remote_failure(response, 502)
+
+	# The local copy is the one a subscriber sees: the owner's comment/create
+	# broadcast is excluded from the commenter.
+	if held:
+		mochi.db.commit.fire("comments", "insert", uid)
+		follow(target_feed_id, post_id)
+
+	return {"id": uid, "feed": target_feed_id, "post": post_id}, None
+
 def action_comment_create(a):
     if not a.user:
         a.error.label(401, "errors.not_logged_in")
@@ -4522,171 +4710,29 @@ def action_comment_create(a):
         a.error.label(400, "errors.invalid_body")
         return
 
-    # Get local feed data if available
-    feed = None
-    if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
-        feed = feed_by_id(user_id, feed_id)
-
-    # If feed exists locally AND we own it, handle locally
-    if feed and owned(feed["id"]):
-        feed_id = feed["id"]
-        can_fanout = is_feed_owner(user_id, feed)
-
-        if not check_access(a, feed_id, "comment"):
-            a.error.label(403, "errors.access_denied")
-            return
-
-        if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed_id):
-            a.error.label(404, "errors.post_not_found")
-            return
-
-        # Only check parent exists if this is a reply to another comment (parent_id not empty)
-        if parent_id and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
-            a.error.label(404, "errors.parent_not_found")
-            return
-
-        # A named anchor must be one of this post's own attachments; a
-        # reference the post does not hold is an error, not a silent drop -
-        # the client asked to anchor and would otherwise believe it had.
-        anchor = comment_anchor(post_id, feed_id, anchor_input)
-        if anchor_input and not anchor:
-            a.error.label(400, "errors.attachment_not_found")
-            return
-
-        input_id = a.input("id")
-        uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
-        if mochi.db.exists("select id from comments where id=?", uid):
-            a.error.label(500, "errors.duplicate_id")
-            return
-
-        now = mochi.time.now()
-        mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now, anchor)
-        mochi.db.commit.fire("comments", "insert", uid)
-
-        # Save comment attachments locally
-        attachments = attachment_save(a, uid)
-        # The reply from the commenter's own account, where they chose one
-        # (decision 31).
-        copies = reply_publish(a.input("account", ""), post_id, uid, body)
-
-        set_post_updated(post_id)
-        set_feed_updated(feed_id)
-
-        # Broadcast to subscribers with attachment metadata
-        comment_event = {"id": uid, "post": post_id, "parent": parent_id, "created": now,
-             "subscriber": user_id, "name": a.user.identity.name, "body": body, "attachment": anchor}
-        if attachments:
-            comment_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
-        if copies:
-            comment_event["copies"] = copies
-        if can_fanout:
-            broadcast_event(feed_id, "comment/create", comment_event, user_id)
-            if body:
-                notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name, uid)
-
-        # comment/create WebSocket notification is fired by the commit hook
-        # above (see mochi.db.commit.fire / on_db_commit).
-
-        follow(feed["id"], post_id)
-        return {"data": {"id": uid, "feed": feed_visible(feed, is_feed_owner(user_id, feed)), "post": post_id}}
-
-    # Subscribed feed or remote feed - forward via P2P to owner
-    # Use feed ID from local record if available, otherwise resolve from input
-    target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
-    
-    if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
-        # Could not resolve to valid entity ID
-        a.error.label(404, "errors.feed_not_found")
+    result, failure = comment_create(feed_id, post_id, parent_id, user_id, a.user.identity.name, body, anchor_input, a.input("account", ""), a.input("id"), lambda comment: attachment_save(a, comment))
+    if failure:
+        fail(a, failure)
         return
-
-    if not mochi.text.valid(post_id, "id"):
-        a.error.label(400, "errors.invalid_post_id")
-        return
-
-    # Generate comment ID locally (similar to forums pattern)
-    input_id = a.input("id")
-    uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
-    now = mochi.time.now()
-
-    # The anchor is forwarded for the OWNER to judge against the post's rows;
-    # locally it is only kept if the subscriber's copy of the post holds it,
-    # so a mistyped id never renders as a chip here either.
-    anchor = comment_anchor(post_id, target_feed_id, anchor_input)
-
-    # The files are saved first: the owner pulls their bytes from this server
-    # while it answers, and its fetch responder finds the feed through the
-    # comment row - so a subscriber who holds the post writes that row before
-    # asking. The row references the feed and post rows, which a viewer who
-    # never subscribed does not hold - the insert failed the foreign key and
-    # the request was never sent - and an owner who refuses must leave no
-    # copy behind, so a refusal deletes it again.
-    attachments = attachment_save(a, uid)
-    held = bool(feed) and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id)
-    if held:
-        mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
-            uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now, anchor)
-
-    # Send comment to feed owner with attachment metadata, and with the reply
-    # it went out as from the commenter's own account (decision 31): the
-    # reply first, so the owner can match it when it arrives by the network.
-    submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name, "attachment": anchor_input}
-    if attachments:
-        submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
-    copies = reply_publish(a.input("account", ""), post_id, uid, body)
-    if copies:
-        submit_data["copies"] = copies
-
-    # Use the stream request/response path here instead of message.send.
-    # In some remote-view contexts the request is handled outside the subscriber's
-    # local user ownership context, which makes message.send reject the "from"
-    # entity with "invalid from header".
-    response = mochi.remote.request(target_feed_id, "feeds", "comment/add", submit_data)
-    if response.get("error"):
-        attachment_clear(uid)
-        if held:
-            mochi.db.execute("delete from comments where id=? and feed=?", uid, target_feed_id)
-        mochi.log.info("comment_create: remote request failed: %s", response.get("error"))
-        remote_error(a, response, 502)
-        return
-
-    # The local copy is the one a subscriber sees: the owner's comment/create
-    # broadcast is excluded from the commenter.
-    if held:
-        mochi.db.commit.fire("comments", "insert", uid)
-        follow(target_feed_id, post_id)
-
-    return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
+    return {"data": result}
 
 # Edit a comment (author only)
-def action_comment_edit(a):
-	if not a.user:
-		a.error.label(401, "errors.not_logged_in")
-		return
-	user_id = a.user.identity.id
-
-	feed_id = a.input("feed")
-	comment_id = a.input("comment")
-	body = a.input("body")
-
-	if not mochi.text.valid(body, "text"):
-		a.error.label(400, "errors.invalid_body")
-		return
-
+# comment_edit changes a comment the user wrote: on a feed they own, here
+# and for the subscribers; on one they follow, asked of its owner, with the
+# copy here changed at once. post_input names the comment's post where no
+# copy is held. Answers (result, None) or (None, failure).
+def comment_edit(feed_id, comment_id, post_input, user_id, body):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
-		a.error.label(404, "errors.feed_not_found")
-		return
+		return None, (404, "errors.feed_not_found")
 
 	if owned(info["id"]):
 		# Local feed - verify comment author
 		row = mochi.db.row("select * from comments where id=? and feed=?", comment_id, info["id"])
 		if not row:
-			a.error.label(404, "errors.comment_not_found")
-			return
+			return None, (404, "errors.comment_not_found")
 		if row["subscriber"] != user_id:
-			a.error.label(403, "errors.not_allowed")
-			return
+			return None, (403, "errors.not_allowed")
 
 		now = mochi.time.now()
 		mochi.db.execute("update comments set body=?, edited=? where id=?", body, now, comment_id)
@@ -4701,7 +4747,7 @@ def action_comment_edit(a):
 		# comment/edit WebSocket notification is fired by the commit hook
 		# above (see mochi.db.commit.fire / on_db_commit).
 
-		return {"data": {"success": True}}
+		return {"success": True}, None
 
 	else:
 		# Subscriber - send edit request to feed owner via P2P
@@ -4710,8 +4756,7 @@ def action_comment_edit(a):
 		if row:
 			# Have local copy - verify author
 			if row["subscriber"] != user_id:
-				a.error.label(403, "errors.not_allowed")
-				return
+				return None, (403, "errors.not_allowed")
 			# Update locally for optimistic UI
 			now = mochi.time.now()
 			mochi.db.execute("update comments set body=?, edited=? where id=?", body, now, comment_id)
@@ -4720,10 +4765,9 @@ def action_comment_edit(a):
 			reply_update(comment_id, body)
 		else:
 			# No local copy - get post_id from URL path
-			post_id = a.input("post")
+			post_id = post_input
 			if not post_id:
-				a.error.label(400, "errors.post_id_required")
-				return
+				return None, (400, "errors.post_id_required")
 
 		# Send edit request to feed owner (they verify authorization)
 		mochi.message.send(
@@ -4731,10 +4775,9 @@ def action_comment_edit(a):
 			{"comment": comment_id, "post": post_id, "body": body}
 		)
 
-		return {"data": {"success": True}}
+		return {"success": True}, None
 
-# Delete a comment (author or feed owner)
-def action_comment_delete(a):
+def action_comment_edit(a):
 	if not a.user:
 		a.error.label(401, "errors.not_logged_in")
 		return
@@ -4742,21 +4785,35 @@ def action_comment_delete(a):
 
 	feed_id = a.input("feed")
 	comment_id = a.input("comment")
+	body = a.input("body")
 
+	if not mochi.text.valid(body, "text"):
+		a.error.label(400, "errors.invalid_body")
+		return
+
+	result, failure = comment_edit(feed_id, comment_id, a.input("post"), user_id, body)
+	if failure:
+		fail(a, failure)
+		return
+	return {"data": result}
+
+# Delete a comment (author or feed owner)
+# comment_delete deletes a comment the user wrote, or one in a feed they
+# manage, with the replies to it: on a feed they own, here and for the
+# subscribers; on one they follow, asked of its owner. Answers (result,
+# None) or (None, failure).
+def comment_delete(feed_id, comment_id, post_input, user_id):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
-		a.error.label(404, "errors.feed_not_found")
-		return
+		return None, (404, "errors.feed_not_found")
 
 	if owned(info["id"]):
 		# Local feed - verify author or feed owner
 		row = mochi.db.row("select * from comments where id=? and feed=?", comment_id, info["id"])
 		if not row:
-			a.error.label(404, "errors.comment_not_found")
-			return
-		if row["subscriber"] != user_id and not check_access(a, info["id"], "manage"):
-			a.error.label(403, "errors.not_allowed")
-			return
+			return None, (404, "errors.comment_not_found")
+		if row["subscriber"] != user_id and not check_access_user(user_id, info["id"], "manage"):
+			return None, (403, "errors.not_allowed")
 
 		post_id = row["post"]
 		reply_delete(comment_id)
@@ -4770,7 +4827,7 @@ def action_comment_delete(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "comment/delete", "feed": info["id"], "post": post_id, "comment": comment_id, "sender": user_id})
 
-		return {"data": {"success": True}}
+		return {"success": True}, None
 
 	else:
 		# Subscriber - send delete request to feed owner via P2P
@@ -4779,18 +4836,16 @@ def action_comment_delete(a):
 		if row:
 			# Have local copy - verify author
 			if row["subscriber"] != user_id:
-				a.error.label(403, "errors.not_allowed")
-				return
+				return None, (403, "errors.not_allowed")
 			post_id = row["post"]
 			# Delete locally for optimistic UI
 			reply_delete(comment_id)
 			delete_comment_tree(comment_id)
 		else:
 			# No local copy - get post_id from URL path
-			post_id = a.input("post")
+			post_id = post_input
 			if not post_id:
-				a.error.label(400, "errors.post_id_required")
-				return
+				return None, (400, "errors.post_id_required")
 
 		# Send delete request to feed owner (they verify authorization)
 		mochi.message.send(
@@ -4798,7 +4853,22 @@ def action_comment_delete(a):
 			{"comment": comment_id, "post": post_id}
 		)
 
-		return {"data": {"success": True}}
+		return {"success": True}, None
+
+def action_comment_delete(a):
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	user_id = a.user.identity.id
+
+	feed_id = a.input("feed")
+	comment_id = a.input("comment")
+
+	result, failure = comment_delete(feed_id, comment_id, a.input("post"), user_id)
+	if failure:
+		fail(a, failure)
+		return
+	return {"data": result}
 
 # Proxy a comment author's asset from the people service. Includes both binary
 # slots (avatar/banner/favicon) and JSON metadata (style/information) so the
@@ -4898,6 +4968,84 @@ def action_post_image(a):
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 	return a.json({"image": rss.get("image", "")})
 
+# post_react sets or takes back the user's reaction to a post: on a feed
+# they own, here and for the subscribers; on one they follow, sent to its
+# owner, with the copy here changed at once. account is the account a like
+# of a post from Bluesky goes out from. Answers (result, None) or (None,
+# failure).
+def post_react(feed_id, post_id, user_id, user_name, reaction, account):
+	# Get local feed data if available
+	feed = None
+	if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
+		feed = feed_by_id(user_id, feed_id)
+
+	# If feed exists locally AND we own it, handle reaction locally
+	if feed and owned(feed["id"]):
+		feed_id = feed["id"]
+		can_fanout = is_feed_owner(user_id, feed)
+
+		post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
+		if not post_data:
+			return None, (404, "errors.post_not_found")
+
+		# Check access for react permission
+		if not check_access_user(user_id, feed_id, "react"):
+			return None, (403, "errors.access_denied")
+
+		post_reaction_set(post_data, user_id, user_name, reaction)
+		# A like of a post from Bluesky is a like record of the user's hosted
+		# account there, taken back with the reaction (phase 19).
+		like_publish(post_data, reaction, account)
+
+		# Broadcast to subscribers
+		if can_fanout:
+			broadcast_event(feed_id, "post/react",
+				{"feed": feed_id, "post": post_id, "subscriber": user_id,
+				 "name": user_name, "reaction": reaction}, user_id)
+
+		# Send WebSocket notification for real-time UI updates
+		mochi.log.debug("feeds.action_post_react local websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, user_id, reaction)
+		broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": user_id})
+
+		return {"feed": feed_visible(feed, is_feed_owner(user_id, feed)), "id": post_id, "reaction": reaction}, None
+
+	# Subscribed feed or remote feed - forward via P2P to owner
+	target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
+	
+	if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
+		# Could not resolve to valid entity ID
+		return None, (404, "errors.feed_not_found")
+
+	if not mochi.text.valid(post_id, "id"):
+		return None, (400, "errors.invalid_post_id")
+
+	# The local copy is optimistic and only possible when this side holds the
+	# post: the row references the feed and post rows, and a viewer who never
+	# subscribed has neither. The owner's copy is the record.
+	if feed and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id):
+		if reaction:
+			mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )",
+				target_feed_id, post_id, user_id, user_name, reaction)
+		else:
+			mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?",
+				target_feed_id, post_id, user_id)
+
+	# Send WebSocket notification for real-time UI updates on subscriber's side
+	mochi.log.debug("feeds.action_post_react remote websocket type=react/post feed=%s post=%s sender=%s reaction=%s", target_feed_id, post_id, user_id, reaction)
+	broadcast_websocket(target_feed_id, {"type": "react/post", "feed": target_feed_id, "post": post_id, "sender": user_id})
+
+	# Send reaction to feed owner using mochi.message.send (fire-and-forget)
+	# Use user's identity directly in 'from' field (not via headers helper)
+	# Capture result to prevent any error from propagating and aborting the action.
+	send_result = mochi.message.send(
+		{"from": user_id, "to": target_feed_id, "service": "feeds", "event": "post/react/submit"},
+		{"post": post_id, "reaction": reaction if reaction else "none", "name": user_name}
+	)
+	if send_result:
+		mochi.log.debug("post_react: P2P send result: %s", send_result)
+
+	return {"feed": target_feed_id, "post": post_id, "reaction": reaction}, None
+
 def action_post_react(a):
     if not a.user:
         a.error.label(401, "errors.not_logged_in")
@@ -4916,81 +5064,86 @@ def action_post_react(a):
         return
     reaction = result["reaction"]
 
-    # Get local feed data if available
-    feed = None
-    if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
-        feed = feed_by_id(user_id, feed_id)
-
-    # If feed exists locally AND we own it, handle reaction locally
-    if feed and owned(feed["id"]):
-        feed_id = feed["id"]
-        can_fanout = is_feed_owner(user_id, feed)
-
-        post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
-        if not post_data:
-            a.error.label(404, "errors.post_not_found")
-            return
-
-        # Check access for react permission
-        if not check_access(a, feed_id, "react"):
-            a.error.label(403, "errors.access_denied")
-            return
-
-        post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
-        # A like of a post from Bluesky is a like record of the user's hosted
-        # account there, taken back with the reaction (phase 19).
-        like_publish(post_data, reaction, a.input("account", ""))
-
-        # Broadcast to subscribers
-        if can_fanout:
-            broadcast_event(feed_id, "post/react",
-                {"feed": feed_id, "post": post_id, "subscriber": user_id,
-                 "name": a.user.identity.name, "reaction": reaction}, user_id)
-
-        # Send WebSocket notification for real-time UI updates
-        mochi.log.debug("feeds.action_post_react local websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, user_id, reaction)
-        broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": user_id})
-
-        return {"data": {"feed": feed_visible(feed, is_feed_owner(user_id, feed)), "id": post_id, "reaction": reaction}}
-
-    # Subscribed feed or remote feed - forward via P2P to owner
-    target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
-    
-    if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
-        # Could not resolve to valid entity ID
-        a.error.label(404, "errors.feed_not_found")
+    result, failure = post_react(feed_id, post_id, user_id, a.user.identity.name, reaction, a.input("account", ""))
+    if failure:
+        fail(a, failure)
         return
+    return {"data": result}
 
-    if not mochi.text.valid(post_id, "id"):
-        a.error.label(400, "errors.invalid_post_id")
-        return
+# comment_react is post_react for a comment.
+def comment_react(feed_id, comment_id, user_id, user_name, reaction):
+	# Get local feed data if available
+	feed = None
+	if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
+		feed = feed_by_id(user_id, feed_id)
 
-    # The local copy is optimistic and only possible when this side holds the
-    # post: the row references the feed and post rows, and a viewer who never
-    # subscribed has neither. The owner's copy is the record.
-    if feed and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id):
-        if reaction:
-            mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )",
-                target_feed_id, post_id, user_id, a.user.identity.name, reaction)
-        else:
-            mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?",
-                target_feed_id, post_id, user_id)
+	# If feed exists locally AND we own it, handle reaction locally
+	if feed and owned(feed["id"]):
+		feed_id = feed["id"]
+		can_fanout = is_feed_owner(user_id, feed)
 
-    # Send WebSocket notification for real-time UI updates on subscriber's side
-    mochi.log.debug("feeds.action_post_react remote websocket type=react/post feed=%s post=%s sender=%s reaction=%s", target_feed_id, post_id, user_id, reaction)
-    broadcast_websocket(target_feed_id, {"type": "react/post", "feed": target_feed_id, "post": post_id, "sender": user_id})
+		comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
+		if not comment_data:
+			return None, (404, "errors.comment_not_found")
 
-    # Send reaction to feed owner using mochi.message.send (fire-and-forget)
-    # Use user's identity directly in 'from' field (not via headers helper)
-    # Capture result to prevent any error from propagating and aborting the action.
-    send_result = mochi.message.send(
-        {"from": user_id, "to": target_feed_id, "service": "feeds", "event": "post/react/submit"},
-        {"post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
-    )
-    if send_result:
-        mochi.log.debug("post_react: P2P send result: %s", send_result)
+		# Check access for react permission
+		if not check_access_user(user_id, feed_id, "react"):
+			return None, (403, "errors.access_denied")
 
-    return {"data": {"feed": target_feed_id, "post": post_id, "reaction": reaction}}
+		comment_reaction_set(comment_data, user_id, user_name, reaction)
+
+		# Broadcast to subscribers
+		if can_fanout:
+			broadcast_event(feed_id, "comment/react",
+				{"feed": feed_id, "post": comment_data["post"], "comment": comment_id,
+				 "subscriber": user_id, "name": user_name, "reaction": reaction}, user_id)
+
+		# Send WebSocket notification for real-time UI updates
+		broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id, "sender": user_id})
+
+		return {"feed": feed, "post": comment_data["post"], "comment": comment_id, "reaction": reaction}, None
+
+	# Subscribed feed or remote feed - forward via P2P to owner
+	target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
+	
+	if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
+		# Could not resolve to valid entity ID
+		return None, (404, "errors.feed_not_found")
+
+	# "line", not "text": "text" allows 1MB, which would land in the reactions
+	# table and ride the websocket and P2P send. Not the uid shape either -
+	# existing comment ids predate it.
+	if not mochi.text.valid(comment_id, "line"):
+		return None, (400, "errors.invalid_comment_id")
+
+	# Get post_id for the comment (needed for WebSocket notification)
+	comment_row = mochi.db.row("select post from comments where id=?", comment_id)
+	post_id_for_ws = comment_row["post"] if comment_row else ""
+
+	# The local copy is optimistic and only possible when this side holds the
+	# comment: the row references the feed and post rows.
+	if feed and comment_row:
+		if reaction:
+			mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
+				target_feed_id, post_id_for_ws, comment_id, user_id, user_name, reaction)
+		else:
+			mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
+				target_feed_id, comment_id, user_id)
+
+	# Send WebSocket notification for real-time UI updates on subscriber's side
+	broadcast_websocket(target_feed_id, {"type": "react/comment", "feed": target_feed_id, "post": post_id_for_ws, "comment": comment_id, "sender": user_id})
+
+	# Send reaction to feed owner using mochi.message.send (fire-and-forget)
+	# Use user's identity directly in 'from' field (not via headers helper)
+	# Capture result to prevent any error from propagating and aborting the action.
+	send_result = mochi.message.send(
+		{"from": user_id, "to": target_feed_id, "service": "feeds", "event": "comment/react/submit"},
+		{"comment": comment_id, "post": post_id_for_ws, "reaction": reaction if reaction else "none", "name": user_name}
+	)
+	if send_result:
+		mochi.log.debug("comment_react: P2P send result: %s", send_result)
+
+	return {"feed": target_feed_id, "comment": comment_id, "reaction": reaction}, None
 
 def action_comment_react(a):
     if not a.user:
@@ -5011,82 +5164,11 @@ def action_comment_react(a):
         return
     reaction = result["reaction"]
 
-    # Get local feed data if available
-    feed = None
-    if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
-        feed = feed_by_id(user_id, feed_id)
-
-    # If feed exists locally AND we own it, handle reaction locally
-    if feed and owned(feed["id"]):
-        feed_id = feed["id"]
-        can_fanout = is_feed_owner(user_id, feed)
-
-        comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
-        if not comment_data:
-            a.error.label(404, "errors.comment_not_found")
-            return
-
-        # Check access for react permission
-        if not check_access(a, feed_id, "react"):
-            a.error.label(403, "errors.access_denied")
-            return
-
-        comment_reaction_set(comment_data, user_id, a.user.identity.name, reaction)
-
-        # Broadcast to subscribers
-        if can_fanout:
-            broadcast_event(feed_id, "comment/react",
-                {"feed": feed_id, "post": comment_data["post"], "comment": comment_id,
-                 "subscriber": user_id, "name": a.user.identity.name, "reaction": reaction}, user_id)
-
-        # Send WebSocket notification for real-time UI updates
-        broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id, "sender": user_id})
-
-        return {"data": {"feed": feed, "post": comment_data["post"], "comment": comment_id, "reaction": reaction}}
-
-    # Subscribed feed or remote feed - forward via P2P to owner
-    target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
-    
-    if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
-        # Could not resolve to valid entity ID
-        a.error.label(404, "errors.feed_not_found")
+    result, failure = comment_react(feed_id, comment_id, user_id, a.user.identity.name, reaction)
+    if failure:
+        fail(a, failure)
         return
-
-    # "line", not "text": "text" allows 1MB, which would land in the reactions
-    # table and ride the websocket and P2P send. Not the uid shape either -
-    # existing comment ids predate it.
-    if not mochi.text.valid(comment_id, "line"):
-        a.error.label(400, "errors.invalid_comment_id")
-        return
-
-    # Get post_id for the comment (needed for WebSocket notification)
-    comment_row = mochi.db.row("select post from comments where id=?", comment_id)
-    post_id_for_ws = comment_row["post"] if comment_row else ""
-
-    # The local copy is optimistic and only possible when this side holds the
-    # comment: the row references the feed and post rows.
-    if feed and comment_row:
-        if reaction:
-            mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
-                target_feed_id, post_id_for_ws, comment_id, user_id, a.user.identity.name, reaction)
-        else:
-            mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
-                target_feed_id, comment_id, user_id)
-
-    # Send WebSocket notification for real-time UI updates on subscriber's side
-    broadcast_websocket(target_feed_id, {"type": "react/comment", "feed": target_feed_id, "post": post_id_for_ws, "comment": comment_id, "sender": user_id})
-
-    # Send reaction to feed owner using mochi.message.send (fire-and-forget)
-    # Use user's identity directly in 'from' field (not via headers helper)
-    # Capture result to prevent any error from propagating and aborting the action.
-    send_result = mochi.message.send(
-        {"from": user_id, "to": target_feed_id, "service": "feeds", "event": "comment/react/submit"},
-        {"comment": comment_id, "post": post_id_for_ws, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
-    )
-    if send_result:
-        mochi.log.debug("comment_react: P2P send result: %s", send_result)
-
-    return {"data": {"feed": target_feed_id, "comment": comment_id, "reaction": reaction}}
+    return {"data": result}
 
 # Access control actions
 
@@ -5865,7 +5947,10 @@ def event_post_create(e): # feeds_post_create_event
 
 	mmdd = compute_mmdd(post["created"])
 	credibility = e.content("credibility") or 100
-	mochi.db.execute("insert into posts ( id, feed, body, data, created, updated, mmdd, credibility ) values ( ?, ?, ?, ?, ?, ?, ?, ? ) on conflict(id) do update set body=excluded.body, data=excluded.data, created=excluded.created, updated=excluded.updated, mmdd=excluded.mmdd, credibility=excluded.credibility", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"], mmdd, credibility)
+	# A post written as plain text, from a Mastodon app, says so; one that
+	# says nothing is markdown, as the web client writes.
+	format = "text" if e.content("format") == "text" else "markdown"
+	mochi.db.execute("insert into posts ( id, feed, body, data, format, created, updated, mmdd, credibility ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) on conflict(id) do update set body=excluded.body, data=excluded.data, format=excluded.format, created=excluded.created, updated=excluded.updated, mmdd=excluded.mmdd, credibility=excluded.credibility", post["id"], feed_data["id"], post["body"], data_str, format, post["created"], post["created"], mmdd, credibility)
 	if features:
 		clause, values = features_sql(features)
 		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post["id"]]))
@@ -7425,6 +7510,16 @@ def action_sources_remove(a):
 
 	delete_posts = a.input("delete_posts") == "true"
 	mochi.log.debug("sources_remove: source=%s delete_posts=%v raw=%v", source_id, delete_posts, a.input("delete_posts"))
+	source_remove(feed, source, user_id, delete_posts)
+	return {"data": {"success": True}}
+
+# source_remove takes a source off a feed, with the posts it brought where
+# asked; a person followed through a hosted account is unfollowed unless
+# another feed still follows them through it, or the follow is already gone,
+# as when a Bluesky app deleted its record.
+def source_remove(feed, source, user_id, delete_posts, unfollow=True):
+	feed_id = feed["id"]
+	source_id = source["id"]
 
 	# Delete posts before source_posts so the subqueries can find them. Bulk row
 	# deletes, not a per-post loop, which timed out on a large source; attachment
@@ -7446,7 +7541,7 @@ def action_sources_remove(a):
 
 	# A person followed through a hosted account is unfollowed, unless another
 	# feed still follows them through it (phases 17 and 19).
-	if source["type"] == "person/posts" and source.get("account"):
+	if unfollow and source["type"] == "person/posts" and source.get("account"):
 		acc = publish_account(source["account"])
 		if acc and acc.get("hosted") and not person_followed_elsewhere(acc, source["url"], source_id):
 			mochi.account.unfollow(acc["id"], source["url"])
@@ -7474,7 +7569,6 @@ def action_sources_remove(a):
 			if se.event == "schedule_sources_poll" and se.data.get("feed") == feed_id:
 				se.cancel()
 
-	return {"data": {"success": True}}
 
 # Ingest RSS items into posts and source_posts tables
 # Store the new items of one fetch as posts. Returns (new posts, complete);
@@ -9024,19 +9118,22 @@ def action_publish_set(a):
 	before = publish_list(feed["id"])
 	now = mochi.time.now()
 	for id in accounts:
-		if id not in before:
-			mochi.db.execute("insert or ignore into publish (feed, account, created) values (?, ?, ?)", feed["id"], id, now)
-		# The address and page of a hosted account, for the follow control,
-		# which runs with no user and so cannot ask for the account.
-		acc = publish_account(id)
-		if acc and hosted_fediverse(acc):
-			mochi.db.execute("update publish set address=?, url=? where feed=? and account=?", acc.get("identifier", ""), acc.get("url", ""), feed["id"], id)
+		publish_add(feed["id"], id, now)
 	for id in before:
 		if id not in accounts:
 			mochi.db.execute("delete from publish where feed=? and account=?", feed["id"], id)
 	ensure_account_jobs()
 	counts = publish_counts(feed["id"])
 	a.json({"publish": accounts, "kept": {id: counts.get(id, 0) for id in before if id not in accounts and counts.get(id, 0)}})
+
+def publish_add(feed_id, id, now):
+	"""Put an account on a feed's publish list, with the address and page of
+	a hosted one, for the follow control, which runs with no user and so
+	cannot ask for the account."""
+	mochi.db.execute("insert or ignore into publish (feed, account, created) values (?, ?, ?)", feed_id, id, now)
+	acc = publish_account(id)
+	if acc and hosted_fediverse(acc):
+		mochi.db.execute("update publish set address=?, url=? where feed=? and account=?", acc.get("identifier", ""), acc.get("url", ""), feed_id, id)
 
 def action_publish_forget(a):
 	"""Delete the feed's copies on an account, as offered when it leaves the list."""
@@ -11409,40 +11506,45 @@ def action_poll_vote(a):
 	if not a.user or not a.user.identity or not a.user.identity.id:
 		a.error.label(401, "errors.not_logged_in")
 		return
-	user_id = a.user.identity.id
-	feed = feed_by_id(user_id, a.input("feed"))
+	result, failure = poll_vote(a.input("feed"), a.input("post"), a.user.identity.id, a.user.identity.name, lambda poll: poll_options_input(a, poll))
+	if failure:
+		fail(a, failure)
+		return
+	return {"data": result}
+
+# poll_vote votes in a post's poll with the options choose(poll) picks, or
+# None for an invalid choice: on a feed the user owns, recorded and
+# recounted here, and a followed person's poll voted in where they are; on a
+# subscribed feed, sent to the owner. Answers (result, None) or (None,
+# failure).
+def poll_vote(feed_input, post_input, user_id, user_name, choose):
+	feed = feed_by_id(user_id, feed_input)
 	if not feed:
-		a.error.label(404, "errors.feed_not_found")
-		return
-	if not check_access(a, feed["id"], "react"):
-		a.error.label(403, "errors.access_denied")
-		return
-	post = mochi.db.row("select * from posts where id=? and feed=?", a.input("post"), feed["id"])
+		return None, (404, "errors.feed_not_found")
+	if not check_access_user(user_id, feed["id"], "react"):
+		return None, (403, "errors.access_denied")
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_input, feed["id"])
 	poll = poll_of(post) if post else None
 	if not poll:
-		a.error.label(404, "errors.no_poll")
-		return
+		return None, (404, "errors.no_poll")
 	if not poll_open(poll):
-		a.error.label(400, "errors.poll_closed")
-		return
-	options = poll_options_input(a, poll)
+		return None, (400, "errors.poll_closed")
+	options = choose(poll)
 	if options == None:
-		a.error.label(400, "errors.invalid_option")
-		return
+		return None, (400, "errors.invalid_option")
 	if owned(feed["id"]):
 		if post.get("remote") and post.get("author") and not mochi.text.valid(post["author"], "entity"):
 			# A followed person's poll: the vote goes to them; their Update
 			# brings the counts back.
 			if not remote_poll_vote(post, options):
-				a.error.label(502, "errors.vote_not_sent")
-				return
+				return None, (502, "errors.vote_not_sent")
 		poll = poll_vote_apply(post, user_id, options)
 	else:
 		mochi.db.execute("delete from votes where post=? and voter=?", post["id"], user_id)
 		for index in options:
 			mochi.db.execute("insert or ignore into votes (post, option, voter, created) values (?, ?, ?, ?)", post["id"], index, user_id, mochi.time.now())
-		mochi.message.send({"from": user_id, "to": feed["id"], "service": "feeds", "event": "poll/vote"}, {"post": post["id"], "options": options, "name": a.user.identity.name})
-	return {"data": {"post": post["id"], "poll": poll, "voted": options}}
+		mochi.message.send({"from": user_id, "to": feed["id"], "service": "feeds", "event": "poll/vote"}, {"post": post["id"], "options": options, "name": user_name})
+	return {"post": post["id"], "poll": poll, "voted": options}, None
 
 def remote_poll_vote(post, options):
 	"""Our vote in a followed person's poll: a Note naming each chosen option,
@@ -11557,24 +11659,31 @@ def action_post_boost(a):
 	if not post:
 		a.error.label(404, "errors.post_not_found")
 		return
-	if not post.get("remote") or not post.get("author") or mochi.text.valid(post["author"], "entity"):
-		a.error.label(400, "errors.not_from_network")
+	result, failure = post_boost(feed, post, a.input("account", ""))
+	if failure:
+		fail(a, failure)
 		return
+	return {"data": result}
+
+# post_boost boosts a post from another network from the hosted account
+# named, else the user's first on its network, recorded as a copy of the
+# post. Answers ({copies}, None) or (None, failure).
+def post_boost(feed, post, wanted):
+	if not post.get("remote") or not post.get("author") or mochi.text.valid(post["author"], "entity"):
+		return None, (400, "errors.not_from_network")
 	record = post_record(post)
 	network = "bluesky" if record else "fediverse"
-	acc = follow_account(a.input("account", ""), network)
+	acc = follow_account(wanted, network)
 	if not acc:
-		a.error.label(404, "errors.account_not_found")
-		return
+		return None, (404, "errors.account_not_found")
 	if mochi.db.exists("select 1 from copies where post=? and account=?", post["id"], acc["id"]):
-		return {"data": {"copies": copies_present(post["id"])}}
+		return {"copies": copies_present(post["id"])}, None
 	person = account_person(post["author"])
 	result = publish_announce(acc, {"remote": post["remote"], "network": network, "name": person["name"], "link": "", "item": record or {"id": post["remote"]}, "created": post["created"]})
 	if not result:
-		a.error.label(502, "errors.boost_not_sent")
-		return
+		return None, (502, "errors.boost_not_sent")
 	copy_record(feed["id"], post["id"], acc, result)
-	return {"data": {"copies": copies_present(post["id"])}}
+	return {"copies": copies_present(post["id"])}, None
 
 def action_post_unboost(a):
 	"""Take a boost back: the Announce is undone and the copy forgotten."""
@@ -11586,15 +11695,27 @@ def action_post_unboost(a):
 		a.error.label(403, "errors.access_denied")
 		return
 	post = mochi.db.row("select * from posts where id=? and feed=?", a.input("post"), feed["id"])
-	acc = follow_account(a.input("account", ""), "bluesky" if post and post_record(post) else "fediverse") if post else None
-	if not post or not acc:
+	if not post:
 		a.error.label(404, "errors.post_not_found")
 		return
+	result, failure = post_unboost(post, a.input("account", ""))
+	if failure:
+		fail(a, failure)
+		return
+	return {"data": result}
+
+# post_unboost takes a boost of a post back from the hosted account named,
+# else the user's first on its network. Answers ({copies}, None) or (None,
+# failure).
+def post_unboost(post, wanted):
+	acc = follow_account(wanted, "bluesky" if post_record(post) else "fediverse")
+	if not acc:
+		return None, (404, "errors.post_not_found")
 	row = mochi.db.row("select remote from copies where post=? and account=?", post["id"], acc["id"])
 	if row:
 		mochi.account.object.delete(acc["id"], row["remote"])
 		mochi.db.execute("delete from copies where post=? and account=?", post["id"], acc["id"])
-	return {"data": {"copies": copies_present(post["id"])}}
+	return {"copies": copies_present(post["id"])}, None
 
 # === Keyword filters ===
 
