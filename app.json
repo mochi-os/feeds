@@ -40,7 +40,14 @@
 		"mastodon/notifications": {"function": "function_mastodon_notifications"},
 		// What a Bluesky app wrote to a hosted account's repository, told by
 		// core's data server so it is mirrored here (phase 28).
-		"atproto/written": {"function": "function_atproto_written"}
+		"atproto/written": {"function": "function_atproto_written"},
+		// A web feed source's hub pushes, this server's hub asking for the
+		// feeds' web feeds, and pages mentioning a post, as core's WebSub and
+		// Webmention engines call them (phase 29).
+		"websub/notify": {"function": "function_websub_notify"},
+		"websub/topic": {"function": "function_websub_topic"},
+		"websub/content": {"function": "function_websub_content"},
+		"webmention/receive": {"function": "function_webmention_receive"}
 	},
 
 	"architecture": {"engine": "starlark", "version": 4},

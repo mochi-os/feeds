@@ -436,6 +436,8 @@ def on_db_commit(table, kind, row_uid):
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         mochi.websocket.write(fingerprint, msg)
+    if table in ("posts", "comments"):
+        websub_announce(feed_id, table)
 
 
 def feed_by_id(user_id, feed_id):
@@ -3800,6 +3802,7 @@ def post_create(feed, user_id, user_name, body, data, features, accounts, save, 
 	# for this post; subscribers learn of them with the post (decision 31).
 	post = mochi.db.row("select * from posts where id=?", post_uid)
 	copies = publish_post(feed, post_uid, body, format, attachments, accounts, None, post)
+	webmention_send(feed, post_uid, [body], post)
 
 	# Send post to subscribers with attachment metadata piggybacked
 	post_event = {"id": post_uid, "created": now, "body": body, "format": format}
@@ -4028,6 +4031,7 @@ def post_edit(feed_id, post_id, user_id, body, data, features, change):
 
 		now = mochi.time.now()
 		data_value = json.encode(data) if data else ""
+		before = mochi.db.row("select body from posts where id=?", post_id)
 		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
 		if features:
 			clause, values = features_sql(features)
@@ -4045,6 +4049,7 @@ def post_edit(feed_id, post_id, user_id, body, data, features, change):
 			edit_event["data"] = data
 		edit_event["attachments"] = attachment_list(post_id, info["id"])
 		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post)
+		webmention_send(info, post_id, [before["body"] if before else "", body], post)
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 
 		# post/edit WebSocket notification is fired by the commit hook on
@@ -7102,8 +7107,13 @@ def opengraph_feed(params):
 			# Bind the post to the route feed so a post from another feed (e.g. a
 			# private or subscribed feed in the owner's DB) can't be named.
 			post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed["id"])
+			# A post for followers alone is shown to nobody here: this page
+			# is for strangers.
+			if post and post.get("visibility", "public") == "followers":
+				post = None
 			if post:
 				og["type"] = "article"
+				webmention_page(og, feed, post)
 				# Use first 200 chars of post body as description
 				body = post["body"]
 				if len(body) > 200:
@@ -7370,7 +7380,9 @@ def rss_source_create(feed_id, url, name, result, user_id, credibility=100):
 	# Ensure daily watchdog is running
 	ensure_sources_watchdog()
 
-	return (mochi.db.row("select * from sources where id=?", source_id), count)
+	source = mochi.db.row("select * from sources where id=?", source_id)
+	websub_follow(source, result)
+	return (source, count)
 
 # Add a Mochi feed source
 def sources_add_feed(a, feed, source_feed_id, name):
@@ -7538,6 +7550,8 @@ def source_remove(feed, source, user_id, delete_posts, unfollow=True):
 	# Delete source_posts (FK references both sources and posts), then the source
 	mochi.db.execute("delete from source_posts where source=?", source_id)
 	mochi.db.execute("delete from sources where id=?", source_id)
+	if web_protocols():
+		mochi.websub.unsubscribe(source_id)
 
 	# A person followed through a hosted account is unfollowed, unless another
 	# feed still follows them through it (phases 17 and 19).
@@ -7840,6 +7854,7 @@ def poll_rss_source(source, user_id=None, deadline=None):
 		new_ttl = result.get("ttl", 0)
 		mochi.db.execute("update sources set etag=?, modified=?, ttl=? where id=?",
 			new_etag, new_modified, new_ttl, source_id)
+		websub_follow(source, result)
 
 		if new_count > 0:
 			# New items found - reset interval
@@ -7851,6 +7866,11 @@ def poll_rss_source(source, user_id=None, deadline=None):
 	else:
 		# Error - back off
 		new_interval = min(source["interval"] * 2, source["max"])
+
+	# A source its hub pushes is polled at the longest interval, as a safety
+	# net for pushes that never came.
+	if websub_pushed(source_id):
+		new_interval = source["max"]
 
 	# Update source with new interval and next poll time
 	jitter = source["jitter"]
@@ -8322,8 +8342,6 @@ def action_rss_all(a):
 		a.error.label(401, "errors.auth_required")
 		return
 
-	user_id = a.user.identity.id
-
 	# Look up mode from token
 	token = a.input("token")
 	mode = "posts"
@@ -8336,13 +8354,20 @@ def action_rss_all(a):
 			return
 		mode = rss_row["mode"]
 
+	topic, hub = rss_topic(token, "/feeds/rss")
+	if hub:
+		a.header("Link", "<" + hub + '>; rel="hub", <' + topic + '>; rel="self"')
 	a.header("Content-Type", "application/rss+xml; charset=utf-8")
-	a.print('<?xml version="1.0" encoding="UTF-8"?>\n')
-	a.print('<rss version="2.0">\n')
-	a.print('<channel>\n')
-	a.print('<title>' + escape_xml(mochi.app.label("rss.all.title")) + '</title>\n')
-	a.print('<link>' + escape_xml(a.origin + '/feeds') + '</link>\n')
-	a.print('<description>' + escape_xml(mochi.app.label("rss.all.description")) + '</description>\n')
+	a.print(rss_all_document(a.user.identity.id, mode, a.origin, topic, hub))
+
+def rss_all_document(user_id, mode, origin, topic="", hub=""):
+	"""The all-feeds web feed: the public posts of every feed the user
+	follows and, in the all mode, their comments, newest first; naming this
+	server's hub where the address is one of its topics (phase 29)."""
+	out = [rss_open(topic, hub)]
+	out.append('<title>' + escape_xml(mochi.app.label("rss.all.title")) + '</title>\n')
+	out.append('<link>' + escape_xml(origin + '/feeds') + '</link>\n')
+	out.append('<description>' + escape_xml(mochi.app.label("rss.all.description")) + '</description>\n')
 
 	# Build feed name lookup
 	feed_names = {}
@@ -8371,7 +8396,7 @@ def action_rss_all(a):
 		""", user_id)
 
 	if rows:
-		a.print('<lastBuildDate>' + mochi.time.local(rows[0]["created"], "rfc822") + '</lastBuildDate>\n')
+		out.append('<lastBuildDate>' + mochi.time.local(rows[0]["created"], "rfc822") + '</lastBuildDate>\n')
 
 	for row in rows:
 		item_id = row["id"]
@@ -8388,22 +8413,23 @@ def action_rss_all(a):
 		else:
 			title = feed_name
 
-		link = a.origin + "/feeds/" + feed_fp + "/" + item_fp
+		link = origin + "/feeds/" + feed_fp + "/" + item_fp
 
-		a.print('<item>\n')
-		a.print('<title>' + escape_xml(title) + '</title>\n')
-		a.print('<link>' + escape_xml(link) + '</link>\n')
-		a.print('<description>' + escape_xml(body) + '</description>\n')
-		a.print('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
-		a.print('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
+		out.append('<item>\n')
+		out.append('<title>' + escape_xml(title) + '</title>\n')
+		out.append('<link>' + escape_xml(link) + '</link>\n')
+		out.append('<description>' + escape_xml(body) + '</description>\n')
+		out.append('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
+		out.append('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
 		if row["type"] == "post":
 			item_tags = mochi.db.rows("select label from tags where object=?", item_id) or []
 			for it in item_tags:
-				a.print('<category>' + escape_xml(it["label"]) + '</category>\n')
-		a.print('</item>\n')
+				out.append('<category>' + escape_xml(it["label"]) + '</category>\n')
+		out.append('</item>\n')
 
-	a.print('</channel>\n')
-	a.print('</rss>')
+	out.append('</channel>\n')
+	out.append('</rss>')
+	return "".join(out)
 
 # Serve RSS feed for an entity
 def action_rss(a):
@@ -8439,16 +8465,24 @@ def action_rss(a):
 			return
 		mode = rss_row["mode"]
 
+	topic, hub = rss_topic(token, "/feeds/" + mochi.entity.fingerprint(feed_id) + "/rss")
+	if hub:
+		a.header("Link", "<" + hub + '>; rel="hub", <' + topic + '>; rel="self"')
+	a.header("Content-Type", "application/rss+xml; charset=utf-8")
+	a.print(rss_document(feed_data, mode, a.origin, topic, hub))
+
+def rss_document(feed_data, mode, origin, topic="", hub=""):
+	"""A feed's web feed: its public posts and, in the all mode, their
+	comments, newest first; naming this server's hub where the address is
+	one of its topics (phase 29)."""
+	feed_id = feed_data["id"]
 	feed_name = feed_data.get("name", mochi.app.label("feed.name.fallback"))
 	fingerprint = mochi.entity.fingerprint(feed_id)
 
-	a.header("Content-Type", "application/rss+xml; charset=utf-8")
-	a.print('<?xml version="1.0" encoding="UTF-8"?>\n')
-	a.print('<rss version="2.0">\n')
-	a.print('<channel>\n')
-	a.print('<title>' + escape_xml(feed_name) + '</title>\n')
-	a.print('<link>' + escape_xml(a.origin + '/feeds/' + fingerprint) + '</link>\n')
-	a.print('<description>' + escape_xml(mochi.app.label("rss.feed.description", name=feed_name)) + '</description>\n')
+	out = [rss_open(topic, hub)]
+	out.append('<title>' + escape_xml(feed_name) + '</title>\n')
+	out.append('<link>' + escape_xml(origin + '/feeds/' + fingerprint) + '</link>\n')
+	out.append('<description>' + escape_xml(mochi.app.label("rss.feed.description", name=feed_name)) + '</description>\n')
 
 	# Public posts only: a web feed is read by anyone holding its address.
 	if mode == "all":
@@ -8463,7 +8497,7 @@ def action_rss(a):
 		rows = mochi.db.rows("select 'post' as type, id, '' as author, body, created from posts where feed=? and visibility='public' order by created desc limit 50", feed_id)
 
 	if rows:
-		a.print('<lastBuildDate>' + mochi.time.local(rows[0]["created"], "rfc822") + '</lastBuildDate>\n')
+		out.append('<lastBuildDate>' + mochi.time.local(rows[0]["created"], "rfc822") + '</lastBuildDate>\n')
 
 	for row in rows:
 		item_id = row["id"]
@@ -8477,22 +8511,228 @@ def action_rss(a):
 		else:
 			title = feed_name
 
-		link = a.origin + "/feeds/" + fingerprint + "/" + item_fp
+		link = origin + "/feeds/" + fingerprint + "/" + item_fp
 
-		a.print('<item>\n')
-		a.print('<title>' + escape_xml(title) + '</title>\n')
-		a.print('<link>' + escape_xml(link) + '</link>\n')
-		a.print('<description>' + escape_xml(body) + '</description>\n')
-		a.print('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
-		a.print('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
+		out.append('<item>\n')
+		out.append('<title>' + escape_xml(title) + '</title>\n')
+		out.append('<link>' + escape_xml(link) + '</link>\n')
+		out.append('<description>' + escape_xml(body) + '</description>\n')
+		out.append('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
+		out.append('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
 		if row["type"] == "post":
 			item_tags = mochi.db.rows("select label from tags where object=?", item_id) or []
 			for it in item_tags:
-				a.print('<category>' + escape_xml(it["label"]) + '</category>\n')
-		a.print('</item>\n')
+				out.append('<category>' + escape_xml(it["label"]) + '</category>\n')
+		out.append('</item>\n')
 
-	a.print('</channel>\n')
-	a.print('</rss>')
+	out.append('</channel>\n')
+	out.append('</rss>')
+	return "".join(out)
+
+# ============================================================================
+# Web feeds and replies from blogs (the federation plan, phase 29).
+#
+# WebSub: a source whose feed names a hub is subscribed there through core,
+# and the hub's pushes poll it at once; its timer stays as a safety net. This
+# server is also the hub of the feeds' own web feeds: each tokened address is
+# a topic, announced whenever a post or comment changes what it shows.
+# Webmention: a public post's page carries the post and names core's endpoint
+# for the feed, so a page linking to it arrives as a comment - from anyone the
+# feed does not deny (decided 2026-10-20) - and a public post tells the pages
+# it links to.
+
+RSS_TYPE = "application/rss+xml; charset=utf-8"
+
+def web_protocols():
+	"""Whether core speaks WebSub and Webmention: feeds runs on a core a
+	release behind as well, which has neither."""
+	return hasattr(mochi, "websub") and hasattr(mochi, "webmention")
+
+def rss_open(topic, hub):
+	"""A web feed's opening, naming this server's hub and the topic where
+	the address is one."""
+	out = '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n'
+	if hub:
+		out += '<atom:link rel="hub" href="' + escape_xml(hub) + '"/>\n<atom:link rel="self" href="' + escape_xml(topic) + '"/>\n'
+	return out
+
+def rss_topic(token, path):
+	"""A tokened web feed's address as a topic of this server's hub, and the
+	hub's address; both empty without a token, or where the server has no
+	public address."""
+	base = mochi.server.url()
+	if not base or not token or not web_protocols():
+		return "", ""
+	topic = base + path + "?token=" + token
+	hub = mochi.websub.hub(topic, token)
+	if not hub:
+		return "", ""
+	return topic, hub
+
+def function_websub_topic(context, key, topic):
+	"""Whether a tokened web feed is still published, as the hub takes a
+	subscription to it."""
+	row = mochi.db.row("select entity from rss where token=?", key)
+	if not row:
+		return False
+	return row["entity"] == "*" or mochi.db.exists("select 1 from feeds where id=?", row["entity"])
+
+def function_websub_content(context, key, topic):
+	"""A tokened web feed's document, as the hub sends it to subscribers."""
+	row = mochi.db.row("select entity, mode from rss where token=?", key)
+	base = mochi.server.url()
+	if not row or not base:
+		return None
+	hub = mochi.websub.hub(topic, key)
+	if row["entity"] == "*":
+		identity = service_identity()
+		if not identity:
+			return None
+		return {"content": rss_all_document(identity["id"], row["mode"], base, topic, hub), "type": RSS_TYPE}
+	feed = mochi.db.row("select * from feeds where id=?", row["entity"])
+	if not feed:
+		return None
+	return {"content": rss_document(feed, row["mode"], base, topic, hub), "type": RSS_TYPE}
+
+def websub_announce(feed_id, table):
+	"""Tell the subscribers of the web feeds a change shows in: a post's in
+	the feed's and the all-feeds web feeds, a comment's in those of the all
+	mode."""
+	if not web_protocols():
+		return
+	for r in mochi.db.rows("select token, mode from rss where entity=? or entity='*'", feed_id) or []:
+		if table == "comments" and r["mode"] != "all":
+			continue
+		mochi.websub.publish(r["token"])
+
+def websub_follow(source, result):
+	"""Subscribe a web feed source at the hub its feed names, as the address
+	the feed names itself by, or let the subscription go where it names
+	none."""
+	if not web_protocols():
+		return
+	hub = result.get("hub", "")
+	if hub:
+		mochi.websub.subscribe(source["id"], result.get("self", "") or source["url"], hub)
+	elif mochi.websub.get(source["id"]):
+		mochi.websub.unsubscribe(source["id"])
+
+def websub_pushed(source_id):
+	"""Whether a hub pushes a source's changes, so its timer may run long."""
+	if not web_protocols():
+		return False
+	held = mochi.websub.get(source_id)
+	return held != None and held["state"] == "active"
+
+def function_websub_notify(context, source):
+	"""A hub's push for a source: polled now, through the feed's scheduled
+	poll, which keeps one poll of a feed at a time. A source that is gone
+	lets its subscription go."""
+	row = mochi.db.row("select id, feed from sources where id=?", source)
+	if not row:
+		mochi.websub.unsubscribe(source)
+		return None
+	mochi.db.execute("update sources set next=? where id=?", mochi.time.now(), source)
+	mochi.schedule.after("schedule_sources_poll", {"feed": row["feed"]}, 1)
+	return None
+
+def webmention_page(og, feed, post):
+	"""A public post's page as servers read it: the post itself as an
+	h-entry, so a page it links to can confirm the link, and the endpoint for
+	mentions of it."""
+	if not web_protocols():
+		return
+	text = post["body"]
+	if post.get("format", "markdown") != "markdown":
+		text = fediverse_plain(text)
+	og["entry"] = {"content": mochi.text.markdown(text), "author": feed["name"], "url": post_link(feed["id"], post["id"]), "published": post["created"]}
+	endpoint = mochi.webmention.endpoint(feed["id"])
+	if endpoint:
+		og["links"] = (og.get("links") or []) + [{"rel": "webmention", "href": endpoint}]
+
+def webmention_send(feed, post_id, bodies, post):
+	"""Tell the pages a post links to that it does, the post's page the
+	source: on its creation, its edits - naming the links before and after -
+	and its deletion. A post for followers alone, a post brought from a
+	source, and a post in a feed no stranger may read tell nobody, as no page
+	they link to could see them."""
+	if not web_protocols() or not post or post.get("visibility", "public") == "followers":
+		return
+	if mochi.db.exists("select 1 from source_posts where post=?", post_id):
+		return
+	if not check_event_access(None, feed["id"], "view"):
+		return
+	source = post_link(feed["id"], post_id)
+	if not source:
+		return
+	targets = []
+	for body in bodies:
+		for link in mochi.text.links(body or ""):
+			if link not in targets:
+				targets.append(link)
+	if targets:
+		mochi.webmention.send(source, targets)
+
+def webmention_post(feed, target):
+	"""The post of a feed's a mention names, by the last segment of its
+	page's path; None for a post for followers alone."""
+	path = target.split("#")[0].split("?")[0].rstrip("/")
+	post_id = path.split("/")[-1] if path else ""
+	if not post_id:
+		return None
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed["id"])
+	if not post or post.get("visibility", "public") == "followers":
+		return None
+	return post
+
+def webmention_denied(feed_id, subject):
+	"""Whether the feed denies someone, by a rule naming them."""
+	for rule in (mochi.access.list.resource("feed/" + feed_id) or []):
+		if rule.get("subject") == subject and not rule.get("grant"):
+			return True
+	return False
+
+def function_webmention_receive(context, source, target, entity, deleted, kind="mention", author=None, content="", url="", published=0):
+	"""A page's mention of a public post here, checked by core: a reply or
+	a mention is a comment by the page's author, a like a reaction, and a
+	repost or a bookmark is not shown. A mention sent again replaces its
+	comment; one whose page is gone, or no longer links, takes it away."""
+	feed = mochi.db.row("select * from feeds where id=?", entity)
+	if not feed:
+		return None
+	post = webmention_post(feed, target)
+	if not post:
+		return None
+	existing = mochi.db.row("select * from comments where post=? and remote=?", post["id"], source)
+	if deleted:
+		if existing:
+			comment_delete_from_network(existing)
+		if mochi.db.exists("select 1 from reactions where post=? and comment='' and subscriber=?", post["id"], source):
+			reaction_from_network("post", post, source, "", "")
+		return None
+	if not check_event_access(None, feed["id"], "view"):
+		return None
+	author = author if type(author) == "dict" else {}
+	actor = safe_link(str(author.get("url", "") or "")) or source
+	name = str(author.get("name", "") or "")[:200] or source
+	if webmention_denied(feed["id"], actor) or webmention_denied(feed["id"], source):
+		return None
+	if kind == "like":
+		reaction_from_network("post", post, source, name, "like")
+		return None
+	if kind not in ("reply", "mention"):
+		return None
+	body = str(content or "")[:5000]
+	if existing:
+		if existing["body"] != body:
+			comment_edit_from_network(existing, body, mochi.time.now())
+		return None
+	now = mochi.time.now()
+	created = number(published)
+	if created <= 0 or created > now:
+		created = now
+	comment_from_network({"id": ""}, post, "", actor, name, safe_link(str(url or "")) or source, body, "text", source, created)
+	return None
 
 # ============================================================================
 # Accounts on other networks (the federation plan, phase 12).
@@ -8964,7 +9204,13 @@ def publish_update(feed, post_id, body, format, attachments, post=None):
 
 def publish_delete(post_id):
 	"""Withdraw every copy of a post (decision 25). The record of their ids
-	stays, so a poll never brings one back."""
+	stays, so a poll never brings one back. The pages it linked to are told
+	(phase 29), and its web feeds' subscribers."""
+	post = mochi.db.row("select * from posts where id=?", post_id)
+	feed = mochi.db.row("select * from feeds where id=?", post["feed"]) if post else None
+	if feed:
+		webmention_send(feed, post_id, [post["body"]], post)
+		websub_announce(feed["id"], "posts")
 	for row in mochi.db.rows("select account, remote from copies where post=? and account!=''", post_id):
 		acc = publish_account(row["account"])
 		if acc:
