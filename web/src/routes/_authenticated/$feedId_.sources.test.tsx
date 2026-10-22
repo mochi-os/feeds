@@ -3,12 +3,17 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import type { Source } from '@/types'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { AddSourceDialog, type SourceKind } from './$feedId_.sources'
+import {
+  AddSourceDialog,
+  SourceType,
+  type SourceKind,
+} from './$feedId_.sources'
 
 const state = vi.hoisted(() => ({
   addSource: vi.fn(),
@@ -120,5 +125,47 @@ describe('Add source dialog', () => {
         undefined
       )
     )
+  })
+})
+
+describe('Source type', () => {
+  beforeEach(() => {
+    i18n.load('en', {})
+    i18n.activate('en')
+  })
+
+  function label(type: string, account?: string) {
+    const source = {
+      id: 's1',
+      feed: 'f1',
+      type,
+      url: '',
+      name: 'Picks',
+      account,
+    } as Source
+    const { container, unmount } = render(
+      <I18nProvider i18n={i18n}>
+        <SourceType source={source} />
+      </I18nProvider>
+    )
+    const text = container.textContent
+    unmount()
+    return text
+  }
+
+  it('names a Bluesky custom feed or list as one', () => {
+    expect(label('generator/posts')).toBe('Bluesky feed or list')
+    expect(label('list/posts')).toBe('Bluesky feed or list')
+  })
+
+  it('names the other kinds of source', () => {
+    expect(label('rss')).toBe('RSS')
+    expect(label('feed/memories')).toBe('Memories')
+    expect(label('account/timeline')).toBe('Account timeline')
+    expect(label('account/posts')).toBe('Account posts')
+    expect(label('person/posts', 'a1')).toBe('Posts on the fediverse')
+    expect(label('person/posts')).toBe('Posts on Bluesky')
+    expect(label('tag/posts')).toBe('Hashtag')
+    expect(label('feed/posts')).toBe('Mochi feed')
   })
 })

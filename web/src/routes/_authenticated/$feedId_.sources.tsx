@@ -326,6 +326,21 @@ export type SourceKind =
   | 'tag'
   | 'bluesky'
 
+// What kind of source a source is, as the list names it under the source.
+export function SourceType({ source }: { source: Source }) {
+  if (source.type === 'rss') return <Trans>RSS</Trans>
+  if (source.type === 'feed/memories') return <Trans>Memories</Trans>
+  if (source.type === 'account/timeline') return <Trans>Account timeline</Trans>
+  if (source.type === 'account/posts') return <Trans>Account posts</Trans>
+  if (source.type === 'person/posts' && source.account)
+    return <Trans>Posts on the fediverse</Trans>
+  if (source.type === 'person/posts') return <Trans>Posts on Bluesky</Trans>
+  if (source.type === 'tag/posts') return <Trans>Hashtag</Trans>
+  if (source.type === 'generator/posts' || source.type === 'list/posts')
+    return <Trans>Bluesky feed or list</Trans>
+  return <Trans>Mochi feed</Trans>
+}
+
 interface SourcesPanelProps {
   feedId: string
   addUrl?: string
@@ -582,23 +597,7 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                           <>{source.url} · </>
                         )}
                       <span>
-                        {source.type === 'rss' ? (
-                          <Trans>RSS</Trans>
-                        ) : source.type === 'feed/memories' ? (
-                          <Trans>Memories</Trans>
-                        ) : source.type === 'account/timeline' ? (
-                          <Trans>Account timeline</Trans>
-                        ) : source.type === 'account/posts' ? (
-                          <Trans>Account posts</Trans>
-                        ) : source.type === 'person/posts' && source.account ? (
-                          <Trans>Posts on the fediverse</Trans>
-                        ) : source.type === 'person/posts' ? (
-                          <Trans>Posts on Bluesky</Trans>
-                        ) : source.type === 'tag/posts' ? (
-                          <Trans>Hashtag</Trans>
-                        ) : (
-                          <Trans>Mochi feed</Trans>
-                        )}
+                        <SourceType source={source} />
                       </span>
                       {source.fetched > 0 && (
                         <span>
