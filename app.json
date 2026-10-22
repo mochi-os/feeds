@@ -10,8 +10,8 @@
 	"paths": ["feeds"],
 	"services": ["feeds"],
 	"functions": {
-		"list": {"function": "function_list", "permission": "oauth/consent"},
-		"create": {"function": "function_create", "permission": "oauth/consent"},
+		"list": {"function": "function_list", "permission": "feeds/read"},
+		"create": {"function": "function_create", "permission": "feeds/write"},
 		// An object a feed published as a hosted fediverse account, asked for
 		// by core's ActivityPub engine when another server fetches it.
 		"activitypub/object": {"function": "function_activitypub_object"},
@@ -20,11 +20,38 @@
 		"activitypub/featured": {"function": "function_activitypub_featured"},
 		// The posts of a feed published as a Bluesky custom feed, asked for by
 		// core's feed generator when Bluesky's index wants the feed (phase 19).
-		"atproto/skeleton": {"function": "function_atproto_skeleton"}
+		"atproto/skeleton": {"function": "function_atproto_skeleton"},
+		// What core's Mastodon interface reads and writes as a hosted
+		// fediverse account (phase 28, mastodon.star).
+		"mastodon/posts": {"function": "function_mastodon_posts"},
+		"mastodon/comments": {"function": "function_mastodon_comments"},
+		"mastodon/comment": {"function": "function_mastodon_comment"},
+		"mastodon/create": {"function": "function_mastodon_create"},
+		"mastodon/edit": {"function": "function_mastodon_edit"},
+		"mastodon/delete": {"function": "function_mastodon_delete"},
+		"mastodon/react": {"function": "function_mastodon_react"},
+		"mastodon/save": {"function": "function_mastodon_save"},
+		"mastodon/boost": {"function": "function_mastodon_boost"},
+		"mastodon/hold": {"function": "function_mastodon_hold"},
+		"mastodon/vote": {"function": "function_mastodon_vote"},
+		"mastodon/follow": {"function": "function_mastodon_follow"},
+		"mastodon/lists": {"function": "function_mastodon_lists"},
+		"mastodon/list": {"function": "function_mastodon_list"},
+		"mastodon/notifications": {"function": "function_mastodon_notifications"},
+		// What a Bluesky app wrote to a hosted account's repository, told by
+		// core's data server so it is mirrored here (phase 28).
+		"atproto/written": {"function": "function_atproto_written"},
+		// A web feed source's hub pushes, this server's hub asking for the
+		// feeds' web feeds, and pages mentioning a post, as core's WebSub and
+		// Webmention engines call them (phase 29).
+		"websub/notify": {"function": "function_websub_notify"},
+		"websub/topic": {"function": "function_websub_topic"},
+		"websub/content": {"function": "function_websub_content"},
+		"webmention/receive": {"function": "function_webmention_receive"}
 	},
 
 	"architecture": {"engine": "starlark", "version": 4},
-	"execute": ["lib/attachments.star", "feeds.star", "accounts.star"],
+	"execute": ["lib/attachments.star", "feeds.star", "accounts.star", "mastodon.star"],
 	"require": {"version": {"minimum": "2.0.12"}},
 
 	"database": {
