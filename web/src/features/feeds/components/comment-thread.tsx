@@ -405,7 +405,7 @@ export function CommentThread({
 
                   {shareUrl && (
                     <CommentShareButton
-                      url={shareUrl(comment.id)}
+                      getUrl={() => shareUrl(comment.id)}
                       className={`${iconActionButtonClass} [&>svg]:size-4`}
                     />
                   )}
