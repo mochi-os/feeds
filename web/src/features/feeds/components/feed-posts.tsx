@@ -11,7 +11,7 @@ import {
   useState,
 } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate, useRouter } from '@tanstack/react-router'
 import type {
   Attachment as AttachmentData,
   FeedComment,
@@ -61,6 +61,10 @@ import {
   moveItem,
   findCommentTextInTree,
   countCommentTree,
+  absoluteRouteUrl,
+  CommentThreadBack,
+  CommentThreadProvider,
+  findCommentInTree,
   type MentionUser,
   newPendingFiles,
   isMedia,
@@ -201,6 +205,8 @@ type FeedPostsProps = {
   observePost?: (el: HTMLElement | null) => void
   /** When true, disables click-to-navigate and hover styling (single post page) */
   singlePost?: boolean
+  /** A comment the single post is opened on, shown alone with its replies. */
+  focusedComment?: string
   /** Read-only render (e.g. Saved page): shows tags/reaction counts + bookmark
    * but hides interactive reactions/comment/edit/delete controls. */
   readOnly?: boolean
@@ -295,6 +301,14 @@ export type PostCommentsListProps = {
   filter?: (comment: FeedComment) => boolean
   /** Rendered in place of the list when the filter leaves nothing. */
   emptyState?: React.ReactNode
+  /** A comment the post is opened on, shown alone with its replies. */
+  focusedComment?: string
+  /**
+   * Cut replies past the depth limit with "Continue this thread". Off in the
+   * image viewer's panel: the viewer keeps its open state to itself and does
+   * not follow a navigation, so the thread would change behind it.
+   */
+  continueThread?: boolean
 }
 
 export function PostCommentsList({
@@ -321,7 +335,37 @@ export function PostCommentsList({
   onOpenAttachment,
   filter,
   emptyState,
+  focusedComment,
+  continueThread = true,
 }: PostCommentsListProps) {
+  const navigate = useNavigate()
+  const router = useRouter()
+  const postParams = {
+    feedId: post.feedFingerprint ?? post.feedId,
+    postId: post.id,
+  }
+  // Opening one comment is a navigation to the post's page, so Back returns
+  // to the whole thread, or to the feed the thread was continued from.
+  const openComment = (commentId?: string) =>
+    void navigate({
+      to: '/$feedId/$postId',
+      params: postParams,
+      search: { comment: commentId },
+    })
+  const shareUrl = (commentId: string) =>
+    absoluteRouteUrl(router, {
+      to: '/$feedId/$postId',
+      params: postParams,
+      search: { comment: commentId },
+    })
+  const focused = focusedComment
+    ? findCommentInTree(
+        post.comments,
+        focusedComment,
+        (comment) => comment.id,
+        (comment) => comment.replies
+      )
+    : undefined
   const [suppressBatchReveal, setSuppressBatchReveal] = useState(false)
   const [commentsListRef] = useListAutoAnimate<HTMLDivElement>({
     disabled: suppressBatchReveal,
@@ -345,12 +389,19 @@ export function PostCommentsList({
   }
 
   return (
-    <>
+    <CommentThreadProvider
+      value={{
+        onContinue: continueThread ? openComment : undefined,
+        focusedId: focused?.id,
+      }}
+    >
+      {focused && <CommentThreadBack onClick={() => openComment()} />}
       <div ref={commentsListRef}>
-        {visibleComments.map((comment) => (
+        {(focused ? [focused] : visibleComments).map((comment) => (
           <CommentThread
             key={comment.id}
             comment={comment}
+            shareUrl={shareUrl}
             feedId={post.feedId}
             postId={post.id}
             replyingTo={replyingTo}
@@ -374,7 +425,7 @@ export function PostCommentsList({
           />
         ))}
       </div>
-      {!isExpanded && remaining > 0 && (
+      {!focused && !isExpanded && remaining > 0 && (
         <button
           type='button'
           className='text-muted-foreground hover:text-foreground mt-2 text-xs font-medium transition-colors'
@@ -388,7 +439,7 @@ export function PostCommentsList({
           <Trans>View {remaining} more comments</Trans>
         </button>
       )}
-    </>
+    </CommentThreadProvider>
   )
 }
 
@@ -458,6 +509,7 @@ export function FeedPosts({
   onPostClick,
   observePost,
   singlePost = false,
+  focusedComment,
   readOnly = false,
   isFetchingNextPage = false,
 }: FeedPostsProps) {
@@ -925,6 +977,7 @@ export function FeedPosts({
   // post's thread scoped to an image, not a second thread with fewer powers.
   const threadPropsFor = (post: FeedPost) => ({
     post,
+    focusedComment,
     onOpenAttachment: (attachmentId: string) =>
       openerFor(post.id).current?.(attachmentId),
     isExpanded: !!expandedComments[post.id],

@@ -43,12 +43,17 @@ import {
 import { patchPostReaction } from '@/features/feeds/utils'
 
 export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
+  // A comment the post is opened on, alone with its replies.
+  validateSearch: (search: Record<string, unknown>): { comment?: string } => ({
+    comment: typeof search.comment === 'string' ? search.comment : undefined,
+  }),
   component: SinglePostPage,
 })
 
 function SinglePostPage() {
   const { t } = useLingui()
   const { feedId: urlFeedId, postId } = Route.useParams()
+  const { comment: focusedComment } = Route.useSearch()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const currentUserId = useAuthStore((state) => state.identity)
@@ -554,6 +559,7 @@ function SinglePostPage() {
           isFeedOwner={isOwner}
           isLoggedIn={isLoggedIn}
           singlePost
+          focusedComment={focusedComment}
         />
       </Main>
     </>

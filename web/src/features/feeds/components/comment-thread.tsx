@@ -9,6 +9,7 @@ import { Plural, Trans } from '@lingui/react/macro'
 import {
   Button,
   CommentBox,
+  CommentShareButton,
   CommentTreeLayout,
   ConfirmDialog,
   EntityAvatar,
@@ -82,6 +83,8 @@ type CommentThreadProps = {
    * comments showing.
    */
   onOpenAttachment?: (attachmentId: string) => void
+  /** The full address of a comment, for its Share button. */
+  shareUrl?: (commentId: string) => string
 }
 
 export function CommentThread({
@@ -107,6 +110,7 @@ export function CommentThread({
   canManageComments = false,
   onSearchPeople,
   onOpenAttachment,
+  shareUrl,
 }: CommentThreadProps) {
   const { formatTimestamp } = useFormat()
   const [collapsed, setCollapsed] = useState(false)
@@ -249,7 +253,10 @@ export function CommentThread({
     <div className='space-y-2 md:space-y-1.5'>
       {/* Per-row hover group - only this comment's row, not children */}
       <div className='group/row'>
-        <div className='flex h-5 items-center gap-2 text-xs'>
+        <div
+          data-comment-header=''
+          className='flex h-5 items-center gap-2 text-xs'
+        >
           {authorName}
           <span className='text-muted-foreground'>·</span>
           <span className='text-muted-foreground'>
@@ -394,6 +401,13 @@ export function CommentThread({
                       </TooltipTrigger>
                       <TooltipContent>{t`Reply`}</TooltipContent>
                     </Tooltip>
+                  )}
+
+                  {shareUrl && (
+                    <CommentShareButton
+                      getUrl={() => shareUrl(comment.id)}
+                      className={`${iconActionButtonClass} [&>svg]:size-4`}
+                    />
                   )}
 
                   {canEditComment && (
@@ -588,6 +602,7 @@ export function CommentThread({
           canManageComments={canManageComments}
           onSearchPeople={onSearchPeople}
           onOpenAttachment={onOpenAttachment}
+          shareUrl={shareUrl}
         />
       ))}
     </>
@@ -600,6 +615,7 @@ export function CommentThread({
       isCollapsed={collapsed}
       onToggleCollapse={() => setCollapsed(!collapsed)}
       hasChildren={hasReplies}
+      commentId={comment.id}
       avatar={avatar}
       content={content}
       collapsedContent={collapsedContent}
