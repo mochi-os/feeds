@@ -303,6 +303,12 @@ export type PostCommentsListProps = {
   emptyState?: React.ReactNode
   /** A comment the post is opened on, shown alone with its replies. */
   focusedComment?: string
+  /**
+   * Cut replies past the depth limit with "Continue this thread". Off in the
+   * image viewer's panel: the viewer keeps its open state to itself and does
+   * not follow a navigation, so the thread would change behind it.
+   */
+  continueThread?: boolean
 }
 
 export function PostCommentsList({
@@ -330,6 +336,7 @@ export function PostCommentsList({
   filter,
   emptyState,
   focusedComment,
+  continueThread = true,
 }: PostCommentsListProps) {
   const navigate = useNavigate()
   const router = useRouter()
@@ -383,7 +390,10 @@ export function PostCommentsList({
 
   return (
     <CommentThreadProvider
-      value={{ onContinue: openComment, focusedId: focused?.id }}
+      value={{
+        onContinue: continueThread ? openComment : undefined,
+        focusedId: focused?.id,
+      }}
     >
       {focused && <CommentThreadBack onClick={() => openComment()} />}
       <div ref={commentsListRef}>
