@@ -15,6 +15,7 @@ import {
   isInShell,
   getAppBasepath,
   createAppHistory,
+  startRoutePrefetch,
   type Catalogs,
 } from '@mochi/web'
 import { FeedsCommandMenu } from './components/layout/feeds-command-menu'
@@ -197,6 +198,9 @@ const router = createRouter({
   history: createAppHistory(),
   defaultPreload: false,
 })
+
+// Fetch page code on hover, press or focus; never route data
+startRoutePrefetch(router)
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
