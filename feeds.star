@@ -8854,7 +8854,7 @@ def copies_by_posts(post_ids):
 
 def copies_store(post_id, copies):
 	"""Keep the copies a post event carries, as a subscriber (decision 31)."""
-	if type(copies) != "list":
+	if not listlike(copies):
 		return
 	mochi.db.execute("delete from copies where post=? and account=''", post_id)
 	for c in copies:
@@ -9733,7 +9733,7 @@ def import_bookmarks_page(acc, cursor):
 		if cursor:
 			query["max_id"] = cursor
 		answer = mochi.account.request(acc["id"], "GET", "v1/bookmarks", query=query)
-		items = answer.get("data") if answer and type(answer.get("data")) == "list" else []
+		items = answer.get("data") if answer and listlike(answer.get("data")) else []
 		next = str(items[-1].get("id", "")) if items and type(items[-1]) == "dict" else ""
 		return {"items": items, "cursor": next if len(items) >= ACCOUNT_PAGE else ""}
 	query = {"limit": str(ACCOUNT_PAGE)}
@@ -10226,7 +10226,7 @@ def replies_store(comment_id, copies):
 	"""Keep the copies a comment event carries, and answer them as the event
 	carries them on."""
 	kept = []
-	if type(copies) != "list":
+	if not listlike(copies):
 		return kept
 	for c in copies:
 		if type(c) != "dict":
@@ -11158,7 +11158,7 @@ def import_follows_page(acc, cursor):
 		if max_id:
 			query["max_id"] = max_id
 		answer = mochi.account.request(acc["id"], "GET", "v1/accounts/" + own + "/following", query=query)
-		items = answer.get("data") if answer and type(answer.get("data")) == "list" else []
+		items = answer.get("data") if answer and listlike(answer.get("data")) else []
 		next = link_next(str(answer.get("link", "") or "")) if answer else ""
 		follows = [{"network": "fediverse", "identifier": str(f.get("url") or f.get("uri") or ""), "name": str(f.get("display_name") or f.get("acct") or "")} for f in items if type(f) == "dict"]
 		return {"items": follows, "cursor": (own + "|" + next) if next and items else ""}
