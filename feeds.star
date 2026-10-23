@@ -4998,8 +4998,8 @@ def post_react(feed_id, post_id, user_id, user_name, reaction, account):
 			return None, (403, "errors.access_denied")
 
 		post_reaction_set(post_data, user_id, user_name, reaction)
-		# A like of a post from Bluesky is a like record of the user's hosted
-		# account there, taken back with the reaction (phase 19).
+		# A like of a post from another network goes out from the user's
+		# hosted account there, taken back with the reaction.
 		like_publish(post_data, reaction, account)
 
 		# Broadcast to subscribers
@@ -9469,7 +9469,7 @@ def account_item(acc, item):
 	image = ""
 	embed = post.get("embed") or {}
 	images = embed.get("images") if type(embed) == "dict" else None
-	if type(images) == "list" and images and type(images[0]) == "dict":
+	if listlike(images) and images and type(images[0]) == "dict":
 		image = safe_link(str(images[0].get("fullsize", "") or images[0].get("thumb", "")))
 	reason = item.get("reason") if type(item.get("reason")) == "dict" else None
 	boosted = ""
@@ -9988,19 +9988,29 @@ FEDIVERSE_LIMITS = {"images": MASTODON_ATTACHMENTS, "video": 1, "image_bytes": M
 # The public, as a Note addresses it.
 FEDIVERSE_PUBLIC = "https://www.w3.org/ns/activitystreams#Public"
 
-def fediverse_tags_base():
-	"""Where a hashtag link in a published post leads: this server's feed
-	search, or nothing where the server has no public address."""
-	base = mochi.server.url()
+def fediverse_base(acc=None):
+	"""The address a published post's links start from: the hosted account's
+	own, where its Note is served - a server may have no address of its own
+	and serve only its people's domains - else this server's public address,
+	else nothing."""
+	parts = str((acc or {}).get("url", "") or "").split("/")
+	if len(parts) > 2 and parts[0] in ("https:", "http:") and parts[2]:
+		return parts[0] + "//" + parts[2]
+	return mochi.server.url()
+
+def fediverse_tags_base(acc=None):
+	"""Where a hashtag link in a published post leads: the feed search where
+	the post is served, or nothing where there is no public address."""
+	base = fediverse_base(acc)
 	if not base:
 		return ""
 	return base + "/feeds/search?q=%23"
 
-def fediverse_attachment(feed_id, att, variant=""):
-	"""An attachment as a Document in a Note: its public address here, as the
-	attachment routes serve it, the preview variant for an image over the
-	limit. None where the server has no public address."""
-	base = mochi.server.url()
+def fediverse_attachment(feed_id, att, variant="", acc=None):
+	"""An attachment as a Document in a Note: its public address where the
+	post is served, as the attachment routes serve it, the preview variant for
+	an image over the limit. None where there is no public address."""
+	base = fediverse_base(acc)
 	fingerprint = mochi.entity.fingerprint(feed_id)
 	if not base or not fingerprint:
 		return None
@@ -10013,7 +10023,7 @@ def fediverse_attachment(feed_id, att, variant=""):
 		document["name"] = description
 	return document
 
-def fediverse_attachments(feed_id, attachments):
+def fediverse_attachments(feed_id, attachments, acc=None):
 	"""The attachments of a post that go in its Note: images and videos within
 	Mastodon's defaults, in the post's order, the kind of the first deciding
 	where one kind goes per post, as publish_media chooses them."""
@@ -10032,7 +10042,7 @@ def fediverse_attachments(feed_id, attachments):
 			if kind != "image":
 				continue
 			variant = "preview"
-		document = fediverse_attachment(feed_id, att, variant)
+		document = fediverse_attachment(feed_id, att, variant, acc)
 		if document:
 			documents.append(document)
 	return documents
@@ -10062,7 +10072,7 @@ def fediverse_note(acc, feed, post_id, body, format, link, attachments, source, 
 	text = sourced_text(source, body) if source else body
 	if format != "markdown":
 		text = fediverse_plain(text)
-	rendered = mochi.text.fediverse(text, tags=fediverse_tags_base())
+	rendered = mochi.text.fediverse(text, tags=fediverse_tags_base(acc))
 	note = {"type": "Note", "content": rendered["html"], "sensitive": bool(features["sensitive"]) or bool(features["warning"])}
 	if features["warning"]:
 		note["summary"] = features["warning"]
@@ -10098,7 +10108,7 @@ def fediverse_note(acc, feed, post_id, body, format, link, attachments, source, 
 			tag["href"] = found["id"]
 			mentioned.append(found["id"])
 		tags.append(tag)
-	base = fediverse_tags_base()
+	base = fediverse_tags_base(acc)
 	for hashtag in rendered["hashtags"]:
 		tag = {"type": "Hashtag", "name": "#" + hashtag}
 		if base:
@@ -10112,7 +10122,7 @@ def fediverse_note(acc, feed, post_id, body, format, link, attachments, source, 
 			note["cc"] = [acc["url"] + "/followers"] + mentioned
 		else:
 			note["cc"] = (note.get("cc") or []) + mentioned
-	documents = fediverse_attachments(feed["id"], attachments or [])
+	documents = fediverse_attachments(feed["id"], attachments or [], acc)
 	if documents:
 		note["attachment"] = documents
 	return note
@@ -10124,7 +10134,15 @@ def function_activitypub_object(context, account, id):
 	public."""
 	row = mochi.db.row("select post from copies where account=? and remote=?", account, id)
 	if not row:
-		return None
+		# A reply the account published (decision 31), which a server that
+		# reads what it is sent by its id fetches here.
+		reply = mochi.db.row("select comment from replies where account=? and remote=?", account, id)
+		comment = mochi.db.row("select id, post, body from comments where id=?", reply["comment"]) if reply else None
+		acc = mochi.account.get(account) if comment else None
+		if not acc:
+			return None
+		note, _ = reply_object(acc, comment["id"], comment["post"], comment["body"])
+		return note
 	post = mochi.db.row("select * from posts where id=?", row["post"])
 	if not post:
 		return None
@@ -10239,6 +10257,14 @@ def replies_store(comment_id, copies):
 		kept.append(entry)
 	return kept
 
+def post_original(post):
+	"""A post from a followed person on the fediverse (phase 17) as a reply
+	answers it: its author and its id on their server. A copy of such a post
+	is a boost of it, never what a reply answers. None for any other post."""
+	if not post or not post.get("remote") or not post.get("author") or mochi.text.valid(post["author"], "entity") or post_record(post):
+		return None
+	return {"address": post["author"], "remote": post["remote"]}
+
 def reply_note(comment_id, post_id, body):
 	"""The Note a comment is as a reply: the text as the fediverse shows it, in
 	reply to the comment it answers where that one is on the network, else to
@@ -10250,7 +10276,7 @@ def reply_note(comment_id, post_id, body):
 	if parent and parent.get("remote") and not mochi.text.valid(parent["subscriber"], "entity"):
 		target = {"address": parent["subscriber"], "remote": parent["remote"]}
 	else:
-		target = mochi.db.row("select address, remote from copies where post=? and network='fediverse' order by created limit 1", post_id)
+		target = post_original(mochi.db.row("select author, remote, data from posts where id=?", post_id)) or mochi.db.row("select address, remote from copies where post=? and network='fediverse' order by created limit 1", post_id)
 	if not target:
 		# A post from a followed person (phase 17): the reply answers the
 		# original, by its id on their server.
@@ -10733,8 +10759,9 @@ def linked_comment(acc, post, actor, name, page, body, format, remote, created):
 def action_reply(a):
 	"""The reply control of a public feed page: a visitor gives the handle of
 	their account elsewhere and is answered the page on their own server that
-	replies to the post's copy on the fediverse, as the follow control does.
-	Public, since the visitor has no account here."""
+	replies to the post's copy on the fediverse, or to the original of a post
+	from there that the feed boosted, as the follow control does. Public,
+	since the visitor has no account here."""
 	feed = get_feed(a)
 	if not feed:
 		a.error.label(404, "errors.feed_not_found")
@@ -10743,8 +10770,11 @@ def action_reply(a):
 		a.error.label(403, "errors.access_denied")
 		return
 	post_id = a.input("post", "")
-	copy = mochi.db.row("select remote from copies where post=? and network='fediverse' and account!='' order by created limit 1", post_id) if mochi.text.valid(post_id, "id") else None
-	if not copy or not mochi.db.exists("select 1 from posts where id=? and feed=?", post_id, feed["id"]):
+	post = mochi.db.row("select author, remote, data from posts where id=? and feed=?", post_id, feed["id"]) if mochi.text.valid(post_id, "id") else None
+	copy = None
+	if post and mochi.db.exists("select 1 from copies where post=? and network='fediverse' and account!=''", post_id):
+		copy = post_original(post) or mochi.db.row("select remote from copies where post=? and network='fediverse' and account!='' order by created limit 1", post_id)
+	if not copy:
 		a.error.label(404, "errors.reply_not_found")
 		return
 	handle = a.input("handle", "").strip()
@@ -11317,7 +11347,7 @@ def object_url(value):
 	or a Link's href."""
 	if type(value) == "string":
 		return safe_link(value)
-	if type(value) == "list":
+	if listlike(value):
 		for v in value:
 			found = object_url(v)
 			if found:
@@ -11429,10 +11459,20 @@ def poll_vote_shaped(note):
 	"""Whether a Note has a poll vote's shape: an option's name and no content."""
 	return bool(note.get("name")) and not str(note.get("content", "") or "").strip()
 
+def object_author(value):
+	"""Who an object is attributed to: its id, or the first of a list -
+	PeerTube names the person a video is by, then the channel it is on."""
+	if not listlike(value):
+		return object_id_of(value)
+	for v in value:
+		if object_id_of(v):
+			return object_id_of(v)
+	return ""
+
 def fediverse_item(acc, raw):
-	"""A post from the fediverse as a sourced item: a Note, Article, Page or
-	Question as the person's server gives it, or an Announce of one, read as
-	the account. None for anything else, and for a reply."""
+	"""A post from the fediverse as a sourced item: a Note, Article, Page,
+	Question or Video as the person's server gives it, or an Announce of one,
+	read as the account. None for anything else, and for a reply."""
 	if type(raw) != "dict":
 		return None
 	kind = str(raw.get("type", "") or "")
@@ -11450,10 +11490,10 @@ def fediverse_item(acc, raw):
 			booster = account_person(by)
 			booster["id"] = by
 		kind = str(note.get("type", "") or "")
-	if kind not in ("Note", "Article", "Page", "Question") or note.get("inReplyTo"):
+	if kind not in ("Note", "Article", "Page", "Question", "Video") or note.get("inReplyTo"):
 		return None
 	remote = object_id_of(note)
-	actor = object_id_of(note.get("attributedTo"))
+	actor = object_author(note.get("attributedTo"))
 	if not remote or len(remote) > 2000 or not actor or not mochi.text.valid(actor, "author") or mochi.text.valid(actor, "entity"):
 		mochi.log.debug("Feeds fediverse_item: %s by %s is not a post of a person", remote, actor)
 		return None
@@ -11461,7 +11501,7 @@ def fediverse_item(acc, raw):
 	person["id"] = actor
 	html = mochi.text.clean(str(note.get("content", "") or ""))
 	text = strip_html(html)
-	title = str(note.get("name", "") or "") if kind in ("Article", "Page") else ""
+	title = str(note.get("name", "") or "") if kind in ("Article", "Page", "Video") else ""
 	if title:
 		text = (title + "\n\n" + text) if text else title
 	media = object_media(note)
@@ -11470,6 +11510,13 @@ def fediverse_item(acc, raw):
 		if m["type"] == "image":
 			image = m["url"]
 			break
+	# A video shows its thumbnail, which it names as its icon.
+	if not image and kind == "Video":
+		for icon in object_list(note.get("icon")):
+			if type(icon) == "dict":
+				image = object_url(icon.get("url"))
+				if image:
+					break
 	warning = strip_html(str(note.get("summary", "") or "")).strip()
 	languages = note.get("contentMap") if type(note.get("contentMap")) == "dict" else {}
 	language = ""
@@ -11871,22 +11918,29 @@ def post_record(post):
 	return {"uri": str(record["uri"]), "cid": str(record["cid"])}
 
 def like_publish(post, reaction, wanted):
-	"""A like of a post from Bluesky goes out as a like record of the user's
-	hosted Bluesky account - the one named, else their first - and any other
-	reaction, or none, takes a like back (phase 19)."""
-	record = post_record(post)
-	if not record:
+	"""A like of a post from another network goes out from the user's hosted
+	account there - the one named, else their first: a like record on
+	Bluesky (phase 19), a Like of the post on the fediverse, addressed to its
+	author - and any other reaction, or none, takes the like back."""
+	if not post.get("remote") or not post.get("author") or mochi.text.valid(post["author"], "entity"):
 		return
-	acc = follow_account(wanted, "bluesky")
+	record = post_record(post)
+	acc = follow_account(wanted, "bluesky" if record else "fediverse")
 	if not acc:
 		return
 	existing = mochi.db.row("select remote from likes where post=? and account=?", post["id"], acc["id"])
 	if reaction == "like" and not existing:
-		result = mochi.account.object.create(acc["id"], {"$type": "app.bsky.feed.like", "subject": record}, key="like|" + post["id"] + "|" + acc["id"])
+		if record:
+			result = mochi.account.object.create(acc["id"], {"$type": "app.bsky.feed.like", "subject": record}, key="like|" + post["id"] + "|" + acc["id"])
+		else:
+			result = mochi.account.activity(acc["id"], {"type": "Like", "object": post["remote"], "to": [post["author"]]})
 		if result and result.get("id"):
 			mochi.db.execute("insert or replace into likes (post, account, remote, created) values (?, ?, ?, ?)", post["id"], acc["id"], str(result["id"]), mochi.time.now())
 	elif reaction != "like" and existing:
-		mochi.account.object.delete(acc["id"], existing["remote"])
+		if record:
+			mochi.account.object.delete(acc["id"], existing["remote"])
+		else:
+			mochi.account.activity(acc["id"], {"type": "Undo", "object": {"id": existing["remote"], "type": "Like", "actor": acc.get("url", ""), "object": post["remote"]}, "to": [post["author"]]})
 		mochi.db.execute("delete from likes where post=? and account=?", post["id"], acc["id"])
 
 def action_post_boost(a):
