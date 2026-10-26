@@ -533,6 +533,11 @@ export function EntityFeedPage({
     isLoggedIn && !isSubscribed && !canManage && !feedSummary.isOwner
 
   const handleMarkAllRead = useCallback(async () => {
+    // The badge clears on the click and comes back if the server refuses.
+    const before = useFeedsStore
+      .getState()
+      .feeds.find((f) => f.id === feed.id)?.unreadPosts
+    setUnread(feed.id, 0)
     try {
       await feedsApi.readAll(feed.fingerprint ?? feed.id)
       // Remove stale unread query cache so switching to "Unread" filter
@@ -544,10 +549,10 @@ export function EntityFeedPage({
           return key[2]?.unread === true
         },
       })
-      setUnread(feed.id, 0)
       void refreshPosts()
       toast.success(t`All marked as read`)
     } catch (error) {
+      if (before !== undefined) setUnread(feed.id, before)
       toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
   }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread, t])
