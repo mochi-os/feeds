@@ -12135,7 +12135,7 @@ def action_people(a):
 	if not a.user or not a.user.identity or not a.user.identity.id:
 		a.error.label(401, "errors.not_logged_in")
 		return
-	people = mochi.service.call("people", "handles") or []
+	people = mochi.service.call("people", "handles", a.user.identity.id) or []
 	out = []
 	for person in people:
 		if type(person) != "dict":
