@@ -257,4 +257,23 @@ describe('FeedPosts card navigation', () => {
     expect(screen.getByText('Also on Bluesky')).toBeTruthy()
     expect(screen.queryByRole('link', { name: 'Also on Bluesky' })).toBeNull()
   })
+
+  it('folds a post behind its content warning, a strip that opens and closes it in place', () => {
+    renderPosts([{ ...post('post-1', 'Spoilers ahead'), warning: 'Film plot' }])
+    const strip = screen.getByRole('button', { name: /Film plot/ })
+    expect(screen.queryByText('Spoilers ahead')).toBeNull()
+    expect(strip).toHaveAttribute('aria-expanded', 'false')
+    expect(within(strip).getByText('Show post')).toBeTruthy()
+
+    fireEvent.click(strip)
+    expect(screen.getByText('Spoilers ahead')).toBeTruthy()
+    expect(strip).toHaveAttribute('aria-expanded', 'true')
+    expect(within(strip).getByText('Hide post')).toBeTruthy()
+    // Opening the warning does not open the post.
+    expect(mockNavigate).not.toHaveBeenCalled()
+
+    fireEvent.click(strip)
+    expect(screen.queryByText('Spoilers ahead')).toBeNull()
+    expect(within(strip).getByText('Show post')).toBeTruthy()
+  })
 })

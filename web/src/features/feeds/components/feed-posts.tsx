@@ -88,8 +88,6 @@ import {
   Bell,
   BellRing,
   Check,
-  ChevronDown,
-  ChevronUp,
   MapPin,
   MessageSquare,
   MoreHorizontal,
@@ -99,6 +97,7 @@ import {
   Plane,
   Repeat2,
   Trash2,
+  TriangleAlert,
   X,
 } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
@@ -1497,32 +1496,32 @@ export function FeedPosts({
                   <>
                     <PostHeadline post={post} />
                     {post.warning && (
-                      <div className='flex flex-wrap items-center gap-2 text-sm'>
-                        <span className='font-medium'>{post.warning}</span>
-                        <Button
-                          type='button'
-                          variant='outline'
-                          size='sm'
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setRevealed((current) => ({
-                              ...current,
-                              [post.id]: !current[post.id],
-                            }))
-                          }}
-                        >
+                      // The warning is a quiet strip, opened or closed by a
+                      // click anywhere on it; being a button, the card's own
+                      // click leaves it alone rather than opening the post.
+                      <button
+                        type='button'
+                        aria-expanded={!!revealed[post.id]}
+                        className='bg-muted hover:bg-hover flex w-full items-center gap-2 rounded-lg px-3 py-2 text-start text-sm'
+                        onClick={() => {
+                          setRevealed((current) => ({
+                            ...current,
+                            [post.id]: !current[post.id],
+                          }))
+                        }}
+                      >
+                        <TriangleAlert className='text-muted-foreground size-4 shrink-0' />
+                        <span className='min-w-0 flex-1 font-medium break-words'>
+                          {post.warning}
+                        </span>
+                        <span className='text-primary shrink-0'>
                           {revealed[post.id] ? (
-                            <ChevronUp className='size-4' />
+                            <Trans>Hide post</Trans>
                           ) : (
-                            <ChevronDown className='size-4' />
+                            <Trans>Show post</Trans>
                           )}
-                          {revealed[post.id] ? (
-                            <Trans>Show less</Trans>
-                          ) : (
-                            <Trans>Show more</Trans>
-                          )}
-                        </Button>
-                      </div>
+                        </span>
+                      </button>
                     )}
                     {(!post.warning || revealed[post.id]) && (
                     <>
