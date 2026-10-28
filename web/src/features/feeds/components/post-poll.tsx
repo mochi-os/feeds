@@ -37,10 +37,13 @@ export function PostPoll({
   const { formatTimestamp, formatNumber } = useFormat()
   const [chosen, setChosen] = useState<number[]>(voted ?? [])
   const [busy, setBusy] = useState(false)
+  // A reader who may still vote can look at the results first, and go back.
+  const [peeking, setPeeking] = useState(false)
   const now = Math.floor(Date.now() / 1000)
   const closed = poll.expires > 0 && poll.expires <= now
   const hasVoted = (voted ?? []).length > 0
-  const showResults = closed || hasVoted || !canVote
+  const votable = !closed && !hasVoted && canVote
+  const showResults = !votable || peeking
   const total = poll.options.reduce((sum, o) => sum + o.votes, 0)
 
   const toggle = (index: number) => {
@@ -133,19 +136,34 @@ export function PostPoll({
             </>
           )}
         </span>
-        {!showResults && (
-          <Button
-            size='sm'
-            disabled={chosen.length === 0 || busy}
-            onClick={() => void vote()}
-          >
-            {busy ? (
-              <Loader2 className='size-4 animate-spin' />
-            ) : (
-              <Check className='size-4' />
+        {votable && (
+          <div className='flex items-center gap-3'>
+            <button
+              type='button'
+              className='text-primary hover:underline'
+              onClick={() => setPeeking(!peeking)}
+            >
+              {peeking ? (
+                <Trans>Hide results</Trans>
+              ) : (
+                <Trans>See results</Trans>
+              )}
+            </button>
+            {!peeking && (
+              <Button
+                size='sm'
+                disabled={chosen.length === 0 || busy}
+                onClick={() => void vote()}
+              >
+                {busy ? (
+                  <Loader2 className='size-4 animate-spin' />
+                ) : (
+                  <Check className='size-4' />
+                )}
+                <Trans>Vote</Trans>
+              </Button>
             )}
-            <Trans>Vote</Trans>
-          </Button>
+          </div>
         )}
       </div>
     </div>
