@@ -5,10 +5,17 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { PublishingSection } from './publishing-section'
+import { PublishingSection, usePublishOffered } from './publishing-section'
 
 const state = vi.hoisted(() => ({
   getPublish: vi.fn(),
@@ -212,5 +219,51 @@ describe('Publishing section', () => {
     await act(async () => {})
     expect(screen.queryByText('Publish to')).toBeNull()
     expect(state.getPublish).toHaveBeenCalled()
+  })
+})
+
+describe('usePublishOffered', () => {
+  const offered = (privacy: string, owner: boolean) => {
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    })
+    return renderHook(() => usePublishOffered('feed-1', privacy, owner), {
+      wrapper: ({ children }) => (
+        <QueryClientProvider client={client}>{children}</QueryClientProvider>
+      ),
+    }).result
+  }
+
+  beforeEach(() => {
+    state.getPublish.mockReset()
+  })
+
+  it("offers the tab for an owner's public feed with an account, once that is known", async () => {
+    state.getPublish.mockResolvedValue({ accounts, publish: [], copies: {} })
+    const result = offered('public', true)
+    expect(result.current).toBeUndefined()
+    await waitFor(() => expect(result.current).toBe(true))
+  })
+
+  it('offers no tab where there is no account to publish to', async () => {
+    state.getPublish.mockResolvedValue({
+      accounts: [],
+      publish: [],
+      copies: {},
+    })
+    const result = offered('public', true)
+    await waitFor(() => expect(result.current).toBe(false))
+  })
+
+  it('offers the tab where the answer failed, so the error shows', async () => {
+    state.getPublish.mockRejectedValue(new Error('no'))
+    const result = offered('public', true)
+    await waitFor(() => expect(result.current).toBe(true))
+  })
+
+  it('offers no tab, and asks nothing, for a private feed or a subscriber', () => {
+    expect(offered('private', true).current).toBe(false)
+    expect(offered('public', false).current).toBe(false)
+    expect(state.getPublish).not.toHaveBeenCalled()
   })
 })

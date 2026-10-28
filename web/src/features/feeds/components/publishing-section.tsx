@@ -31,6 +31,26 @@ import { Archive, Download, MoreHorizontal, Rss, X } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import type { PublishAccount } from '@/types/feeds'
 
+// Whether a feed's Publish to tab is offered: an owner's public feed with an
+// account to publish to, or whose answer failed and shows why. Undefined while
+// it is asked.
+export function usePublishOffered(
+  feedId: string,
+  privacy: string,
+  owner: boolean
+): boolean | undefined {
+  const enabled = owner && !!feedId && privacy === 'public'
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['feeds', 'publish', feedId],
+    queryFn: () => feedsApi.getPublish(feedId),
+    retry: false,
+    enabled,
+  })
+  if (!enabled) return false
+  if (isLoading) return undefined
+  return !!error || (data?.accounts ?? []).length > 0
+}
+
 export function PublishingSection({
   feedId,
   privacy,
