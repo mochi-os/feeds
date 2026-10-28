@@ -11716,10 +11716,35 @@ def pin_set(a, pinned):
 		a.error.label(404, "errors.post_not_found")
 		return
 	value = mochi.time.now() if pinned else 0
+	changed = (number(post.get("pinned", 0)) > 0) != pinned
 	mochi.db.execute("update posts set pinned=? where id=?", value, post["id"])
 	mochi.db.commit.fire("posts", "update", post["id"])
 	broadcast_event(feed["id"], "post/pin", {"post": post["id"], "pinned": value}, a.user.identity.id)
+	if changed:
+		pin_publish(post["id"], pinned)
 	return {"data": {"post": post["id"], "pinned": value}}
+
+def pin_publish(post_id, pinned):
+	"""A pin or unpin goes on to the post's copies: on a hosted fediverse
+	account an Add to the account's featured collection or a Remove from it,
+	on a linked Mastodon account the status pinned or unpinned. A boost is not
+	the account's own post and cannot be pinned, so is left alone; a refusal,
+	such as Mastodon's limit of five pins, is only logged."""
+	for row in mochi.db.rows("select account, remote, url from copies where post=? and account!=''", post_id):
+		acc = publish_account(row["account"])
+		if not acc:
+			continue
+		if hosted_fediverse(acc):
+			# A boost is an Announce, whose page is the post it boosts.
+			if row["url"] != row["remote"] or not acc.get("url"):
+				continue
+			# To the followers, not the public: a pin is no post of the
+			# outbox, and Mastodon sends its own the same way.
+			mochi.account.activity(acc["id"], {"type": "Add" if pinned else "Remove", "object": row["remote"], "target": acc["url"] + "/featured", "to": [acc["url"] + "/followers"]})
+		elif acc["type"] == "mastodon":
+			answer = mochi.account.request(acc["id"], "POST", "v1/statuses/" + row["remote"] + ("/pin" if pinned else "/unpin"))
+			if not answer or answer.get("status", 0) < 200 or answer.get("status", 0) > 299:
+				mochi.log.info("Feeds could not %s the copy of post %s on %s", "pin" if pinned else "unpin", post_id, acc.get("identifier", acc["id"]))
 
 def event_post_pin(e):
 	"""A pin or unpin by the owner, as a subscriber takes it."""
