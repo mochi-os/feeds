@@ -378,31 +378,22 @@ export function EntityFeedPage({
     [handlePostReaction, markRead, feed.fingerprint, feed.id]
   )
 
+  // Each passes its arguments on whole, the account to answer from among
+  // them, so none is lost on the way to the request.
   const handleAddCommentAndRead = useCallback(
-    (
-      feedId: string,
-      postId: string,
-      body?: string,
-      files?: File[],
-      attachment?: string,
-      account?: string
-    ) => {
+    (...args: Parameters<typeof handleAddComment>) => {
+      const postId = args[1]
       markRead(postId, feed.fingerprint ?? feed.id)
-      return handleAddComment(feedId, postId, body, files, attachment, account)
+      return handleAddComment(...args)
     },
     [handleAddComment, markRead, feed.fingerprint, feed.id]
   )
 
   const handleReplyAndRead = useCallback(
-    (
-      feedId: string,
-      postId: string,
-      parentCommentId: string,
-      body: string,
-      files?: File[]
-    ) => {
+    (...args: Parameters<typeof handleReplyToComment>) => {
+      const postId = args[1]
       markRead(postId, feed.fingerprint ?? feed.id)
-      return handleReplyToComment(feedId, postId, parentCommentId, body, files)
+      return handleReplyToComment(...args)
     },
     [handleReplyToComment, markRead, feed.fingerprint, feed.id]
   )

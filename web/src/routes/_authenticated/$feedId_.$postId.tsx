@@ -227,11 +227,20 @@ function SinglePostPage() {
       pId: string,
       body?: string,
       files?: File[],
-      attachment?: string
+      attachment?: string,
+      // The commenter's own hosted account the comment also goes out from
+      account?: string
     ) => {
       if (!body) return
       try {
-        const payload = { feed: postFeedId, post: pId, body, files, attachment }
+        const payload = {
+          feed: postFeedId,
+          post: pId,
+          body,
+          files,
+          attachment,
+          account,
+        }
         if (files?.length) {
           await uploadComment(
             (onProgress) => feedsApi.createComment(payload, onProgress),
@@ -259,7 +268,8 @@ function SinglePostPage() {
       pId: string,
       parentId: string,
       body: string,
-      files?: File[]
+      files?: File[],
+      account?: string
     ) => {
       try {
         const payload = {
@@ -268,6 +278,7 @@ function SinglePostPage() {
           body,
           parent: parentId,
           files,
+          account,
         }
         if (files?.length) {
           await uploadComment(

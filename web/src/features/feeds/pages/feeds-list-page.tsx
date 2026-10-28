@@ -375,30 +375,22 @@ export function FeedsListPage({
     [handlePostReaction, markRead]
   )
 
+  // Each passes its arguments on whole, the account to answer from among
+  // them, so none is lost on the way to the request.
   const handleAddCommentAndRead = useCallback(
-    (
-      feedId: string,
-      postId: string,
-      body?: string,
-      files?: File[],
-      attachment?: string
-    ) => {
+    (...args: Parameters<typeof handleAddComment>) => {
+      const [feedId, postId] = args
       markRead(postId, feedId)
-      return handleAddComment(feedId, postId, body, files, attachment)
+      return handleAddComment(...args)
     },
     [handleAddComment, markRead]
   )
 
   const handleReplyAndRead = useCallback(
-    (
-      feedId: string,
-      postId: string,
-      parentCommentId: string,
-      body: string,
-      files?: File[]
-    ) => {
+    (...args: Parameters<typeof handleReplyToComment>) => {
+      const [feedId, postId] = args
       markRead(postId, feedId)
-      return handleReplyToComment(feedId, postId, parentCommentId, body, files)
+      return handleReplyToComment(...args)
     },
     [handleReplyToComment, markRead]
   )

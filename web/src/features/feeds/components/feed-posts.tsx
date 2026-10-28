@@ -151,7 +151,9 @@ type FeedPostsProps = {
     postId: string,
     parentCommentId: string,
     body: string,
-    files?: File[]
+    files?: File[],
+    // The commenter's own hosted account the reply also goes out from
+    account?: string
   ) => void | Promise<void>
   onPostReaction: (
     feedId: string,
@@ -277,6 +279,8 @@ export type PostCommentsListProps = {
   onReplyDraftChange: (value: string) => void
   onReplyFilesChange?: (count: number) => void
   onSubmitReply: (commentId: string, files?: File[]) => void | Promise<void>
+  /** The account a reply also goes out from, shown above a reply box. */
+  replyChoice?: (commentId: string) => React.ReactNode
   /** Byte progress of an in-flight reply upload */
   progress?: Upload | null
   onReact: (commentId: string, reaction: ReactionId | '') => void
@@ -321,6 +325,7 @@ export function PostCommentsList({
   onReplyDraftChange,
   onReplyFilesChange,
   onSubmitReply,
+  replyChoice,
   progress,
   onReact,
   onEdit,
@@ -410,6 +415,7 @@ export function PostCommentsList({
             onReplyDraftChange={onReplyDraftChange}
             onReplyFilesChange={onReplyFilesChange}
             onSubmitReply={onSubmitReply}
+            replyChoice={replyChoice}
             progress={progress}
             onReact={onReact}
             onEdit={onEdit}
@@ -596,6 +602,43 @@ export function FeedPosts({
       cancelled = true
     }
   }, [isLoggedIn, readOnly, anyFediverseCopy])
+
+  // The account choice beside the post's comment box and beside each reply
+  // box in its thread: one choice per post, which a reply to a comment from
+  // another network answers that comment with.
+  const replyChoice = (post: FeedPost, id: string) =>
+    replyAccounts.length > 0 &&
+    (post.copies?.some((copy) => copy.network === 'fediverse') ||
+      (post.remote && post.authorId)) ? (
+      <div className='mb-2 flex items-center gap-2 text-xs'>
+        <Label htmlFor={id}>
+          <Trans>Also reply from</Trans>
+        </Label>
+        <Select
+          value={replyFrom[post.id] ?? ''}
+          onValueChange={(value) =>
+            setReplyFrom((current) => ({
+              ...current,
+              [post.id]: value === 'none' ? '' : value,
+            }))
+          }
+        >
+          <SelectTrigger id={id} className='h-7 w-auto min-w-40 text-xs'>
+            <SelectValue placeholder={t`No account`} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value='none'>
+              <Trans>No account</Trans>
+            </SelectItem>
+            {replyAccounts.map((account) => (
+              <SelectItem key={account.id} value={account.id}>
+                {account.identifier}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    ) : null
 
   const submitComment = useCallback(
     async (feedId: string, postId: string, body: string, files?: File[]) => {
@@ -992,6 +1035,8 @@ export function FeedPosts({
     onReplyDraftChange: setReplyDraft,
     onReplyFilesChange: setReplyFileCount,
     progress: commentProgress,
+    replyChoice: (commentId: string) =>
+      replyChoice(post, `reply-from-${post.id}-${commentId}`),
     onSubmitReply: async (commentId: string, files?: File[]) => {
       if (replyDraft.trim()) {
         await onReplyToComment(
@@ -999,7 +1044,8 @@ export function FeedPosts({
           post.id,
           commentId,
           replyDraft.trim(),
-          files
+          files,
+          replyFrom[post.id] || undefined
         )
         setReplyingTo(null)
         setReplyDraft('')
@@ -2063,43 +2109,7 @@ export function FeedPosts({
                 {/* Expanded comment input */}
                 {commentingOn === post.id && (
                   <div onClick={(e) => e.stopPropagation()}>
-                    {replyAccounts.length > 0 &&
-                      (post.copies?.some(
-                        (copy) => copy.network === 'fediverse'
-                      ) ||
-                        (post.remote && post.authorId)) && (
-                        <div className='mb-2 flex items-center gap-2 text-xs'>
-                          <Label htmlFor={`reply-from-${post.id}`}>
-                            <Trans>Also reply from</Trans>
-                          </Label>
-                          <Select
-                            value={replyFrom[post.id] ?? ''}
-                            onValueChange={(value) =>
-                              setReplyFrom((current) => ({
-                                ...current,
-                                [post.id]: value === 'none' ? '' : value,
-                              }))
-                            }
-                          >
-                            <SelectTrigger
-                              id={`reply-from-${post.id}`}
-                              className='h-7 w-auto min-w-40 text-xs'
-                            >
-                              <SelectValue placeholder={t`No account`} />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value='none'>
-                                <Trans>No account</Trans>
-                              </SelectItem>
-                              {replyAccounts.map((account) => (
-                                <SelectItem key={account.id} value={account.id}>
-                                  {account.identifier}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      )}
+                    {replyChoice(post, `reply-from-${post.id}`)}
                     <CommentBox
                       value={commentDrafts[post.id] ?? ''}
                       onValueChange={(value) => onDraftChange(post.id, value)}

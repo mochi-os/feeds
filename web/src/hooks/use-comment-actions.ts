@@ -67,7 +67,8 @@ export type UseCommentActionsResult = {
     postId: string,
     parentCommentId: string,
     body: string,
-    files?: File[]
+    files?: File[],
+    account?: string
   ) => Promise<void>
   /** React to a comment */
   handleCommentReaction: (
@@ -227,7 +228,10 @@ export function useCommentActions({
       postId: string,
       parentCommentId: string,
       body: string,
-      files?: File[]
+      files?: File[],
+      // The commenter's own hosted account the reply also goes out from, as
+      // an answer to the comment where it came from that network
+      account?: string
     ) => {
       const reply: FeedComment = {
         id: randomId('reply'),
@@ -282,6 +286,7 @@ export function useCommentActions({
           parent: parentCommentId,
           id: reply.id,
           files,
+          account,
         }
         if (files?.length) {
           await upload(

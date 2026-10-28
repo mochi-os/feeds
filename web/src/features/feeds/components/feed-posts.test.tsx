@@ -22,6 +22,8 @@ import { FeedPosts } from './feed-posts'
 const mockNavigate = vi.fn()
 vi.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
+  // A post's thread builds its comments' share addresses from the router.
+  useRouter: () => ({}),
   // The timestamp permalink renders a Link; there is no router in this test,
   // so it stands in as a plain anchor. The assertions below are about the
   // card's own click handler, not about where the Link points.
@@ -34,12 +36,47 @@ vi.mock('@tanstack/react-router', () => ({
 vi.mock('@/api/feeds', () => ({
   feedsApi: {
     searchMembers: vi.fn().mockResolvedValue([]),
+    hostedAccounts: vi.fn().mockResolvedValue([
+      {
+        id: 'account-1',
+        type: 'fediverse',
+        identifier: '@me@example.com',
+        name: 'Me',
+        server: 'example.com',
+        hosted: true,
+      },
+    ]),
   },
 }))
 
 // The card's children each pull their own API/store graph; the behaviour
-// under test lives on the card itself, so they render as nothing.
-vi.mock('./comment-thread', () => ({ CommentThread: () => null }))
+// under test lives on the card itself, so they render as nothing. The thread
+// stands in as what the card hands it for a reply: the account choice, a draft
+// and a send.
+vi.mock('./comment-thread', () => ({
+  CommentThread: (props: {
+    comment: { id: string }
+    replyChoice?: (commentId: string) => ReactNode
+    onReplyDraftChange: (value: string) => void
+    onSubmitReply: (commentId: string) => void | Promise<void>
+  }) => (
+    <div>
+      {props.replyChoice?.(props.comment.id)}
+      <button
+        type='button'
+        onClick={() => props.onReplyDraftChange('An answer')}
+      >
+        Type reply
+      </button>
+      <button
+        type='button'
+        onClick={() => void props.onSubmitReply(props.comment.id)}
+      >
+        Send reply
+      </button>
+    </div>
+  ),
+}))
 vi.mock('./saved-button', () => ({ SavedButton: () => null }))
 vi.mock('./post-attachments', () => ({ PostAttachments: () => null }))
 vi.mock('./attachment-comments', () => ({ AttachmentComments: () => null }))
@@ -66,7 +103,10 @@ function post(id = 'post-1', body = 'Hello world'): FeedPost {
   }
 }
 
-function renderPosts(posts: FeedPost[] = [post()]) {
+function renderPosts(
+  posts: FeedPost[] = [post()],
+  onReplyToComment: (...args: unknown[]) => void = () => {}
+) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
@@ -78,7 +118,7 @@ function renderPosts(posts: FeedPost[] = [post()]) {
           commentDrafts={{}}
           onDraftChange={() => {}}
           onAddComment={() => {}}
-          onReplyToComment={() => {}}
+          onReplyToComment={onReplyToComment}
           onPostReaction={() => {}}
           onCommentReaction={() => {}}
           onEditPost={async () => true}
@@ -275,5 +315,98 @@ describe('FeedPosts card navigation', () => {
     fireEvent.click(strip)
     expect(screen.queryByText('Spoilers ahead')).toBeNull()
     expect(within(strip).getByText('Show post')).toBeTruthy()
+  })
+})
+
+describe('FeedPosts replying to a comment from another network', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    // The account list is a Radix select, which jsdom lacks the pointer and
+    // scroll calls for.
+    Element.prototype.hasPointerCapture ??= () => false
+    Element.prototype.releasePointerCapture ??= () => {}
+    Element.prototype.scrollIntoView ??= () => {}
+  })
+
+  // A post published to a hosted fediverse account, with a comment that came
+  // back from there.
+  function published(copies = true, id = 'post-1'): FeedPost {
+    return {
+      ...post(id),
+      copies: copies
+        ? [
+            {
+              address: '@me@example.com',
+              network: 'fediverse',
+              remote: 'https://example.com/~me/1',
+              url: '',
+            },
+          ]
+        : [],
+      comments: [
+        {
+          id: id === 'post-1' ? 'comment-1' : 'comment-2',
+          subscriberId: 'https://remote.example/u/bob',
+          author: 'Bob',
+          created: 1,
+          body: 'Nice',
+          format: 'html',
+          reactions: createReactionCounts(),
+          userReaction: null,
+          replies: [],
+        },
+      ],
+    }
+  }
+
+  it('sends the reply from the account chosen beside the reply box', async () => {
+    const user = userEvent.setup()
+    const onReplyToComment = vi.fn()
+    renderPosts([published()], onReplyToComment)
+    await user.click(
+      await screen.findByRole('combobox', { name: 'Also reply from' })
+    )
+    await user.click(
+      await screen.findByRole('option', { name: '@me@example.com' })
+    )
+    await user.click(screen.getByRole('button', { name: 'Type reply' }))
+    await user.click(screen.getByRole('button', { name: 'Send reply' }))
+    expect(onReplyToComment).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'comment-1',
+      'An answer',
+      undefined,
+      'account-1'
+    )
+  })
+
+  it('sends the reply from no account until one is chosen', async () => {
+    const user = userEvent.setup()
+    const onReplyToComment = vi.fn()
+    renderPosts([published()], onReplyToComment)
+    await screen.findByRole('combobox', { name: 'Also reply from' })
+    await user.click(screen.getByRole('button', { name: 'Type reply' }))
+    await user.click(screen.getByRole('button', { name: 'Send reply' }))
+    expect(onReplyToComment).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'comment-1',
+      'An answer',
+      undefined,
+      undefined
+    )
+  })
+
+  it('offers no account where the post is on no other network', async () => {
+    renderPosts([published(), published(false, 'post-2')])
+    await screen.findByRole('combobox', { name: 'Also reply from' })
+    // One choice, beside the reply to the published post's comment.
+    expect(
+      screen.getAllByRole('combobox', { name: 'Also reply from' })
+    ).toHaveLength(1)
+    expect(screen.getAllByRole('button', { name: 'Type reply' })).toHaveLength(
+      2
+    )
   })
 })
