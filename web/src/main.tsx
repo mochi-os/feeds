@@ -15,6 +15,8 @@ import {
   isInShell,
   getAppBasepath,
   createAppHistory,
+  startRoutePrefetch,
+  RouteError,
   type Catalogs,
 } from '@mochi/web'
 import { FeedsCommandMenu } from './components/layout/feeds-command-menu'
@@ -190,13 +192,20 @@ const queryClient = createQueryClient()
 // getAppBasepath leaves the fingerprint out of the basepath (routes carry it as
 // $feedId) and follows a domain route path; createAppHistory is defined only
 // for entity domain routes, where the fingerprint leaves the URL entirely.
+// A route without its own errorComponent gets no boundary at all, so a page
+// error climbed to __root and replaced the sidebar along with it. The default
+// gives every route its own boundary, so the error stays in the content pane.
 const router = createRouter({
   routeTree,
   context: { queryClient },
   basepath: getAppBasepath(),
   history: createAppHistory(),
   defaultPreload: false,
+  defaultErrorComponent: RouteError,
 })
+
+// Fetch page code on hover, press or focus; never route data
+startRoutePrefetch(router)
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
