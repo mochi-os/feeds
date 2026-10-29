@@ -55,12 +55,16 @@ vi.mock('@/api/feeds', () => ({
 // and a send.
 vi.mock('./comment-thread', () => ({
   CommentThread: (props: {
-    comment: { id: string }
+    comment: { id: string; subscriberId: string }
+    avatars?: ReadonlyMap<string, string>
     replyChoice?: (commentId: string) => ReactNode
     onReplyDraftChange: (value: string) => void
     onSubmitReply: (commentId: string) => void | Promise<void>
   }) => (
     <div>
+      <span data-testid='avatar-source'>
+        {props.avatars?.get(props.comment.subscriberId)}
+      </span>
       {props.replyChoice?.(props.comment.id)}
       <button
         type='button'
@@ -408,5 +412,41 @@ describe('FeedPosts replying to a comment from another network', () => {
     expect(screen.getAllByRole('button', { name: 'Type reply' })).toHaveLength(
       2
     )
+  })
+})
+
+// A commenter's avatar route names one of their comments, so a page that
+// built each comment's own address fetched the same picture once per comment.
+describe('FeedPosts commenter avatars', () => {
+  function commented(id: string, feedId: string, by: string[]): FeedPost {
+    return {
+      ...post(id),
+      feedId,
+      comments: by.map((subscriberId, n) => ({
+        id: `${id}-comment-${n}`,
+        subscriberId,
+        author: subscriberId,
+        created: 1,
+        body: 'Nice',
+        reactions: createReactionCounts(),
+        userReaction: null,
+        replies: [],
+      })),
+    }
+  }
+
+  it('builds every comment by one person from their first comment on the page', () => {
+    renderPosts([
+      commented('post-1', 'feed-1', ['ann', 'bob']),
+      commented('post-2', 'feed-2', ['bob', 'ann']),
+    ])
+    expect(
+      screen.getAllByTestId('avatar-source').map((span) => span.textContent)
+    ).toEqual([
+      '/feed-1/-/post-1/post-1-comment-0/asset',
+      '/feed-1/-/post-1/post-1-comment-1/asset',
+      '/feed-1/-/post-1/post-1-comment-1/asset',
+      '/feed-1/-/post-1/post-1-comment-0/asset',
+    ])
   })
 })

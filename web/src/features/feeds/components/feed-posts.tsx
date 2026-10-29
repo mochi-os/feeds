@@ -101,6 +101,7 @@ import {
   X,
 } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
+import { authorAssets } from '../author-assets'
 import {
   buildFeedPostEditDraft,
   feedPostEditOriginalFromPost,
@@ -312,6 +313,8 @@ export type PostCommentsListProps = {
    * not follow a navigation, so the thread would change behind it.
    */
   continueThread?: boolean
+  /** One asset address per commenter across the list (`authorAssets`). */
+  avatars?: ReadonlyMap<string, string>
 }
 
 export function PostCommentsList({
@@ -341,6 +344,7 @@ export function PostCommentsList({
   emptyState,
   focusedComment,
   continueThread = true,
+  avatars,
 }: PostCommentsListProps) {
   const navigate = useNavigate()
   const router = useRouter()
@@ -427,6 +431,7 @@ export function PostCommentsList({
             canComment={canComment}
             canManageComments={canManageComments}
             onOpenAttachment={onOpenAttachment}
+            avatars={avatars}
           />
         ))}
       </div>
@@ -527,6 +532,8 @@ export function FeedPosts({
   // For aggregate view (showFeedName), use per-post permissions
   const canReact = permissions?.react || permissions?.comment || isFeedOwner
   const canComment = permissions?.comment || isFeedOwner
+  // One avatar address per commenter across every post on the page.
+  const avatars = useMemo(() => authorAssets(posts), [posts])
 
   // One lightbox opener per post: a comment's image chip reaches into that
   // post's gallery to open the lightbox on its attachment, comments showing.
@@ -1019,6 +1026,7 @@ export function FeedPosts({
   // post's thread scoped to an image, not a second thread with fewer powers.
   const threadPropsFor = (post: FeedPost) => ({
     post,
+    avatars,
     focusedComment,
     onOpenAttachment: (attachmentId: string) =>
       openerFor(post.id).current?.(attachmentId),

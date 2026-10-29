@@ -9,6 +9,7 @@ import { I18nProvider } from '@lingui/react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createReactionCounts } from '@/features/feeds/constants'
+import { authorAssets } from '../author-assets'
 import { CommentThread } from './comment-thread'
 
 // A comment by a person on another network: their own id as the author,
@@ -156,5 +157,60 @@ describe('CommentThread account choice for a reply', () => {
   it('shows none while no reply is being written', () => {
     show(thread, { replyChoice })
     expect(screen.queryByText(/Choice for/)).toBeNull()
+  })
+})
+
+describe('CommentThread avatars', () => {
+  beforeEach(() => {
+    i18n.load('en', {})
+    i18n.activate('en')
+  })
+
+  function by(
+    id: string,
+    author: string,
+    replies: FeedComment[] = []
+  ): FeedComment {
+    return {
+      id,
+      subscriberId: author,
+      author,
+      created: 1,
+      body: `Body ${id}`,
+      reactions: createReactionCounts(),
+      userReaction: null,
+      replies,
+    }
+  }
+
+  const sources = (name: string) =>
+    screen
+      .getAllByAltText(`Avatar for ${name}`)
+      .map((img) => img.getAttribute('src'))
+
+  // A commenter's avatar route names one of their comments, so a thread that
+  // built each comment's own address fetched the same picture once per reply.
+  it('draws every reply by one person from their first comment', () => {
+    const root = by('c1', 'Ann', [
+      by('c2', 'Bob', [by('c3', 'Ann'), by('c4', 'Bob')]),
+      by('c5', 'Ann'),
+    ])
+    show(root, {
+      avatars: authorAssets([{ id: 'p1', feedId: 'f1', comments: [root] }]),
+    })
+    expect(sources('Ann')).toEqual([
+      '/f1/-/p1/c1/asset/avatar',
+      '/f1/-/p1/c1/asset/avatar',
+      '/f1/-/p1/c1/asset/avatar',
+    ])
+    expect(sources('Bob')).toEqual([
+      '/f1/-/p1/c2/asset/avatar',
+      '/f1/-/p1/c2/asset/avatar',
+    ])
+  })
+
+  it('falls back to its own address for a commenter missing from the list', () => {
+    show(by('c9', 'Cat'), { avatars: new Map() })
+    expect(sources('Cat')).toEqual(['/f1/-/p1/c9/asset/avatar'])
   })
 })

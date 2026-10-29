@@ -87,12 +87,9 @@ const endpoints = {
         `${feedId}/-/${postId}/${commentId}/delete`,
       react: (feedId: string, postId: string) =>
         `${feedId}/-/${postId}/comment/react`,
-      asset: (
-        feedId: string,
-        postId: string,
-        commentId: string,
-        asset: string
-      ) => `${feedId}/-/${postId}/${commentId}/asset/${asset}`,
+      // The commenter's person assets; append the slot (avatar, style, ...).
+      assets: (feedId: string, postId: string, commentId: string) =>
+        `${feedId}/-/${postId}/${commentId}/asset`,
       // The owner's moderation of a comment by a person on another network
       block: (feedId: string, postId: string, commentId: string) =>
         `${feedId}/-/${postId}/${commentId}/block`,
