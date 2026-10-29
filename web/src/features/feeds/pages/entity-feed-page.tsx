@@ -103,6 +103,7 @@ export function EntityFeedPage({
   const queryClient = useQueryClient()
   const refreshSidebar = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
+  const adjustUnread = useFeedsStore((state) => state.adjustUnread)
   const defaultSort = useFeedsStore((state) => state.defaultSort)
   const setFeedSortInStore = useFeedsStore((state) => state.setFeedSort)
   const [feedSortOverride, setFeedSortOverride] = useState<string>(
@@ -533,7 +534,8 @@ export function EntityFeedPage({
     isLoggedIn && !isSubscribed && !canManage && !feedSummary.isOwner
 
   const handleMarkAllRead = useCallback(async () => {
-    // The badge clears on the click and comes back if the server refuses.
+    // The badge clears on the click and comes back if the server refuses. It
+    // is added back rather than set, so a post that arrived meanwhile counts.
     const before = useFeedsStore
       .getState()
       .feeds.find((f) => f.id === feed.id)?.unreadPosts
@@ -552,10 +554,18 @@ export function EntityFeedPage({
       void refreshPosts()
       toast.success(t`All marked as read`)
     } catch (error) {
-      if (before !== undefined) setUnread(feed.id, before)
+      if (before) adjustUnread(feed.id, before)
       toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
-  }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread, t])
+  }, [
+    feed.id,
+    feed.fingerprint,
+    refreshPosts,
+    queryClient,
+    setUnread,
+    adjustUnread,
+    t,
+  ])
 
   const handleUnsubscribe = useCallback(() => {
     setShowUnsubscribeConfirm(true)
