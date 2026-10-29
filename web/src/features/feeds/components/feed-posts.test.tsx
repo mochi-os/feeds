@@ -402,22 +402,15 @@ describe('FeedPosts replying to a comment from another network', () => {
     )
   })
 
-  it("shows the post's choice below its comment box, above the comments", async () => {
+  it("shows the post's choice in its comment box's button row, just before attach", async () => {
     const user = userEvent.setup()
     renderPosts([published()])
     await screen.findByRole('combobox', { name: 'Also reply from' })
     await user.click(screen.getByRole('button', { name: 'Comment' }))
-    const box = screen.getByPlaceholderText('Leave a comment...')
     const choice = document.getElementById('reply-from-post-1')
-    const thread = document.getElementById('reply-from-post-1-comment-1')
-    expect(choice).not.toBeNull()
-    expect(
-      box.compareDocumentPosition(choice!) & Node.DOCUMENT_POSITION_FOLLOWING
-    ).toBeTruthy()
-    expect(
-      choice!.compareDocumentPosition(thread!) &
-        Node.DOCUMENT_POSITION_FOLLOWING
-    ).toBeTruthy()
+    expect(choice?.closest('div')?.nextElementSibling).toBe(
+      screen.getByRole('button', { name: 'Attach comment files' })
+    )
   })
 
   it('offers no account where the post is on no other network', async () => {

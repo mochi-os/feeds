@@ -142,13 +142,11 @@ describe('CommentThread account choice for a reply', () => {
   }
   const replyChoice = (commentId: string) => <span>Choice for {commentId}</span>
 
-  it('shows the choice below the box replying to the comment, and nowhere else', () => {
+  it("shows the choice in the reply box's button row, just before attach, and nowhere else", () => {
     show(thread, { replyChoice, replyingTo: { postId: 'p1', commentId: 'c1' } })
-    const choice = screen.getByText('Choice for c1')
-    expect(
-      screen.getByRole('textbox').compareDocumentPosition(choice) &
-        Node.DOCUMENT_POSITION_FOLLOWING
-    ).toBeTruthy()
+    expect(screen.getByText('Choice for c1').nextElementSibling).toBe(
+      screen.getByRole('button', { name: 'Attach reply files' })
+    )
     expect(screen.queryByText('Choice for c2')).toBeNull()
   })
 

@@ -610,14 +610,14 @@ export function FeedPosts({
     }
   }, [isLoggedIn, readOnly, anyFediverseCopy])
 
-  // The account choice below the post's comment box and below each reply
-  // box in its thread: one choice per post, which a reply to a comment from
-  // another network answers that comment with.
+  // The account choice in the button row of the post's comment box and of
+  // each reply box in its thread, before attach: one choice per post, which a
+  // reply to a comment from another network answers that comment with.
   const replyChoice = (post: FeedPost, id: string) =>
     replyAccounts.length > 0 &&
     (post.copies?.some((copy) => copy.network === 'fediverse') ||
       (post.remote && post.authorId)) ? (
-      <div className='mt-2 flex items-center gap-2 text-xs'>
+      <div className='flex items-center gap-2 text-xs'>
         <Label htmlFor={id}>
           <Trans>Also reply from</Trans>
         </Label>
@@ -2132,8 +2132,8 @@ export function FeedPosts({
                       placeholder={t`Leave a comment...`}
                       textareaClassName='rounded-[8px] text-sm'
                       autoFocus
+                      controls={replyChoice(post, `reply-from-${post.id}`)}
                     />
-                    {replyChoice(post, `reply-from-${post.id}`)}
                   </div>
                 )}
 

@@ -58,7 +58,7 @@ type CommentThreadProps = {
    * replied to, so the list can warn before a switch throws them away. */
   onReplyFilesChange?: (count: number) => void
   onSubmitReply: (commentId: string, files?: File[]) => void | Promise<void>
-  /** The account a reply also goes out from, shown below the reply box. */
+  /** The account a reply also goes out from, in the reply box's button row. */
   replyChoice?: (commentId: string) => ReactNode
   /** Byte progress of an in-flight reply upload */
   progress?: Upload | null
@@ -520,8 +520,8 @@ export function CommentThread({
             progress={progress}
             placeholder={t`Reply to ${comment.author}...`}
             autoFocus
+            controls={replyChoice?.(comment.id)}
           />
-          {replyChoice?.(comment.id)}
         </div>
       )}
 
