@@ -9786,7 +9786,9 @@ def account_cursor_set(account, kind, cursor):
 	mochi.db.execute("insert or replace into account_cursors (account, kind, cursor, updated) values (?, ?, ?, ?)", account, kind, cursor, mochi.time.now())
 
 def job_accounts():
-	"""The accounts the jobs cover: those in a publish list or a source."""
+	"""The accounts the jobs cover: those in a publish list or a source. A
+	hosted fediverse account has nothing for them: its notifications arrive
+	at its inbox, and its posts are the feeds' own."""
 	ids = {}
 	for row in mochi.db.rows("select distinct account from publish"):
 		ids[row["account"]] = True
@@ -9798,7 +9800,7 @@ def job_accounts():
 		acc = publish_account(row["account"])
 		if acc and hosted_bluesky(acc):
 			ids[row["account"]] = True
-	return [acc for acc in [publish_account(id) for id in ids] if acc]
+	return [acc for acc in [publish_account(id) for id in ids] if acc and not hosted_fediverse(acc)]
 
 def ensure_account_jobs():
 	"""Keep the recurring job scheduled while any account is in use."""
