@@ -10159,9 +10159,12 @@ def function_activitypub_object(context, account, id):
 		return None
 	return fediverse_note(acc, feed, post["id"], post["body"], post.get("format", "markdown"), post_link(feed["id"], post["id"]), attachment_list(post["id"]), source, post_features(post))
 
-def function_activitypub_featured(context, account):
-	"""The objects a hosted account pins: the copies of the pinned posts of
-	the feeds publishing to it, newest pin first."""
+def function_featured(context, account):
+	"""The objects a hosted account pins, for the fediverse's featured
+	collection and Bluesky's pinned post: the copies of the pinned posts of
+	the feeds publishing to it, newest pin first. Bluesky pins only a post of
+	the account's own, which core picks out, so a repost's copy is passed
+	over there."""
 	return [row["remote"] for row in mochi.db.rows("select c.remote from copies c join posts p on p.id=c.post where c.account=? and p.pinned>0 order by p.pinned desc", account)]
 
 def follow_accounts(feed_id):
@@ -11715,21 +11718,29 @@ def pin_set(a, pinned):
 	if not post:
 		a.error.label(404, "errors.post_not_found")
 		return
+	return {"data": {"post": post["id"], "pinned": pin_apply(feed, post, pinned, a.user.identity.id)}}
+
+def pin_apply(feed, post, pinned, user_id):
+	"""Pin a post of a feed the owner pins, or unpin it, from here or from an
+	app on another network signed in to one of their accounts: told to the
+	subscribers, and on a change sent on to the post's copies. Answers the
+	time pinned, 0 for none."""
 	value = mochi.time.now() if pinned else 0
 	changed = (number(post.get("pinned", 0)) > 0) != pinned
 	mochi.db.execute("update posts set pinned=? where id=?", value, post["id"])
 	mochi.db.commit.fire("posts", "update", post["id"])
-	broadcast_event(feed["id"], "post/pin", {"post": post["id"], "pinned": value}, a.user.identity.id)
+	broadcast_event(feed["id"], "post/pin", {"post": post["id"], "pinned": value}, user_id)
 	if changed:
 		pin_publish(post["id"], pinned)
-	return {"data": {"post": post["id"], "pinned": value}}
+	return value
 
 def pin_publish(post_id, pinned):
 	"""A pin or unpin goes on to the post's copies: on a hosted fediverse
 	account an Add to the account's featured collection or a Remove from it,
-	on a linked Mastodon account the status pinned or unpinned. A boost is not
-	the account's own post and cannot be pinned, so is left alone; a refusal,
-	such as Mastodon's limit of five pins, is only logged."""
+	on a linked Mastodon account the status pinned or unpinned, and on a
+	Bluesky account the profile's pinned post. A boost is not the account's
+	own post and cannot be pinned, so is left alone; a refusal, such as
+	Mastodon's limit of five pins, is only logged."""
 	for row in mochi.db.rows("select account, remote, url from copies where post=? and account!=''", post_id):
 		acc = publish_account(row["account"])
 		if not acc:
@@ -11745,6 +11756,68 @@ def pin_publish(post_id, pinned):
 			answer = mochi.account.request(acc["id"], "POST", "v1/statuses/" + row["remote"] + ("/pin" if pinned else "/unpin"))
 			if not answer or answer.get("status", 0) < 200 or answer.get("status", 0) > 299:
 				mochi.log.info("Feeds could not %s the copy of post %s on %s", "pin" if pinned else "unpin", post_id, acc.get("identifier", acc["id"]))
+		elif hosted_bluesky(acc):
+			# Core writes the profile, pinning the newest of what
+			# function_featured names; a core before that has no featured.
+			if hasattr(mochi.account, "featured"):
+				mochi.account.featured(acc["id"])
+		elif acc["type"] == "bluesky":
+			pin_bluesky(acc, row["remote"], pinned)
+
+def pin_bluesky(acc, remote, pinned):
+	"""A pin or unpin on a linked Bluesky account, whose profile pins one
+	post: a pin pins the copy, and an unpin of the copy the profile pins moves
+	the pin to the newest other pinned post with a copy there, or takes it
+	off. A pin the person made in their Bluesky app is left alone by an
+	unpin. The profile record goes back whole, and only if it has not changed
+	since it was read."""
+	parts = remote.split("/")
+	if len(parts) != 5 or parts[0] != "at:" or parts[3] != "app.bsky.feed.post":
+		return
+	did = parts[2]
+	answer = mochi.account.request(acc["id"], "GET", "com.atproto.repo.getRecord", query={"repo": did, "collection": "app.bsky.actor.profile", "rkey": "self"})
+	status = answer.get("status", 0) if answer else 0
+	data = answer.get("data") if answer and type(answer.get("data")) == "dict" else {}
+	if status == 200 and type(data.get("value")) == "dict":
+		record, swap = data["value"], str(data.get("cid", "") or "")
+	elif status == 400 and data.get("error") == "RecordNotFound":
+		record, swap = {"$type": "app.bsky.actor.profile"}, ""
+	else:
+		mochi.log.info("Feeds could not read the Bluesky profile of %s: %s", acc.get("identifier", acc["id"]), status)
+		return
+	held = record.get("pinnedPost") if type(record.get("pinnedPost")) == "dict" else {}
+	if pinned:
+		target = remote
+	elif held.get("uri") == remote:
+		row = mochi.db.row("select c.remote from copies c join posts p on p.id=c.post where c.account=? and p.pinned>0 and c.remote like ? order by p.pinned desc", acc["id"], "at://" + did + "/app.bsky.feed.post/%")
+		target = row["remote"] if row else ""
+	else:
+		return
+	if target:
+		reference = bluesky_record_reference(acc, target)
+		if not reference:
+			mochi.log.info("Feeds could not read the Bluesky post %s to pin it", target)
+			return
+		record["pinnedPost"] = reference
+	elif "pinnedPost" in record:
+		record.pop("pinnedPost")
+	body = {"repo": did, "collection": "app.bsky.actor.profile", "rkey": "self", "record": record}
+	if swap:
+		body["swapRecord"] = swap
+	answer = mochi.account.request(acc["id"], "POST", "com.atproto.repo.putRecord", body)
+	if not answer or answer.get("status", 0) < 200 or answer.get("status", 0) > 299:
+		mochi.log.info("Feeds could not %s the copy %s on %s", "pin" if pinned else "unpin", remote, acc.get("identifier", acc["id"]))
+
+def bluesky_record_reference(acc, uri):
+	"""A post of the account's own as a record reference {uri, cid}, read
+	from its server, which holds it the moment it is written; None when that
+	does not answer."""
+	parts = uri.split("/")
+	answer = mochi.account.request(acc["id"], "GET", "com.atproto.repo.getRecord", query={"repo": parts[2], "collection": parts[3], "rkey": parts[4]})
+	data = answer.get("data") if answer and type(answer.get("data")) == "dict" else {}
+	if not answer or answer.get("status", 0) != 200 or not data.get("cid"):
+		return None
+	return {"uri": uri, "cid": str(data["cid"])}
 
 def event_post_pin(e):
 	"""A pin or unpin by the owner, as a subscriber takes it."""

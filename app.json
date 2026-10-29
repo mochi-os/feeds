@@ -17,10 +17,12 @@
 		"activitypub/object": {"function": "function_activitypub_object"},
 		"activitypub/receive": {"function": "function_activitypub_receive"},
 		// The objects the account pins, for its featured collection.
-		"activitypub/featured": {"function": "function_activitypub_featured"},
+		"activitypub/featured": {"function": "function_featured"},
 		// The posts of a feed published as a Bluesky custom feed, asked for by
 		// core's feed generator when Bluesky's index wants the feed (phase 19).
 		"atproto/skeleton": {"function": "function_atproto_skeleton"},
+		// The posts the account pins, the newest its profile's pinned post.
+		"atproto/featured": {"function": "function_featured"},
 		// What core's Mastodon interface reads and writes as a hosted
 		// fediverse account (phase 28, mastodon.star).
 		"mastodon/posts": {"function": "function_mastodon_posts"},
@@ -31,6 +33,7 @@
 		"mastodon/delete": {"function": "function_mastodon_delete"},
 		"mastodon/react": {"function": "function_mastodon_react"},
 		"mastodon/save": {"function": "function_mastodon_save"},
+		"mastodon/pin": {"function": "function_mastodon_pin"},
 		"mastodon/boost": {"function": "function_mastodon_boost"},
 		"mastodon/hold": {"function": "function_mastodon_hold"},
 		"mastodon/vote": {"function": "function_mastodon_vote"},
