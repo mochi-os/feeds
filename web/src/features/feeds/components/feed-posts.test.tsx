@@ -106,7 +106,8 @@ function post(id = 'post-1', body = 'Hello world'): FeedPost {
 
 function renderPosts(
   posts: FeedPost[] = [post()],
-  onReplyToComment: (...args: unknown[]) => void = () => {}
+  onReplyToComment: (...args: unknown[]) => void = () => {},
+  owner = true
 ) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -124,7 +125,7 @@ function renderPosts(
           onCommentReaction={() => {}}
           onEditPost={async () => true}
           onDeletePost={() => {}}
-          isFeedOwner
+          isFeedOwner={owner}
           isLoggedIn
           currentUserId='user-1'
         />
@@ -277,26 +278,50 @@ describe('FeedPosts card navigation', () => {
     expect(mockNavigate).toHaveBeenCalledTimes(1)
   })
 
-  it('links to a post\'s copies on other networks', () => {
-    renderPosts([
-      {
-        ...post(),
-        copies: [
-          {
-            address: '@alice@mastodon.social',
-            network: 'mastodon',
-            remote: '101',
-            url: 'https://mastodon.social/@alice/101',
-          },
-          { address: 'alice.bsky.social', network: 'bluesky', remote: 'at://x', url: '' },
-        ],
-      },
-    ])
-    const link = screen.getByRole('link', { name: 'Also on Mastodon' })
+  const copies = [
+    {
+      address: '@alice@mastodon.social',
+      network: 'mastodon',
+      remote: '101',
+      url: 'https://mastodon.social/@alice/101',
+    },
+    { address: 'alice.bsky.social', network: 'bluesky', remote: 'at://x', url: '' },
+  ]
+
+  it('opens a post\'s copies on other networks from its menu, not a row on the card', async () => {
+    const user = userEvent.setup()
+    renderPosts([{ ...post(), copies }])
+    expect(within(card()).queryByText(/Also on/)).toBeNull()
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    const link = await screen.findByRole('menuitem', { name: 'Open on Mastodon' })
     expect(link).toHaveAttribute('href', 'https://mastodon.social/@alice/101')
-    // A copy with no page is named without a link.
-    expect(screen.getByText('Also on Bluesky')).toBeTruthy()
-    expect(screen.queryByRole('link', { name: 'Also on Bluesky' })).toBeNull()
+    expect(link).toHaveAttribute('target', '_blank')
+    // A copy with no page has nothing to open.
+    expect(screen.queryByRole('menuitem', { name: 'Open on Bluesky' })).toBeNull()
+    expect(screen.getByRole('menuitem', { name: 'Edit post' })).toBeTruthy()
+  })
+
+  it('gives a reader who cannot manage the post a menu of its copies alone', async () => {
+    const user = userEvent.setup()
+    renderPosts([{ ...post(), isOwner: false, copies }], () => {}, false)
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    expect(
+      await screen.findByRole('menuitem', { name: 'Open on Mastodon' })
+    ).toBeTruthy()
+    expect(screen.queryByRole('menuitem', { name: 'Edit post' })).toBeNull()
+    expect(screen.queryByRole('menuitem', { name: 'Delete post' })).toBeNull()
+  })
+
+  it('counts a post\'s boosts beside its reactions', () => {
+    renderPosts([{ ...post(), boosts: 3 }])
+    const count = within(card()).getByText('Boosted 3 times')
+    // In the row of reactions and actions, not under the post's text.
+    expect(count.closest('.mt-4')).not.toBeNull()
+    expect(within(card()).getByText('3')).toBeTruthy()
   })
 
   it('folds a post behind its content warning, a strip that opens and closes it in place', () => {

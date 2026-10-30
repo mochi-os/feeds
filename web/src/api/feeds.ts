@@ -415,11 +415,17 @@ const importFollows = async (
   feedId: string,
   addresses: string,
   account?: string
-): Promise<ImportFollowsResponse> =>
-  client.post<ImportFollowsResponse, Record<string, string>>(
-    endpoints.feeds.sourcesImport(feedId),
-    { feed: feedId, addresses, ...(account ? { account } : {}) }
-  )
+): Promise<ImportFollowsResponse> => {
+  const response = await client.post<
+    MaybeWrapped<ImportFollowsResponse>,
+    Record<string, string>
+  >(endpoints.feeds.sourcesImport(feedId), {
+    feed: feedId,
+    addresses,
+    ...(account ? { account } : {}),
+  })
+  return toDataResponse<ImportFollowsResponse>(response, 'import follows').data
+}
 
 // The user's contacts with a handle on another network, to follow.
 const people = async (): Promise<{ people: Person[] }> =>

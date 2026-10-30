@@ -17,7 +17,6 @@ import type {
   FeedComment,
   FeedPermissions,
   FeedPost,
-  PostCopy,
   PostFeatures,
   PublishAccount,
   ReactionId,
@@ -90,6 +89,7 @@ import {
   PinOff,
   Plane,
   Repeat2,
+  ExternalLink,
   Trash2,
   TriangleAlert,
   X,
@@ -440,41 +440,17 @@ export function PostCommentsList({
   )
 }
 
-// Where else a post is: its copies on other networks, each a link to the copy
-// under the account it was published through.
-export function PostCopies({
-  copies,
-  boosts,
-}: {
-  copies?: PostCopy[]
-  boosts?: number
-}) {
-  if ((!copies || copies.length === 0) && !boosts) return null
+// How many times a post was boosted on other networks, beside its reactions.
+function PostBoosts({ boosts }: { boosts: number }) {
+  const { formatNumber } = useFormat()
   return (
-    <div className='text-muted-foreground mt-1 flex flex-wrap gap-x-3 text-xs'>
-      {(copies ?? []).map((copy) =>
-        copy.url ? (
-          <a
-            key={copy.address}
-            href={safeHref(copy.url)}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='hover:underline'
-          >
-            <Trans>Also on {providerName(copy.network)}</Trans>
-          </a>
-        ) : (
-          <span key={copy.address}>
-            <Trans>Also on {providerName(copy.network)}</Trans>
-          </span>
-        )
-      )}
-      {!!boosts && (
-        <span>
-          <Plural value={boosts} _1='Boosted once' other='Boosted # times' />
-        </span>
-      )}
-    </div>
+    <span className='text-muted-foreground inline-flex items-center gap-1 px-1 text-xs'>
+      <Repeat2 className='size-3.5' aria-hidden='true' />
+      <span aria-hidden='true'>{formatNumber(boosts)}</span>
+      <span className='sr-only'>
+        <Plural value={boosts} _1='Boosted once' other='Boosted # times' />
+      </span>
+    </span>
   )
 }
 
@@ -1535,7 +1511,6 @@ export function FeedPosts({
                         )}
                       </div>
                     )}
-                    <PostCopies copies={post.copies} boosts={post.boosts} />
                     {!isLoggedIn &&
                       post.copies?.some(
                         (copy) => copy.network === 'fediverse'
@@ -1757,8 +1732,21 @@ export function FeedPosts({
                     canComment ||
                     isFeedOwner ||
                     post.isOwner ||
-                    usePerPostPermissions) &&
+                    usePerPostPermissions ||
+                    !!post.boosts ||
+                    !!post.copies?.some((copy) => copy.url)) &&
                   (() => {
+                    // A post's copies on other networks, each opened from its
+                    // menu, below the owner's own items.
+                    const links = (post.copies ?? []).filter(
+                      (copy) => copy.url
+                    )
+                    const manage =
+                      !readOnly &&
+                      (isFeedOwner || post.isOwner) &&
+                      !!onEditPost &&
+                      !!onDeletePost
+                    const boosts = post.boosts ?? 0
                     const hasReactions = !!(
                       (post.reactions &&
                         Object.values(post.reactions).some(
@@ -1793,6 +1781,8 @@ export function FeedPosts({
                             />
                           )}
                         </div>
+
+                        {boosts > 0 && <PostBoosts boosts={boosts} />}
 
                         {/* Action pill: stored reaction chips stay visible; actions expand on hover */}
                         <div className='group/actions flex items-center gap-1'>
@@ -1948,105 +1938,124 @@ export function FeedPosts({
                               </Tooltip>
                             )}
 
-                          {/* More Options (Edit / Delete) */}
-                          {!readOnly &&
-                            (isFeedOwner || post.isOwner) &&
-                            onEditPost &&
-                            onDeletePost && (
-                              <ActionPill
-                                hoverGroup='card'
-                                expandWidth={300}
-                                emptyReveal='max-width'
-                                className={HOLD_OPEN}
-                              >
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button
-                                      type='button'
-                                      variant='ghost'
-                                      size='icon'
-                                      className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
-                                      aria-label={t`More options`}
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                      }}
-                                    >
-                                      <MoreHorizontal className='size-4' />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent
-                                    align='end'
-                                    onClick={(e) => e.stopPropagation()}
+                          {/* More options: Edit / Delete, then the post's copies */}
+                          {(manage || links.length > 0) && (
+                            <ActionPill
+                              hoverGroup='card'
+                              expandWidth={300}
+                              emptyReveal='max-width'
+                              className={HOLD_OPEN}
+                            >
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    type='button'
+                                    variant='ghost'
+                                    size='icon'
+                                    className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
+                                    aria-label={t`More options`}
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      e.stopPropagation()
+                                    }}
                                   >
-                                    <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                        handleStartEdit(post)
-                                      }}
-                                    >
-                                      <Pencil className='me-2 size-4' />
-                                      <Trans>Edit post</Trans>
-                                    </DropdownMenuItem>
-                                    {isFeedOwner && (
+                                    <MoreHorizontal className='size-4' />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                  align='end'
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  {manage && (
+                                    <>
                                       <DropdownMenuItem
                                         onClick={(e) => {
                                           e.preventDefault()
                                           e.stopPropagation()
-                                          void pinPost(post)
+                                          handleStartEdit(post)
                                         }}
                                       >
-                                        {post.pinned ? (
-                                          <PinOff className='me-2 size-4' />
-                                        ) : (
-                                          <Pin className='me-2 size-4' />
-                                        )}
-                                        {post.pinned ? (
-                                          <Trans>Unpin post</Trans>
-                                        ) : (
-                                          <Trans>Pin post</Trans>
-                                        )}
+                                        <Pencil className='me-2 size-4' />
+                                        <Trans>Edit post</Trans>
                                       </DropdownMenuItem>
-                                    )}
-                                    {isFeedOwner &&
-                                      boostAccount &&
-                                      post.remote &&
-                                      post.authorId && (
+                                      {isFeedOwner && (
                                         <DropdownMenuItem
                                           onClick={(e) => {
                                             e.preventDefault()
                                             e.stopPropagation()
-                                            void boostPost(post)
+                                            void pinPost(post)
                                           }}
                                         >
-                                          <Repeat2 className='me-2 size-4' />
-                                          {isBoosted(post) ? (
-                                            <Trans>Take the boost back</Trans>
+                                          {post.pinned ? (
+                                            <PinOff className='me-2 size-4' />
                                           ) : (
-                                            <Trans>
-                                              Boost from {boostAccount.identifier}
-                                            </Trans>
+                                            <Pin className='me-2 size-4' />
+                                          )}
+                                          {post.pinned ? (
+                                            <Trans>Unpin post</Trans>
+                                          ) : (
+                                            <Trans>Pin post</Trans>
                                           )}
                                         </DropdownMenuItem>
                                       )}
+                                      {isFeedOwner &&
+                                        boostAccount &&
+                                        post.remote &&
+                                        post.authorId && (
+                                          <DropdownMenuItem
+                                            onClick={(e) => {
+                                              e.preventDefault()
+                                              e.stopPropagation()
+                                              void boostPost(post)
+                                            }}
+                                          >
+                                            <Repeat2 className='me-2 size-4' />
+                                            {isBoosted(post) ? (
+                                              <Trans>Take the boost back</Trans>
+                                            ) : (
+                                              <Trans>
+                                                Boost from{' '}
+                                                {boostAccount.identifier}
+                                              </Trans>
+                                            )}
+                                          </DropdownMenuItem>
+                                        )}
+                                      <DropdownMenuItem
+                                        onClick={(e) => {
+                                          e.preventDefault()
+                                          e.stopPropagation()
+                                          setDeletingPost({
+                                            id: post.id,
+                                            feedId: post.feedId,
+                                          })
+                                        }}
+                                      >
+                                        <Trash2 className='me-2 size-4' />
+                                        <Trans>Delete post</Trans>
+                                      </DropdownMenuItem>
+                                    </>
+                                  )}
+                                  {links.map((copy) => (
                                     <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                        setDeletingPost({
-                                          id: post.id,
-                                          feedId: post.feedId,
-                                        })
-                                      }}
+                                      key={copy.address}
+                                      asChild
                                     >
-                                      <Trash2 className='me-2 size-4' />
-                                      <Trans>Delete post</Trans>
+                                      <a
+                                        href={safeHref(copy.url)}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                      >
+                                        <ExternalLink className='me-2 size-4' />
+                                        <Trans>
+                                          Open on {providerName(copy.network)}
+                                        </Trans>
+                                      </a>
                                     </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </ActionPill>
-                            )}
+                                  ))}
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </ActionPill>
+                          )}
                         </div>
                       </div>
                     )

@@ -55,6 +55,7 @@ import {
   Hash,
   LayoutList,
   Link2,
+  Loader2,
   Plus,
   RefreshCw,
   Rss,
@@ -347,7 +348,7 @@ interface SourcesPanelProps {
   addType?: SourceKind
 }
 
-function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
+export function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
   const { t } = useLingui()
   const { formatTimestamp } = useFormat()
   const navigateRoute = Route.useNavigate()
@@ -388,7 +389,9 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
   // A Mastodon export of follows (following_accounts.csv), read here and sent
   // as text: each address becomes a source.
   const importInputRef = useRef<HTMLInputElement>(null)
+  const [importing, setImporting] = useState(false)
   const handleImport = async (file: File) => {
+    setImporting(true)
     try {
       const answer = await feedsApi.importFollows(feedId, await file.text())
       toast.success(
@@ -402,6 +405,8 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
       await refetchSources()
     } catch (err) {
       toast.error(getErrorMessage(err, t`Failed to import follows`))
+    } finally {
+      setImporting(false)
     }
   }
 
@@ -422,8 +427,12 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
       action={
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button size='sm'>
-              <Plus className='me-2 h-4 w-4' />
+            <Button size='sm' disabled={importing}>
+              {importing ? (
+                <Loader2 className='me-2 h-4 w-4 animate-spin' />
+              ) : (
+                <Plus className='me-2 h-4 w-4' />
+              )}
               <Trans>Add source</Trans>
             </Button>
           </DropdownMenuTrigger>

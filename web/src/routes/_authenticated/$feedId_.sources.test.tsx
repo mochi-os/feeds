@@ -11,12 +11,15 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   AddSourceDialog,
+  SourcesPanel,
   SourceType,
   type SourceKind,
 } from './$feedId_.sources'
 
 const state = vi.hoisted(() => ({
   addSource: vi.fn(),
+  importFollows: vi.fn(),
+  getSources: vi.fn(),
   blueskyAccounts: vi.fn(),
   hostedAccounts: vi.fn(),
   success: vi.fn(),
@@ -26,11 +29,22 @@ const state = vi.hoisted(() => ({
 vi.mock('@/api/feeds', () => ({
   feedsApi: {
     addSource: state.addSource,
+    importFollows: state.importFollows,
+    getSources: state.getSources,
     blueskyAccounts: state.blueskyAccounts,
     hostedAccounts: state.hostedAccounts,
     getPublish: vi.fn().mockResolvedValue({ accounts: [], publish: [], copies: {} }),
     updateSource: vi.fn(),
   },
+}))
+
+// The panel reads its route's navigation, which needs no router here.
+vi.mock('@tanstack/react-router', async (original) => ({
+  ...(await original<typeof import('@tanstack/react-router')>()),
+  createFileRoute: () => (options: object) => ({
+    ...options,
+    useNavigate: () => vi.fn(),
+  }),
 }))
 
 vi.mock('@mochi/web', async (original) => ({
@@ -167,5 +181,51 @@ describe('Source type', () => {
     expect(label('person/posts')).toBe('Posts on Bluesky')
     expect(label('tag/posts')).toBe('Hashtag')
     expect(label('feed/posts')).toBe('Mochi feed')
+  })
+})
+
+describe('Import follows from a file', () => {
+  beforeEach(() => {
+    i18n.load('en', {})
+    i18n.activate('en')
+    state.getSources.mockReset().mockResolvedValue({ data: { sources: [] } })
+    state.importFollows.mockReset()
+    state.success.mockReset()
+    state.error.mockReset()
+  })
+
+  it('shows the import running, then how many follows it added', async () => {
+    let finish: (value: unknown) => void = () => {}
+    state.importFollows.mockReturnValue(
+      new Promise((resolve) => {
+        finish = resolve
+      })
+    )
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    })
+    const { container } = render(
+      <QueryClientProvider client={client}>
+        <I18nProvider i18n={i18n}>
+          <SourcesPanel feedId='f1' />
+        </I18nProvider>
+      </QueryClientProvider>
+    )
+    const add = await screen.findByRole('button', { name: 'Add source' })
+    expect((add as HTMLButtonElement).disabled).toBe(false)
+    const input = container.querySelector('input[type=file]') as HTMLInputElement
+    const file = new File(['Account address\nbob@there.example\n'], 'following_accounts.csv', { type: 'text/csv' })
+    // jsdom's File has no text().
+    Object.defineProperty(file, 'text', {
+      value: () => Promise.resolve('Account address\nbob@there.example\n'),
+    })
+    fireEvent.change(input, { target: { files: [file] } })
+    // While the request runs, the button that holds Import is busy.
+    await waitFor(() => expect((add as HTMLButtonElement).disabled).toBe(true))
+    expect(add.querySelector('.animate-spin')).toBeTruthy()
+    finish({ imported: 2, more: false, total: 3 })
+    await waitFor(() => expect(state.success).toHaveBeenCalledWith('2 follows imported'))
+    await waitFor(() => expect((add as HTMLButtonElement).disabled).toBe(false))
+    expect(add.querySelector('.animate-spin')).toBeNull()
   })
 })

@@ -55,3 +55,16 @@ describe('feedsApi.addSource', () => {
     expect(post.mock.calls[0][2]).toEqual({ timeout: 0 })
   })
 })
+
+describe('feedsApi.importFollows', () => {
+  beforeEach(() => {
+    post.mockReset()
+    post.mockResolvedValue({ data: { imported: 2, more: false, total: 3 } })
+  })
+
+  // The action answers inside a data envelope, as feeds' actions do.
+  it('answers the counts from inside the envelope', async () => {
+    const answer = await feedsApi.importFollows('f', 'Account address\nbob@there.example\n')
+    expect(answer).toEqual({ imported: 2, more: false, total: 3 })
+  })
+})

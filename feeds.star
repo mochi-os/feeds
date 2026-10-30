@@ -7573,9 +7573,23 @@ def source_remove(feed, source, user_id, delete_posts, unfollow=True):
 		mochi.db.execute("delete from posts where id in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from follows where post in (select post from source_posts where source=?)", source_id)
 
+	# Posts from another network that earlier versions published on lose
+	# their copies whether or not the posts stay. A kept post is about to
+	# lose its link to the source, so those copies are detached from it, as a
+	# deleted post's are, to be found and withdrawn with those. A boost the
+	# user chose is not one of them (see copies_stray).
+	network = source["type"] in NETWORK_SOURCE_TYPES
+	if network and not delete_posts:
+		mochi.db.execute("update copies set post='-'||post where account!='' and post in (select sp.post from source_posts sp join published d on d.feed=? and d.remote=sp.guid where sp.source=?)", feed_id, source_id)
+
 	# Delete source_posts (FK references both sources and posts), then the source
 	mochi.db.execute("delete from source_posts where source=?", source_id)
 	mochi.db.execute("delete from sources where id=?", source_id)
+
+	# The copies are withdrawn in scheduled batches: one request each would
+	# outlast this one on a large source.
+	if delete_posts or network:
+		copies_withdraw_start()
 	if web_protocols():
 		mochi.websub.unsubscribe(source_id)
 
@@ -7620,7 +7634,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 	now = mochi.time.now()
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
 	ai_mode = feed_row["ai_mode"] if feed_row else ""
-	source_row = mochi.db.row("select name, url, transform, credibility from sources where id=?", source_id)
+	source_row = mochi.db.row("select type, name, url, transform, credibility from sources where id=?", source_id)
 	seen_guids = {}
 
 	# The posts whose categories wait to become tags (schedule_rss_tags).
@@ -7744,7 +7758,9 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 
 		# On to the feed's accounts, with the source's name and link; the
 		# backfill when a source is added is not news and does not go out.
-		if notify:
+		# A hashtag source is posts on another network, read as a web feed,
+		# and never goes out (decision 30).
+		if notify and source_row and source_row["type"] == "rss":
 			copies = publish_sourced(feed_id, post_id, body, post_format, {"remote": guid, "name": rss_data.get("source", ""), "link": link, "network": "rss", "created": created, "transformed": transformed})
 			if copies:
 				post_event["copies"] = copies
@@ -8140,6 +8156,7 @@ def schedule_sources_watchdog(e):
 	if e.source != "schedule":
 		return
 	ensure_polls()
+	copies_withdraw_start()
 
 def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
@@ -9199,10 +9216,11 @@ def mastodon_copy(status):
 
 def publish_post(feed, post_id, body, format, attachments, accounts=None, source=None, post=None):
 	"""Publish a post to the accounts given, else the feed's list; a public
-	feed only (decision 27). A sourced post (source: remote, name, link,
-	network, item, transformed, created) never goes back to the account it
-	came from nor out again as a copy already published, and only to accounts
-	added before it arrived (decision 30). A post that is not public goes to
+	feed only (decision 27). A sourced post, a web feed's item or another
+	Mochi feed's post (source: remote, name, link, network, transformed,
+	created), goes out as a copy carrying the source's name and link, never
+	again as a copy already published, and only to accounts added before it
+	arrived (decision 30). A post that is not public goes to
 	the networks that have a visibility (the fediverse, Mastodon) and not to
 	Bluesky. Answers the copies made."""
 	if feed.get("privacy", "public") != "public":
@@ -9227,26 +9245,19 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 		acc = publish_account(row["account"])
 		if not acc:
 			continue
-		if source:
-			if source.get("account") == acc["id"]:
-				continue
-			if number(row.get("created", 0)) > number(source.get("created", 0)):
-				continue
+		if source and number(row.get("created", 0)) > number(source.get("created", 0)):
+			continue
 		if features["visibility"] != "public" and acc["type"] not in ("fediverse", "mastodon"):
 			continue
 		if mochi.db.exists("select 1 from copies where post=? and account=?", post_id, acc["id"]):
 			continue
-		result = None
-		if source and source.get("network") == acc["type"] and not source.get("transformed"):
-			result = publish_announce(acc, source)
-		if not result:
-			if hosted_fediverse(acc):
-				object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source, features)
-			else:
-				object = publish_object(acc, text, link, attachments, source, features, quote)
-			# A sourced post may wait for the relay's budget on a hosted
-			# Bluesky account (decision 30).
-			result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"], sourced=bool(source))
+		if hosted_fediverse(acc):
+			object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source, features)
+		else:
+			object = publish_object(acc, text, link, attachments, source, features, quote)
+		# A sourced post may wait for the relay's budget on a hosted Bluesky
+		# account (decision 30).
+		result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"], sourced=bool(source))
 		if not result:
 			mochi.log.warn("Feeds could not publish post %s to %s", post_id, acc.get("identifier", acc["id"]))
 			continue
@@ -9308,6 +9319,50 @@ def publish_forget(feed_id, account_id):
 			mochi.account.object.delete(acc["id"], row["remote"])
 		mochi.db.execute("delete from copies where post=? and account=?", row["post"], account_id)
 	return len(rows)
+
+# The source types whose posts are someone else's on another network: a feed
+# never publishes them on through its accounts (decision 30).
+NETWORK_SOURCE_TYPES = ["tag/posts", "person/posts", "account/timeline", "account/posts", "generator/posts", "list/posts"]
+
+# How many stray copies one step withdraws: each may be a request to the
+# network.
+WITHDRAW_BATCH = 20
+
+def copies_stray(limit):
+	"""Copies that should not be on their network: of a post since deleted, as
+	removing a source with its posts leaves them (or detached from one, see
+	source_remove), or of a post from another network that earlier versions
+	published on, which recorded the post's own id as published. A boost the
+	user chose records only its own id, and stays."""
+	marks = ",".join(["?" for _ in NETWORK_SOURCE_TYPES])
+	return mochi.db.rows("select c.post, c.account, c.remote from copies c where c.account!='' and (not exists (select 1 from posts p where p.id=c.post) or exists (select 1 from source_posts sp join sources s on s.id=sp.source join published d on d.feed=s.feed and d.remote=sp.guid where sp.post=c.post and s.type in (" + marks + "))) limit ?", *(NETWORK_SOURCE_TYPES + [limit]))
+
+def copies_withdraw_start():
+	"""Book the withdrawal of the stray copies, where there are any and none
+	is booked already."""
+	if not copies_stray(1):
+		return
+	for se in mochi.schedule.list():
+		if se.event == "schedule_copies_withdraw":
+			return
+	mochi.schedule.after("schedule_copies_withdraw", {}, 0)
+
+def schedule_copies_withdraw(e):
+	"""Withdraw a batch of stray copies from their networks, booking the next
+	batch while any remain. The next batch is booked and each copy forgotten
+	before its withdrawal is asked for: a network that refuses one, or an
+	object already gone, ends this step and not the sweep."""
+	if e.source != "schedule":
+		return
+	rows = copies_stray(WITHDRAW_BATCH)
+	if not rows:
+		return
+	mochi.schedule.after("schedule_copies_withdraw", {}, 5)
+	for row in rows:
+		mochi.db.execute("delete from copies where post=? and account=?", row["post"], row["account"])
+		acc = publish_account(row["account"])
+		if acc:
+			mochi.account.object.delete(acc["id"], row["remote"])
 
 def publish_feed_delete(feed_id):
 	"""A deleted feed takes its copies with it, and the Bluesky custom feeds
@@ -9607,8 +9662,7 @@ def bluesky_labels(post_labels, author_labels):
 def poll_account_source(source, user_id=None, deadline=None):
 	"""Read the newest page of an account source and make posts of what is
 	new: not seen by this source, not one of the feed's own copies, not older
-	than the source. Each new post goes on to the feed's accounts as a sourced
-	post (decision 30). Answers (count, complete)."""
+	than the source. Answers (count, complete)."""
 	now = mochi.time.now()
 	acc = publish_account(source["url"])
 	new_count = 0
@@ -9623,7 +9677,7 @@ def poll_account_source(source, user_id=None, deadline=None):
 	source_polled(source, new_count, now)
 	return (new_count, complete)
 
-def ingest_account_items(feed, source, acc, items, user_id, deadline, notify=True):
+def ingest_account_items(feed, source, acc, items, user_id, deadline):
 	"""Posts of the items a source's page brought that are new: not seen by
 	this source, not one of the feed's own copies, not older than the source.
 	Answers (count, complete)."""
@@ -9647,7 +9701,7 @@ def ingest_account_items(feed, source, acc, items, user_id, deadline, notify=Tru
 		# never a post of its own.
 		if replied_has(acc["id"], item["remotes"]):
 			continue
-		if sourced_post(feed, source, acc, item, user_id, notify):
+		if sourced_post(feed, source, acc, item, user_id):
 			new_count += 1
 	return (new_count, complete)
 
@@ -9669,11 +9723,11 @@ def source_polled(source, new_count, now):
 	next_poll = now + new_interval + (mochi.time.now() % max(jitter, 1))
 	mochi.db.execute("update sources set interval=?, next=?, fetched=? where id=?", new_interval, next_poll, now, source["id"])
 
-def sourced_post(feed, source, acc, item, user_id, notify=True):
-	"""Store an account item as a post of the feed, as an RSS item is stored,
-	and publish it on to the feed's other accounts; not when the item is the
-	history a source brings as it is added, which is not news. Answers whether
-	a post was made."""
+def sourced_post(feed, source, acc, item, user_id):
+	"""Store an account item as a post of the feed, as an RSS item is stored.
+	It is someone else's post on another network, so it is never published
+	on through the feed's accounts (decision 30). Answers whether a post was
+	made."""
 	feed_id = feed["id"]
 	text = item["text"]
 	link = item["link"]
@@ -9725,12 +9779,6 @@ def sourced_post(feed, source, acc, item, user_id, notify=True):
 	mochi.db.commit.fire("posts", "insert", post_id)
 	post_event = {"id": post_id, "created": created, "body": body, "data": data, "credibility": credibility}
 	post_event.update(features)
-	copies = publish_post(feed, post_id, body, "text", [], None, {
-		"remote": item["guid"], "name": author, "link": link, "network": acc["type"], "account": acc["id"],
-		"item": item["item"], "transformed": transformed, "created": created,
-	}) if notify else []
-	if copies:
-		post_event["copies"] = copies
 	if feed.get("ai_mode", "") in ("tag", "tag+deduplicate"):
 		mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
 	else:
@@ -11326,12 +11374,12 @@ def sources_add_bluesky(a, feed, query, name):
 	mochi.db.execute("insert into sources (id, feed, type, url, name, account, credibility, base, max, interval, next, jitter, changed, fetched) values (?, ?, ?, ?, ?, ?, 100, ?, 86400, ?, ?, 60, ?, ?)",
 		source_id, feed["id"], kind, uri, name or uri.rsplit("/", 1)[-1], acc["id"], base, base, now + base + 60, now, now)
 	source = mochi.db.row("select * from sources where id=?", source_id)
-	count, _ = poll_bluesky_feed_source(source, a.user.identity.id, None, False)
+	count, _ = poll_bluesky_feed_source(source, a.user.identity.id, None)
 	mochi.schedule.after("schedule_sources_poll", {"feed": feed["id"]}, base)
 	ensure_sources_watchdog()
 	return {"data": {"source": mochi.db.row("select * from sources where id=?", source_id), "ingested": count}}
 
-def poll_bluesky_feed_source(source, user_id=None, deadline=None, notify=True):
+def poll_bluesky_feed_source(source, user_id=None, deadline=None):
 	"""Read the newest page of a Bluesky custom feed or list through the
 	source's account and make posts of what is new. Answers (count, complete)."""
 	now = mochi.time.now()
@@ -11345,33 +11393,33 @@ def poll_bluesky_feed_source(source, user_id=None, deadline=None, notify=True):
 		data = answer.get("data") if answer and type(answer.get("data")) == "dict" else {}
 		items = data.get("feed") if listlike(data.get("feed")) else []
 		feed = mochi.db.row("select * from feeds where id=?", source["feed"])
-		new_count, complete = ingest_account_items(feed, source, PERSON_ACCOUNT, items, user_id, deadline, notify)
+		new_count, complete = ingest_account_items(feed, source, PERSON_ACCOUNT, items, user_id, deadline)
 	source_polled(source, new_count, now)
 	return (new_count, complete)
 
 def person_source_create(feed_id, did, name, user_id):
 	"""The person/posts source row for a Bluesky account, with its newest
-	page as the source's history, as an RSS source's document is: not news,
-	not published. Answers (source, ingested)."""
+	page as the source's history, as an RSS source's document is. Answers
+	(source, ingested)."""
 	source_id = mochi.uid()
 	now = mochi.time.now()
 	base = 300
 	mochi.db.execute("insert into sources (id, feed, type, url, name, credibility, base, max, interval, next, jitter, changed, fetched) values (?, ?, 'person/posts', ?, ?, 100, ?, 86400, ?, ?, 60, ?, ?)",
 		source_id, feed_id, did, name, base, base, now + base + 60, now, now)
 	source = mochi.db.row("select * from sources where id=?", source_id)
-	count, _ = poll_person_source(source, user_id, None, False)
+	count, _ = poll_person_source(source, user_id, None)
 	mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, base)
 	ensure_sources_watchdog()
 	return (mochi.db.row("select * from sources where id=?", source_id), count)
 
-def poll_person_source(source, user_id=None, deadline=None, notify=True):
+def poll_person_source(source, user_id=None, deadline=None):
 	"""Read the newest page of a followed Bluesky account's posts from its
 	data server and make posts of what is new. A server that does not answer
 	is a poll with nothing new. Answers (count, complete)."""
 	now = mochi.time.now()
 	page = mochi.account.posts(source["url"], limit=ACCOUNT_PAGE)
 	feed = mochi.db.row("select * from feeds where id=?", source["feed"])
-	new_count, complete = ingest_account_items(feed, source, PERSON_ACCOUNT, (page or {}).get("items") or [], user_id, deadline, notify)
+	new_count, complete = ingest_account_items(feed, source, PERSON_ACCOUNT, (page or {}).get("items") or [], user_id, deadline)
 	source_polled(source, new_count, now)
 	return (new_count, complete)
 
@@ -11589,7 +11637,7 @@ def person_follow_create(feed, found, acc, name, user_id):
 	count = 0
 	page = mochi.account.posts(found["id"], limit=PERSON_HISTORY, signer=acc["id"])
 	if page and listlike(page.get("items")):
-		count, _ = ingest_account_items(feed, source, acc, page["items"], user_id, None, False)
+		count, _ = ingest_account_items(feed, source, acc, page["items"], user_id, None)
 	return source, count
 
 def person_followed_elsewhere(acc, actor, except_source):
