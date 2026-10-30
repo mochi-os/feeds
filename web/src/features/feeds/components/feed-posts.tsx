@@ -17,6 +17,7 @@ import type {
   FeedComment,
   FeedPermissions,
   FeedPost,
+  PostCopy,
   PostFeatures,
   PublishAccount,
   ReactionId,
@@ -438,6 +439,12 @@ export function PostCommentsList({
       )}
     </CommentThreadProvider>
   )
+}
+
+// Whether a copy of a post can be opened somewhere else. A hosted account's
+// copy is this post on the user's own server, and its link leads back here.
+function openable(copy: PostCopy): boolean {
+  return !!copy.url && copy.network !== 'fediverse'
 }
 
 // How many times a post was boosted on other networks, beside its reactions.
@@ -1734,13 +1741,11 @@ export function FeedPosts({
                     post.isOwner ||
                     usePerPostPermissions ||
                     !!post.boosts ||
-                    !!post.copies?.some((copy) => copy.url)) &&
+                    !!post.copies?.some(openable)) &&
                   (() => {
                     // A post's copies on other networks, each opened from its
                     // menu, below the owner's own items.
-                    const links = (post.copies ?? []).filter(
-                      (copy) => copy.url
-                    )
+                    const links = (post.copies ?? []).filter(openable)
                     const manage =
                       !readOnly &&
                       (isFeedOwner || post.isOwner) &&

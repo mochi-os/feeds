@@ -316,6 +316,34 @@ describe('FeedPosts card navigation', () => {
     expect(screen.queryByRole('menuitem', { name: 'Delete post' })).toBeNull()
   })
 
+  // A hosted account's copy is the post on the user's own server, whose link
+  // leads straight back to it.
+  const hosted = {
+    address: '@alice@example.com',
+    network: 'fediverse',
+    remote: 'https://example.com/~alice/1',
+    url: 'https://example.com/~alice/1',
+  }
+
+  it('offers no link to a hosted account\'s copy, which is the post itself', async () => {
+    const user = userEvent.setup()
+    renderPosts([{ ...post(), copies: [hosted, ...copies] }])
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    expect(
+      await screen.findByRole('menuitem', { name: 'Open on Mastodon' })
+    ).toBeTruthy()
+    expect(screen.queryByRole('menuitem', { name: /ActivityPub|Fediverse/ })).toBeNull()
+  })
+
+  it('gives a reader no menu for a post whose only copy is a hosted account\'s', () => {
+    renderPosts([{ ...post(), isOwner: false, copies: [hosted] }], () => {}, false)
+    expect(
+      within(card()).queryByRole('button', { name: 'More options' })
+    ).toBeNull()
+  })
+
   it('counts a post\'s boosts beside its reactions', () => {
     renderPosts([{ ...post(), boosts: 3 }])
     const count = within(card()).getByText('Boosted 3 times')

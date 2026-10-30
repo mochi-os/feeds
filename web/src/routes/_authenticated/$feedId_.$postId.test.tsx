@@ -43,7 +43,8 @@ vi.mock('@mochi/web', async (importOriginal) => {
     usePageTitle: () => {},
   }
 })
-// The post list stands in as the two ways to answer from an account.
+// The post list stands in as the two ways to answer, passing an account as
+// the list did when it offered a choice of one.
 vi.mock('@/features/feeds/components/feed-posts', () => ({
   FeedPosts: (props: {
     onAddComment: (...args: unknown[]) => Promise<void>
@@ -101,7 +102,7 @@ function show() {
   )
 }
 
-describe('The single post page answering from an account', () => {
+describe('The single post page answering a post', () => {
   beforeEach(() => {
     i18n.load('en', {})
     i18n.activate('en')
@@ -125,27 +126,27 @@ describe('The single post page answering from an account', () => {
     })
   })
 
-  it('sends a comment on the post with the account chosen', async () => {
+  // The server sends a comment wherever the post or the comment answered is,
+  // from the commenter's own account, so the page names none.
+  it('sends a comment on the post as written, naming no account', async () => {
     show()
     fireEvent.click(await screen.findByRole('button', { name: 'Comment' }))
     await waitFor(() =>
       expect(createComment).toHaveBeenCalledWith(
-        expect.objectContaining({ body: 'A comment', account: 'account-1' })
+        expect.objectContaining({ body: 'A comment' })
       )
     )
+    expect(createComment.mock.calls[0][0]).not.toHaveProperty('account')
   })
 
-  it('sends a reply to a comment with the account chosen', async () => {
+  it('sends a reply to a comment as written, naming no account', async () => {
     show()
     fireEvent.click(await screen.findByRole('button', { name: 'Reply' }))
     await waitFor(() =>
       expect(createComment).toHaveBeenCalledWith(
-        expect.objectContaining({
-          parent: 'comment-1',
-          body: 'An answer',
-          account: 'account-1',
-        })
+        expect.objectContaining({ parent: 'comment-1', body: 'An answer' })
       )
     )
+    expect(createComment.mock.calls[0][0]).not.toHaveProperty('account')
   })
 })

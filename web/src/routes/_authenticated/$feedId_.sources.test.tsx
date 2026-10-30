@@ -177,7 +177,7 @@ describe('Source type', () => {
     expect(label('feed/memories')).toBe('Memories')
     expect(label('account/timeline')).toBe('Account timeline')
     expect(label('account/posts')).toBe('Account posts')
-    expect(label('person/posts', 'a1')).toBe('Posts on the fediverse')
+    expect(label('person/posts', 'a1')).toBe('Posts on ActivityPub')
     expect(label('person/posts')).toBe('Posts on Bluesky')
     expect(label('tag/posts')).toBe('Hashtag')
     expect(label('feed/posts')).toBe('Mochi feed')

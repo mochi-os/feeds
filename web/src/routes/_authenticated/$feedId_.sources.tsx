@@ -334,7 +334,7 @@ export function SourceType({ source }: { source: Source }) {
   if (source.type === 'account/timeline') return <Trans>Account timeline</Trans>
   if (source.type === 'account/posts') return <Trans>Account posts</Trans>
   if (source.type === 'person/posts' && source.account)
-    return <Trans>Posts on the fediverse</Trans>
+    return <Trans>Posts on ActivityPub</Trans>
   if (source.type === 'person/posts') return <Trans>Posts on Bluesky</Trans>
   if (source.type === 'tag/posts') return <Trans>Hashtag</Trans>
   if (source.type === 'generator/posts' || source.type === 'list/posts')
