@@ -14,6 +14,7 @@ import {
   ConfirmDialog,
   EntityAvatar,
   authenticatedUrl,
+  AssetImage,
   getAppPath,
   normalizeEntityUrl,
   MentionTextarea,
@@ -281,7 +282,7 @@ export function CommentThread({
               title={comment.attachmentName || t`On this image`}
               aria-label={t`View the image this comment is about`}
             >
-              <img
+              <AssetImage
                 src={authenticatedUrl(
                   normalizeEntityUrl(
                     `${getAppPath()}/${feedId}/-/attachments/${comment.attachment}/thumbnail`
