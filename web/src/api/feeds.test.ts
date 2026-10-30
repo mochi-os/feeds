@@ -41,3 +41,17 @@ describe('feedsApi.editPost', () => {
     expect(sent()).toEqual([])
   })
 })
+
+describe('feedsApi.addSource', () => {
+  beforeEach(() => {
+    post.mockReset()
+    post.mockResolvedValue({ data: { source: { id: 's1' }, ingested: 20 } })
+  })
+
+  // The server bounds the add, which fetches the source, and always answers.
+  it("waits for the server's answer rather than giving up on its own", async () => {
+    await feedsApi.addSource('f', 'tag', '#fediverse@mastodon.social')
+    expect(post).toHaveBeenCalledTimes(1)
+    expect(post.mock.calls[0][2]).toEqual({ timeout: 0 })
+  })
+})

@@ -977,10 +977,13 @@ const addSource = async (
   // The hosted account a person on the fediverse is followed through.
   if (account) payload.account = account
 
+  // No limit of the client's own: adding fetches the source, which the server
+  // bounds and always answers, and a limit shorter than its slowest fetch
+  // reported a failure for a source that was added.
   const response = await client.post<
     SourceAddResponse | SourceAddResponse['data'],
     Record<string, string>
-  >(endpoints.feeds.sourcesAdd(feedId), payload)
+  >(endpoints.feeds.sourcesAdd(feedId), payload, { timeout: 0 })
 
   return toDataResponse<SourceAddResponse['data']>(response, 'add source')
 }

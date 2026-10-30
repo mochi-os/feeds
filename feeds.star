@@ -7612,11 +7612,13 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 	source_row = mochi.db.row("select name, url, transform, credibility from sources where id=?", source_id)
 	seen_guids = {}
 
+	# The posts whose categories wait to become tags (schedule_rss_tags).
+	tagging = []
+
 	for item in items:
-		# The budget is checked between items, not only between sources: an
-		# item's category lookups run at one per second, so one large batch
-		# can outlast the compute limit on its own. Stop here and leave the
-		# rest to the follow-up run.
+		# The budget is checked between items, not only between sources, so
+		# one large batch never outlasts the compute limit. Stop here and
+		# leave the rest to the follow-up run.
 		if deadline != None and mochi.time.now() >= deadline:
 			complete = False
 			break
@@ -7717,24 +7719,16 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 		# Build post event for P2P broadcast
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}, "credibility": source_credibility}
 
-		# Ingest RSS categories as immediate tags (only if QID can be resolved)
-		tag_list = []
-		categories = item.get("categories", [])
-		for cat in categories:
-			cat_label = validate_tag(str(cat))
-			if cat_label:
-				results = mochi.qid.search(cat_label, "en")
-				if not results:
-					continue
-				qid = results[0]["qid"]
-				# Skip if this post already has a tag for this QID (different label, same entity)
-				if mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
-					continue
-				tid = mochi.uid()
-				mochi.db.execute("insert or ignore into tags (id, object, label, qid, source) values (?, ?, ?, ?, 'rss')", tid, post_id, cat_label, qid)
-				tag_row = mochi.db.row("select id, label, qid from tags where object=? and label=?", post_id, cat_label)
-				if tag_row:
-					tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "qid": tag_row["qid"], "source": "rss"})
+		# The item's categories become tags once each is resolved to its
+		# Wikidata entity, which core does at one lookup a second: a scheduled
+		# step does it, so neither adding a source nor a poll waits on it.
+		labels = []
+		for cat in item.get("categories", []):
+			label = validate_tag(str(cat))
+			if label and label not in labels:
+				labels.append(label)
+		if labels:
+			tagging.append({"post": post_id, "labels": labels})
 
 		# On to the feed's accounts, with the source's name and link; the
 		# backfill when a source is added is not news and does not go out.
@@ -7744,15 +7738,18 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 				post_event["copies"] = copies
 
 		if ai_mode in ("tag", "tag+deduplicate"):
-			# Defer broadcast until after AI tagging so subscribers see tagged posts
-			mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
+			# Defer broadcast until after AI tagging so subscribers see tagged
+			# posts; a post with categories goes on to it once they are tags.
+			if not labels:
+				mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
 		else:
-			if tag_list:
-				post_event["tags"] = tag_list
 			broadcast_event(feed_id, "post/create", post_event, user_id)
 
 		count = count + 1
 		new_posts.append({"id": post_id, "created": created})
+
+	if tagging:
+		mochi.schedule.after("schedule_rss_tags", {"feed": feed_id, "posts": tagging, "ai": ai_mode in ("tag", "tag+deduplicate")}, 0)
 
 	if count > 0:
 		set_feed_updated(feed_id)
@@ -7780,6 +7777,63 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 						send_notification(feed_id, "post", feed_name, mochi.app.label("notifications.body.new_posts", count=1), p["id"], "/feeds/" + fingerprint)
 
 	return (count, complete)
+
+# How long one run of schedule_rss_tags may spend resolving categories, in
+# seconds: at one lookup a second, well inside the compute limit.
+CATEGORY_BUDGET = 40
+
+def schedule_rss_tags(e):
+	"""Make tags of the categories of the posts a web feed brought, each
+	resolved to its Wikidata entity, within a budget, leaving what is left to
+	the next run. The subscribers are sent the new tags as one batch and the
+	owner's pages each one; where the feed tags with AI, each post goes on to
+	that instead, which sends the post with every tag."""
+	if e.source != "schedule":
+		return
+	feed_id = e.data.get("feed", "")
+	posts = e.data.get("posts")
+	if not feed_id or not listlike(posts):
+		return
+	ai = bool(e.data.get("ai"))
+	deadline = mochi.time.now() + CATEGORY_BUDGET
+	updates = []
+	left = []
+	for entry in posts:
+		if type(entry) != "dict":
+			continue
+		if left:
+			left.append(entry)
+			continue
+		post_id = str(entry.get("post", "") or "")
+		if not post_id or not mochi.db.exists("select 1 from posts where id=? and feed=?", post_id, feed_id):
+			continue
+		labels = [str(l) for l in (entry.get("labels") or []) if validate_tag(str(l))]
+		for index, label in enumerate(labels):
+			if mochi.time.now() >= deadline:
+				left.append({"post": post_id, "labels": labels[index:]})
+				break
+			results = mochi.qid.search(label, "en")
+			if not results:
+				continue
+			qid = results[0]["qid"]
+			# One tag per entity: another label for the same one is skipped.
+			if mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
+				continue
+			tag_id = mochi.uid()
+			mochi.db.execute("insert or ignore into tags (id, object, label, qid, source) values (?, ?, ?, ?, 'rss')", tag_id, post_id, label, qid)
+			if mochi.db.exists("select 1 from tags where id=?", tag_id):
+				updates.append({"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": 0, "source": "rss"})
+		if left:
+			continue
+		if ai:
+			mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
+	if left:
+		mochi.schedule.after("schedule_rss_tags", {"feed": feed_id, "posts": left, "ai": ai}, 5)
+	if ai or not updates:
+		return
+	broadcast_event(feed_id, "tag/add/batch", {"items": updates})
+	for u in updates:
+		broadcast_websocket(feed_id, {"type": "tag/add", "feed": feed_id, "post": u["object"], "tag": {"id": u["id"], "label": u["label"], "source": "rss", "relevance": 0}})
 
 # Copy existing posts from a source feed into the aggregating feed
 def ingest_feed_posts(source_id, feed_id, source_feed_id):
@@ -7980,11 +8034,10 @@ def schedule_sources_poll(e):
 	# Poll a bounded batch of due sources so the handler stays under the compute
 	# limit even when many sources align on the same poll tick. The count cap
 	# alone does not bound the time: each fetch may take the full 30s outbound
-	# timeout, and each new item resolves its categories through Wikidata at
-	# one lookup per second, so one source with twenty tagged items costs as
-	# much as twenty fetches. Stop starting new fetches, and new items within
-	# a fetch, once the budget is spent, leaving room for the one in flight to
-	# finish, and come back in 5s for whatever is left.
+	# timeout. Stop starting new fetches, and new items within a fetch, once
+	# the budget is spent, leaving room for the one in flight to finish, and
+	# come back in 5s for whatever is left. The items' categories become tags
+	# afterwards (schedule_rss_tags), at Wikidata's one lookup a second.
 	cap = 20
 	deadline = now + POLL_BUDGET
 	user_id = e.user.identity.id if e.user else None
