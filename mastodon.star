@@ -532,7 +532,7 @@ def mastodon_hold(account, home, note):
 		if item.get(key):
 			data[key] = item[key]
 	data = sanitize_post_data(data)
-	body = "\n\n".join([p for p in [item["text"], item["link"]] if p])
+	body = printable("\n\n".join([p for p in [item["text"], item["link"]] if p]))
 	created = item["created"] or mochi.time.now()
 	post_id = mochi.uid()
 	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",

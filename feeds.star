@@ -73,6 +73,17 @@ def remote_failure(response, code=502):
 def fail(a, failure):
 	a.error.label(failure[0], failure[1])
 
+# printable answers imported text as a subscriber accepts it: a tab becomes a
+# space and any other control character but a line break is dropped, since a
+# subscriber refuses a post or comment whose body holds one.
+def printable(text):
+	if not text:
+		return text
+	text = text.replace("\t", " ")
+	if mochi.text.valid(text, "text") or len(text) > 1000000:
+		return text
+	return "".join([c for c in text.codepoints() if c == "\n" or c == "\r" or (ord(c) >= 32 and (ord(c) < 127 or ord(c) > 159))])
+
 def strip_html(text):
 	if not text:
 		return ""
@@ -7702,6 +7713,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 		if not created or created <= 0:
 			created = now
 
+		body = printable(body)
 		post_id = mochi.uid()
 		mmdd = compute_mmdd(created)
 		source_credibility = source_row["credibility"] if source_row else 100
@@ -7854,6 +7866,7 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 		if t_fields.get("body") != post_body:
 			post_body = t_fields["body"]
 			post_format = "markdown"
+		post_body = printable(post_body)
 		post_id = mochi.uid()
 		mmdd = compute_mmdd(p["created"])
 		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -9674,7 +9687,7 @@ def sourced_post(feed, source, acc, item, user_id, notify=True):
 		link = safe_link(t_fields.get("link", link)) or link
 	author = item["author"]
 	parts = [p for p in [text, link] if p]
-	body = "\n\n".join(parts)
+	body = printable("\n\n".join(parts))
 	if not body:
 		return False
 	data = {"rss": {"title": "", "link": link, "html": "" if transformed else item["html"], "source": author}}
@@ -9829,7 +9842,7 @@ def import_bookmarks_page(acc, cursor):
 
 def import_post(feed, item):
 	"""Store an imported item as a post of the feed, dated when it was made."""
-	body = "\n\n".join([p for p in [item["text"], item["link"]] if p])
+	body = printable("\n\n".join([p for p in [item["text"], item["link"]] if p]))
 	if not body:
 		return None
 	data = {"rss": {"title": "", "link": item["link"], "html": item["html"], "source": item["author"]}}
@@ -10717,6 +10730,7 @@ def comment_from_network(acc, post, parent, actor, name, page, body, format, rem
 	"""Store a comment by a person on another network, tell the owner and fan
 	it out to the subscribers as any comment is."""
 	feed_id = post["feed"]
+	body = printable(body)
 	comment_id = mochi.uid()
 	mochi.db.execute("insert into comments ( id, feed, post, parent, subscriber, name, body, format, created, attachment, remote, page, account ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, '', ?, ?, ? )",
 		comment_id, feed_id, post["id"], parent, actor, name, body, format, created, remote, page, acc["id"])
@@ -10731,6 +10745,7 @@ def comment_from_network(acc, post, parent, actor, name, page, body, format, rem
 
 def comment_edit_from_network(comment, body, edited):
 	"""An edit of a comment from another network, applied and fanned out."""
+	body = printable(body)
 	mochi.db.execute("update comments set body=?, edited=? where id=?", body, edited, comment["id"])
 	mochi.db.commit.fire("comments", "update", comment["id"])
 	set_post_updated(comment["post"])
@@ -11859,7 +11874,7 @@ def followed_updated(acc, post, note):
 		else:
 			data.pop(key, None)
 	data = sanitize_post_data(data)
-	body = "\n\n".join([p for p in [item["text"], item["link"]] if p])
+	body = printable("\n\n".join([p for p in [item["text"], item["link"]] if p]))
 	edited = fediverse_time(note.get("updated"))
 	features = {"visibility": item["visibility"], "warning": item["warning"], "sensitive": item["sensitive"], "language": item["language"]}
 	clause, values = features_sql(features)
