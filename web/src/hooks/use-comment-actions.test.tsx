@@ -40,16 +40,16 @@ describe('useCommentActions', () => {
     createComment.mockClear()
   })
 
-  it('sends a reply to a comment with the account it also goes out from', async () => {
+  // Where a comment goes out is the server's to decide, from where the post
+  // and the comment answered are; the client names no account.
+  it('sends a reply to a comment by its post, parent and body, naming no account', async () => {
     const result = actions()
     await act(() =>
       result.current.handleReplyToComment(
         'feed-1',
         'post-1',
         'comment-1',
-        'An answer',
-        undefined,
-        'account-1'
+        'An answer'
       )
     )
     expect(createComment).toHaveBeenCalledWith(
@@ -58,25 +58,19 @@ describe('useCommentActions', () => {
         post: 'post-1',
         parent: 'comment-1',
         body: 'An answer',
-        account: 'account-1',
       })
     )
+    expect(createComment.mock.calls[0][0]).not.toHaveProperty('account')
   })
 
-  it('sends a comment on the post with the account it also goes out from', async () => {
+  it('sends a comment on the post naming no account', async () => {
     const result = actions()
     await act(() =>
-      result.current.handleAddComment(
-        'feed-1',
-        'post-1',
-        'A comment',
-        undefined,
-        undefined,
-        'account-1'
-      )
+      result.current.handleAddComment('feed-1', 'post-1', 'A comment')
     )
     expect(createComment).toHaveBeenCalledWith(
-      expect.objectContaining({ body: 'A comment', account: 'account-1' })
+      expect.objectContaining({ body: 'A comment' })
     )
+    expect(createComment.mock.calls[0][0]).not.toHaveProperty('account')
   })
 })

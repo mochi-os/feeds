@@ -4563,11 +4563,13 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name, comment=""):
 
 # comment_create keeps a comment the user writes on a post: on a feed they
 # own, kept and sent to the subscribers; on one they follow, sent to its
-# owner, with a copy kept where they hold the post. save(comment) keeps the
-# comment's attachments; account is the account the reply also goes out
-# from, where they chose one (decision 31). Answers ({id, feed, post}, None)
-# or (None, failure).
-def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor_input, account, input_id, save):
+# owner, with a copy kept where they hold the post. It goes out wherever the
+# post, or the comment it answers, is on another network (decision 31, as
+# changed 2026-10-30). save(comment) keeps the comment's attachments;
+# account is the one to answer from first where the user has several on a
+# network; made is the replies already published, as a Bluesky app writes
+# one. Answers ({id, feed, post}, None) or (None, failure).
+def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor_input, account, input_id, save, made=None):
 	# Get local feed data if available
 	feed = None
 	if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
@@ -4606,9 +4608,9 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 
 		# Save comment attachments locally
 		attachments = save(uid)
-		# The reply from the commenter's own account, where they chose one
-		# (decision 31).
-		copies = reply_publish(account, post_id, uid, body)
+		# The replies from the commenter's own accounts, wherever the post or
+		# the comment answered is on another network.
+		copies = reply_publish(post_id, parent_id, uid, body, account, made)
 
 		set_post_updated(post_id)
 		set_feed_updated(feed_id)
@@ -4664,13 +4666,14 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 		mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
 			uid, target_feed_id, post_id, parent_id, user_id, user_name, body, now, anchor)
 
-	# Send comment to feed owner with attachment metadata, and with the reply
-	# it went out as from the commenter's own account (decision 31): the
-	# reply first, so the owner can match it when it arrives by the network.
+	# Send comment to feed owner with attachment metadata, and with the
+	# replies it went out as from the commenter's own accounts (decision 31):
+	# the replies first, so the owner can match them when they arrive by the
+	# network, and withdrawn again if the owner refuses the comment.
 	submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": user_name, "attachment": anchor_input}
 	if attachments:
 		submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
-	copies = reply_publish(account, post_id, uid, body)
+	copies = reply_publish(post_id, parent_id, uid, body, account, made)
 	if copies:
 		submit_data["copies"] = copies
 
@@ -4681,6 +4684,7 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 	response = mochi.remote.request(target_feed_id, "feeds", "comment/add", submit_data)
 	if response.get("error"):
 		attachment_clear(uid)
+		reply_delete(uid)
 		if held:
 			mochi.db.execute("delete from comments where id=? and feed=?", uid, target_feed_id)
 		mochi.log.info("comment_create: remote request failed: %s", response.get("error"))
@@ -4958,8 +4962,12 @@ def action_post_image(a):
 		return a.json({"image": cached})
 
 	link = rss.get("link", "")
-	if not link:
-		# Nothing to fetch from; the thumbnail (or nothing) is final.
+	# Nothing to fetch from, or nothing worth fetching: a post from a person
+	# on another network brings its own media, and its link is their page
+	# for it. A host the app may not reach is not asked either, so a missing
+	# grant waits a day like a post with no image rather than failing every
+	# view. The thumbnail (or nothing) is final.
+	if not link or data.get("person") or data.get("record") or not link_reachable(link):
 		rss["image_checked"] = mochi.time.now()
 		data["rss"] = rss
 		mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
@@ -4972,6 +4980,13 @@ def action_post_image(a):
 	data["rss"] = rss
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 	return a.json({"image": rss.get("image", "")})
+
+def link_reachable(link):
+	"""Whether the app holds the grant to fetch from a link's host."""
+	parts = link.split("/")
+	if len(parts) < 3 or not parts[2]:
+		return False
+	return mochi.permission.check("url:" + parts[2].split("@")[-1].split(":")[0].lower())
 
 # post_react sets or takes back the user's reaction to a post: on a feed
 # they own, here and for the subscribers; on one they follow, sent to its
@@ -9562,9 +9577,21 @@ def ingest_account_items(feed, source, acc, items, user_id, deadline, notify=Tru
 			continue
 		if published_has(feed["id"], item["remotes"]):
 			continue
+		# A reply a comment went out as through the account is that comment,
+		# never a post of its own.
+		if replied_has(acc["id"], item["remotes"]):
+			continue
 		if sourced_post(feed, source, acc, item, user_id, notify):
 			new_count += 1
 	return (new_count, complete)
+
+def replied_has(account_id, remotes):
+	"""Whether any of these ids is a reply a comment went out as through the
+	account (decision 31)."""
+	for remote in remotes:
+		if remote and mochi.db.exists("select 1 from replies where account=? and remote=?", account_id, remote):
+			return True
+	return False
 
 def source_polled(source, new_count, now):
 	"""Book the source's next poll: the base interval after news, twice the
@@ -10139,12 +10166,11 @@ def function_activitypub_object(context, account, id):
 		# A reply the account published (decision 31), which a server that
 		# reads what it is sent by its id fetches here.
 		reply = mochi.db.row("select comment from replies where account=? and remote=?", account, id)
-		comment = mochi.db.row("select id, post, body from comments where id=?", reply["comment"]) if reply else None
+		comment = mochi.db.row("select id, post, parent, body from comments where id=?", reply["comment"]) if reply else None
 		acc = mochi.account.get(account) if comment else None
 		if not acc:
 			return None
-		note, _ = reply_object(acc, comment["id"], comment["post"], comment["body"])
-		return note
+		return reply_made(acc, comment, comment["body"])
 	post = mochi.db.row("select * from posts where id=?", row["post"])
 	if not post:
 		return None
@@ -10224,11 +10250,13 @@ def action_follow(a):
 # verifies every activity before activitypub/receive sees it, so what arrives
 # here is from the actor it names; this side decides what it means to a feed.
 # A reply is matched before it is mapped (decision 31): one that is a copy of
-# a comment already held is not stored again. A Mochi subscriber's comment
-# goes out as a reply from their own hosted account when they chose one, and
-# the comment's event carries the reply's ids for the owner to record. The
-# same for linked accounts (decision 9): a reply or a like on a copy published
-# through one, read from the account's notifications, comes back to the post.
+# a comment already held is not stored again. A comment on a post that is on
+# another network goes out there too, as a reply from the commenter's own
+# account, hosted or linked (decision 31, as changed 2026-10-30), and the
+# comment's event carries the reply's ids for the owner to record. For linked
+# accounts (decision 9): a reply or a like on a copy published through one,
+# or a reply to a comment's reply through one, read from the account's
+# notifications, comes back to the post.
 
 # The reactions the fediverse's own vocabulary maps to: a Like is a like, and
 # the emoji reactions Misskey and Pleroma send that have a counterpart here.
@@ -10270,28 +10298,153 @@ def post_original(post):
 		return None
 	return {"address": post["author"], "remote": post["remote"]}
 
-def reply_note(comment_id, post_id, body):
-	"""The Note a comment is as a reply: the text as the fediverse shows it, in
-	reply to the comment it answers where that one is on the network, else to
-	the post's copy, naming the comment it is so the owner's server knows it
-	when it arrives by the network. Answers the Note and whom it replies to:
-	the address of the post's account, or the id of the comment's author."""
-	comment = mochi.db.row("select parent from comments where id=?", comment_id)
-	parent = mochi.db.row("select subscriber, remote from comments where id=?", comment["parent"]) if comment and comment.get("parent") else None
-	if parent and parent.get("remote") and not mochi.text.valid(parent["subscriber"], "entity"):
-		target = {"address": parent["subscriber"], "remote": parent["remote"]}
+def post_source(post_id):
+	"""The account a post from another network came in through: the hosted
+	account a person or a hashtag is followed through, or the linked account
+	whose posts or timeline a source reads. Answers (account id, the
+	source's guid for the post), or ("", "")."""
+	row = mochi.db.row("select o.type, o.url, o.account, s.guid from source_posts s join sources o on o.id=s.source where s.post=?", post_id)
+	if not row:
+		return "", ""
+	if row["type"] in ACCOUNT_SOURCE_TYPES:
+		return str(row["url"] or ""), str(row["guid"] or "")
+	return str(row["account"] or ""), str(row["guid"] or "")
+
+def post_origin(post):
+	"""Where a post from another network is, as a reply answers it: the
+	original of a followed person's post on the fediverse or Bluesky, or of a
+	post read through a linked account. None for any other post."""
+	account, guid = post_source(post["id"])
+	record = post_record(post)
+	if record:
+		return {"network": "bluesky", "remote": record["uri"], "url": "", "address": post.get("author", ""), "account": account}
+	if post.get("remote") and post.get("author") and not mochi.text.valid(post["author"], "entity"):
+		return {"network": "fediverse", "remote": post["remote"], "url": "", "address": post["author"], "account": account}
+	# A status read through a linked Mastodon account keeps its id on the
+	# fediverse as the source's guid for it.
+	acc = publish_account(account) if account else None
+	if acc and acc["type"] == "mastodon" and guid.startswith("http"):
+		return {"network": "fediverse", "remote": guid, "url": "", "address": "", "account": account}
+	return None
+
+def reply_places(post_id, parent_id):
+	"""Where a comment answers on other networks, in order (decision 31, as
+	changed 2026-10-30). Under a comment, where that comment is: the one it
+	came as from another network, or each reply it went out as; a comment
+	that stayed on Mochi keeps its answers there too, since a thread is on the
+	network from the point its root is. Else where the post is: the original
+	of a post from another network, then each copy it went out as, a copy on
+	the original's own network being a boost of it and never what a reply
+	answers. Each place is {network, remote, url, address, account}: how the
+	network holds it (fediverse, mastodon, bluesky), its id there and its
+	page, whose it is, and the account here it came through or went out from,
+	empty for one another server made."""
+	if parent_id:
+		parent = mochi.db.row("select * from comments where id=?", parent_id)
+		if not parent:
+			return []
+		remote = str(parent.get("remote", "") or "")
+		if remote and not mochi.text.valid(parent["subscriber"], "entity"):
+			return [{"network": "bluesky" if remote.startswith("at://") else "fediverse", "remote": remote, "url": "", "address": parent["subscriber"], "account": str(parent.get("account", "") or "")}]
+		return [{"network": r["network"], "remote": r["remote"], "url": r.get("url", "") or "", "address": r["address"], "account": r.get("account", "") or ""} for r in mochi.db.rows("select * from replies where comment=? order by created", parent_id)]
+	post = mochi.db.row("select * from posts where id=?", post_id)
+	if not post:
+		return []
+	places = []
+	origin = post_origin(post)
+	if origin:
+		places.append(origin)
+	for row in mochi.db.rows("select * from copies where post=? order by created", post_id):
+		if origin and reply_network(row["network"]) == origin["network"]:
+			continue
+		places.append({"network": row["network"], "remote": row["remote"], "url": row.get("url", "") or "", "address": row["address"], "account": row.get("account", "") or ""})
+	return places
+
+def reply_network(network):
+	"""The network an account or a copy is on, as a reply sees it: hosted
+	fediverse and linked Mastodon accounts are both on the fediverse."""
+	return "bluesky" if network == "bluesky" else "fediverse"
+
+def reply_plan(post_id, parent_id, preferred=""):
+	"""The replies a comment goes out as: one from each of the commenter's
+	own accounts that holds a place the comment answers - the account the
+	post came through or went out from, or the comment it answers came
+	through - and for a place no account of theirs holds, one from their
+	account on that network, the one named first, else their first there.
+	A network with no account of theirs is not answered on. Answers
+	[(account, place)], an account at most once."""
+	places = reply_places(post_id, parent_id)
+	if not places:
+		return []
+	mine = {}
+	defaults = {}
+	for acc in publish_accounts():
+		mine[acc["id"]] = acc
+		network = reply_network(acc["type"])
+		if network not in defaults or acc["id"] == preferred:
+			defaults[network] = acc
+	plan = []
+	used = {}
+	for place in places:
+		network = reply_network(place["network"])
+		acc = mine.get(place["account"])
+		if not acc or reply_network(acc["type"]) != network:
+			acc = defaults.get(network)
+		if not acc or acc["id"] in used:
+			continue
+		used[acc["id"]] = True
+		plan.append((acc, place))
+	return plan
+
+def reply_note(acc, comment_id, place, body):
+	"""A comment as a hosted fediverse account's reply: a Note in reply to the
+	place by its id on the fediverse - a status a linked account holds by its
+	page - mentioning whose it is, and naming the comment it is so the
+	owner's server knows it when it arrives by the network."""
+	target = place["remote"] if place["network"] == "fediverse" else place.get("url", "")
+	if not target or not target.startswith("http"):
+		return None
+	note = {"type": "Note", "content": mochi.text.fediverse(fediverse_plain(body), tags=fediverse_tags_base())["html"], "inReplyTo": target, "sensitive": False, "mochi:comment": comment_id}
+	found = mochi.account.resolve(place["address"]) if place.get("address") else None
+	if found and found.get("id") and acc.get("url"):
+		note["to"] = [FEDIVERSE_PUBLIC]
+		note["cc"] = [acc["url"] + "/followers", found["id"]]
+		note["tag"] = [{"type": "Mention", "name": found.get("address") or place["address"], "href": found["id"]}]
+	return note
+
+def mastodon_status(acc, reference):
+	"""A status on the fediverse as a linked Mastodon account's server holds
+	it, found by its id or its page: (its id there, its author's acct), or
+	None where the server cannot find it."""
+	if not reference.startswith("http"):
+		return None
+	answer = mochi.account.request(acc["id"], "GET", "v2/search", query={"q": reference, "resolve": "true", "type": "statuses", "limit": "1"})
+	data = answer.get("data") if answer and type(answer.get("data")) == "dict" else {}
+	statuses = data.get("statuses") if listlike(data.get("statuses")) else []
+	if not statuses or type(statuses[0]) != "dict" or not statuses[0].get("id"):
+		return None
+	author = statuses[0].get("account") if type(statuses[0].get("account")) == "dict" else {}
+	return str(statuses[0]["id"]), str(author.get("acct", "") or "")
+
+def reply_status(acc, place, body):
+	"""A comment as a linked Mastodon account's reply: a status in reply to
+	the place by its id on the account's own server - one of its own copies
+	as it holds it, anything else found there by its id on the fediverse -
+	opening with whose it is, as the network's own composer does."""
+	status, author = "", ""
+	if place["network"] == "mastodon" and place.get("account") == acc["id"]:
+		status = place["remote"]
 	else:
-		target = post_original(mochi.db.row("select author, remote, data from posts where id=?", post_id)) or mochi.db.row("select address, remote from copies where post=? and network='fediverse' order by created limit 1", post_id)
-	if not target:
-		# A post from a followed person (phase 17): the reply answers the
-		# original, by its id on their server.
-		post = mochi.db.row("select author, remote from posts where id=?", post_id)
-		if post and post.get("remote") and post.get("author") and not mochi.text.valid(post["author"], "entity"):
-			target = {"address": post["author"], "remote": post["remote"]}
-	if not target:
-		return None, None
-	note = {"type": "Note", "content": mochi.text.fediverse(fediverse_plain(body), tags=fediverse_tags_base())["html"], "inReplyTo": target["remote"], "sensitive": False, "mochi:comment": comment_id}
-	return note, target
+		found = mastodon_status(acc, place["remote"] if place["network"] == "fediverse" else place.get("url", ""))
+		if not found:
+			return None
+		status, author = found
+	if author and "@" not in author and acc.get("server"):
+		author = author + "@" + acc["server"]
+	text = body
+	if author and author != acc.get("identifier", "").lstrip("@"):
+		text = "@" + author + " " + body
+	return {"status": publish_excerpt(text, mastodon_limits(acc)["characters"], "", False), "in_reply_to_id": status, "visibility": "public"}
 
 def bluesky_reference(acc, uri):
 	"""A Bluesky post as a record reference {uri, cid}, with the root of its
@@ -10311,29 +10464,13 @@ def bluesky_reference(acc, uri):
 		return {"reference": reference, "root": {"uri": str(root["uri"]), "cid": str(root["cid"])}}
 	return {"reference": reference, "root": reference}
 
-def reply_record(acc, comment_id, post_id, body):
-	"""The post record a comment is as a reply on Bluesky (phase 19): in reply
-	to the comment it answers where that one is a Bluesky post, else to the
-	post's record - a followed person's post, or the post's own copy through
-	the account - with the thread's root as the network wants it. Answers the
-	record, or None where nothing on Bluesky is answered."""
-	comment = mochi.db.row("select parent from comments where id=?", comment_id)
-	parent = mochi.db.row("select remote from comments where id=?", comment["parent"]) if comment and comment.get("parent") else None
-	uri = ""
-	if parent and str(parent.get("remote", "") or "").startswith("at://"):
-		uri = str(parent["remote"])
-	else:
-		post = mochi.db.row("select * from posts where id=?", post_id)
-		record = post_record(post) if post else None
-		if record:
-			uri = record["uri"]
-		else:
-			copy = mochi.db.row("select remote from copies where post=? and account=?", post_id, acc["id"])
-			if copy and str(copy["remote"]).startswith("at://"):
-				uri = str(copy["remote"])
-	if not uri:
+def reply_record(acc, place, body):
+	"""A comment as a Bluesky account's reply, hosted or linked (phase 19): a
+	post record in reply to the place, with the thread's root as the network
+	wants it."""
+	if place["network"] != "bluesky" or not str(place["remote"]).startswith("at://"):
 		return None
-	found = bluesky_reference(acc, uri)
+	found = bluesky_reference(acc, place["remote"])
 	if not found:
 		return None
 	text = publish_excerpt(body, BLUESKY_CHARACTERS, "", False)
@@ -10343,53 +10480,67 @@ def reply_record(acc, comment_id, post_id, body):
 		record["facets"] = facets
 	return record
 
-def reply_object(acc, comment_id, post_id, body):
-	"""A comment as the reply an account publishes: a Note on the fediverse, a
-	post record on Bluesky. Answers (object, network) or (None, None)."""
-	if acc.get("type") == "bluesky":
-		return reply_record(acc, comment_id, post_id, body), "bluesky"
-	note, answered = reply_note(comment_id, post_id, body)
-	if not note:
-		return None, None
-	target = mochi.account.resolve(answered["address"])
-	if target and target.get("id") and acc.get("url"):
-		note["to"] = [FEDIVERSE_PUBLIC]
-		note["cc"] = [acc["url"] + "/followers", target["id"]]
-		note["tag"] = [{"type": "Mention", "name": target.get("address") or answered["address"], "href": target["id"]}]
-	return note, "fediverse"
+def reply_object(acc, comment_id, place, body):
+	"""A comment as the reply an account publishes to a place, in the
+	account's own form, or None where the account cannot answer it."""
+	if acc["type"] == "bluesky":
+		return reply_record(acc, place, body)
+	if acc["type"] == "mastodon":
+		return reply_status(acc, place, body)
+	if hosted_fediverse(acc):
+		return reply_note(acc, comment_id, place, body)
+	return None
 
-def reply_publish(account_id, post_id, comment_id, body):
-	"""Publish a comment as a reply from the commenter's own hosted account to
-	the post's copy or origin on the fediverse or on Bluesky (decision 31).
-	Answers the copies made, for the comment's event."""
-	if not account_id:
-		return []
-	acc = publish_account(account_id)
-	if not acc or not acc.get("hosted"):
-		return []
-	object, network = reply_object(acc, comment_id, post_id, body)
-	if not object:
-		return []
-	result = mochi.account.object.create(acc["id"], object, key="reply|" + comment_id + "|" + acc["id"])
-	if not result or not result.get("id"):
-		return []
-	entry = {"address": acc.get("identifier", ""), "network": network, "remote": str(result["id"]), "url": str(result.get("url", "") or "")}
-	replies_record(comment_id, acc["id"], entry)
-	return [entry]
+def reply_made(acc, comment, body):
+	"""The reply a comment went out as from an account, made again as the plan
+	has it: for an edit, and for the network to fetch it by its id."""
+	for chosen, place in reply_plan(comment["post"], comment.get("parent", "") or "", acc["id"]):
+		if chosen["id"] == acc["id"]:
+			return reply_object(acc, comment["id"], place, body)
+	return None
+
+def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None):
+	"""Publish a comment wherever the post, or the comment it answers, is on
+	another network (decision 31, as changed 2026-10-30): a reply from each
+	account the plan names, the account named first where the plan leaves
+	the choice; a reply the commenter already made there, as a Bluesky app
+	writes one, is recorded and not made again. Answers the copies, for the
+	comment's event."""
+	entries = []
+	done = {}
+	for entry in made or []:
+		replies_record(comment_id, entry["account"], entry)
+		done[entry["account"]] = True
+		entries.append({"address": entry["address"], "network": entry["network"], "remote": entry["remote"], "url": entry.get("url", "")})
+	for acc, place in reply_plan(post_id, parent_id, preferred):
+		if acc["id"] in done:
+			continue
+		object = reply_object(acc, comment_id, place, body)
+		if not object:
+			mochi.log.info("Feeds comment %s: %s cannot answer %s", comment_id, acc.get("identifier", acc["id"]), place["remote"])
+			continue
+		result = mochi.account.object.create(acc["id"], object, key="reply|" + comment_id + "|" + acc["id"])
+		if not result or not result.get("id"):
+			mochi.log.warn("Feeds could not publish comment %s from %s", comment_id, acc.get("identifier", acc["id"]))
+			continue
+		entry = {"address": acc.get("identifier", ""), "network": acc["type"], "remote": str(result["id"]), "url": str(result.get("url", "") or "")}
+		replies_record(comment_id, acc["id"], entry)
+		entries.append(entry)
+	return entries
 
 def reply_update(comment_id, body):
 	"""An edit of a comment follows the replies it went out as."""
 	rows = mochi.db.rows("select account, remote from replies where comment=? and account!=''", comment_id)
 	if not rows:
 		return
-	comment = mochi.db.row("select post from comments where id=?", comment_id)
+	comment = mochi.db.row("select id, post, parent from comments where id=?", comment_id)
 	if not comment:
 		return
 	for r in rows:
 		acc = publish_account(r["account"])
 		if not acc:
 			continue
-		object, _ = reply_object(acc, comment_id, comment["post"], body)
+		object = reply_made(acc, comment, body)
 		if object:
 			mochi.account.object.update(r["account"], r["remote"], object)
 
@@ -10459,6 +10610,27 @@ def fediverse_target(account_id, object_id):
 	if comment:
 		return "comment", comment
 	return None, None
+
+def followed_remote(acc, remote):
+	"""The post here that a followed person's post became, where they are
+	followed through the account; None otherwise."""
+	if not remote:
+		return None
+	return mochi.db.row("select p.* from posts p join source_posts s on s.post=p.id join sources o on o.id=s.source where p.remote=? and o.account=? limit 1", remote, acc["id"])
+
+def fediverse_admitted(acc, post, actor):
+	"""Whether a reply by a person on the fediverse may be a comment on the
+	post: as the feed's rules have it for the feed's own posts, and on a post
+	of a person followed through the account, also for that person and for
+	anyone else the account follows, whose replies in the thread reach it
+	because it follows them. A deny for the person always holds."""
+	if fediverse_may_comment(acc, post["feed"], actor):
+		return True
+	if access_denied(actor, "feed/" + post["feed"], "comment"):
+		return False
+	if not post.get("remote") or not mochi.db.exists("select 1 from source_posts s join sources o on o.id=s.source where s.post=? and o.account=?", post["id"], acc["id"]):
+		return False
+	return actor == post.get("author") or followed_source(acc, actor) != None
 
 def fediverse_may_comment(acc, feed_id, actor):
 	"""Who may reply (decided 2026-10-02): the feed's own rules first - a deny
@@ -10621,7 +10793,12 @@ def fediverse_created(acc, actor, note):
 		person = account_person(actor)
 		replies_record(named, "", {"address": person["address"] or actor, "network": "fediverse", "remote": remote, "url": safe_link(str(note.get("url", "") or ""))})
 		return
-	kind, target = fediverse_target(acc["id"], object_id_of(note.get("inReplyTo")))
+	answered = object_id_of(note.get("inReplyTo"))
+	kind, target = fediverse_target(acc["id"], answered)
+	if not kind:
+		# A reply to a followed person's post, in their thread there.
+		target = followed_remote(acc, answered)
+		kind = "post" if target else None
 	if not kind:
 		if fediverse_mentions(acc, note):
 			person = account_person(actor)
@@ -10635,7 +10812,7 @@ def fediverse_created(acc, actor, note):
 	if kind == "post" and note.get("name") and not str(note.get("content", "") or "").strip() and poll_of(post):
 		vote_from_network(acc, post, actor, str(note.get("name")))
 		return
-	if not fediverse_may_comment(acc, post["feed"], actor):
+	if not fediverse_admitted(acc, post, actor):
 		mochi.log.info("Feeds dropping a reply from %s: not allowed to comment on feed %s", actor, post["feed"])
 		return
 	body = mochi.text.clean(str(note.get("content", "") or ""))
@@ -10701,10 +10878,10 @@ def account_interaction(acc, raw):
 		if not mochi.text.valid(actor, "author") or mochi.text.valid(actor, "entity"):
 			return
 		if kind == "mention":
-			copy = linked_copy(acc, str(status.get("in_reply_to_id", "") or ""))
+			post, parent = linked_answered(acc, str(status.get("in_reply_to_id", "") or ""))
 			remote = str(status.get("uri", "") or status.get("url", "") or "")
-			if copy and remote:
-				linked_comment(acc, copy, actor, name, page, mochi.text.clean(str(status.get("content", "") or "")), "html", remote, status.get("created_at"))
+			if post and remote:
+				linked_comment(acc, post, parent, actor, name, page, mochi.text.clean(str(status.get("content", "") or "")), "html", remote, status.get("created_at"))
 		elif kind == "favourite":
 			copy = linked_copy(acc, str(status.get("id", "") or ""))
 			if copy:
@@ -10724,11 +10901,11 @@ def account_interaction(acc, raw):
 		if not actor or not mochi.text.valid(actor, "author"):
 			return
 		if reason == "reply":
-			parent = record.get("reply", {}).get("parent", {}) if type(record.get("reply")) == "dict" else {}
-			copy = linked_copy(acc, str(parent.get("uri", "") or "") if type(parent) == "dict" else "")
+			answered = record.get("reply", {}).get("parent", {}) if type(record.get("reply")) == "dict" else {}
+			post, parent = linked_answered(acc, str(answered.get("uri", "") or "") if type(answered) == "dict" else "")
 			remote = str(raw.get("uri", "") or "")
-			if copy and remote:
-				linked_comment(acc, copy, actor, name, page, str(record.get("text", "") or ""), "text", remote, record.get("createdAt"))
+			if post and remote:
+				linked_comment(acc, post, parent, actor, name, page, str(record.get("text", "") or ""), "text", remote, record.get("createdAt"))
 		elif reason == "like":
 			copy = linked_copy(acc, str(raw.get("reasonSubject", "") or ""))
 			if copy:
@@ -10747,17 +10924,33 @@ def linked_copy(acc, remote):
 		return None
 	return mochi.db.row("select * from posts where id=?", row["post"])
 
-def linked_comment(acc, post, actor, name, page, body, format, remote, created):
+def linked_answered(acc, remote):
+	"""What a reply read from an account's notifications answers: the post
+	whose copy through the account has this id there, or the comment whose
+	reply through it does (decision 31). Answers (post, the comment's id or
+	""), or (None, "")."""
+	post = linked_copy(acc, remote)
+	if post:
+		return post, ""
+	if not remote:
+		return None, ""
+	reply = mochi.db.row("select comment from replies where account=? and remote=?", acc["id"], remote)
+	comment = mochi.db.row("select id, post from comments where id=?", reply["comment"]) if reply else None
+	if not comment:
+		return None, ""
+	return mochi.db.row("select * from posts where id=?", comment["post"]), comment["id"]
+
+def linked_comment(acc, post, parent, actor, name, page, body, format, remote, created):
 	"""A reply read from a linked account's notifications as a comment on the
-	post, once; the feed's deny rules apply, since the account's own network
-	admitted the reply."""
+	post, under the comment it answers where it answers one, once; the feed's
+	deny rules apply, since the account's own network admitted the reply."""
 	if mochi.db.exists("select 1 from comments where remote=?", remote) or mochi.db.exists("select 1 from replies where remote=?", remote):
 		return
 	if access_denied(actor, "feed/" + post["feed"], "comment"):
 		return
 	if not body.strip() or not mochi.text.valid(body, "text"):
 		return
-	comment_from_network(acc, post, "", actor, name, page, body, format, remote, fediverse_time(created))
+	comment_from_network(acc, post, parent, actor, name, page, body, format, remote, fediverse_time(created))
 
 # === The reply control and the owner's moderation ===
 

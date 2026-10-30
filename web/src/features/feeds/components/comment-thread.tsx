@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { FeedComment, ReactionId } from '@/types'
 import { t } from '@lingui/core/macro'
 import { Plural, Trans } from '@lingui/react/macro'
@@ -58,8 +58,6 @@ type CommentThreadProps = {
    * replied to, so the list can warn before a switch throws them away. */
   onReplyFilesChange?: (count: number) => void
   onSubmitReply: (commentId: string, files?: File[]) => void | Promise<void>
-  /** The account a reply also goes out from, in the reply box's button row. */
-  replyChoice?: (commentId: string) => ReactNode
   /** Byte progress of an in-flight reply upload */
   progress?: Upload | null
   onReact: (commentId: string, reaction: ReactionId | '') => void
@@ -105,7 +103,6 @@ export function CommentThread({
   onReplyDraftChange,
   onReplyFilesChange,
   onSubmitReply,
-  replyChoice,
   progress,
   onReact,
   onEdit,
@@ -520,7 +517,6 @@ export function CommentThread({
             progress={progress}
             placeholder={t`Reply to ${comment.author}...`}
             autoFocus
-            controls={replyChoice?.(comment.id)}
           />
         </div>
       )}
@@ -603,7 +599,6 @@ export function CommentThread({
           onReplyDraftChange={onReplyDraftChange}
           onReplyFilesChange={onReplyFilesChange}
           onSubmitReply={onSubmitReply}
-          replyChoice={replyChoice}
           progress={progress}
           onReact={onReact}
           onEdit={onEdit}

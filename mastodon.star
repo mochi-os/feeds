@@ -864,11 +864,11 @@ def bluesky_post_written(acc, home, action, uri, record, media, user_id, name):
 	held = bluesky_held(parent)
 	if held:
 		# A reply to a post a feed holds is a comment on it, the record its
-		# reply on the network.
-		result, failure = comment_create(held["feed"], held["id"], "", user_id, name, text, "", "", None, mastodon_media_save(media))
+		# reply on the network, so the comment is not published there again.
+		made = [{"account": acc["id"], "address": acc.get("identifier", ""), "network": "bluesky", "remote": uri, "url": ""}]
+		result, failure = comment_create(held["feed"], held["id"], "", user_id, name, text, "", "", None, mastodon_media_save(media), made)
 		if failure:
 			return mastodon_failure(failure)
-		replies_record(result["id"], acc["id"], {"address": acc.get("identifier", ""), "network": "bluesky", "remote": uri, "url": ""})
 		return {"comment": result["id"]}
 	feed, refusal = mastodon_home(home)
 	if refusal:

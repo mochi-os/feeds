@@ -227,9 +227,7 @@ function SinglePostPage() {
       pId: string,
       body?: string,
       files?: File[],
-      attachment?: string,
-      // The commenter's own hosted account the comment also goes out from
-      account?: string
+      attachment?: string
     ) => {
       if (!body) return
       try {
@@ -239,7 +237,6 @@ function SinglePostPage() {
           body,
           files,
           attachment,
-          account,
         }
         if (files?.length) {
           await uploadComment(
@@ -268,8 +265,7 @@ function SinglePostPage() {
       pId: string,
       parentId: string,
       body: string,
-      files?: File[],
-      account?: string
+      files?: File[]
     ) => {
       try {
         const payload = {
@@ -278,7 +274,6 @@ function SinglePostPage() {
           body,
           parent: parentId,
           files,
-          account,
         }
         if (files?.length) {
           await uploadComment(

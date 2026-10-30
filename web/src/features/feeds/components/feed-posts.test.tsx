@@ -51,13 +51,11 @@ vi.mock('@/api/feeds', () => ({
 
 // The card's children each pull their own API/store graph; the behaviour
 // under test lives on the card itself, so they render as nothing. The thread
-// stands in as what the card hands it for a reply: the account choice, a draft
-// and a send.
+// stands in as what the card hands it for a reply: a draft and a send.
 vi.mock('./comment-thread', () => ({
   CommentThread: (props: {
     comment: { id: string; subscriberId: string }
     avatars?: ReadonlyMap<string, string>
-    replyChoice?: (commentId: string) => ReactNode
     onReplyDraftChange: (value: string) => void
     onSubmitReply: (commentId: string) => void | Promise<void>
   }) => (
@@ -65,7 +63,6 @@ vi.mock('./comment-thread', () => ({
       <span data-testid='avatar-source'>
         {props.avatars?.get(props.comment.subscriberId)}
       </span>
-      {props.replyChoice?.(props.comment.id)}
       <button
         type='button'
         onClick={() => props.onReplyDraftChange('An answer')}
@@ -325,31 +322,24 @@ describe('FeedPosts card navigation', () => {
 describe('FeedPosts replying to a comment from another network', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    // The account list is a Radix select, which jsdom lacks the pointer and
-    // scroll calls for.
-    Element.prototype.hasPointerCapture ??= () => false
-    Element.prototype.releasePointerCapture ??= () => {}
-    Element.prototype.scrollIntoView ??= () => {}
   })
 
   // A post published to a hosted fediverse account, with a comment that came
   // back from there.
-  function published(copies = true, id = 'post-1'): FeedPost {
+  function published(): FeedPost {
     return {
-      ...post(id),
-      copies: copies
-        ? [
-            {
-              address: '@me@example.com',
-              network: 'fediverse',
-              remote: 'https://example.com/~me/1',
-              url: '',
-            },
-          ]
-        : [],
+      ...post(),
+      copies: [
+        {
+          address: '@me@example.com',
+          network: 'fediverse',
+          remote: 'https://example.com/~me/1',
+          url: '',
+        },
+      ],
       comments: [
         {
-          id: id === 'post-1' ? 'comment-1' : 'comment-2',
+          id: 'comment-1',
           subscriberId: 'https://remote.example/u/bob',
           author: 'Bob',
           created: 1,
@@ -363,65 +353,22 @@ describe('FeedPosts replying to a comment from another network', () => {
     }
   }
 
-  it('sends the reply from the account chosen beside the reply box', async () => {
+  // The server sends a comment wherever the post or the comment answered is,
+  // so there is nothing to choose before replying.
+  it('offers no account to reply from, and sends the reply as written', async () => {
     const user = userEvent.setup()
     const onReplyToComment = vi.fn()
     renderPosts([published()], onReplyToComment)
-    await user.click(
-      await screen.findByRole('combobox', { name: 'Also reply from' })
-    )
-    await user.click(
-      await screen.findByRole('option', { name: '@me@example.com' })
-    )
-    await user.click(screen.getByRole('button', { name: 'Type reply' }))
-    await user.click(screen.getByRole('button', { name: 'Send reply' }))
-    expect(onReplyToComment).toHaveBeenCalledWith(
-      'feed-1',
-      'post-1',
-      'comment-1',
-      'An answer',
-      undefined,
-      'account-1'
-    )
-  })
-
-  it('sends the reply from no account until one is chosen', async () => {
-    const user = userEvent.setup()
-    const onReplyToComment = vi.fn()
-    renderPosts([published()], onReplyToComment)
-    await screen.findByRole('combobox', { name: 'Also reply from' })
-    await user.click(screen.getByRole('button', { name: 'Type reply' }))
-    await user.click(screen.getByRole('button', { name: 'Send reply' }))
-    expect(onReplyToComment).toHaveBeenCalledWith(
-      'feed-1',
-      'post-1',
-      'comment-1',
-      'An answer',
-      undefined,
-      undefined
-    )
-  })
-
-  it("shows the post's choice in its comment box's button row, just before attach", async () => {
-    const user = userEvent.setup()
-    renderPosts([published()])
-    await screen.findByRole('combobox', { name: 'Also reply from' })
     await user.click(screen.getByRole('button', { name: 'Comment' }))
-    const choice = document.getElementById('reply-from-post-1')
-    expect(choice?.closest('div')?.nextElementSibling).toBe(
-      screen.getByRole('button', { name: 'Attach comment files' })
-    )
-  })
-
-  it('offers no account where the post is on no other network', async () => {
-    renderPosts([published(), published(false, 'post-2')])
-    await screen.findByRole('combobox', { name: 'Also reply from' })
-    // One choice, beside the reply to the published post's comment.
-    expect(
-      screen.getAllByRole('combobox', { name: 'Also reply from' })
-    ).toHaveLength(1)
-    expect(screen.getAllByRole('button', { name: 'Type reply' })).toHaveLength(
-      2
+    expect(screen.queryByRole('combobox')).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'Type reply' }))
+    await user.click(screen.getByRole('button', { name: 'Send reply' }))
+    expect(onReplyToComment).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'comment-1',
+      'An answer',
+      undefined
     )
   })
 })

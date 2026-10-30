@@ -50,12 +50,6 @@ import {
   type ComposerItem,
   getErrorMessage,
   useFormat,
-  Label,
-  SelectValue,
-  SelectTrigger,
-  SelectItem,
-  SelectContent,
-  Select,
   toast,
   useListAutoAnimate,
   moveItem,
@@ -144,17 +138,14 @@ type FeedPostsProps = {
     postId: string,
     body?: string,
     files?: File[],
-    attachment?: string,
-    account?: string
+    attachment?: string
   ) => void | Promise<void>
   onReplyToComment: (
     feedId: string,
     postId: string,
     parentCommentId: string,
     body: string,
-    files?: File[],
-    // The commenter's own hosted account the reply also goes out from
-    account?: string
+    files?: File[]
   ) => void | Promise<void>
   onPostReaction: (
     feedId: string,
@@ -280,8 +271,6 @@ export type PostCommentsListProps = {
   onReplyDraftChange: (value: string) => void
   onReplyFilesChange?: (count: number) => void
   onSubmitReply: (commentId: string, files?: File[]) => void | Promise<void>
-  /** The account a reply also goes out from, shown above a reply box. */
-  replyChoice?: (commentId: string) => React.ReactNode
   /** Byte progress of an in-flight reply upload */
   progress?: Upload | null
   onReact: (commentId: string, reaction: ReactionId | '') => void
@@ -328,7 +317,6 @@ export function PostCommentsList({
   onReplyDraftChange,
   onReplyFilesChange,
   onSubmitReply,
-  replyChoice,
   progress,
   onReact,
   onEdit,
@@ -419,7 +407,6 @@ export function PostCommentsList({
             onReplyDraftChange={onReplyDraftChange}
             onReplyFilesChange={onReplyFilesChange}
             onSubmitReply={onSubmitReply}
-            replyChoice={replyChoice}
             progress={progress}
             onReact={onReact}
             onEdit={onEdit}
@@ -584,13 +571,9 @@ export function FeedPosts({
     [onDraftChange]
   )
 
-  // Rejects on failure so the box keeps its draft and files for Retry: the
-  // comment was rolled back and the draft restored upstream.
-  // The commenter's hosted accounts on the fediverse, for a comment to go out
-  // from one as a reply to the post's copy (decision 31): read once a post
-  // with such a copy is shown, and the account chosen per post.
-  const [replyAccounts, setReplyAccounts] = useState<PublishAccount[]>([])
-  const [replyFrom, setReplyFrom] = useState<Record<string, string>>({})
+  // The user's hosted accounts on the fediverse, for boosting a post from
+  // there (phase 17): read once a post from another network is shown.
+  const [hostedAccounts, setHostedAccounts] = useState<PublishAccount[]>([])
   const anyFediverseCopy = posts.some(
     (p) =>
       p.copies?.some((copy) => copy.network === 'fediverse') ||
@@ -602,7 +585,7 @@ export function FeedPosts({
     feedsApi
       .hostedAccounts()
       .then((accounts) => {
-        if (!cancelled) setReplyAccounts(accounts)
+        if (!cancelled) setHostedAccounts(accounts)
       })
       .catch(() => {})
     return () => {
@@ -610,61 +593,19 @@ export function FeedPosts({
     }
   }, [isLoggedIn, readOnly, anyFediverseCopy])
 
-  // The account choice in the button row of the post's comment box and of
-  // each reply box in its thread, before attach: one choice per post, which a
-  // reply to a comment from another network answers that comment with.
-  const replyChoice = (post: FeedPost, id: string) =>
-    replyAccounts.length > 0 &&
-    (post.copies?.some((copy) => copy.network === 'fediverse') ||
-      (post.remote && post.authorId)) ? (
-      <div className='flex items-center gap-2 text-xs'>
-        <Label htmlFor={id}>
-          <Trans>Also reply from</Trans>
-        </Label>
-        <Select
-          value={replyFrom[post.id] ?? ''}
-          onValueChange={(value) =>
-            setReplyFrom((current) => ({
-              ...current,
-              [post.id]: value === 'none' ? '' : value,
-            }))
-          }
-        >
-          <SelectTrigger id={id} className='h-7 w-auto min-w-40 text-xs'>
-            <SelectValue placeholder={t`No account`} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value='none'>
-              <Trans>No account</Trans>
-            </SelectItem>
-            {replyAccounts.map((account) => (
-              <SelectItem key={account.id} value={account.id}>
-                {account.identifier}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    ) : null
-
+  // Rejects on failure so the box keeps its draft and files for Retry: the
+  // comment was rolled back and the draft restored upstream.
   const submitComment = useCallback(
     async (feedId: string, postId: string, body: string, files?: File[]) => {
       setIsSubmittingComment(true)
       try {
-        await onAddComment(
-          feedId,
-          postId,
-          body,
-          files,
-          undefined,
-          replyFrom[postId] || undefined
-        )
+        await onAddComment(feedId, postId, body, files)
         setCommentingOn(null)
       } finally {
         setIsSubmittingComment(false)
       }
     },
-    [onAddComment, replyFrom]
+    [onAddComment]
   )
 
   // Pinning a post of the owner's feed, and boosting a post from another
@@ -688,7 +629,7 @@ export function FeedPosts({
     },
     [reloadPosts]
   )
-  const boostAccount = replyAccounts[0]
+  const boostAccount = hostedAccounts[0]
   const isBoosted = useCallback(
     (post: FeedPost) =>
       !!boostAccount &&
@@ -1043,8 +984,6 @@ export function FeedPosts({
     onReplyDraftChange: setReplyDraft,
     onReplyFilesChange: setReplyFileCount,
     progress: commentProgress,
-    replyChoice: (commentId: string) =>
-      replyChoice(post, `reply-from-${post.id}-${commentId}`),
     onSubmitReply: async (commentId: string, files?: File[]) => {
       if (replyDraft.trim()) {
         await onReplyToComment(
@@ -1052,8 +991,7 @@ export function FeedPosts({
           post.id,
           commentId,
           replyDraft.trim(),
-          files,
-          replyFrom[post.id] || undefined
+          files
         )
         setReplyingTo(null)
         setReplyDraft('')
@@ -2132,7 +2070,6 @@ export function FeedPosts({
                       placeholder={t`Leave a comment...`}
                       textareaClassName='rounded-[8px] text-sm'
                       autoFocus
-                      controls={replyChoice(post, `reply-from-${post.id}`)}
                     />
                   </div>
                 )}

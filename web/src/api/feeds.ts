@@ -568,9 +568,6 @@ const createComment = async (
   if (payload.attachment) {
     formData.append('attachment', payload.attachment)
   }
-  if (payload.account) {
-    formData.append('account', payload.account)
-  }
   if (payload.files) {
     for (const file of payload.files) {
       formData.append('files', file)
@@ -916,7 +913,8 @@ const moderateComment = async (
   )
 }
 
-// The user's hosted accounts on other networks, for replying from one.
+// The user's hosted fediverse accounts, which a person is followed and a post
+// boosted through.
 const hostedAccounts = async (): Promise<PublishAccount[]> => {
   const accounts = await client.post<PublishAccount[], { capability: string }>(
     endpoints.feeds.accounts,

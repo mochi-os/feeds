@@ -121,47 +121,6 @@ describe('CommentThread with a person from another network', () => {
   })
 })
 
-describe('CommentThread account choice for a reply', () => {
-  beforeEach(() => {
-    i18n.load('en', {})
-    i18n.activate('en')
-  })
-
-  const thread: FeedComment = {
-    ...outsider,
-    replies: [
-      {
-        ...outsider,
-        id: 'c2',
-        subscriberId: 'https://remote.example/u/carol',
-        author: 'Carol',
-        body: '<p>Agreed</p>',
-        replies: [],
-      },
-    ],
-  }
-  const replyChoice = (commentId: string) => <span>Choice for {commentId}</span>
-
-  it("shows the choice in the reply box's button row, just before attach, and nowhere else", () => {
-    show(thread, { replyChoice, replyingTo: { postId: 'p1', commentId: 'c1' } })
-    expect(screen.getByText('Choice for c1').nextElementSibling).toBe(
-      screen.getByRole('button', { name: 'Attach reply files' })
-    )
-    expect(screen.queryByText('Choice for c2')).toBeNull()
-  })
-
-  it('shows it for a reply deeper in the thread', () => {
-    show(thread, { replyChoice, replyingTo: { postId: 'p1', commentId: 'c2' } })
-    expect(screen.getByText('Choice for c2')).toBeTruthy()
-    expect(screen.queryByText('Choice for c1')).toBeNull()
-  })
-
-  it('shows none while no reply is being written', () => {
-    show(thread, { replyChoice })
-    expect(screen.queryByText(/Choice for/)).toBeNull()
-  })
-})
-
 describe('CommentThread avatars', () => {
   beforeEach(() => {
     i18n.load('en', {})

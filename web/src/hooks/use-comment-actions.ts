@@ -58,8 +58,7 @@ export type UseCommentActionsResult = {
     postId: string,
     body?: string,
     files?: File[],
-    attachment?: string,
-    account?: string
+    attachment?: string
   ) => Promise<void>
   /** Reply to an existing comment */
   handleReplyToComment: (
@@ -67,8 +66,7 @@ export type UseCommentActionsResult = {
     postId: string,
     parentCommentId: string,
     body: string,
-    files?: File[],
-    account?: string
+    files?: File[]
   ) => Promise<void>
   /** React to a comment */
   handleCommentReaction: (
@@ -134,10 +132,7 @@ export function useCommentActions({
       postId: string,
       body?: string,
       files?: File[],
-      attachment?: string,
-      // The commenter's own hosted account the comment also goes out from,
-      // as a reply to the post's copy on that network
-      account?: string
+      attachment?: string
     ) => {
       const draft = (body ?? commentDrafts[postId])?.trim()
       if (!draft) return
@@ -185,7 +180,6 @@ export function useCommentActions({
           id: comment.id,
           files,
           attachment,
-          account,
         }
         if (files?.length) {
           await upload(
@@ -228,10 +222,7 @@ export function useCommentActions({
       postId: string,
       parentCommentId: string,
       body: string,
-      files?: File[],
-      // The commenter's own hosted account the reply also goes out from, as
-      // an answer to the comment where it came from that network
-      account?: string
+      files?: File[]
     ) => {
       const reply: FeedComment = {
         id: randomId('reply'),
@@ -286,7 +277,6 @@ export function useCommentActions({
           parent: parentCommentId,
           id: reply.id,
           files,
-          account,
         }
         if (files?.length) {
           await upload(

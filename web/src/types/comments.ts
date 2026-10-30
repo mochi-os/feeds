@@ -74,9 +74,6 @@ export interface CreateCommentRequest {
   files?: File[]
   // Anchor the comment to one of the post's attachments
   attachment?: string
-  // The commenter's own hosted account the comment also goes out from, as a
-  // reply to the post's copy on that network
-  account?: string
 }
 
 export interface CreateCommentResponse {
