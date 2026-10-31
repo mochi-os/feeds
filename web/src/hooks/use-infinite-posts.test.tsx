@@ -7,7 +7,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { FeedPost } from '@/types'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { keptPosts, useInfinitePosts } from './use-infinite-posts'
+import {
+  keptPosts,
+  postsKey,
+  prefetchPosts,
+  useInfinitePosts,
+  type PostsPrefetch,
+} from './use-infinite-posts'
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }))
 
@@ -220,5 +226,177 @@ describe('a different list', () => {
     await refetched()
 
     await waitFor(() => expect(ids()).toEqual(['a', 'c', 'd', 'e', 'f']))
+  })
+})
+
+describe('a first page the route loader prefetched', () => {
+  interface Props {
+    sort: string
+    prefetched?: PostsPrefetch
+  }
+
+  function open(client: QueryClient, initialProps: Props) {
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    )
+    const hook = renderHook(
+      (current: Props) =>
+        useInfinitePosts({ feedId: 'f1', unread: false, ...current }),
+      { wrapper, initialProps }
+    )
+    const ids = () => hook.result.current.posts.map((item) => item.id)
+    return { hook, ids }
+  }
+
+  function client() {
+    return new QueryClient({ defaultOptions: { queries: { retry: false } } })
+  }
+
+  // Long enough for a mount-time fetch to have been started, were one coming.
+  const settle = () => new Promise((resolve) => setTimeout(resolve, 20))
+
+  const wanted = { feedId: 'f1', sort: 'new', unread: false }
+
+  it('is shown without asking for it again', async () => {
+    const queries = client()
+    const prefetched = prefetchPosts(queries, wanted)
+    await waitFor(() => expect(prefetched?.data).toBeDefined())
+    expect(get).toHaveBeenCalledTimes(1)
+
+    const { ids } = open(queries, { sort: 'new', prefetched })
+    expect(ids()).toHaveLength(10)
+    await settle()
+
+    expect(get).toHaveBeenCalledTimes(1)
+  })
+
+  it('is joined, not asked for again, by a page that mounts while it is on its way', async () => {
+    let answer: (value: unknown) => void = () => {}
+    get.mockImplementationOnce(
+      () => new Promise((resolve) => (answer = resolve))
+    )
+    const queries = client()
+    const prefetched = prefetchPosts(queries, wanted)
+
+    const { ids } = open(queries, { sort: 'new', prefetched })
+    await settle()
+    answer({ data: { posts: head, hasMore: false } })
+
+    await waitFor(() => expect(ids()).toHaveLength(10))
+    expect(get).toHaveBeenCalledTimes(1)
+  })
+
+  it('is asked for again on a later mount: a return shows what has changed', async () => {
+    const queries = client()
+    const prefetched = prefetchPosts(queries, wanted)
+    await waitFor(() => expect(prefetched?.data).toBeDefined())
+    const first = open(queries, { sort: 'new', prefetched })
+    await settle()
+    first.hook.unmount()
+
+    // The router shows its cached loader data on a return.
+    open(queries, { sort: 'new', prefetched })
+
+    await waitFor(() => expect(get).toHaveBeenCalledTimes(2))
+  })
+
+  it('does not stand for a list asked for another way', async () => {
+    const queries = client()
+    const prefetched = prefetchPosts(queries, wanted)
+    await waitFor(() => expect(prefetched?.data).toBeDefined())
+    // The list in the order the page asks for is cached from earlier.
+    queries.setQueryData(postsKey({ ...wanted, sort: 'top' }), {
+      pages: [{ posts: [post('old')], hasMore: false }],
+      pageParams: [undefined],
+    })
+
+    const { ids } = open(queries, { sort: 'top', prefetched })
+
+    await waitFor(() => expect(ids()).toHaveLength(10))
+    expect(get).toHaveBeenCalledTimes(2)
+    expect(get).toHaveBeenLastCalledWith(
+      'f1',
+      expect.objectContaining({ sort: 'top' })
+    )
+  })
+
+  it('is asked for again on mount when the prefetch failed over an older list', async () => {
+    const queries = client()
+    queries.setQueryData(postsKey(wanted), {
+      pages: [{ posts: [post('old')], hasMore: false }],
+      pageParams: [undefined],
+    })
+    get.mockRejectedValueOnce(new Error('offline'))
+    const prefetched = prefetchPosts(queries, wanted)
+    await waitFor(() =>
+      expect(queries.getQueryState(postsKey(wanted))?.status).toBe('error')
+    )
+    await settle()
+    expect(prefetched?.data).toBeUndefined()
+
+    const { ids } = open(queries, { sort: 'new', prefetched })
+
+    await waitFor(() => expect(ids()).toHaveLength(10))
+    expect(get).toHaveBeenCalledTimes(2)
+  })
+
+  it('is asked for again on mount when an event invalidated it since', async () => {
+    const queries = client()
+    const prefetched = prefetchPosts(queries, wanted)
+    await waitFor(() => expect(prefetched?.data).toBeDefined())
+    // A post event from another page lands before this one mounts.
+    await queries.invalidateQueries({ queryKey: ['posts'] })
+
+    open(queries, { sort: 'new', prefetched })
+
+    await waitFor(() => expect(get).toHaveBeenCalledTimes(2))
+  })
+
+  const early = (asked: number) => ({
+    asked,
+    page: Promise.resolve({
+      posts: [post('early')],
+      hasMore: false,
+      nextCursor: undefined,
+      permissions: undefined,
+      hasAi: false,
+    }),
+  })
+
+  it('uses a page already on its way once, and asks afresh after', async () => {
+    const queries = client()
+    const prefetched = prefetchPosts(queries, wanted, early(Date.now()))
+    await waitFor(() => expect(prefetched?.data).toBeDefined())
+    expect(get).not.toHaveBeenCalled()
+
+    // Fetched again before any page holds the list, as the loader left it.
+    await queries.refetchQueries({ queryKey: ['posts'] })
+
+    expect(get).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not use a page asked for before what the list already holds', async () => {
+    const queries = client()
+    queries.setQueryData(postsKey(wanted), {
+      pages: [{ posts: [post('newer')], hasMore: false }],
+      pageParams: [undefined],
+    })
+
+    const prefetched = prefetchPosts(queries, wanted, early(Date.now() - 1000))
+    await waitFor(() => expect(prefetched?.data).toBeDefined())
+
+    expect(get).toHaveBeenCalledTimes(1)
+  })
+
+  it('leaves a list a page already shows to that page', async () => {
+    const queries = client()
+    const { ids } = open(queries, { sort: 'new' })
+    await waitFor(() => expect(ids()).toHaveLength(10))
+
+    const prefetched = prefetchPosts(queries, wanted)
+    await settle()
+
+    expect(prefetched).toBeUndefined()
+    expect(get).toHaveBeenCalledTimes(1)
   })
 })

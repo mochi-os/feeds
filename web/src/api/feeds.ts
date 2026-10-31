@@ -129,6 +129,7 @@ interface GetFeedParams {
   sort?: string
   tag?: string
   unread?: string
+  local?: string // '1': only a feed held here; one held elsewhere is not found
   _t?: number // Cache buster
 }
 
@@ -147,6 +148,7 @@ const getFeed = async (
       sort: params?.sort,
       tag: params?.tag,
       unread: params?.unread,
+      local: params?.local,
       _t: params?._t?.toString(),
     }),
   })

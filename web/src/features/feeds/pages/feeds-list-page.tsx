@@ -33,7 +33,6 @@ import {
   toast,
   getErrorMessage,
   useAuthStore,
-  useShellStorage,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -53,7 +52,9 @@ import {
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
+import type { FeedsAnswer } from '@/hooks/use-feeds'
 import { setLastFeed } from '@/hooks/use-feeds-storage'
+import { useReadFilter } from '@/hooks/use-read-filter'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
 import { InlineFeedSearch } from '../components/inline-feed-search'
@@ -64,11 +65,14 @@ import { inListedOrder, sectionErrorFrom } from '../utils'
 interface FeedsListPageProps {
   loaderError?: string | null
   onRetryLoader?: () => void
+  /** The feed list the route loader fetched, so the page need not ask again. */
+  initial?: FeedsAnswer
 }
 
 export function FeedsListPage({
   loaderError,
   onRetryLoader,
+  initial,
 }: FeedsListPageProps) {
   const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
@@ -76,10 +80,7 @@ export function FeedsListPage({
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
-  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>(
-    'feeds-read-filter',
-    'all'
-  )
+  const [readFilter, setReadFilter] = useReadFilter()
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
@@ -105,6 +106,7 @@ export function FeedsListPage({
     hasAi,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
+    initial,
   })
 
   // Refresh both local state and Zustand store (sidebar) together

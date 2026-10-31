@@ -3,8 +3,20 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import type { FeedComment, ReactionCounts, ReactionId } from '@/types'
-import { getErrorMessage } from '@mochi/web'
+import { getErrorMessage, type SortType } from '@mochi/web'
 import DOMPurify from 'dompurify'
+
+/**
+ * The sort a feed's posts open in: the feed's own, else the reader's default,
+ * else by interest. Someone not signed in sees the newest first.
+ */
+export function initialSort(
+  own: string | undefined,
+  fallback: string,
+  loggedIn: boolean
+): SortType {
+  return (loggedIn ? own || fallback || 'interests' : 'new') as SortType
+}
 
 /**
  * Build the aggregate "All feeds" section error. Surfaces the real error's

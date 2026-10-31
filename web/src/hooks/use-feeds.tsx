@@ -3,7 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
-import type { Feed, FeedPost, FeedSummary } from '@/types'
+import type { Feed, FeedPost, FeedSummary, ViewFeedResponse } from '@/types'
 import { useLingui } from '@lingui/react/macro'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
@@ -12,6 +12,23 @@ export type UseFeedsOptions = {
   sort?: string
   /** Callback when posts are loaded from initial feed fetch */
   onPostsLoaded?: (postsByFeed: Record<string, FeedPost[]>) => void
+  /** The feed list the route loader has just fetched, for the first load. */
+  initial?: FeedsAnswer
+}
+
+/** An answer to the feed list request a route loader has already had. */
+export interface FeedsAnswer {
+  data: ViewFeedResponse['data']
+}
+
+// Answers already used. One stands in for a single load, the first after the
+// navigation that fetched it; anything later, a return included, asks again.
+const spent = new WeakSet<FeedsAnswer>()
+
+function take(initial: FeedsAnswer | undefined, sort: string | undefined) {
+  if (!initial || sort !== undefined || spent.has(initial)) return undefined
+  spent.add(initial)
+  return initial
 }
 
 export type UseFeedsResult = {
@@ -37,6 +54,10 @@ const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
 export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
   const { t } = useLingui()
   const { onPostsLoaded, sort } = options
+  // The answer the page mounted with. A later one, from the loader running
+  // again under a mounted page, may be older than what the page has since
+  // fetched, so it is not used.
+  const [initial] = useState(options.initial)
   const [feeds, setFeeds] = useState<FeedSummary[]>([])
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(true)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -47,7 +68,7 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
   const refreshFeedsFromApi = useCallback(async () => {
     setIsLoadingFeeds(true)
     try {
-      const response = await feedsApi.view({ sort })
+      const response = take(initial, sort) ?? (await feedsApi.view({ sort }))
       if (!mountedRef.current) {
         return
       }
@@ -104,7 +125,7 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
         setIsLoadingFeeds(false)
       }
     }
-  }, [onPostsLoaded, sort, t])
+  }, [onPostsLoaded, sort, initial, t])
 
   // Cleanup on unmount
   useEffect(() => {

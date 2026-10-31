@@ -3,10 +3,12 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
-import type { Feed, FeedPermissions } from '@/types'
+import type { Feed, FeedPermissions, ViewFeedResponse } from '@/types'
 import { t } from '@lingui/core/macro'
 import { getErrorMessage } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
+import { useFeedsStore } from '@/stores/feeds-store'
+import type { FeedsAnswer } from '@/hooks/use-feeds'
 import { getLastFeed, clearLastFeed } from '@/hooks/use-feeds-storage'
 import { EntityFeedPage, FeedsListPage } from '@/features/feeds/pages'
 
@@ -27,12 +29,17 @@ export const Route = createFileRoute('/_authenticated/')({
   loader: async () => {
     let info: InfoResponse | null = null
     let loaderError: string | null = null
+    let answer: FeedsAnswer | undefined
 
     try {
       const response = await feedsApi.find()
       // Cast to InfoResponse because api/feeds might define a different return type for find()
       // but the underlying data (from endpoints.feeds.info) matches InfoResponse
       info = response.data as unknown as InfoResponse
+      // The sidebar's feed list and the timeline's first load are this same
+      // answer: hand it over, so neither asks for it again.
+      answer = { data: response.data as unknown as ViewFeedResponse['data'] }
+      useFeedsStore.getState().seed(answer.data)
     } catch (error) {
       loaderError = getErrorMessage(error, t`Failed to load feeds`)
     }
@@ -57,13 +64,13 @@ export const Route = createFileRoute('/_authenticated/')({
       }
     }
 
-    return { info, loaderError }
+    return { info, loaderError, answer }
   },
   component: IndexPage,
 })
 
 function IndexPage() {
-  const { info, loaderError } = Route.useLoaderData()
+  const { info, loaderError, answer } = Route.useLoaderData()
   const router = useRouter()
 
   // If we're in entity context, show the feed page directly
@@ -76,6 +83,7 @@ function IndexPage() {
     <FeedsListPage
       loaderError={loaderError}
       onRetryLoader={() => void router.invalidate()}
+      initial={answer}
     />
   )
 }

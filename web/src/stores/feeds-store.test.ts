@@ -70,3 +70,104 @@ describe('feeds-store sort persistence', () => {
     expect(toastError).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('feeds store loading', () => {
+  /** A request for the feed list that answers when told to. */
+  function pending() {
+    let answer: (value: unknown) => void = () => {}
+    const promise = new Promise((resolve) => {
+      answer = resolve
+    })
+    return { promise, answer }
+  }
+
+  const roster = (...names: string[]) => ({
+    data: {
+      feeds: names.map((name) => ({ id: name, name, fingerprint: name })),
+    },
+  })
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    useFeedsStore.setState({ feeds: [], defaultSort: '', loaded: false })
+  })
+
+  it('shares a request in flight between plain loads', async () => {
+    const request = pending()
+    vi.mocked(feedsApi.view).mockReturnValueOnce(request.promise as never)
+
+    const first = useFeedsStore.getState().load()
+    const second = useFeedsStore.getState().load()
+    request.answer(roster('a'))
+    await Promise.all([first, second])
+
+    expect(feedsApi.view).toHaveBeenCalledTimes(1)
+    expect(useFeedsStore.getState().feeds.map((feed) => feed.id)).toEqual(['a'])
+    expect(useFeedsStore.getState().loaded).toBe(true)
+  })
+
+  it('asks again for a refresh made during a load, once that load has answered', async () => {
+    const before = pending()
+    const after = pending()
+    vi.mocked(feedsApi.view)
+      .mockReturnValueOnce(before.promise as never)
+      .mockReturnValueOnce(after.promise as never)
+
+    const load = useFeedsStore.getState().load()
+    // Something changed while the load was on its way, which it may predate.
+    const refresh = useFeedsStore.getState().refresh()
+    expect(feedsApi.view).toHaveBeenCalledTimes(1)
+
+    before.answer(roster('a'))
+    await load
+    await vi.waitFor(() => expect(feedsApi.view).toHaveBeenCalledTimes(2))
+    after.answer(roster('a', 'b'))
+    await refresh
+
+    expect(useFeedsStore.getState().feeds.map((feed) => feed.id)).toEqual([
+      'a',
+      'b',
+    ])
+  })
+
+  it('keeps a roster already loaded rather than a seed, which may be older', async () => {
+    vi.mocked(feedsApi.view).mockResolvedValueOnce(roster('a', 'b') as never)
+    await useFeedsStore.getState().load()
+
+    // A loader's answer, sent before the reader read posts in feed a.
+    useFeedsStore.getState().seed(roster('a').data as never)
+
+    expect(useFeedsStore.getState().feeds.map((feed) => feed.id)).toEqual([
+      'a',
+      'b',
+    ])
+  })
+
+  it('leaves a seed to the load already on its way', async () => {
+    const request = pending()
+    vi.mocked(feedsApi.view).mockReturnValueOnce(request.promise as never)
+    const load = useFeedsStore.getState().load()
+
+    useFeedsStore.getState().seed(roster('seeded').data as never)
+    expect(useFeedsStore.getState().feeds).toEqual([])
+    request.answer(roster('loaded'))
+    await load
+
+    expect(useFeedsStore.getState().feeds.map((feed) => feed.id)).toEqual([
+      'loaded',
+    ])
+  })
+
+  it('holds a roster a loader seeds it with, without asking for it', () => {
+    useFeedsStore.getState().seed({
+      feeds: [{ id: 'a', name: 'A', fingerprint: 'a' }],
+      settings: { sort: 'hot' },
+    } as never)
+
+    const state = useFeedsStore.getState()
+    expect(state.loaded).toBe(true)
+    expect(state.defaultSort).toBe('hot')
+    expect(state.feeds.map((feed) => feed.id)).toEqual(['a'])
+    expect(feedsApi.view).not.toHaveBeenCalled()
+  })
+})

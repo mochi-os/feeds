@@ -2623,8 +2623,14 @@ def action_view(a):
 	if feed_id and not feed_data:
 		is_remote = True
 
-	# For remote feeds, fetch via P2P
+	# For remote feeds, fetch via P2P - unless the caller asks only for a feed
+	# held here. The web client asks by the identifier in its address before it
+	# knows where the feed is, and a feed held elsewhere must not become a
+	# request to another server.
 	if is_remote and feed_id:
+		if a.input("local") == "1":
+			a.error.label(404, "errors.feed_not_found")
+			return
 		return view_remote(a, user_id, feed_id, server)
 
 	# Local feed handling

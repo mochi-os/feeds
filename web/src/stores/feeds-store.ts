@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import type { Feed, FeedPost, FeedSummary } from '@/types'
+import type { Feed, FeedPost, FeedSummary, ViewFeedResponse } from '@/types'
 import { i18n } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { toast, getErrorMessage, type MapTiles } from '@mochi/web'
-import { create } from 'zustand'
+import { create, type StoreApi } from 'zustand'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 
@@ -18,7 +18,22 @@ type FeedsState = {
   defaultSort: string
   /** The server's map tile source, from the info response. */
   tiles: MapTiles | null
+  /** Whether the roster has been fetched, or seeded, since the app started. */
+  loaded: boolean
+  /**
+   * Fetch the roster again because something changed. A request already in
+   * flight may have been answered before the change, so this waits for it and
+   * then asks again.
+   */
   refresh: () => Promise<void>
+  /** Load the roster, sharing a request already in flight rather than asking twice. */
+  load: () => Promise<void>
+  /**
+   * Adopt a roster a route loader has already fetched, when nothing has been
+   * loaded or asked for yet: anything already held or on its way is as new
+   * or newer, and has seen changes the seed has not.
+   */
+  seed: (data: ViewFeedResponse['data']) => void
   adjustUnread: (feedId: string, delta: number) => void
   setUnread: (feedId: string, count: number) => void
   setDefaultSort: (sort: string) => Promise<void>
@@ -36,13 +51,75 @@ const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
   }, {})
 }
 
-export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
+type SetState = StoreApi<FeedsState>['setState']
+
+// Hold the roster an answer to the info request carries.
+const adopt = (set: SetState, data: ViewFeedResponse['data']) => {
+  const subscribedFeedIds = new Set(data.feeds?.map((feed) => feed.id) ?? [])
+  const mappedFeeds = mapFeedsToSummaries(data.feeds, subscribedFeedIds)
+
+  const currentFeedSummary =
+    data.feed && 'id' in data.feed && data.feed.id
+      ? mapFeedsToSummaries([data.feed as Feed], subscribedFeedIds)[0]
+      : undefined
+
+  const dedupedFeeds = [
+    ...(currentFeedSummary ? [currentFeedSummary] : []),
+    ...mappedFeeds,
+  ].reduce<FeedSummary[]>((acc, feed) => {
+    if (!acc.some((item) => item.id === feed.id)) {
+      acc.push(feed)
+    }
+    return acc
+  }, [])
+
+  // Map and group posts
+  const mappedPosts = mapPosts(data.posts)
+  const postsByFeed = groupPostsByFeed(mappedPosts)
+
+  const defaultSort =
+    data && typeof data === 'object' && 'settings' in data
+      ? ((data as { settings?: { sort?: string } }).settings?.sort ?? '')
+      : ''
+
+  set({
+    feeds: dedupedFeeds,
+    postsByFeed,
+    defaultSort,
+    tiles: data.tiles ?? null,
+    error: null,
+    loaded: true,
+  })
+}
+
+// The roster request in flight, which a plain load shares.
+let inflight: Promise<void> | null = null
+
+const fetchRoster = (set: SetState): Promise<void> => {
+  set({ isLoading: true, error: null })
+  const request = (async () => {
+    try {
+      const response = await feedsApi.view()
+      adopt(set, response.data ?? {})
+      set({ isLoading: false })
+    } catch {
+      set({ error: i18n._(msg`Failed to load feeds`), isLoading: false })
+    }
+  })().finally(() => {
+    if (inflight === request) inflight = null
+  })
+  inflight = request
+  return request
+}
+
+export const useFeedsStore = create<FeedsState>()((set, get) => ({
   feeds: [],
   postsByFeed: {},
   isLoading: false,
   error: null,
   defaultSort: '',
   tiles: null,
+  loaded: false,
   remoteFeedsCache: {},
 
   adjustUnread: (feedId: string, delta: number) => {
@@ -76,67 +153,16 @@ export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
   },
 
   refresh: async () => {
-    // If already loading, wait for the in-flight refresh to finish, then re-fetch
-    if (get().isLoading) {
-      await new Promise<void>((resolve) => {
-        const unsub = api.subscribe((state) => {
-          if (!state.isLoading) {
-            unsub()
-            resolve()
-          }
-        })
-        // Resolve immediately if loading already finished before subscribe was set up
-        if (!get().isLoading) {
-          unsub()
-          resolve()
-        }
-      })
-      return get().refresh()
-    }
+    // Something changed: a request already in flight may predate it, so wait
+    // for that one, then ask again.
+    while (inflight) await inflight
+    return fetchRoster(set)
+  },
 
-    set({ isLoading: true, error: null })
-    try {
-      const response = await feedsApi.view()
-      const data = response.data ?? {}
-      const subscribedFeedIds = new Set(
-        data.feeds?.map((feed) => feed.id) ?? []
-      )
-      const mappedFeeds = mapFeedsToSummaries(data.feeds, subscribedFeedIds)
+  load: () => inflight ?? fetchRoster(set),
 
-      const currentFeedSummary =
-        data.feed && 'id' in data.feed && data.feed.id
-          ? mapFeedsToSummaries([data.feed as Feed], subscribedFeedIds)[0]
-          : undefined
-
-      const dedupedFeeds = [
-        ...(currentFeedSummary ? [currentFeedSummary] : []),
-        ...mappedFeeds,
-      ].reduce<FeedSummary[]>((acc, feed) => {
-        if (!acc.some((item) => item.id === feed.id)) {
-          acc.push(feed)
-        }
-        return acc
-      }, [])
-
-      // Map and group posts
-      const mappedPosts = mapPosts(data.posts)
-      const postsByFeed = groupPostsByFeed(mappedPosts)
-
-      const defaultSort =
-        data && typeof data === 'object' && 'settings' in data
-          ? ((data as { settings?: { sort?: string } }).settings?.sort ?? '')
-          : ''
-
-      set({
-        feeds: dedupedFeeds,
-        postsByFeed,
-        defaultSort,
-        tiles: data.tiles ?? null,
-        isLoading: false,
-      })
-    } catch {
-      set({ error: i18n._(msg`Failed to load feeds`), isLoading: false })
-    }
+  seed: (data) => {
+    if (!get().loaded && !inflight) adopt(set, data)
   },
 
   setDefaultSort: async (sort: string) => {
