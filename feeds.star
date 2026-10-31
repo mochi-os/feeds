@@ -614,32 +614,6 @@ def is_reaction_valid(reaction):
 		return {"valid": True, "reaction": reaction}
 	return {"valid": False, "reaction": ""}
 
-# Stream an entity's asset from its owning service; mochi.remote.stream() loops back
-# in-process for a local entity. Binary assets are header + bytes, JSON assets a
-# single write with "data".
-def stream_asset(a, entity_id, service, asset):
-	if not entity_id:
-		a.error.label(404, "errors.asset_unavailable", asset=asset, log=False)
-		return None
-	s = mochi.remote.stream(entity_id, service, asset, {})
-	if not s:
-		a.error.label(404, "errors.asset_unavailable", asset=asset, log=False)
-		return None
-	header = s.read()
-	if not header or header.get("status") != "200":
-		a.error.label(404, "errors.asset_not_set", asset=asset, log=False)
-		return None
-	a.header("Cache-Control", "private, max-age=300")
-	if "data" in header:
-		return {"data": header["data"]}
-	a.header("Content-Type", header.get("content_type", "application/octet-stream"))
-	# Per-slot byte caps matching what the people app accepts on upload; the route
-	# is public, so an uncapped stream could run indefinitely. Unknown slots fall
-	# back to the largest cap.
-	caps = {"avatar": 2 * 1024 * 1024, "banner": 10 * 1024 * 1024, "favicon": 64 * 1024}
-	a.write.stream(s, maximum=caps.get(asset, 10 * 1024 * 1024))
-	return None
-
 def feed_update(user_id, feed_data):
 	feed_id = feed_data["id"]
 	# Use atomic subquery to avoid race condition
@@ -3317,22 +3291,15 @@ def action_recommendations(a):
 	for s in subscribers:
 		existing_ids.add(s["feed"])
 
-	# Connect to recommendations service
-	s = mochi.remote.stream("1JYmMpQU7fxvTrwHpNpiwKCgUg3odWqX7s9t1cLswSMAro5M2P", "recommendations", "list", {"type": "feed", "language": user_language(a)})
-	if not s:
-		return {"status": 500, "error": mochi.app.label("errors.recommendations_unavailable"), "data": {"feeds": []}}
-
-	r = s.read()
-	if r.get("status") != "200":
+	# Recommendations from the service, cached for an hour
+	items = recommendation_list("feed", user_language(a))
+	if items == None:
 		return {"status": 500, "error": mochi.app.label("errors.recommendations_unavailable"), "data": {"feeds": []}}
 
 	recommendations = []
-	items = s.read()
-	if type(items) not in ["list", "tuple"]:
-		return {"data": {"feeds": []}}
 
 	# Get the server location from the recommendations entity so subscribers can reach the feeds
-	rec_dir = mochi.directory.get("1JYmMpQU7fxvTrwHpNpiwKCgUg3odWqX7s9t1cLswSMAro5M2P")
+	rec_dir = mochi.directory.get(recommendation_entity)
 	rec_server = ""
 	if rec_dir:
 		rec_server = rec_dir.get("location", "")
@@ -4924,7 +4891,7 @@ def action_comment_asset(a):
 			return
 		a.error.label(404, "errors.asset_not_set", asset=asset, log=False)
 		return
-	return stream_asset(a, subscriber, "people", asset)
+	return asset_serve(a, subscriber, "people", asset)
 
 # Helper to recursively delete a comment and its replies
 def delete_comment_tree(comment_id):
@@ -5490,7 +5457,7 @@ def action_member_asset(a):
     if not mochi.text.valid(user, "entity") or not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], user):
         a.error.label(404, "errors.not_a_member")
         return
-    return stream_asset(a, user, "people", asset)
+    return asset_serve(a, user, "people", asset)
 
 # EVENTS
 
