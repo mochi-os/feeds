@@ -11747,6 +11747,8 @@ def sanitize_quote(quote):
 		"network": str(quote.get("network", "") or ""),
 		"url": url,
 		"id": str(quote.get("id", "") or "")[:2048],
+		# A Bluesky post's content id, which a quote of it there names.
+		"cid": str(quote.get("cid", "") or "")[:200],
 		"text": text_cut(text, QUOTE_TEXT),
 		"image": image,
 		"created": number(quote.get("created", 0)),

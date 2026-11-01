@@ -96,6 +96,7 @@ import {
   X,
 } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
+import { changePost } from '@/lib/patch'
 import { authorAssets } from '../author-assets'
 import {
   buildFeedPostEditDraft,
@@ -604,14 +605,19 @@ export function FeedPosts({
   const pinPost = useCallback(
     async (post: FeedPost) => {
       try {
-        await feedsApi.pinPost(post.feedId, post.id, !post.pinned)
+        const { pinned } = await feedsApi.pinPost(
+          post.feedId,
+          post.id,
+          !post.pinned
+        )
+        changePost(queryClient, post.id, { pinned })
         await reloadPosts(post.feedId)
         toast.success(post.pinned ? t`Post unpinned` : t`Post pinned`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not change the pin`))
       }
     },
-    [reloadPosts]
+    [queryClient, reloadPosts]
   )
   // A post is boosted from the user's first hosted account on its own
   // network: Bluesky for one whose id there is an at:// URI, else the
@@ -642,14 +648,20 @@ export function FeedPosts({
       if (!account) return
       const boosted = isBoosted(post)
       try {
-        await feedsApi.boostPost(post.feedId, post.id, account.id, !boosted)
+        const { copies } = await feedsApi.boostPost(
+          post.feedId,
+          post.id,
+          account.id,
+          !boosted
+        )
+        changePost(queryClient, post.id, { copies })
         await reloadPosts(post.feedId)
         toast.success(boosted ? t`Boost taken back` : t`Boosted`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not boost`))
       }
     },
-    [boostAccountFor, isBoosted, reloadPosts]
+    [boostAccountFor, isBoosted, queryClient, reloadPosts]
   )
   // A post behind a content warning shows its warning until the reader asks
   // for the rest.

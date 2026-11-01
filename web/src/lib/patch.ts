@@ -62,6 +62,38 @@ function patchPost(client: QueryClient, feed: string, post: string) {
   )
 }
 
+/**
+ * Change `post` wherever it is cached - every list that holds it, and the
+ * page of the post itself - with what an action answered: the copies a boost
+ * leaves, the pin it set. The menu that made the change then reads true at
+ * once, where reloading the lists left the post's own page as it was.
+ */
+export function changePost(
+  client: QueryClient,
+  post: string,
+  change: Partial<FeedPost>
+) {
+  client.setQueriesData<Lists>({ queryKey: ['posts'] }, (lists) => {
+    if (!lists?.pages || !holds(lists, post)) return lists
+    return {
+      ...lists,
+      pages: lists.pages.map((page) => ({
+        ...page,
+        posts: page.posts.map((item) =>
+          item.id === post ? { ...item, ...change } : item
+        ),
+      })),
+    }
+  })
+  client.setQueriesData<{ post?: FeedPost }>(
+    { queryKey: ['feeds', 'single-post'] },
+    (data) =>
+      data?.post?.id === post
+        ? { ...data, post: { ...data.post, ...change } }
+        : data
+  )
+}
+
 /** Take `post` out of every cached list. */
 function dropPost(client: QueryClient, post: string) {
   client.setQueriesData<Lists>({ queryKey: ['posts'] }, (lists) => {

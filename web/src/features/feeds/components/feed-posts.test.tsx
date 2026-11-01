@@ -22,6 +22,7 @@ import {
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { feedsApi } from '@/api/feeds'
+import { changePost } from '@/lib/patch'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { FeedPosts } from './feed-posts'
 
@@ -61,10 +62,22 @@ vi.mock('@/api/feeds', () => ({
         hosted: true,
       },
     ]),
-    boostPost: vi.fn().mockResolvedValue({ copies: [] }),
+    boostPost: vi.fn().mockResolvedValue({
+      copies: [
+        {
+          address: 'me.example.com',
+          network: 'bluesky',
+          remote: 'at://did:plc:me/app.bsky.feed.repost/1',
+          url: '',
+        },
+      ],
+    }),
     pinPost: vi.fn().mockResolvedValue({ pinned: 1 }),
   },
 }))
+
+// What an action answered changes the post where it is cached.
+vi.mock('@/lib/patch', () => ({ changePost: vi.fn() }))
 
 // The card's children each pull their own API/store graph; the behaviour
 // under test lives on the card itself, so they render as nothing. The thread
@@ -481,6 +494,11 @@ describe('FeedPosts boosting a post from another network', () => {
       true
     )
     expect(screen.queryByText('Boost from @me@example.com')).toBeNull()
+    // The copies the boost left change the post wherever it is shown, its
+    // own page included, so its menu then offers to take the boost back.
+    expect(changePost).toHaveBeenCalledWith(expect.anything(), 'post-1', {
+      copies: [expect.objectContaining({ network: 'bluesky' })],
+    })
   })
 
   it('boosts a post from the fediverse from the hosted fediverse account', async () => {
@@ -526,6 +544,9 @@ describe('FeedPosts pinning a post', () => {
     )
     await user.click(await screen.findByText('Pin post'))
     expect(feedsApi.pinPost).toHaveBeenCalledWith('feed-1', 'post-1', true)
+    expect(changePost).toHaveBeenCalledWith(expect.anything(), 'post-1', {
+      pinned: 1,
+    })
     await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
   })
 })
