@@ -61,6 +61,7 @@ import {
   Rss,
   Trash2,
   Pencil,
+  UserPlus,
   UserRound,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
@@ -333,9 +334,12 @@ export function SourceType({ source }: { source: Source }) {
   if (source.type === 'feed/memories') return <Trans>Memories</Trans>
   if (source.type === 'account/timeline') return <Trans>Account timeline</Trans>
   if (source.type === 'account/posts') return <Trans>Account posts</Trans>
-  if (source.type === 'person/posts' && source.account)
+  // A person on Bluesky is named by their did, followed through an account
+  // or read with none; anyone else is a person on the fediverse.
+  if (source.type === 'person/posts' && source.url.startsWith('did:'))
+    return <Trans>Posts on Bluesky</Trans>
+  if (source.type === 'person/posts')
     return <Trans>Posts on ActivityPub</Trans>
-  if (source.type === 'person/posts') return <Trans>Posts on Bluesky</Trans>
   if (source.type === 'tag/posts') return <Trans>Hashtag</Trans>
   if (source.type === 'generator/posts' || source.type === 'list/posts')
     return <Trans>Bluesky feed or list</Trans>
@@ -418,6 +422,16 @@ export function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
       await refetchSources()
     } catch (err) {
       toast.error(getErrorMessage(err, t`Failed to poll source`))
+    }
+  }
+
+  // A follow gone is sent again; a server that answers later leaves it pending.
+  const handleFollow = async (sourceId: string) => {
+    try {
+      await feedsApi.followSource(feedId, sourceId)
+      await refetchSources()
+    } catch (err) {
+      toast.error(getErrorMessage(err, t`The follow could not be sent`))
     }
   }
 
@@ -577,9 +591,9 @@ export function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                           <Trans>Follow pending</Trans>
                         </span>
                       )}
-                      {source.state === 'refused' && (
+                      {source.state === 'unfollowed' && (
                         <span className='bg-destructive/10 text-destructive inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium'>
-                          <Trans>Follow refused</Trans>
+                          <Trans>Not following</Trans>
                         </span>
                       )}
                       {source.type === 'rss' && (
@@ -641,6 +655,17 @@ export function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                         aria-label={t`Refresh source`}
                       >
                         <RefreshCw className='h-4 w-4' />
+                      </Button>
+                    )}
+                    {source.state === 'unfollowed' && (
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        className='h-8 w-8 p-0'
+                        onClick={() => void handleFollow(source.id)}
+                        aria-label={t`Follow again`}
+                      >
+                        <UserPlus className='h-4 w-4' />
                       </Button>
                     )}
                     <Button

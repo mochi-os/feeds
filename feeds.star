@@ -7952,6 +7952,32 @@ def poll_rss_source(source, user_id=None, deadline=None):
 	return (new_count, True)
 
 # Manual poll trigger (owner only)
+def action_sources_follow(a):
+	"""Follow a followed source's person again where the follow is gone,
+	through the source's own account: the answer's state is the follow's."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	if not is_feed_owner(a.user.identity.id, feed):
+		a.error.label(403, "errors.access_denied")
+		return
+	source = mochi.db.row("select * from sources where id=? and feed=? and type='person/posts' and account!=''", a.input("source", ""), feed["id"])
+	if not source:
+		a.error.label(404, "errors.source_not_found")
+		return
+	acc = publish_account(source["account"])
+	if not acc or not acc.get("hosted"):
+		a.error.label(404, "errors.account_not_found")
+		return
+	if not mochi.account.follow(acc["id"], source["url"]):
+		a.error.label(502, "errors.follow_not_sent")
+		return
+	return {"data": {"state": source_state(source)}}
+
 def action_sources_poll(a):
 	if not a.user:
 		a.error.label(401, "errors.not_logged_in")
@@ -9609,6 +9635,7 @@ def account_item(acc, item):
 		"record": {"uri": uri, "cid": str(post.get("cid", ""))},
 		"warning": ", ".join(labels),
 		"sensitive": bool(labels),
+		"reply": type(record.get("reply")) == "dict",
 	}
 	if type(record.get("langs")) in ("list", "tuple") and record["langs"]:
 		out["language"] = str(record["langs"][0])
@@ -9673,6 +9700,12 @@ def ingest_account_items(feed, source, acc, items, user_id, deadline):
 		# A reply a comment went out as through the account is that comment,
 		# never a post of its own.
 		if replied_has(acc["id"], item["remotes"]):
+			continue
+		# A followed person's reply is their part of a conversation, not a
+		# post of the feed; one to the feed's own post is its comment already.
+		# The fediverse's items leave replies out the same way. A boost of
+		# one is still a post.
+		if source.get("type") == "person/posts" and item.get("reply") and not item.get("boosted"):
 			continue
 		if sourced_post(feed, source, acc, item, user_id):
 			new_count += 1
@@ -11619,14 +11652,15 @@ def person_followed_elsewhere(acc, actor, except_source):
 
 def source_state(source):
 	"""What a followed source's follow has come to: following, pending the
-	other server's acceptance, or refused (no follow row at all). On Bluesky a
+	other server's acceptance, or unfollowed - no follow at all, whether the
+	other server refused or later dropped it or a block took it. On Bluesky a
 	follow needs no acceptance."""
 	acc = publish_account(source.get("account", ""))
 	if not acc or not acc.get("hosted"):
 		return ""
 	rows = mochi.account.following(acc["id"], actor=source["url"]) or []
 	if not rows:
-		return "refused"
+		return "unfollowed"
 	return "following" if number(rows[0].get("accepted", 0)) > 0 else "pending"
 
 def object_url(value):

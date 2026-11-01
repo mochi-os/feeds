@@ -41,6 +41,7 @@ import type {
   PublishAccount,
   PublishResponse,
   PublishSetResponse,
+  SourceState,
 } from '@/types/feeds'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 import endpoints from '@/api/endpoints'
@@ -836,6 +837,10 @@ interface SourceRemoveResponse {
   data: { success: boolean }
 }
 
+interface SourceFollowResponse {
+  data: { state: SourceState }
+}
+
 interface SourcePollResponse {
   data: { fetched: number }
 }
@@ -1044,6 +1049,19 @@ const pollSource = async (
   >(endpoints.feeds.sourcesPoll(feedId), payload)
 
   return toDataResponse<SourcePollResponse['data']>(response, 'poll source')
+}
+
+// Follow a followed source's person again where the follow is gone.
+const followSource = async (
+  feedId: string,
+  sourceId: string
+): Promise<SourceFollowResponse> => {
+  const response = await client.post<
+    SourceFollowResponse | SourceFollowResponse['data'],
+    Record<string, string>
+  >(endpoints.feeds.sourcesFollow(feedId), { feed: feedId, source: sourceId })
+
+  return toDataResponse<SourceFollowResponse['data']>(response, 'follow source')
 }
 
 const getPostImage = async (
@@ -1310,6 +1328,7 @@ export const feedsApi = {
   editSource,
   removeSource,
   pollSource,
+  followSource,
   importFollows,
   pinPost,
   votePoll,
