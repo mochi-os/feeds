@@ -2200,6 +2200,11 @@ def database_upgrade(version):
 		if not any([c["name"] == "joined" for c in mochi.db.table("subscribers")]):
 			mochi.db.execute("alter table subscribers add column joined integer not null default 0")
 		withheld_schema_create()
+	if version == 20:
+		# A like sent from an account is kept by what it likes, a post or now
+		# a comment.
+		if any([c["name"] == "post" for c in mochi.db.table("likes")]):
+			mochi.db.execute("alter table likes rename column post to object")
 
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
@@ -2215,9 +2220,10 @@ def posts_index_create():
 
 def bluesky_schema_create():
 	"""The tables of phase 19, made at creation and by the migration alike:
-	the like record a hosted Bluesky account made of a post from Bluesky, and
-	the generator record a feed is published as from an account."""
-	mochi.db.execute("create table if not exists likes ( post text not null, account text not null, remote text not null, created integer not null, primary key ( post, account ) )")
+	the like an account sent of a post or a comment from another network, by
+	its id there, and the generator record a feed is published as from an
+	account."""
+	mochi.db.execute("create table if not exists likes ( object text not null, account text not null, remote text not null, created integer not null, primary key ( object, account ) )")
 	mochi.db.execute("create table if not exists generators ( feed text not null, account text not null, uri text not null, created integer not null, primary key ( feed, account ) )")
 
 def features_schema_create():
@@ -5030,8 +5036,8 @@ def link_reachable(link):
 # post_react sets or takes back the user's reaction to a post: on a feed
 # they own, here and for the subscribers; on one they follow, sent to its
 # owner, with the copy here changed at once. account is the account a like
-# of a post from Bluesky goes out from. Answers (result, None) or (None,
-# failure).
+# of a post from another network goes out from. Answers (result, None) or
+# (None, failure).
 def post_react(feed_id, post_id, user_id, user_name, reaction, account):
 	# Get local feed data if available
 	feed = None
@@ -5132,7 +5138,9 @@ def action_post_react(a):
     return {"data": result}
 
 # comment_react is post_react for a comment.
-def comment_react(feed_id, comment_id, user_id, user_name, reaction):
+# comment_react is post_react's counterpart for a comment: account is the
+# account a like of a comment from another network goes out from.
+def comment_react(feed_id, comment_id, user_id, user_name, reaction, account=""):
 	# Get local feed data if available
 	feed = None
 	if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
@@ -5152,6 +5160,9 @@ def comment_react(feed_id, comment_id, user_id, user_name, reaction):
 			return None, (403, "errors.access_denied")
 
 		comment_reaction_set(comment_data, user_id, user_name, reaction)
+		# A like of a comment from another network goes out from the user's
+		# hosted account there, taken back with the reaction.
+		comment_like_publish(comment_data, reaction, account)
 
 		# Broadcast to subscribers
 		if can_fanout:
@@ -5225,7 +5236,7 @@ def action_comment_react(a):
         return
     reaction = result["reaction"]
 
-    result, failure = comment_react(feed_id, comment_id, user_id, a.user.identity.name, reaction)
+    result, failure = comment_react(feed_id, comment_id, user_id, a.user.identity.name, reaction, a.input("account", ""))
     if failure:
         fail(a, failure)
         return
@@ -11206,9 +11217,10 @@ def account_interaction(acc, raw):
 			if post and remote:
 				linked_comment(acc, post, parent, actor, name, page, mochi.text.clean(str(status.get("content", "") or "")), "html", remote, status.get("created_at"))
 		elif kind == "favourite":
-			copy = linked_copy(acc, str(status.get("id", "") or ""))
-			if copy:
-				reaction_from_network("post", copy, actor, name, "like")
+			# Of a post's copy, or of a comment's reply.
+			target_kind, target = fediverse_target(acc["id"], str(status.get("id", "") or ""))
+			if target_kind:
+				reaction_from_network(target_kind, target, actor, name, "like")
 		elif kind == "reblog":
 			copy = linked_copy(acc, str(status.get("id", "") or ""))
 			if copy:
@@ -11230,9 +11242,10 @@ def account_interaction(acc, raw):
 			if post and remote:
 				linked_comment(acc, post, parent, actor, name, page, str(record.get("text", "") or ""), "text", remote, record.get("createdAt"))
 		elif reason == "like":
-			copy = linked_copy(acc, str(raw.get("reasonSubject", "") or ""))
-			if copy:
-				reaction_from_network("post", copy, actor, name, "like")
+			# Of a post's copy, or of a comment's reply.
+			target_kind, target = fediverse_target(acc["id"], str(raw.get("reasonSubject", "") or ""))
+			if target_kind:
+				reaction_from_network(target_kind, target, actor, name, "like")
 		elif reason == "repost":
 			copy = linked_copy(acc, str(raw.get("reasonSubject", "") or ""))
 			if copy:
@@ -12544,22 +12557,54 @@ def like_publish(post, reaction, wanted):
 		return
 	record = post_record(post)
 	acc = follow_account(wanted, "bluesky" if record else "fediverse")
+	if acc:
+		like_send(acc, post["id"], post["remote"], post["author"], record, reaction)
+
+def comment_like_publish(comment, reaction, wanted):
+	"""A like of a comment from another network goes out as a post's does: a
+	like record of the reply on Bluesky, whose content id is read from its
+	author's server, or a Like of the note on the fediverse."""
+	remote = comment.get("remote", "") or ""
+	author = comment.get("subscriber", "") or ""
+	if not remote or not author or mochi.text.valid(author, "entity"):
+		return
+	acc = follow_account(wanted, "bluesky" if remote.startswith("at://") else "fediverse")
 	if not acc:
 		return
-	existing = mochi.db.row("select remote from likes where post=? and account=?", post["id"], acc["id"])
+	record = None
+	if acc["type"] == "bluesky" and reaction == "like":
+		if mochi.db.exists("select 1 from likes where object=? and account=?", comment["id"], acc["id"]):
+			return
+		parts = remote[len("at://"):].split("/")
+		if len(parts) != 3 or parts[1] != "app.bsky.feed.post":
+			return
+		quote = mochi.url.quote("https://bsky.app/profile/" + parts[0] + "/post/" + parts[2])
+		if not quote or quote.get("id") != remote or not quote.get("cid"):
+			return
+		record = {"uri": remote, "cid": str(quote["cid"])}
+	like_send(acc, comment["id"], remote, author, record, reaction)
+
+def like_send(acc, id, remote, author, record, reaction):
+	"""Send or take back a like, from the account, of a post or a comment from
+	another network, kept in likes by its id here: on Bluesky a like record of
+	record, its {uri, cid}; on the fediverse a Like of remote, addressed to
+	author."""
+	existing = mochi.db.row("select remote from likes where object=? and account=?", id, acc["id"])
 	if reaction == "like" and not existing:
-		if record:
-			result = mochi.account.object.create(acc["id"], {"$type": "app.bsky.feed.like", "subject": record}, key="like|" + post["id"] + "|" + acc["id"])
+		if acc["type"] == "bluesky":
+			if not record:
+				return
+			result = mochi.account.object.create(acc["id"], {"$type": "app.bsky.feed.like", "subject": record}, key="like|" + id + "|" + acc["id"])
 		else:
-			result = mochi.account.activity(acc["id"], {"type": "Like", "object": post["remote"], "to": [post["author"]]})
+			result = mochi.account.activity(acc["id"], {"type": "Like", "object": remote, "to": [author]})
 		if result and result.get("id"):
-			mochi.db.execute("insert or replace into likes (post, account, remote, created) values (?, ?, ?, ?)", post["id"], acc["id"], str(result["id"]), mochi.time.now())
+			mochi.db.execute("insert or replace into likes (object, account, remote, created) values (?, ?, ?, ?)", id, acc["id"], str(result["id"]), mochi.time.now())
 	elif reaction != "like" and existing:
-		if record:
+		if acc["type"] == "bluesky":
 			mochi.account.object.delete(acc["id"], existing["remote"])
 		else:
-			mochi.account.activity(acc["id"], {"type": "Undo", "object": {"id": existing["remote"], "type": "Like", "actor": acc.get("url", ""), "object": post["remote"]}, "to": [post["author"]]})
-		mochi.db.execute("delete from likes where post=? and account=?", post["id"], acc["id"])
+			mochi.account.activity(acc["id"], {"type": "Undo", "object": {"id": existing["remote"], "type": "Like", "actor": acc.get("url", ""), "object": remote}, "to": [author]})
+		mochi.db.execute("delete from likes where object=? and account=?", id, acc["id"])
 
 def action_post_boost(a):
 	"""Boost a post from another network from one of the user's hosted

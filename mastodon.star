@@ -416,7 +416,8 @@ def function_mastodon_delete(context, account, home, id):
 
 def function_mastodon_react(context, account, home, id, on=True):
 	"""Favourite a status a feed holds, or take it back: the user's reaction
-	to the post or the comment ("c:" and its id)."""
+	to the post or the comment ("c:" and its id), a like of one from another
+	network going out from the account the app is signed in to."""
 	identity = mastodon_identity()
 	if not identity:
 		return {"error": mochi.app.label("errors.identity_required")}
@@ -425,14 +426,14 @@ def function_mastodon_react(context, account, home, id, on=True):
 		comment = mochi.db.row("select * from comments where id=?", id[2:])
 		if not comment:
 			return {"error": mochi.app.label("errors.comment_not_found")}
-		result, failure = comment_react(comment["feed"], comment["id"], identity["id"], identity["name"], reaction)
+		result, failure = comment_react(comment["feed"], comment["id"], identity["id"], identity["name"], reaction, account)
 		if failure:
 			return mastodon_failure(failure)
 		return {"comment": mastodon_comment_of(comment["id"], identity["id"])}
 	post = mochi.db.row("select * from posts where id=?", id)
 	if not post:
 		return {"error": mochi.app.label("errors.post_not_found")}
-	result, failure = post_react(post["feed"], post["id"], identity["id"], identity["name"], reaction, "")
+	result, failure = post_react(post["feed"], post["id"], identity["id"], identity["name"], reaction, account)
 	if failure:
 		return mastodon_failure(failure)
 	return {"post": mastodon_post_of(post["id"], identity["id"])}
@@ -762,14 +763,25 @@ def function_atproto_written(context, account, home, action, collection, rkey, u
 	if collection == "app.bsky.feed.post":
 		return bluesky_post_written(acc, home, action, uri, record, media, user_id, name)
 	if collection == "app.bsky.feed.like":
-		post = bluesky_held(bluesky_subject(record))
-		if not post:
+		# A like of a post, or of a comment: one from Bluesky by its own id,
+		# or one of ours by the reply it went out as.
+		subject = bluesky_subject(record)
+		post = bluesky_held(subject)
+		comment = None if post else fediverse_target(account, subject)[1]
+		if not post and not comment:
 			return None
-		if action == "delete":
-			post_react(post["feed"], post["id"], user_id, name, "", account)
-		elif action == "create":
-			mochi.db.execute("insert or replace into likes (post, account, remote, created) values (?, ?, ?, ?)", post["id"], account, uri, mochi.time.now())
-			post_react(post["feed"], post["id"], user_id, name, "like", account)
+		target = post or comment
+		if action == "create":
+			reaction = "like"
+			mochi.db.execute("insert or replace into likes (object, account, remote, created) values (?, ?, ?, ?)", target["id"], account, uri, mochi.time.now())
+		elif action == "delete":
+			reaction = ""
+		else:
+			return {}
+		if post:
+			post_react(post["feed"], post["id"], user_id, name, reaction, account)
+		else:
+			comment_react(comment["feed"], comment["id"], user_id, name, reaction, account)
 		return {}
 	if collection == "app.bsky.feed.repost":
 		if action == "delete":
