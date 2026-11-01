@@ -2000,7 +2000,7 @@ export function FeedPosts({
                                       {isFeedOwner && (
                                         <DropdownMenuItem
                                           onClick={(e) => {
-                                            e.preventDefault()
+                                            // Prevented, the menu stays open.
                                             e.stopPropagation()
                                             void pinPost(post)
                                           }}
@@ -2023,7 +2023,7 @@ export function FeedPosts({
                                         boostAccountFor(post) && (
                                           <DropdownMenuItem
                                             onClick={(e) => {
-                                              e.preventDefault()
+                                              // Prevented, the menu stays open.
                                               e.stopPropagation()
                                               void boostPost(post)
                                             }}

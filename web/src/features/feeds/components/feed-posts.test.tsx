@@ -12,7 +12,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { FeedPost } from '@/types'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
-import { render, screen, fireEvent, within } from '@testing-library/react'
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { feedsApi } from '@/api/feeds'
@@ -56,6 +62,7 @@ vi.mock('@/api/feeds', () => ({
       },
     ]),
     boostPost: vi.fn().mockResolvedValue({ copies: [] }),
+    pinPost: vi.fn().mockResolvedValue({ pinned: 1 }),
   },
 }))
 
@@ -460,6 +467,8 @@ describe('FeedPosts boosting a post from another network', () => {
       within(card()).getByRole('button', { name: 'More options' })
     )
     await user.click(await screen.findByText(label))
+    // The menu closes once the item is chosen.
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
   }
 
   it('boosts a post from Bluesky from the hosted Bluesky account', async () => {
@@ -503,6 +512,21 @@ describe('FeedPosts boosting a post from another network', () => {
       'account-2',
       false
     )
+  })
+})
+
+// Pinning is done where the menu was opened: the menu closes on it, as on
+// every item that does its work in place.
+describe('FeedPosts pinning a post', () => {
+  it('pins the post and closes the menu', async () => {
+    const user = userEvent.setup()
+    renderPosts()
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    await user.click(await screen.findByText('Pin post'))
+    expect(feedsApi.pinPost).toHaveBeenCalledWith('feed-1', 'post-1', true)
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
   })
 })
 
