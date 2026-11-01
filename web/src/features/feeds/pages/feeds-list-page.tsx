@@ -234,15 +234,6 @@ export function FeedsListPage({
     [subscribedFeeds]
   )
 
-  // Get fingerprints for WebSocket subscriptions
-  const feedFingerprints = useMemo(
-    () =>
-      subscribedFeeds
-        .map((feed) => feed.fingerprint ?? feed.id)
-        .filter(Boolean) as string[],
-    [subscribedFeeds]
-  )
-
   // Queue real-time new posts behind a "new posts available" pill instead of
   // injecting them while the user is reading the aggregate timeline.
   const newPosts = usePendingItems()
@@ -265,7 +256,7 @@ export function FeedsListPage({
   })
 
   // Connect to WebSockets for all subscribed feeds for real-time updates
-  useFeedsWebsocket(feedFingerprints, userId, undefined, (postId, feedId) => {
+  useFeedsWebsocket(subscribedFeeds, userId, undefined, (postId, feedId) => {
     // A post/create can arrive for a post the timeline already shows — RSS
     // ingestion inserts the row immediately but defers the event until AI
     // tagging completes, so a load in between sees the post before its

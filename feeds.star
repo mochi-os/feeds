@@ -363,13 +363,13 @@ def request_resync(feed_id):
     mochi.db.execute("update feeds set synced=? where id=?", now, feed_id)
     peer = mochi.remote.peer(row["server"])
     schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
-    if not schema or schema.get("error"):
+    if not schema_arrived(schema):
         return False
     insert_feed_schema(feed_id, schema)
     mochi.broadcast.touch(feed_id)
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
-        mochi.websocket.write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
+        websocket_write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
     return True
 
 # maybe_resubscribe re-subscribes an idle remote feed (idle_resync_age). The
@@ -387,6 +387,20 @@ def maybe_resubscribe(a, feed_id):
 	registration_send(row["server"], headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(feed_id)
 
+# websocket_key is the key every feed's frames also reach, so a page or drawer
+# following all of a user's feeds holds one socket rather than one per feed:
+# core caps a user's sockets, across all their apps and devices, at 32.
+websocket_key = "feeds"
+
+# websocket_write sends a frame about one feed to the page following that feed,
+# keyed on the fingerprint it connects with, and to anything following them all.
+# On the shared key the frame goes wrapped, naming its feed: core also hands
+# every websocket write to the user's Mastodon streaming clients, which would
+# otherwise be sent each post event twice.
+def websocket_write(fingerprint, data):
+    mochi.websocket.write(fingerprint, data)
+    mochi.websocket.write(websocket_key, {"type": "feeds/frame", "feed": data.get("feed", ""), "frame": data})
+
 # Helper: notify feed subscribers over WebSocket, keyed on the fingerprint the
 # frontend connects with.
 def broadcast_websocket(feed_id, data):
@@ -397,7 +411,7 @@ def broadcast_websocket(feed_id, data):
     if not fingerprint:
         return
 
-    mochi.websocket.write(fingerprint, data)
+    websocket_write(fingerprint, data)
 
 def on_db_commit(table, kind, row_uid):
     if not row_uid:
@@ -446,7 +460,7 @@ def on_db_commit(table, kind, row_uid):
 
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
-        mochi.websocket.write(fingerprint, msg)
+        websocket_write(fingerprint, msg)
     if table in ("posts", "comments"):
         websub_announce(feed_id, table)
 
@@ -618,12 +632,9 @@ def feed_update(user_id, feed_data):
 	feed_id = feed_data["id"]
 	# Use atomic subquery to avoid race condition
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
-
-	# Fan the roster count out through the durable broadcast log rather than one
-	# direct message per subscriber: one send instead of N, and it survives an
-	# offline subscriber to be healed on the next gap check (#325).
-	subscriber_count = mochi.db.row("select count(*) as n from subscribers where feed=?", feed_id)["n"]
-	broadcast_event(feed_id, "update", {"subscribers": subscriber_count}, user_id)
+	# The count is not sent to the subscribers: one sign-up then cost one event
+	# per subscriber, quadratic in a number anyone can grow, and no page shows
+	# a subscriber the count.
 
 # Send recent posts to a new subscriber
 # Batches database queries to avoid N+1 pattern
@@ -635,10 +646,11 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 
 	# Collect all post IDs for batch queries
 	post_ids = [p["id"] for p in feed_posts]
+	marks = ", ".join(["?" for _ in post_ids])
 
-	# Batch fetch all comments and reactions for all posts in this feed
-	all_comments = mochi.db.rows("select * from comments where feed=? order by created", feed_id)
-	all_reactions = mochi.db.rows("select * from reactions where feed=?", feed_id)
+	# Only the comments and reactions on the posts sent, not the whole feed's.
+	all_comments = mochi.db.rows("select * from comments where feed=? and post in (" + marks + ") order by created", *([feed_id] + post_ids))
+	all_reactions = mochi.db.rows("select * from reactions where feed=? and post in (" + marks + ")", *([feed_id] + post_ids))
 
 	# Index comments by post
 	comments_by_post = {}
@@ -666,7 +678,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 			post_reactions[pid].append(r)
 
 	# Batch fetch all tags for posts in this feed
-	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
+	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (" + marks + ")", *post_ids) or []
 	tags_by_post = {}
 	for t in all_tags:
 		pid = t.get("object", "")
@@ -853,14 +865,15 @@ def post_reaction_set(post_data, subscriber_id, name, reaction):
 	# Update cached scores for ranking
 	update_post_scores(post_data["id"])
 
-	# Update user interests from reaction
-	positive = reaction in ["like", "love", "thumbsup", "star"]
-	update_interests_from_reaction(post_data["id"], positive)
-
 	set_post_updated(post_data["id"])
 	set_feed_updated(post_data["feed"])
 
 # Helper: Update cached scores in posts table based on reactions
+# A reaction counts for a post (up) or against it (down), in its score and in
+# the interests of the user who reacts.
+REACTIONS_UP = ["like", "love", "laugh", "amazed", "agree"]
+REACTIONS_DOWN = ["dislike", "sad", "angry", "disagree"]
+
 def update_post_scores(post_id):
 	# Map reactions to up/down
 	reactions = mochi.db.rows("select reaction from reactions where post=? and comment=''", post_id)
@@ -868,9 +881,9 @@ def update_post_scores(post_id):
 	down = 0
 	for r in reactions:
 		reaction = r["reaction"]
-		if reaction in ["like", "love", "laugh", "amazed", "agree"]:
+		if reaction in REACTIONS_UP:
 			up += 1
-		elif reaction in ["dislike", "sad", "angry", "disagree"]:
+		elif reaction in REACTIONS_DOWN:
 			down += 1
 	mochi.db.execute("update posts set up=?, down=? where id=?", up, down, post_id)
 
@@ -1758,13 +1771,20 @@ def action_feed_tags(a):
 	tags = mochi.db.rows("select label, count(*) as count from tags where object in (select id from posts where feed=?) group by label order by count desc", feed_data["id"]) or []
 	return {"data": {"tags": tags}}
 
-# Update user interests based on a reaction to a post
-def update_interests_from_reaction(post_id, positive):
+# Update the user's interests in a post's topics from their own reaction to it:
+# never from another's, which reaches this server only to be shown. A reaction
+# taken back moves nothing.
+def update_interests_from_reaction(post_id, reaction):
+	if reaction in REACTIONS_UP:
+		delta = 5
+	elif reaction in REACTIONS_DOWN:
+		delta = -10
+	else:
+		return
 	tags = mochi.db.rows("select qid from tags where object=? and source='ai' and qid != ''", post_id)
 	if not tags:
 		return
 	qids = [t["qid"] for t in tags]
-	delta = 5 if positive else -10
 	mochi.interests.adjust(qids, delta)
 
 # Adjust interest weight for a specific tag QID or label
@@ -2170,6 +2190,28 @@ def database_upgrade(version):
 		# account made of posts from Bluesky, and the feeds published as
 		# Bluesky custom feeds.
 		bluesky_schema_create()
+	if version == 17 or version == 18:
+		# 18 repeats 17 for an install whose 17 failed: the server moves past a
+		# step that errors, and the indexes are made if not there already.
+		posts_index_create()
+	if version == 19:
+		# A subscriber's history is sent once (joined), and what the owner
+		# removes while a subscriber takes the schema is kept from it.
+		if not any([c["name"] == "joined" for c in mochi.db.table("subscribers")]):
+			mochi.db.execute("alter table subscribers add column joined integer not null default 0")
+		withheld_schema_create()
+
+# withheld_schema_create lays the table of what an owner removed while this
+# subscriber was still taking the feed's schema: a post, a comment, or a
+# reaction as post/comment/subscriber.
+def withheld_schema_create():
+	mochi.db.execute("create table if not exists withheld ( feed text not null, object text not null, primary key ( feed, object ) )")
+
+# posts_index_create lays the indexes a feed's unread count and a feed's page of
+# posts read: each was a search of the feed's posts and a sort of all of them.
+def posts_index_create():
+	mochi.db.execute("create index if not exists posts_unread on posts( feed, read, created )")
+	mochi.db.execute("create index if not exists posts_newest on posts( feed, created )")
 
 def bluesky_schema_create():
 	"""The tables of phase 19, made at creation and by the migration alike:
@@ -2199,7 +2241,7 @@ def database_create():
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
 
-	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
+	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', joined integer not null default 0, primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
 	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, boosts integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0, novelty integer not null default 100, credibility integer not null default 100, story text not null default '' )")
@@ -2208,6 +2250,8 @@ def database_create():
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
 	mochi.db.execute("create index if not exists posts_mmdd on posts( feed, mmdd )")
 	mochi.db.execute("create index if not exists posts_story on posts( feed, story )")
+	posts_index_create()
+	withheld_schema_create()
 
 	# Posts waiting to be placed in a story, and the per-feed lock that lets one
 	# pass place them at a time.
@@ -2437,7 +2481,7 @@ def action_info_class(a):
     has_ai = resolve_ai_account(0) != "" if user_id else False
     settings = mochi.db.row("select sort from settings where id=1") or {"sort": ""}
 
-    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id, "hasAi": has_ai, "settings": settings, "tiles": map_tiles()}}
+    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id, "hasAi": has_ai, "settings": settings, "tiles": map_tiles(), "websocket": websocket_key}}
 
 # Info endpoint for entity context - returns feed info with permissions
 def action_info_entity(a):
@@ -2738,10 +2782,19 @@ def action_view(a):
 					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + hidden_filter_p + " and p.created<? order by " + p_order + " limit ?", user_id, valid_tags, before, limit + 1)
 				else:
 					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + hidden_filter_p + " order by " + p_order + " limit ?", user_id, valid_tags, limit + 1)
-		elif before:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ?" + unread_filter_p + hidden_filter_p + " and p.created<? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
+		# The subscription as a filter, not a join: a join starts from the
+		# subscriber rows and sorts every post of every subscribed feed to
+		# return a page. Newest first and unfiltered, + keeps the feed indexes
+		# out of it, so the query walks posts_created and stops once the page
+		# is full; the unread filter and the score orders are quicker from the
+		# feed indexes, which find a feed's unread posts or its whole set
+		# directly.
 		else:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ?" + unread_filter_p + hidden_filter_p + " order by " + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
+			walk = "+" if order_by == "created desc" and not unread_filter_p else ""
+			if before:
+				posts = mochi.db.rows("select p.* from posts p where " + walk + "p.feed in (select feed from subscribers where id=?)" + unread_filter_p + hidden_filter_p + " and p.created<? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
+			else:
+				posts = mochi.db.rows("select p.* from posts p where " + walk + "p.feed in (select feed from subscribers where id=?)" + unread_filter_p + hidden_filter_p + " order by " + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
 
 	# Check if there are more posts
 	has_more = len(posts) > limit
@@ -2910,12 +2963,6 @@ def action_view(a):
 		if banner:
 			feed_data["banner_html"] = mochi.text.markdown(banner)
 
-	# Get feeds - filter to only feeds user owns or is subscribed to
-	if user_id:
-		feeds = get_user_feeds(user_id)
-	else:
-		feeds = []
-
 	# Determine permissions for current user
 	permissions = None
 	if feed_data and user_id:
@@ -2950,20 +2997,13 @@ def action_view(a):
 		ensure_feed_poll(feed_data["id"])
 		ensure_sources_watchdog()
 
-	# Ensure feed_data.name is populated - if empty, try to get it from feeds array
+	# Ensure feed_data.name is populated - if empty, try the database
 	if feed_data and feed_data.get("id"):
 		feed_entity_id = feed_data.get("id")
 		if not feed_data.get("name") or feed_data.get("name") == "":
-			# Look for the feed in the feeds array
-			for feed in feeds:
-				if feed.get("id") == feed_entity_id and feed.get("name"):
-					feed_data["name"] = feed.get("name")
-					break
-			# If still empty, try database lookup
-			if not feed_data.get("name") or feed_data.get("name") == "":
-				feed_with_name = mochi.db.row("select name from feeds where id=?", feed_entity_id)
-				if feed_with_name and feed_with_name.get("name"):
-					feed_data["name"] = feed_with_name.get("name")
+			feed_with_name = mochi.db.row("select name from feeds where id=?", feed_entity_id)
+			if feed_with_name and feed_with_name.get("name"):
+				feed_data["name"] = feed_with_name.get("name")
 
 	# Clean up internal scoring fields
 	for p in posts:
@@ -2993,7 +3033,6 @@ def action_view(a):
 		"data": {
 			"feed": feed_public,
 			"posts": posts,
-			"feeds": feeds,
 			"owner": is_owner,
 			"user": user_id,
 			"hasMore": has_more,
@@ -3061,9 +3100,7 @@ def view_remote(a, user_id, feed_id, server):
 	feed_privacy = remote_feed.get("privacy", "public")
 	remote_permissions = remote_data.get("permissions")
 	posts = remote_data.get("posts", [])
-	
-	# Get feeds list for sidebar
-	feeds = get_user_feeds(user_id) if user_id else []
+
 
 	return {
 		"data": {
@@ -3079,7 +3116,6 @@ def view_remote(a, user_id, feed_id, server):
 				"banner_html": remote_data.get("banner_html", remote_feed.get("banner_html", "")),
 			},
 			"posts": posts,
-			"feeds": feeds,
 			"owner": False,
 			"user": user_id,
 			"hasMore": remote_data.get("hasMore", len(posts) > 20),
@@ -3550,6 +3586,16 @@ POLL_DURATION_MAXIMUM = 7 * 86400
 MEDIA_MAXIMUM = 8
 EMOJI_MAXIMUM = 50
 
+def language_tag(value):
+    """A language tag from another network as a post carries it: the tag, or
+    failing that its first two parts, or its language alone; empty for none."""
+    value = str(value or "").lower()
+    parts = value.split("-")
+    for tag in [value, "-".join(parts[:2]), parts[0]]:
+        if valid_language(tag):
+            return tag
+    return ""
+
 def valid_language(value):
     """A language tag as a post carries it: a two or three letter language,
     with a region or script after a hyphen at most."""
@@ -3685,26 +3731,31 @@ def post_features_input(a):
 def post_features_event(e):
     """The features a post event carries, validated; None for an event that
     carries an invalid one."""
+    return post_features_read(e.content)
+
+def post_features_read(get):
+    """The features read through get (an event's content, or a dict's get),
+    validated; None if one is invalid."""
     features = {}
-    visibility = e.content("visibility")
+    visibility = get("visibility")
     if visibility != None:
         if visibility not in VISIBILITIES:
             return None
         features["visibility"] = visibility
-    warning = e.content("warning")
+    warning = get("warning")
     if warning != None:
         if type(warning) != "string" or (warning and (not mochi.text.valid(warning, "line") or len(warning) > WARNING_MAXIMUM)):
             return None
         features["warning"] = warning
-    sensitive = e.content("sensitive")
+    sensitive = get("sensitive")
     if sensitive != None:
         features["sensitive"] = 1 if sensitive else 0
-    language = e.content("language")
+    language = get("language")
     if language != None:
         if type(language) != "string" or (language and not valid_language(language)):
             return None
         features["language"] = language.lower()
-    pinned = e.content("pinned")
+    pinned = get("pinned")
     if pinned != None:
         features["pinned"] = max(number(pinned), 0)
     return features
@@ -4288,7 +4339,6 @@ def action_subscribe(a): # feeds_subscribe
 			remote_error(a, response, 404)
 			return
 		feed_name = response.get("name", "")
-		schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
 	else:
 		# Use directory lookup when no server specified
 		directory = mochi.directory.get(feed_id)
@@ -4299,8 +4349,6 @@ def action_subscribe(a): # feeds_subscribe
 		server = directory.get("location", "")
 		if server:
 			peer = mochi.remote.peer(server)
-			if peer:
-				schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
 
 	fp = mochi.entity.fingerprint(feed_id) or ""
 	# populated=0: posts arrive asynchronously from the owner after subscribe;
@@ -4314,8 +4362,12 @@ def action_subscribe(a): # feeds_subscribe
 	# Update subscriber count accurately using count query
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
-	# Insert schema data so posts/comments/reactions are available immediately
-	if schema and not schema.get("error"):
+	# The schema, asked for as a subscriber: the owner registers this user
+	# before reading it, so nothing changes between the two unseen. The feed
+	# is held already, so a post the owner broadcasts meanwhile lands.
+	if peer:
+		schema = mochi.remote.request(feed_id, "feeds", "schema", {"register": {"name": a.user.identity.name}}, peer)
+	if schema_arrived(schema):
 		insert_feed_schema(feed_id, schema)
 
 	mochi.log.debug("subscribe: sending P2P message from=%s to=%s", user_id, feed_id)
@@ -4323,10 +4375,13 @@ def action_subscribe(a): # feeds_subscribe
 	# send directly to that peer - the feed isn't resolvable via the directory,
 	# and this inbound registration is what teaches the owner our location so
 	# fan-out flows back (#209).
+	# synced tells the owner whether the schema arrived: if not, it replays
+	# the feed's newest posts though asking for the schema registered us.
+	registration = {"name": a.user.identity.name, "synced": schema_arrived(schema)}
 	if peer:
-		send_result = mochi.message.send.peer(peer, headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
+		send_result = mochi.message.send.peer(peer, headers(user_id, feed_id, "subscribe"), registration)
 	else:
-		send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
+		send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), registration)
 	if send_result:
 		mochi.log.info("subscribe: P2P send failed: %s", send_result)
 	mochi.broadcast.touch(feed_id)
@@ -4997,6 +5052,7 @@ def post_react(feed_id, post_id, user_id, user_name, reaction, account):
 			return None, (403, "errors.access_denied")
 
 		post_reaction_set(post_data, user_id, user_name, reaction)
+		update_interests_from_reaction(post_id, reaction)
 		# A like of a post from another network goes out from the user's
 		# hosted account there, taken back with the reaction.
 		like_publish(post_data, reaction, account)
@@ -5033,6 +5089,7 @@ def post_react(feed_id, post_id, user_id, user_name, reaction, account):
 		else:
 			mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?",
 				target_feed_id, post_id, user_id)
+		update_interests_from_reaction(post_id, reaction)
 
 	# Send WebSocket notification for real-time UI updates on subscriber's side
 	mochi.log.debug("feeds.action_post_react remote websocket type=react/post feed=%s post=%s sender=%s reaction=%s", target_feed_id, post_id, user_id, reaction)
@@ -5689,7 +5746,7 @@ def event_comment_delete_submit(e):
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "comment/delete", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
+		websocket_write(fingerprint, {"type": "comment/delete", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
 
 	# Broadcast delete to all subscribers
 	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
@@ -5760,6 +5817,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
 			feed_id, post_id, comment_id, subscriber_id, e.content("name"), reaction)
 	else:
+		withhold(feed_data, reaction_key(post_id, comment_id, str(subscriber_id)))
 		mochi.log.debug("Deleting comment reaction: feed=%s comment=%s subscriber=%s", feed_id, comment_id, subscriber_id)
 		mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
 			feed_id, comment_id, subscriber_id)
@@ -5768,7 +5826,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.log.debug("Sending WebSocket notification for comment reaction: fingerprint=%s", fingerprint)
-		mochi.websocket.write(fingerprint, {"type": "react/comment", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": subscriber_id})
+		websocket_write(fingerprint, {"type": "react/comment", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": subscriber_id})
 	else:
 		mochi.log.debug("No fingerprint found for WebSocket notification")
 
@@ -5977,9 +6035,13 @@ def event_post_create(e): # feeds_post_create_event
 
 	set_feed_updated(feed_data["id"])
 
-	# Copy post into any aggregating feeds that use this as a source
+	# Copy post into any aggregating feeds that use this as a source. Not a
+	# followers-only post: the aggregating feed's readers, and the networks it
+	# publishes to, are not the source's followers.
 	sender_feed = e.header("from")
 	sources = mochi.db.rows("select id, feed, transform from sources where type='feed/posts' and url=?", sender_feed)
+	if features.get("visibility") == "followers":
+		sources = []
 	for source in sources:
 		# Apply AI transform if configured
 		copy_body = post["body"]
@@ -6163,6 +6225,7 @@ def event_post_delete(e):
 		mochi.log.info("Feed dropping post delete with invalid post ID")
 		return
 
+	withhold(feed_data, post_id)
 	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_data["id"])
 	if not post:
 		mochi.log.info("Feed dropping post delete for unknown post '%s'", post_id)
@@ -6185,7 +6248,7 @@ def event_post_delete(e):
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "post/delete", "feed": feed_data["id"], "post": post_id, "sender": sender_id})
+		websocket_write(fingerprint, {"type": "post/delete", "feed": feed_data["id"], "post": post_id, "sender": sender_id})
 
 # Handle comment edit event from feed owner (subscriber receiving edit)
 def event_comment_edit(e):
@@ -6238,6 +6301,7 @@ def event_comment_delete(e):
 		mochi.log.info("Feed dropping comment delete with invalid comment ID")
 		return
 
+	withhold(feed_data, comment_id)
 	comment = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_data["id"])
 	if not comment:
 		mochi.log.info("Feed dropping comment delete for unknown comment '%s'", comment_id)
@@ -6251,7 +6315,7 @@ def event_comment_delete(e):
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "comment/delete", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
+		websocket_write(fingerprint, {"type": "comment/delete", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
 
 def event_post_reaction(e): # feeds_post_reaction_event
 	user_id = e.user.identity.id
@@ -6290,13 +6354,15 @@ def event_post_reaction(e): # feeds_post_reaction_event
 
 	# Apply the reaction locally
 	subscriber_id = e.content("subscriber")
+	if not reaction:
+		withhold(feed_data, reaction_key(post_id, "", str(subscriber_id)))
 	post_reaction_set(post_data, subscriber_id, e.content("name"), reaction)
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.log.debug("feeds.event_post_reaction websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_data["id"], post_id, subscriber_id, reaction)
-		mochi.websocket.write(fingerprint, {"type": "react/post", "feed": feed_data["id"], "post": post_id, "sender": subscriber_id})
+		websocket_write(fingerprint, {"type": "react/post", "feed": feed_data["id"], "post": post_id, "sender": subscriber_id})
 
 	# Create notification for subscriber about reaction (runs on subscriber's server)
 	# Skip notifications for historical reactions synced during initial subscription
@@ -6342,18 +6408,42 @@ def event_schema(e):
 		e.stream.write({"error": "errors.access_denied"})
 		return
 
-	# Comments and reactions are bounded the same way posts are: an unbounded
-	# dump of a large feed's whole comment/reaction history could run to tens of
-	# thousands of rows in one event.
-	# Comments and reactions come from the dumped posts only: a comment on an
-	# older post would name a post the subscriber never receives.
-	window = "select id from posts where feed=? order by created desc limit 1000"
-	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
-	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited, attachment from comments where feed=? and post in (" + window + ") order by created limit 1000", feed_id, feed_id) or []
-	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=? and post in (" + window + ") limit 1000", feed_id, feed_id) or []
+	# A subscriber asking for the schema names itself (register), and is
+	# registered before the schema is read: every change after the read then
+	# reaches it by broadcast, and none falls between the read and a later
+	# registration.
+	requester = e.header("from")
+	subscribed = False
+	register = e.content("register")
+	if type(register) == "dict" and type(register.get("name")) == "string" and mochi.text.valid(register["name"], "line"):
+		feed_data = feed_by_id(e.user.identity.id, feed_id)
+		if feed_data:
+			subscriber_register(e.user.identity.id, feed_data, requester, register["name"])
+			subscribed = True
+	if not subscribed:
+		subscribed = mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, requester)
+	# A followers-only post is for subscribers, as the feed's pages keep it.
+	hidden = "" if subscribed else " and visibility!='followers'"
 
-	# Nest tags within each post for atomic delivery
-	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
+	# The schema is everything a post event would carry for the feed's newest
+	# posts, so a subscriber that takes it is replayed nothing. Each list is
+	# bounded, as a dump of a large feed's whole history could run to tens of
+	# thousands of rows, past core's cap of 10,000 elements in one array.
+	window = "select id from posts where feed=?" + hidden + " order by created desc limit " + str(schema_posts)
+	posts = mochi.db.rows("select id, body, data, format, created, updated, edited, up, down, credibility, author, remote, visibility, warning, sensitive, language, pinned from posts where feed=?" + hidden + " order by created desc limit ?", feed_id, schema_posts) or []
+	# The newest posts' comments first, and a post's oldest first: a reply is
+	# newer than the comment it answers, so where the bound cuts into a post's
+	# comments it keeps every comment a kept reply answers. Applied oldest first.
+	comments = mochi.db.rows("select c.id, c.post, c.parent, c.subscriber, c.name, c.body, c.format, c.created, c.edited, c.attachment, c.remote, c.page from comments c join posts p on p.id=c.post where c.feed=? and c.post in (" + window + ") order by p.created desc, c.created, c.rowid limit ?", feed_id, feed_id, schema_comments) or []
+	comments = sorted(comments, key=lambda c: c["created"])
+	# The newest posts' reactions first, and only on the comments carried.
+	carried = [c["id"] for c in comments]
+	marks = ", ".join(["?" for _ in carried])
+	scope = "r.comment=''" + (" or r.comment in (" + marks + ")" if carried else "")
+	reactions = mochi.db.rows("select r.post, r.comment, r.subscriber, r.name, r.reaction from reactions r join posts p on p.id=r.post where r.feed=? and r.post in (" + window + ") and (" + scope + ") order by p.created desc limit ?", *([feed_id, feed_id] + carried + [schema_reactions])) or []
+
+	# Tags nest within each post, for the carried posts only
+	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (" + window + ")", feed_id) or []
 	tags_by_post = {}
 	for t in all_tags:
 		pid = t.get("object", "")
@@ -6364,18 +6454,18 @@ def event_schema(e):
 	# Attachment metadata for every dumped post and comment in one query, grouped
 	# by object id, rather than a query per row. Metadata only — files still fetch
 	# on demand from the owner.
-	attachments_by_object = attachment_list_many([p["id"] for p in posts] + [c["id"] for c in comments], feed_id)
+	attachments_by_object = attachment_list_many([p["id"] for p in posts] + carried, feed_id)
+	copies = copies_by_posts([p["id"] for p in posts])
 
 	for p in posts:
 		post_tags = tags_by_post.get(p["id"], [])
 		if post_tags:
 			p["tags"] = post_tags
-		# Inline attachment metadata so subscribers can't lose it when the subsequent
-		# post/create event from send_recent_posts is dropped by the duplicate-body guard
-		# in event_post_create.
 		atts = attachments_by_object.get(p["id"], [])
 		if atts:
 			p["attachments"] = atts
+		if copies.get(p["id"]):
+			p["copies"] = copies[p["id"]]
 
 	for c in comments:
 		atts = attachments_by_object.get(c["id"], [])
@@ -6403,66 +6493,145 @@ def held_comment(comment_id, feed_id):
 		return False
 	return mochi.db.exists("select 1 from comments where id=? and feed=?", comment_id, feed_id)
 
+def schema_arrived(schema):
+	"""Whether the owner sent a schema, rather than nothing or a refusal."""
+	return type(schema) == "dict" and not schema.get("error")
+
+def schema_list(schema, name):
+	"""The rows of one list a schema carries; anything not a row is left out."""
+	value = schema.get(name)
+	if not listlike(value):
+		return []
+	return [row for row in value if type(row) == "dict"]
+
+# withhold notes a row the owner removed while this subscriber is still taking
+# the feed's schema, so that the schema, read before the removal, does not
+# bring it back. Kept until the subscription completes (event_sync_complete).
+def withhold(feed_data, object):
+	if feed_data.get("populated") == 0:
+		mochi.db.execute("insert or ignore into withheld (feed, object) values (?, ?)", feed_data["id"], object)
+
+def reaction_key(post, comment, subscriber):
+	return post + "/" + comment + "/" + subscriber
+
 # Insert feed schema data into local database
 def insert_feed_schema(feed_id, schema):
-	for p in (schema.get("posts") or []):
+	"""Store what a feed's schema holds that this subscriber does not. What it
+	holds already stays as it is: events can reach it while the schema is on
+	its way, so the schema can be older than them. It fills gaps, and leaves
+	out what the owner removed meanwhile (withheld)."""
+	withheld = {}
+	for row in mochi.db.rows("select object from withheld where feed=?", feed_id) or []:
+		withheld[row["object"]] = True
+	inserted = {}
+	for p in schema_list(schema, "posts"):
+		id = p.get("id", "")
+		if type(id) != "string" or withheld.get(id):
+			continue
+		# The features, author and remote id a post event would carry, each
+		# checked as event_post_create checks it. One that fails is left out
+		# rather than the post, which the owner holds and shows.
+		features = {}
+		for key in ("visibility", "warning", "sensitive", "language", "pinned"):
+			one = post_features_read(lambda name: p.get(name) if name == key else None)
+			if one:
+				features.update(one)
+		author = p.get("author")
+		if type(author) == "string" and (not author or mochi.text.valid(author, "author")):
+			features["author"] = author
+		remote = p.get("remote")
+		if type(remote) == "string" and len(remote) <= 2048:
+			features["remote"] = remote
+		credibility = p.get("credibility")
+		if type(credibility) != "int" or credibility < 0 or credibility > 100:
+			credibility = 100
 		mmdd = compute_mmdd(p.get("created", 0))
-		mochi.db.execute(
-			"insert or ignore into posts (id, feed, body, data, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			p.get("id", ""), feed_id, p.get("body", ""), safe_post_data(p.get("data", "")),
+		# A colliding id names a post held already, here or in another feed:
+		# only a post this inserts gets the rest.
+		if not mochi.db.execute(
+			"insert or ignore into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			id, feed_id, p.get("body", ""), safe_post_data(p.get("data", "")),
+			"text" if p.get("format") == "text" else "markdown",
 			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
-			p.get("up", 0), p.get("down", 0), mmdd
-		)
-		# A colliding id may name a post owned by another feed; only attach to
-		# posts that belong to this one, matching the loops below.
+			p.get("up", 0), p.get("down", 0), mmdd, credibility
+		):
+			continue
+		inserted[id] = True
+		if features:
+			clause, values = features_sql(features)
+			mochi.db.execute("update posts set " + clause + " where id=?", *(values + [id]))
 		atts = p.get("attachments") or []
-		if atts and held_post(p.get("id", ""), feed_id):
-			attachment_store(atts, feed_id, p.get("id", ""))
-	for c in (schema.get("comments") or []):
+		if atts:
+			attachment_store(atts, feed_id, id)
+		copies_store(id, p.get("copies"))
+		tags = p.get("tags")
+		for t in (tags if listlike(tags) else []):
+			if type(t) == "dict":
+				mochi.db.execute(
+					"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
+					t.get("id", ""), id, t.get("label", ""),
+					t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
+				)
+	# Comments come oldest first, so a reply follows the comment it answers,
+	# and one answering a comment left out is left out with it.
+	skipped = {}
+	for c in schema_list(schema, "comments"):
+		id = c.get("id", "")
+		if type(id) != "string" or withheld.get(id) or skipped.get(c.get("parent", "")):
+			skipped[id] = True
+			continue
 		# Only onto a post held under this feed: the dump may name one outside
 		# its window, or one that collides with another feed's post.
 		if not held_post(c.get("post", ""), feed_id):
 			continue
-		mochi.db.execute(
-			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			c.get("id", ""), feed_id, c.get("post", ""), c.get("parent", ""),
-			c.get("subscriber", ""), c.get("name", ""), c.get("body", ""),
+		# Checked as event_comment_create checks them.
+		format = c.get("format") or "text"
+		if format not in ("text", "markdown", "html"):
+			format = "text"
+		remote = str(c.get("remote") or "")
+		if len(remote) > 2000:
+			remote = ""
+		if not mochi.db.execute(
+			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, format, created, edited, attachment, remote, page) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			id, feed_id, c.get("post", ""), c.get("parent", ""),
+			c.get("subscriber", ""), c.get("name", ""), c.get("body", ""), format,
 			c.get("created", 0), c.get("edited", 0),
-			comment_anchor(c.get("post", ""), feed_id, c.get("attachment", ""))
-		)
+			comment_anchor(c.get("post", ""), feed_id, c.get("attachment", "")),
+			remote, safe_link(str(c.get("page") or ""))
+		):
+			continue
 		atts = c.get("attachments") or []
 		if atts:
-			attachment_store(atts, feed_id, c.get("id", ""))
-	for r in (schema.get("reactions") or []):
+			attachment_store(atts, feed_id, id)
+	for r in schema_list(schema, "reactions"):
 		# Only onto a post, and a comment when it names one, held under this feed.
 		if not held_post(r.get("post", ""), feed_id):
 			continue
 		if r.get("comment", "") and not held_comment(r.get("comment", ""), feed_id):
+			continue
+		if withheld.get(reaction_key(str(r.get("post", "")), str(r.get("comment", "")), str(r.get("subscriber", "")))):
 			continue
 		mochi.db.execute(
 			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
 			feed_id, r.get("post", ""), r.get("comment", ""),
 			r.get("subscriber", ""), r.get("name", ""), r.get("reaction", "")
 		)
-	# Insert tags from inline post tags (new format) and top-level tags array (backward compat)
-	for p in (schema.get("posts") or []):
-		# Only tag posts held under this feed.
-		if not held_post(p.get("id", ""), feed_id):
-			continue
-		for t in (p.get("tags") or []):
-			mochi.db.execute(
-				"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
-				t.get("id", ""), p.get("id", ""), t.get("label", ""),
-				t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
-			)
-	for t in (schema.get("tags") or []):
-		if not held_post(t.get("object", ""), feed_id):
+	# Tags as an older owner sends them, beside its posts
+	for t in schema_list(schema, "tags"):
+		if not inserted.get(t.get("object", "")):
 			continue
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
 			t.get("id", ""), t.get("object", ""), t.get("label", ""),
 			t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
 		)
+
+# The schema a new subscriber pulls carries a feed's newest schema_posts posts,
+# schema_comments of their comments and schema_reactions of their reactions,
+# the newest posts' first: each under core's cap of 10,000 elements in an array.
+schema_posts = 1000
+schema_comments = 8000
+schema_reactions = 9000
 
 def event_subscribe(e): # feeds_subscribe_event
 	user_id = e.user.identity.id
@@ -6481,16 +6650,38 @@ def event_subscribe(e): # feeds_subscribe_event
 	if not check_event_access(requester, feed_data["id"], "view"):
 		return
 
+	newly = subscriber_register(user_id, feed_data, requester, name)
+
+	# The feed's history goes to a subscription once: its first subscribe
+	# message claims it (joined), so neither a redelivery nor a repeat sends
+	# it again. A subscriber that took the schema was registered by asking for
+	# it, before it was read, so it holds what came before and the broadcast
+	# brings what came after: it is sent nothing. A new one that did not take
+	# it is sent the newest posts, and so is one whose schema failed, which
+	# says so, though asking for it registered it.
+	claimed = mochi.db.execute("update subscribers set joined=? where feed=? and id=? and joined=0", mochi.time.now(), feed_data["id"], requester) > 0
+	if claimed and (newly or e.content("synced") == False):
+		send_recent_posts(user_id, feed_data, requester)
+
+	# Terminal signal: tell the new subscriber the initial bulk content is fully
+	# sent, so it can flip its feed out of the loading state. Sent here (not in
+	# send_recent_posts, which returns early for an empty feed) so it always
+	# fires, even when the feed has no posts.
+	mochi.message.send(headers(feed_data["id"], requester, "sync/complete"), {"feed": feed_data["id"]})
+
+# subscriber_register records requester as a subscriber of the feed, and
+# answers whether they were not one before.
+def subscriber_register(user_id, feed_data, requester, name):
 	# Only a genuinely new subscription replays the feed's history and re-announces
 	# the roster; a peer re-sending subscribe must not make the owner re-emit the
 	# whole feed each call (#319).
 	newly = not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_data["id"], requester)
 
-	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
+	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], requester, name)
 	# Record them for replay now rather than waiting for the next post to do
 	# it, so a gap before that post can still be healed.
 	if newly:
-		mochi.broadcast.subscriber.add(feed_data["id"], e.header("from"))
+		mochi.broadcast.subscriber.add(feed_data["id"], requester)
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 
 	if newly:
@@ -6499,17 +6690,8 @@ def event_subscribe(e): # feeds_subscribe_event
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		mochi.websocket.write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
-
-	if newly:
-		send_recent_posts(user_id, feed_data, e.header("from"))
-
-	# Terminal signal: tell the new subscriber the initial bulk content is fully
-	# sent, so it can flip its feed out of the loading state. Sent here (not in
-	# send_recent_posts, which returns early for an empty feed) so it always
-	# fires, even when the feed has no posts.
-	mochi.message.send(headers(feed_data["id"], e.header("from"), "sync/complete"), {"feed": feed_data["id"]})
-
+		websocket_write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
+	return newly
 
 def event_sync_complete(e): # feeds_sync_complete_event
 	# A subscribed feed's owner has finished pushing the initial posts/comments.
@@ -6519,9 +6701,10 @@ def event_sync_complete(e): # feeds_sync_complete_event
 	if not feed_id:
 		return
 	mochi.db.execute("update feeds set populated=1 where id=?", feed_id)
+	mochi.db.execute("delete from withheld where feed=?", feed_id)
 	fp = mochi.entity.fingerprint(feed_id)
 	if fp:
-		mochi.websocket.write(fp, {"type": "feed/update", "feed": feed_id})
+		websocket_write(fp, {"type": "feed/update", "feed": feed_id})
 
 
 def event_unsubscribe(e): # feeds_unsubscribe_event
@@ -6550,7 +6733,7 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		mochi.websocket.write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
+		websocket_write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
 
 # Handle tag add submit from a subscriber (received by feed owner)
 def event_tag_add_submit(e):
@@ -6674,7 +6857,7 @@ def event_tag_add(e):
 
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
+		websocket_write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
 
 # Batched tag/add. One broadcast carries every tag added in a single
 # AI tag pass on the owner. Cuts per-pass queue cost from N tags x
@@ -6713,7 +6896,7 @@ def event_tag_add_batch(e):
 			rescore_seen[object_id] = True
 			rescore_posts.append(object_id)
 		if fingerprint:
-			mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
+			websocket_write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
 	# One re-score per unique post, not per tag - 5x cheaper for a
 	# typical AI pass that resolves 5 tags for the same post.
 	if rescore_posts:
@@ -6740,7 +6923,7 @@ def event_tag_remove(e):
 		mochi.db.execute("delete from tags where object=? and label=?", object_id, label)
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		mochi.websocket.write(fingerprint, {"type": "tag/remove", "feed": feed_data["id"], "post": object_id, "tag": tag_id})
+		websocket_write(fingerprint, {"type": "tag/remove", "feed": feed_data["id"], "post": object_id, "tag": tag_id})
 
 # Handle notification that a feed has been deleted by its owner, or that the
 # owner removed us from it
@@ -6780,7 +6963,7 @@ def event_deleted(e):
 	removed = e.content("reason") == "removed"
 	fingerprint = mochi.entity.fingerprint(feed_id)
 	if fingerprint:
-		mochi.websocket.write(fingerprint, {"type": "feed/removed" if removed else "feed/deleted", "feed": feed_id})
+		websocket_write(fingerprint, {"type": "feed/removed" if removed else "feed/deleted", "feed": feed_id})
 	# Its notifications point at rows that no longer exist.
 	mochi.service.call("notifications", "delete/object", feed_id)
 	if removed:
@@ -7412,6 +7595,7 @@ def sources_add_feed(a, feed, source_feed_id, name):
 
 	# Get feed info from directory if no server
 	schema = None
+	peer = None
 	feed_name = name
 	if server:
 		peer = mochi.remote.peer(server)
@@ -7424,7 +7608,6 @@ def sources_add_feed(a, feed, source_feed_id, name):
 			return
 		if not feed_name:
 			feed_name = response.get("name", "")
-		schema = mochi.remote.request(resolved_id, "feeds", "schema", {}, peer)
 	else:
 		directory = mochi.directory.get(resolved_id)
 		if directory and len(directory) > 0:
@@ -7433,8 +7616,6 @@ def sources_add_feed(a, feed, source_feed_id, name):
 			server = directory.get("location", "")
 			if server:
 				peer = mochi.remote.peer(server)
-				if peer:
-					schema = mochi.remote.request(resolved_id, "feeds", "schema", {}, peer)
 
 	# For local feeds, look up the name from our database
 	if not feed_name:
@@ -7452,13 +7633,15 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	mochi.db.execute("insert or ignore into feeds (id, name, subscribers, updated, server, fingerprint, populated) values (?, ?, 0, ?, ?, ?, 0)",
 		resolved_id, feed_name, mochi.time.now(), server or "", fp)
 
-	# Insert schema data for immediate availability
-	if schema and not schema.get("error"):
+	# The schema, asked for as a subscriber, as action_subscribe asks for it
+	if peer:
+		schema = mochi.remote.request(resolved_id, "feeds", "schema", {"register": {"name": a.user.identity.name}}, peer)
+	if schema_arrived(schema):
 		insert_feed_schema(resolved_id, schema)
 
 	# Send P2P subscribe message
 	user_id = a.user.identity.id
-	registration_send(server or "", headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
+	registration_send(server or "", headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name, "synced": schema_arrived(schema)})
 	mochi.broadcast.touch(resolved_id)
 
 	# Create source record
@@ -7843,6 +8026,9 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 	source_transform = source_row["transform"] if source_row else ""
 	count = 0
 	for p in posts:
+		# A followers-only post stays out, as event_post_create keeps it out.
+		if p.get("visibility") == "followers":
+			continue
 		# Skip if this post was already copied into this feed (e.g. from a previous source addition)
 		if mochi.db.exists("select 1 from source_posts sp join posts pt on sp.post=pt.id where sp.guid=? and pt.feed=?", p["id"], feed_id):
 			continue
@@ -8949,12 +9135,16 @@ def copies_by_posts(post_ids):
 		result.setdefault(row["post"], []).append(copy_present(row))
 	return result
 
+# copies_maximum bounds how many copies on other networks a subscriber keeps
+# for one post: one per account the feed publishes to.
+copies_maximum = 32
+
 def copies_store(post_id, copies):
 	"""Keep the copies a post event carries, as a subscriber (decision 31)."""
 	if not listlike(copies):
 		return
 	mochi.db.execute("delete from copies where post=? and account=''", post_id)
-	for c in copies:
+	for c in list(copies)[:copies_maximum]:
 		if type(c) != "dict":
 			continue
 		address, network, remote, url = str(c.get("address", "")), str(c.get("network", "")), str(c.get("remote", "")), safe_link(str(c.get("url", "")))
@@ -8990,6 +9180,17 @@ def published_has(feed_id, remotes):
 
 def text_codepoints(s):
 	return len([c for c in s.codepoints()])
+
+def text_fit(s, n):
+	"""The longest start of s, in whole codepoints, that fits in n bytes."""
+	out = []
+	size = 0
+	for c in s.codepoints():
+		size += len(c)
+		if size > n:
+			break
+		out.append(c)
+	return "".join(out)
 
 def text_cut(s, n):
 	"""The first n codepoints of s."""
@@ -9638,7 +9839,7 @@ def account_item(acc, item):
 		"reply": type(record.get("reply")) == "dict",
 	}
 	if type(record.get("langs")) in ("list", "tuple") and record["langs"]:
-		out["language"] = str(record["langs"][0])
+		out["language"] = language_tag(record["langs"][0])
 	return out
 
 def bluesky_labels(post_labels, author_labels):
@@ -11838,7 +12039,8 @@ def fediverse_item(acc, raw):
 				image = object_url(icon.get("url"))
 				if image:
 					break
-	warning = strip_html(str(note.get("summary", "") or "")).strip()
+	# A warning is one line: one written over several paragraphs is joined.
+	warning = " ".join(strip_html(str(note.get("summary", "") or "")).split())
 	languages = note.get("contentMap") if type(note.get("contentMap")) == "dict" else {}
 	language = ""
 	for key in languages:
@@ -11851,7 +12053,7 @@ def fediverse_item(acc, raw):
 		"link": object_url(note.get("url")) or remote, "image": image, "author": person["name"], "boosted": booster["name"] if booster else "",
 		"item": {"id": remote},
 		"actor": actor, "person": person, "boost": booster, "remote": remote, "visibility": object_visibility(note),
-		"warning": text_cut(warning, WARNING_MAXIMUM), "sensitive": 1 if note.get("sensitive") else 0, "language": language,
+		"warning": text_fit(warning, WARNING_MAXIMUM), "sensitive": 1 if note.get("sensitive") else 0, "language": language,
 		"media": media, "poll": object_poll(note), "emoji": object_emoji(note), "quote": quote,
 	}
 
