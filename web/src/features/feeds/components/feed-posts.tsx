@@ -554,8 +554,9 @@ export function FeedPosts({
     [onDraftChange]
   )
 
-  // The user's hosted accounts on the fediverse, for boosting a post from
-  // there (phase 17): read once a post from another network is shown.
+  // The user's hosted accounts on the fediverse and Bluesky, for boosting a
+  // post from there (phases 17 and 19): read once a post from another
+  // network is shown.
   const [hostedAccounts, setHostedAccounts] = useState<PublishAccount[]>([])
   const anyFediverseCopy = posts.some(
     (p) =>
@@ -566,7 +567,7 @@ export function FeedPosts({
     if (!isLoggedIn || readOnly || !anyFediverseCopy) return
     let cancelled = false
     feedsApi
-      .hostedAccounts()
+      .boostAccounts()
       .then((accounts) => {
         if (!cancelled) setHostedAccounts(accounts)
       })
@@ -612,30 +613,43 @@ export function FeedPosts({
     },
     [reloadPosts]
   )
-  const boostAccount = hostedAccounts[0]
+  // A post is boosted from the user's first hosted account on its own
+  // network: Bluesky for one whose id there is an at:// URI, else the
+  // fediverse.
+  const boostAccountFor = useCallback(
+    (post: FeedPost) => {
+      const network = post.remote?.startsWith('at://') ? 'bluesky' : 'fediverse'
+      return hostedAccounts.find((account) => account.type === network)
+    },
+    [hostedAccounts]
+  )
   const isBoosted = useCallback(
-    (post: FeedPost) =>
-      !!boostAccount &&
-      !!post.copies?.some(
-        (copy) =>
-          copy.network === 'fediverse' &&
-          copy.address === boostAccount.identifier
-      ),
-    [boostAccount]
+    (post: FeedPost) => {
+      const account = boostAccountFor(post)
+      return (
+        !!account &&
+        !!post.copies?.some(
+          (copy) =>
+            copy.network === account.type && copy.address === account.identifier
+        )
+      )
+    },
+    [boostAccountFor]
   )
   const boostPost = useCallback(
     async (post: FeedPost) => {
-      if (!boostAccount) return
+      const account = boostAccountFor(post)
+      if (!account) return
       const boosted = isBoosted(post)
       try {
-        await feedsApi.boostPost(post.feedId, post.id, boostAccount.id, !boosted)
+        await feedsApi.boostPost(post.feedId, post.id, account.id, !boosted)
         await reloadPosts(post.feedId)
         toast.success(boosted ? t`Boost taken back` : t`Boosted`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not boost`))
       }
     },
-    [boostAccount, isBoosted, reloadPosts]
+    [boostAccountFor, isBoosted, reloadPosts]
   )
   // A post behind a content warning shows its warning until the reader asks
   // for the rest.
@@ -2004,9 +2018,9 @@ export function FeedPosts({
                                         </DropdownMenuItem>
                                       )}
                                       {isFeedOwner &&
-                                        boostAccount &&
                                         post.remote &&
-                                        post.authorId && (
+                                        post.authorId &&
+                                        boostAccountFor(post) && (
                                           <DropdownMenuItem
                                             onClick={(e) => {
                                               e.preventDefault()
@@ -2020,7 +2034,10 @@ export function FeedPosts({
                                             ) : (
                                               <Trans>
                                                 Boost from{' '}
-                                                {boostAccount.identifier}
+                                                {
+                                                  boostAccountFor(post)
+                                                    ?.identifier
+                                                }
                                               </Trans>
                                             )}
                                           </DropdownMenuItem>

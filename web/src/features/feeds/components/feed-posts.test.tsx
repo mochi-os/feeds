@@ -15,6 +15,7 @@ import { I18nProvider } from '@lingui/react'
 import { render, screen, fireEvent, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { feedsApi } from '@/api/feeds'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { FeedPosts } from './feed-posts'
 
@@ -36,7 +37,7 @@ vi.mock('@tanstack/react-router', () => ({
 vi.mock('@/api/feeds', () => ({
   feedsApi: {
     searchMembers: vi.fn().mockResolvedValue([]),
-    hostedAccounts: vi.fn().mockResolvedValue([
+    boostAccounts: vi.fn().mockResolvedValue([
       {
         id: 'account-1',
         type: 'fediverse',
@@ -45,7 +46,16 @@ vi.mock('@/api/feeds', () => ({
         server: 'example.com',
         hosted: true,
       },
+      {
+        id: 'account-2',
+        type: 'bluesky',
+        identifier: 'me.example.com',
+        name: 'Me',
+        server: 'example.com',
+        hosted: true,
+      },
     ]),
+    boostPost: vi.fn().mockResolvedValue({ copies: [] }),
   },
 }))
 
@@ -422,6 +432,76 @@ describe('FeedPosts replying to a comment from another network', () => {
       'comment-1',
       'An answer',
       undefined
+    )
+  })
+})
+
+// A post from another network is boosted from the user's hosted account on
+// its own network: one from Bluesky had been offered the fediverse account,
+// which the server refuses for it.
+describe('FeedPosts boosting a post from another network', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  function from(remote: string, copies: FeedPost['copies'] = []): FeedPost {
+    const bluesky = remote.startsWith('at://')
+    return {
+      ...post(),
+      remote,
+      authorId: bluesky ? 'did:plc:alice' : 'https://there.example/u/alice',
+      copies,
+    }
+  }
+
+  async function boost(label: string) {
+    const user = userEvent.setup()
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    await user.click(await screen.findByText(label))
+  }
+
+  it('boosts a post from Bluesky from the hosted Bluesky account', async () => {
+    renderPosts([from('at://did:plc:alice/app.bsky.feed.post/1')])
+    await boost('Boost from me.example.com')
+    expect(feedsApi.boostPost).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'account-2',
+      true
+    )
+    expect(screen.queryByText('Boost from @me@example.com')).toBeNull()
+  })
+
+  it('boosts a post from the fediverse from the hosted fediverse account', async () => {
+    renderPosts([from('https://there.example/notes/1')])
+    await boost('Boost from @me@example.com')
+    expect(feedsApi.boostPost).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'account-1',
+      true
+    )
+  })
+
+  it("takes a boost back by its copy on the post's own network", async () => {
+    renderPosts([
+      from('at://did:plc:alice/app.bsky.feed.post/1', [
+        {
+          address: 'me.example.com',
+          network: 'bluesky',
+          remote: 'at://did:plc:me/app.bsky.feed.repost/1',
+          url: '',
+        },
+      ]),
+    ])
+    await boost('Take the boost back')
+    expect(feedsApi.boostPost).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'account-2',
+      false
     )
   })
 })

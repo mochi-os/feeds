@@ -936,6 +936,18 @@ const hostedAccounts = async (): Promise<PublishAccount[]> => {
   return (accounts ?? []).filter((a) => a.hosted && a.type === 'fediverse')
 }
 
+// The user's hosted accounts a post from another network is boosted from:
+// the fediverse's and Bluesky's, one on the post's own network.
+const boostAccounts = async (): Promise<PublishAccount[]> => {
+  const accounts = await client.post<PublishAccount[], { capability: string }>(
+    endpoints.feeds.accounts,
+    { capability: 'network' }
+  )
+  return (accounts ?? []).filter(
+    (a) => a.hosted && (a.type === 'fediverse' || a.type === 'bluesky')
+  )
+}
+
 // The owner's accounts on Bluesky, hosted or linked, one of which reads a
 // Bluesky custom feed or list for a feed (phase 19).
 const blueskyAccounts = async (): Promise<PublishAccount[]> => {
@@ -1297,6 +1309,7 @@ export const feedsApi = {
   reply,
   moderateComment,
   hostedAccounts,
+  boostAccounts,
   editComment,
   deleteComment,
   reactToComment,
