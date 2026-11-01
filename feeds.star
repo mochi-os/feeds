@@ -9086,6 +9086,10 @@ IMPORT_PAGES = 5
 # Seconds between runs of the accounts' jobs - notifications every run, the
 # backup once a day.
 ACCOUNT_JOBS_INTERVAL = 300
+# How far back a like from Bluesky is checked for being taken back, and how
+# many pages of a record's likes the index is asked for at most.
+BLUESKY_LIKES_WINDOW = 30 * 86400
+BLUESKY_LIKERS_PAGES = 10
 BACKUP_INTERVAL = 86400
 
 # === The accounts ===
@@ -10182,6 +10186,8 @@ def schedule_account_jobs(e):
 	now = mochi.time.now()
 	for acc in accounts:
 		notify_account(acc)
+		if acc["type"] == "bluesky":
+			bluesky_likes_check(acc)
 		_, backed = account_cursor(acc["id"], "backup")
 		if now - backed >= BACKUP_INTERVAL:
 			backup_account(acc)
@@ -11250,6 +11256,69 @@ def account_interaction(acc, raw):
 			copy = linked_copy(acc, str(raw.get("reasonSubject", "") or ""))
 			if copy:
 				boost_from_network(acc, copy, actor, 1)
+
+def bluesky_likes_check(acc):
+	"""Take back the reactions from Bluesky whose likes are gone: Bluesky's
+	notifications report a like but never its undoing, so each of the
+	account's posts and replies of the last 30 days that holds likes from
+	Bluesky is asked of the index who still likes it - every copy of it on
+	Bluesky, since a reaction does not say which copy was liked."""
+	since = mochi.time.now() - BLUESKY_LIKES_WINDOW
+	held = []
+	for row in mochi.db.rows("select distinct post from copies where account=? and network='bluesky' and created>?", acc["id"], since):
+		held.append(("post", row["post"]))
+	for row in mochi.db.rows("select distinct comment from replies where account=? and network='bluesky' and created>?", acc["id"], since):
+		held.append(("comment", row["comment"]))
+	for kind, id in held:
+		if kind == "post":
+			rows = mochi.db.rows("select subscriber, name from reactions where post=? and comment='' and reaction='like' and subscriber like 'did:%'", id)
+			remotes = [row["remote"] for row in mochi.db.rows("select remote from copies where post=? and network='bluesky'", id)]
+		else:
+			rows = mochi.db.rows("select subscriber, name from reactions where comment=? and reaction='like' and subscriber like 'did:%'", id)
+			remotes = [row["remote"] for row in mochi.db.rows("select remote from replies where comment=? and network='bluesky'", id)]
+		if not rows:
+			continue
+		likers = {}
+		for remote in remotes:
+			found = bluesky_likers(acc, remote)
+			if found == None:
+				likers = None
+				break
+			likers.update(found)
+		if likers == None:
+			continue
+		target = mochi.db.row("select * from posts where id=?", id) if kind == "post" else mochi.db.row("select * from comments where id=?", id)
+		if not target:
+			continue
+		for row in rows:
+			if row["subscriber"] not in likers:
+				reaction_from_network(kind, target, row["subscriber"], row["name"], "")
+
+def bluesky_likers(acc, uri):
+	"""Who likes a record, as the index answers through the account: a dict
+	of their identifiers, or None where the index did not answer in full, so
+	that nothing is taken back on a failure."""
+	likers = {}
+	cursor = ""
+	for _ in range(BLUESKY_LIKERS_PAGES):
+		query = {"uri": uri, "limit": "100"}
+		if cursor:
+			query["cursor"] = cursor
+		answer = mochi.account.request(acc["id"], "GET", "app.bsky.feed.getLikes", query=query)
+		if not answer or answer.get("status") != 200 or type(answer.get("data")) != "dict":
+			return None
+		data = answer["data"]
+		likes = data.get("likes")
+		if not listlike(likes):
+			return None
+		for like in likes:
+			actor = like.get("actor") if type(like) == "dict" else None
+			if type(actor) == "dict" and actor.get("did"):
+				likers[str(actor["did"])] = True
+		cursor = str(data.get("cursor", "") or "")
+		if not cursor or not likes:
+			return likers
+	return None
 
 def linked_copy(acc, remote):
 	"""The post whose copy through the account has this id there, or None."""
