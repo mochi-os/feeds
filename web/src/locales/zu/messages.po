@@ -492,15 +492,9 @@ msgstr "Vumela ukuhlunga nge"
 msgid "Also delete posts imported from this source"
 msgstr "Phinde ususe okuthunyelwe okungenisiwe kulo mthombo"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Futhi ku-{0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Phendula nakuyo"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Shicilela futhi ku"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Ifidi noma uhla lwe-Bluesky"
 msgid "Board"
 msgstr "Ibhodi"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Khuthaza kusuka ku-{0}"
@@ -2036,6 +2030,10 @@ msgstr "Landela i-hashtag"
 msgid "Follow a person or community"
 msgstr "Landela umuntu noma umphakathi"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Landela futhi"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Landela kusuka kwenye inethiwekhi"
@@ -2043,10 +2041,6 @@ msgstr "Landela kusuka kwenye inethiwekhi"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Ukulandela kulindile"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Ukulandela kwenqatshiwe"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Iqembu: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "I-hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Fihla okuthunyelwe"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Fihla imiphumela"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Akukho ukufinyelela"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Awekho amarela okufinyelela acushiwe. Engeza amarela ukulawula ukuthi ubani ongafinyelela kulesi sisetshenziswa."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Ayikho i-akhawunti"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Awukho umsebenzi okwamanje"
@@ -2674,6 +2671,10 @@ msgstr "Akuqhathaniswanga: kukhulu kuna-{0}"
 msgid "Not compared: over the size limit"
 msgstr "Akuqhathaniswanga: kungaphezu komkhawulo wosayizi"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Awulandeli"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Vula imenyu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Vula ukuzulazula"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Vula ku-{0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Okuthunyelwe namazwana"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Okuthunyelwe ku-Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Okuthunyelwe ku-ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Okuthunyelwe ku-fediverse"
+msgid "Posts on Bluesky"
+msgstr "Okuthunyelwe ku-Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Emphakathini"
 msgid "Publish as a Bluesky feed"
 msgstr "Shicilela njengefidi ye-Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Shicilela ku"
 
@@ -3392,6 +3398,10 @@ msgstr "Sesha..."
 msgid "Searching..."
 msgstr "Kuyaseshwa..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Bonisa imiphumela"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Ukukhetha"
@@ -3520,17 +3530,13 @@ msgstr "Bonisa amakilasi"
 msgid "Show fields"
 msgstr "Bonisa izindawo"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Bonisa okuncane"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Bonisa okuningi"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Bonisa kuphela okuphawuliwe ngalesi sithombe"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Bonisa okuthunyelwe"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Isicelo sekhamera asiphendulwanga"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Ifidi ishicilele okuthunyelwe okungu-{0} lapho. Kuzohlala khona ngaphandle uma ukususa."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Ukulandela akukwazanga ukuthunyelwa"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

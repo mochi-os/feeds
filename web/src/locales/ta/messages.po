@@ -492,15 +492,9 @@ msgstr "வரிசைப்படுத்துதலை அனுமதி"
 msgid "Also delete posts imported from this source"
 msgstr "இந்த ஆதாரத்திலிருந்து இறக்குமதி செய்யப்பட்ட பதிவுகளையும் நீக்கு"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} இலும்"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "இதிலிருந்தும் பதிலளி"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "இங்கும் வெளியிடு"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky ஊட்டம் அல்லது பட்டியல்"
 msgid "Board"
 msgstr "பலகை"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0}-இலிருந்து பூஸ்ட் செய்"
@@ -2036,6 +2030,10 @@ msgstr "ஒரு ஹேஷ்டேக்கைப் பின்தொடர�
 msgid "Follow a person or community"
 msgstr "ஒரு நபரை அல்லது சமூகத்தைப் பின்தொடர்"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "மீண்டும் பின்தொடர்"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "வேறொரு பிணையத்திலிருந்து பின்தொடர்"
@@ -2043,10 +2041,6 @@ msgstr "வேறொரு பிணையத்திலிருந்து �
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "பின்தொடர்தல் நிலுவையில்"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "பின்தொடர்தல் மறுக்கப்பட்டது"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "குழு: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ஹேஷ்டேக்"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "பதிவை மறை"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "முடிவுகளை மறை"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "அணுகல் இல்லை"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "அணுகல் விதிகள் எதுவும் கட்டமைக்கப்படவில்லை. இந்த ஆதாரத்தை யார் அணுகலாம் என்பதைக் கட்டுப்படுத்த விதிகளைச் சேர்க்கவும்."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "கணக்கு இல்லை"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "செயல்பாடு இன்னும் இல்லை"
@@ -2674,6 +2671,10 @@ msgstr "ஒப்பிடப்படவில்லை: {0}-ஐ விட ப�
 msgid "Not compared: over the size limit"
 msgstr "ஒப்பிடப்படவில்லை: அளவு வரம்பை மீறுகிறது"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "பின்தொடரவில்லை"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "மெனுவைத் திறக்கவும்"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "வழிசெலுத்தலைத் திறக்கவும்"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0}-இல் திற"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "பதிவுகள் மற்றும் கருத்துகள்"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky இல் உள்ள பதிவுகள்"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub இல் உள்ள பதிவுகள்"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "fediverse-இல் உள்ள பதிவுகள்"
+msgid "Posts on Bluesky"
+msgstr "Bluesky இல் உள்ள பதிவுகள்"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "பொது"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky ஊட்டமாக வெளியிடு"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "வெளியிடும் இடங்கள்"
 
@@ -3392,6 +3398,10 @@ msgstr "தேடு..."
 msgid "Searching..."
 msgstr "தேடுகிறது..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "முடிவுகளைக் காட்டு"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "தேர்வு"
@@ -3520,17 +3530,13 @@ msgstr "வகுப்புகளை காட்டு"
 msgid "Show fields"
 msgstr "புலங்களை காட்டு"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "குறைவாகக் காட்டு"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "மேலும் காட்டு"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "இந்தப் படத்தின் கருத்துகளை மட்டும் காட்டு"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "பதிவைக் காட்டு"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "கேமரா கோரிக்கைக்கு பதில் இ
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "ஊட்டம் அங்கு {0} பதிவுகளை வெளியிட்டது. நீங்கள் நீக்கும் வரை அவை அங்கேயே இருக்கும்."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "பின்தொடர்தலை அனுப்ப முடியவில்லை"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

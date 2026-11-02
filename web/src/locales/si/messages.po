@@ -492,15 +492,9 @@ msgstr "මෙයින් වර්ග කිරීමට අවසර දෙ�
 msgid "Also delete posts imported from this source"
 msgstr "මෙම ප්‍රභවයෙන් ආයාත කළ පළ කිරීම් ද මකන්න"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} හි ද"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "මෙයින්ද පිළිතුරු දෙන්න"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "මෙහිද පළ කරන්න"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky සංග්‍රහය හෝ ලැයිස්තුව"
 msgid "Board"
 msgstr "පුවරුව"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} වෙතින් බෙදාගන්න"
@@ -2036,6 +2030,10 @@ msgstr "හැෂ්ටැගයක් අනුගමනය කරන්න"
 msgid "Follow a person or community"
 msgstr "පුද්ගලයෙකු හෝ ප්‍රජාවක් අනුගමනය කරන්න"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "නැවත අනුගමනය කරන්න"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "වෙනත් ජාලයකින් අනුගමනය කරන්න"
@@ -2043,10 +2041,6 @@ msgstr "වෙනත් ජාලයකින් අනුගමනය කරන
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "අනුගමනය පොරොත්තුවෙන්"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "අනුගමනය ප්‍රතික්ෂේප විය"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "කණ්ඩායම: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "හැෂ්ටැගය"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "පළ කිරීම සඟවන්න"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "ප්‍රතිඵල සඟවන්න"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "ප්‍රවේශය නැත"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ප්‍රවේශ නියමයන් කිසිවක් සැකසී නැත. මෙම සම්පතට ප්‍රවේශ විය හැක්කේ කවුද යන්න පාලනය කිරීමට නියමයන් එක් කරන්න."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "ගිණුමක් නැත"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "තවම ක්‍රියාකාරකම් නැත"
@@ -2674,6 +2671,10 @@ msgstr "සංසන්දනය නොකළේය: {0} ට වඩා විශ
 msgid "Not compared: over the size limit"
 msgstr "සංසන්දනය නොකළේය: ප්‍රමාණ සීමාව ඉක්මවයි"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "අනුගමනය නොකරයි"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "මෙනුව විවෘත කරන්න"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "සංචාලනය විවෘත කරන්න"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} හි විවෘත කරන්න"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "පළ කිරීම් සහ අදහස්"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky හි පළ කිරීම්"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub හි පළ කිරීම්"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "ෆෙඩිවර්ස් හි පළ කිරීම්"
+msgid "Posts on Bluesky"
+msgstr "Bluesky හි පළ කිරීම්"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "ප්‍රසිද්ධ"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky සංග්‍රහයක් ලෙස පළ කරන්න"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "පළ කරන ස්ථාන"
 
@@ -3392,6 +3398,10 @@ msgstr "සොයන්න..."
 msgid "Searching..."
 msgstr "සොයමින්..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "ප්‍රතිඵල පෙන්වන්න"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "තේරීම"
@@ -3520,17 +3530,13 @@ msgstr "පන්ති පෙන්වන්න"
 msgid "Show fields"
 msgstr "ක්ෂේත්‍ර පෙන්වන්න"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "අඩුවෙන් පෙන්වන්න"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "තවත් පෙන්වන්න"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "මෙම රූපයේ අදහස් පමණක් පෙන්වන්න"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "පළ කිරීම පෙන්වන්න"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "කැමරා ඉල්ලීමට පිළිතුරු ලැබ
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "සංග්‍රහය එහි පළ කිරීම් {0}ක් පළ කළේය. ඔබ ඒවා මකන්නේ නම් මිස ඒවා එහි පවතී."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "අනුගමනය යැවිය නොහැකි විය"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

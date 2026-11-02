@@ -492,15 +492,9 @@ msgstr "Να επιτρέπεται η ταξινόμηση κατά"
 msgid "Also delete posts imported from this source"
 msgstr "Διαγραφή και των δημοσιεύσεων που εισήχθησαν από αυτήν την πηγή"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Επίσης στο {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Απάντηση και από"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Δημοσίευση και σε"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Ροή ή λίστα Bluesky"
 msgid "Board"
 msgstr "Πίνακας"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Ενίσχυση από {0}"
@@ -2036,6 +2030,10 @@ msgstr "Ακολούθηση ετικέτας"
 msgid "Follow a person or community"
 msgstr "Ακολουθήστε ένα άτομο ή μια κοινότητα"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Ακολούθηση ξανά"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Ακολούθηση από άλλο δίκτυο"
@@ -2043,10 +2041,6 @@ msgstr "Ακολούθηση από άλλο δίκτυο"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Ακολούθηση σε εκκρεμότητα"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Η ακολούθηση απορρίφθηκε"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Ομάδα: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Ετικέτα"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Απόκρυψη ανάρτησης"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Απόκρυψη αποτελεσμάτων"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Χωρίς πρόσβαση"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Δεν έχουν διαμορφωθεί κανόνες πρόσβασης. Προσθέστε κανόνες για να ελέγξετε ποιος μπορεί να έχει πρόσβαση σε αυτόν τον πόρο."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Χωρίς λογαριασμό"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Δεν υπάρχει ακόμη δραστηριότητα"
@@ -2674,6 +2671,10 @@ msgstr "Δεν συγκρίθηκε: μεγαλύτερο από {0}"
 msgid "Not compared: over the size limit"
 msgstr "Δεν συγκρίθηκε: πάνω από το όριο μεγέθους"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Δεν ακολουθείτε"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Άνοιγμα μενού"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Άνοιγμα πλοήγησης"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Άνοιγμα στο {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Αναρτήσεις και σχόλια"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Αναρτήσεις στο Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Αναρτήσεις στο ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Αναρτήσεις στο Fediverse"
+msgid "Posts on Bluesky"
+msgstr "Αναρτήσεις στο Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Δημόσιο"
 msgid "Publish as a Bluesky feed"
 msgstr "Δημοσίευση ως ροή Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Δημοσίευση σε"
 
@@ -3392,6 +3398,10 @@ msgstr "Αναζήτηση..."
 msgid "Searching..."
 msgstr "Αναζήτηση..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Εμφάνιση αποτελεσμάτων"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Επιλογή"
@@ -3520,17 +3530,13 @@ msgstr "Εμφάνιση κλάσεων"
 msgid "Show fields"
 msgstr "Εμφάνιση πεδίων"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Εμφάνιση λιγότερων"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Εμφάνιση περισσότερων"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Εμφάνιση μόνο των σχολίων αυτής της εικόνας"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Εμφάνιση ανάρτησης"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Το αίτημα κάμερας δεν απαντήθηκε"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Η ροή δημοσίευσε εκεί {0} αναρτήσεις. Παραμένουν εκτός αν τις διαγράψετε."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Δεν ήταν δυνατή η αποστολή της ακολούθησης"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

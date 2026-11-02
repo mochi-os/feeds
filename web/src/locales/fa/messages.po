@@ -492,15 +492,9 @@ msgstr "اجازهٔ مرتب‌سازی بر اساس"
 msgid "Also delete posts imported from this source"
 msgstr "پست‌های وارد‌شده از این منبع را نیز حذف کن"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "همچنین در {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "همچنین پاسخ از"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "همچنین انتشار در"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "فید یا فهرست Bluesky"
 msgid "Board"
 msgstr "تابلو"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "بازنشر از {0}"
@@ -2036,6 +2030,10 @@ msgstr "دنبال کردن یک هشتگ"
 msgid "Follow a person or community"
 msgstr "دنبال کردن یک شخص یا جامعه"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "دنبال کردن دوباره"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "دنبال کردن از شبکه‌ای دیگر"
@@ -2043,10 +2041,6 @@ msgstr "دنبال کردن از شبکه‌ای دیگر"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "دنبال کردن در انتظار"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "دنبال کردن رد شد"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "گروه: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "هشتگ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "پنهان کردن پست"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "پنهان کردن نتایج"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "بدون دسترسی"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "هیچ قاعده دسترسی پیکربندی نشده است. برای کنترل دسترسی به این منبع، قاعده اضافه کنید."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "بدون حساب"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "هنوز فعالیتی وجود ندارد"
@@ -2674,6 +2671,10 @@ msgstr "مقایسه نشد: بزرگ‌تر از {0}"
 msgid "Not compared: over the size limit"
 msgstr "مقایسه نشد: بیش از حد مجاز اندازه"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "دنبال نمی‌کنید"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "باز کردن منو"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "باز کردن ناوبری"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "باز کردن در {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "پست‌ها و نظرات"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "پست‌ها در Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "پست‌ها در ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "پست‌ها در Fediverse"
+msgid "Posts on Bluesky"
+msgstr "پست‌ها در Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "عمومی"
 msgid "Publish as a Bluesky feed"
 msgstr "انتشار به‌عنوان فید Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "انتشار در"
 
@@ -3392,6 +3398,10 @@ msgstr "جست‌وجو..."
 msgid "Searching..."
 msgstr "در حال جست‌وجو..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "نمایش نتایج"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "انتخاب"
@@ -3520,17 +3530,13 @@ msgstr "نمایش کلاس‌ها"
 msgid "Show fields"
 msgstr "نمایش فیلدها"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "نمایش کمتر"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "نمایش بیشتر"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "فقط نظرهای این تصویر را نشان بده"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "نمایش پست"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "درخواست دوربین پاسخ داده نشد"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "فید {0} پست در آنجا منتشر کرده است. تا وقتی حذفشان نکنید، باقی می‌مانند."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "دنبال کردن فرستاده نشد"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

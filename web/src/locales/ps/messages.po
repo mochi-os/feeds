@@ -492,15 +492,9 @@ msgstr "د ترتیب اجازه"
 msgid "Also delete posts imported from this source"
 msgstr "د دې سرچینې څخه واردات شوي پوسټونه هم ړنګ کړئ"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "په {0} کې هم"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "له دې څخه هم ځواب ورکړئ"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "همدارنګه خپرول په"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "د Bluesky فیډ یا لیسټ"
 msgid "Board"
 msgstr "تخته"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "له {0} څخه شریک کړئ"
@@ -2036,6 +2030,10 @@ msgstr "یو هشټګ تعقیب کړئ"
 msgid "Follow a person or community"
 msgstr "یو کس یا ټولنه تعقیب کړئ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "بیا تعقیب کړئ"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "له بلې شبکې تعقیب کړئ"
@@ -2043,10 +2041,6 @@ msgstr "له بلې شبکې تعقیب کړئ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "تعقیب په تمه دی"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "تعقیب رد شو"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "ډله: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "هشټګ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "پوسټ پټ کړئ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "پایلې پټ کړئ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "د لاسرسي اجازه نشته"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "د لاسرسي قاعدې نه دي تنظیم شوې. د دې سرچینې لاسرسي د کنترول لپاره قاعدې اضافه کړئ."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "حساب نشته"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "تر اوسه هیڅ فعالیت نشته"
@@ -2674,6 +2671,10 @@ msgstr "پرتله نه شو: له {0} څخه لوی"
 msgid "Not compared: over the size limit"
 msgstr "پرتله نه شو: د اندازې له حد څخه زیات"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "تعقیب یې نه کوئ"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "مینو خلاص کړئ"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "نیویګیشن خلاص کړئ"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "په {0} کې پرانیزئ"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "لیکنې او تبصرې"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "په Bluesky کې لیکنې"
+msgid "Posts on ActivityPub"
+msgstr "په ActivityPub کې لیکنې"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "په fediverse کې لیکنې"
+msgid "Posts on Bluesky"
+msgstr "په Bluesky کې لیکنې"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "عامه"
 msgid "Publish as a Bluesky feed"
 msgstr "د Bluesky فیډ په توګه خپور کړئ"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "د خپرولو ځایونه"
 
@@ -3392,6 +3398,10 @@ msgstr "لټون..."
 msgid "Searching..."
 msgstr "د لټون په حال کې..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "پایلې وښایاست"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "ټاکنه"
@@ -3520,17 +3530,13 @@ msgstr "صنفونه وښیه"
 msgid "Show fields"
 msgstr "ساحې وښیه"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "لږ وښایاست"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "نور وښایاست"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "یوازې د دې انځور تبصرې وښایاست"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "پوسټ وښایاست"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "د کیمرې غوښتنې ته ځواب ورنکړل شو"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "فیډ هلته {0} لیکنې خپرې کړې. هغه به پاتې وي، مګر دا چې تاسو یې ړنګې کړئ."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "تعقیب ونه لېږل شو"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

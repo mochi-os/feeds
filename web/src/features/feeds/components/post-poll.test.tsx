@@ -73,6 +73,40 @@ describe('PostPoll', () => {
     show({ poll: { ...poll, expires: 1000 } })
     expect(screen.queryByRole('button', { name: 'Vote' })).toBeNull()
     expect(screen.getByText(/Closed/)).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'See results' })).toBeNull()
+  })
+
+  it('lets a reader who may still vote see the results first, and go back', async () => {
+    show()
+    expect(screen.queryByText('75%')).toBeNull()
+    await act(async () => {
+      fireEvent.click(screen.getByLabelText('Coffee'))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'See results' }))
+    })
+    expect(screen.getByText('75%')).toBeTruthy()
+    expect(screen.getByText('25%')).toBeTruthy()
+    // No vote from the results; nothing was sent.
+    expect(screen.queryByRole('button', { name: 'Vote' })).toBeNull()
+    expect(screen.queryByLabelText('Coffee')).toBeNull()
+    expect(state.vote).not.toHaveBeenCalled()
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Hide results' }))
+    })
+    expect(screen.queryByText('75%')).toBeNull()
+    // Back to the vote, the choice as it was.
+    expect(screen.getByLabelText('Coffee')).toBeChecked()
+    expect(screen.getByRole('button', { name: 'Vote' })).not.toBeDisabled()
+  })
+
+  it('offers no link where the results already show', () => {
+    const { unmount } = show({ voted: [0] })
+    expect(screen.queryByRole('button', { name: 'See results' })).toBeNull()
+    unmount()
+    show({ canVote: false })
+    expect(screen.getByText('75%')).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'See results' })).toBeNull()
   })
 })
 

@@ -492,15 +492,9 @@ msgstr "ਇਸ ਅਨੁਸਾਰ ਛਾਂਟਣ ਦੀ ਆਗਿਆ ਦਿਓ"
 msgid "Also delete posts imported from this source"
 msgstr "ਇਸ ਸਰੋਤ ਤੋਂ ਆਯਾਤ ਕੀਤੀਆਂ ਪੋਸਟਾਂ ਵੀ ਮਿਟਾਓ"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} 'ਤੇ ਵੀ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "ਇਸ ਤੋਂ ਵੀ ਜਵਾਬ ਦਿਓ"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "ਇੱਥੇ ਵੀ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰੋ"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky ਫੀਡ ਜਾਂ ਸੂਚੀ"
 msgid "Board"
 msgstr "ਬੋਰਡ"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} ਤੋਂ ਬੂਸਟ ਕਰੋ"
@@ -2036,6 +2030,10 @@ msgstr "ਹੈਸ਼ਟੈਗ ਫਾਲੋ ਕਰੋ"
 msgid "Follow a person or community"
 msgstr "ਕਿਸੇ ਵਿਅਕਤੀ ਜਾਂ ਭਾਈਚਾਰੇ ਨੂੰ ਫਾਲੋ ਕਰੋ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "ਮੁੜ ਫਾਲੋ ਕਰੋ"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "ਕਿਸੇ ਹੋਰ ਨੈੱਟਵਰਕ ਤੋਂ ਫਾਲੋ ਕਰੋ"
@@ -2043,10 +2041,6 @@ msgstr "ਕਿਸੇ ਹੋਰ ਨੈੱਟਵਰਕ ਤੋਂ ਫਾਲੋ ਕ�
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "ਫਾਲੋ ਬਕਾਇਆ ਹੈ"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "ਫਾਲੋ ਰੱਦ ਕੀਤਾ ਗਿਆ"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "ਸਮੂਹ: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ਹੈਸ਼ਟੈਗ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "ਪੋਸਟ ਲੁਕਾਓ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "ਨਤੀਜੇ ਲੁਕਾਓ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "ਪਹੁੰਚ ਨਹੀਂ"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ਕੋਈ ਪਹੁੰਚ ਨਿਯਮ ਕੌਨਫਿਗਰ ਨਹੀਂ ਕੀਤੇ। ਨਿਯਮ ਜੋੜੋ ਇਹ ਕੰਟਰੋਲ ਕਰਨ ਲਈ ਕਿ ਇਸ ਰਿਸੋਰਸ ਤੱਕ ਕੌਣ ਪਹੁੰਚ ਸਕਦਾ ਹੈ।"
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "ਕੋਈ ਖਾਤਾ ਨਹੀਂ"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "ਅਜੇ ਕੋਈ ਗਤੀਵਿਧੀ ਨਹੀਂ"
@@ -2674,6 +2671,10 @@ msgstr "ਤੁਲਨਾ ਨਹੀਂ ਕੀਤੀ ਗਈ: {0} ਤੋਂ ਵੱ�
 msgid "Not compared: over the size limit"
 msgstr "ਤੁਲਨਾ ਨਹੀਂ ਕੀਤੀ ਗਈ: ਆਕਾਰ ਸੀਮਾ ਤੋਂ ਵੱਧ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "ਫਾਲੋ ਨਹੀਂ ਕਰ ਰਹੇ"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "ਮੇਨੂ ਖੋਲ੍ਹੋ"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "ਨੈਵੀਗੇਸ਼ਨ ਖੋਲ੍ਹੋ"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} 'ਤੇ ਖੋਲ੍ਹੋ"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "ਪੋਸਟਾਂ ਅਤੇ ਟਿੱਪਣੀਆਂ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky 'ਤੇ ਪੋਸਟਾਂ"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub 'ਤੇ ਪੋਸਟਾਂ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "ਫ਼ੈਡੀਵਰਸ 'ਤੇ ਪੋਸਟਾਂ"
+msgid "Posts on Bluesky"
+msgstr "Bluesky 'ਤੇ ਪੋਸਟਾਂ"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "ਜਨਤਕ"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky ਫੀਡ ਵਜੋਂ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰੋ"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "ਇੱਥੇ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰੋ"
 
@@ -3392,6 +3398,10 @@ msgstr "ਖੋਜੋ..."
 msgid "Searching..."
 msgstr "ਖੋਜ ਰਿਹਾ ਹੈ..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "ਨਤੀਜੇ ਦਿਖਾਓ"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "ਚੋਣ"
@@ -3520,17 +3530,13 @@ msgstr "ਕਲਾਸਾਂ ਦਿਖਾਓ"
 msgid "Show fields"
 msgstr "ਫੀਲਡ ਦਿਖਾਓ"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "ਘੱਟ ਦਿਖਾਓ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "ਹੋਰ ਦਿਖਾਓ"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ਸਿਰਫ਼ ਇਸ ਤਸਵੀਰ ਦੀਆਂ ਟਿੱਪਣੀਆਂ ਦਿਖਾਓ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "ਪੋਸਟ ਦਿਖਾਓ"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "ਕੈਮਰਾ ਬੇਨਤੀ ਦਾ ਜਵਾਬ ਨਹੀਂ ਮਿ�
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "ਫੀਡ ਨੇ ਉੱਥੇ {0} ਪੋਸਟਾਂ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤੀਆਂ। ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਮਿਟਾਉਂਦੇ ਨਹੀਂ, ਉਹ ਰਹਿੰਦੀਆਂ ਹਨ।"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "ਫਾਲੋ ਨਹੀਂ ਭੇਜਿਆ ਜਾ ਸਕਿਆ"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

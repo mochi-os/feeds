@@ -492,15 +492,9 @@ msgstr "Akkaataa kana taasifachuu hayyami"
 msgid "Also delete posts imported from this source"
 msgstr "Maxxansaalee madda kana irraa dhufan illee haqi"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} irrattis"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Asiis irraa deebisi"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Akkasumas maxxansi"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Feed yookaan tarree Bluesky"
 msgid "Board"
 msgstr "Boordii"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} irraa qoodi"
@@ -2036,6 +2030,10 @@ msgstr "Haashtaagii hordofi"
 msgid "Follow a person or community"
 msgstr "Nama ykn hawaasa hordofi"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Irra deebiin hordofi"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Networkii biraa irraa hordofi"
@@ -2043,10 +2041,6 @@ msgstr "Networkii biraa irraa hordofi"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Hordoffiin eegamaa jira"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Hordoffiin didameera"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Garee: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Haashtaagii"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Maxxansa dhoksi"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Bu'aa dhoksi"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Itti seenuun hin jiru"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Seerri itti seenumsaa hin qindaa'amne. Eenyu qabeenya kana itti seenuu danda'u to'achuuf seerota dabali."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Herrega hin qabu"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Hanga ammaatti sochiin hin jiru"
@@ -2674,6 +2671,10 @@ msgstr "Hin madaalamne: {0} caalaa guddaa"
 msgid "Not compared: over the size limit"
 msgstr "Hin madaalamne: daangaa guddinaa caala"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Hin hordofamne"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Menyuu bani"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Naviigeeshinii bani"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} irratti bani"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Maxxansoota fi yaadawwan"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Maxxansoota Bluesky irratti"
+msgid "Posts on ActivityPub"
+msgstr "Maxxansoota ActivityPub irratti"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Maxxansoota fediverse irratti"
+msgid "Posts on Bluesky"
+msgstr "Maxxansoota Bluesky irratti"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Ifa"
 msgid "Publish as a Bluesky feed"
 msgstr "Akka feed Bluesky ta'uutti maxxansi"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Bakka maxxansaa"
 
@@ -3392,6 +3398,10 @@ msgstr "Barbaadi..."
 msgid "Searching..."
 msgstr "Barbaadaa jira..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Bu'aa agarsiisi"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Filannoo"
@@ -3520,17 +3530,13 @@ msgstr "Kilaasota agarsiisi"
 msgid "Show fields"
 msgstr "Dirreewwan agarsiisi"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Xiqqaa agarsiisi"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Dabalataan agarsiisi"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Yaada suuraa kanaa qofa agarsiisi"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Maxxansa agarsiisi"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Gaaffiin kaameraa deebii hin arganne"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Feed-ichi achitti maxxansoota {0} maxxanseera. Yoo ati hin haqiin achuma turu."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Hordoffii erguun hin danda'amne"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

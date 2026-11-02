@@ -33,7 +33,6 @@ import {
   toast,
   getErrorMessage,
   useAuthStore,
-  useShellStorage,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -53,7 +52,9 @@ import {
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
+import type { FeedsAnswer } from '@/hooks/use-feeds'
 import { setLastFeed } from '@/hooks/use-feeds-storage'
+import { useReadFilter } from '@/hooks/use-read-filter'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
 import { InlineFeedSearch } from '../components/inline-feed-search'
@@ -64,11 +65,14 @@ import { inListedOrder, sectionErrorFrom } from '../utils'
 interface FeedsListPageProps {
   loaderError?: string | null
   onRetryLoader?: () => void
+  /** The feed list the route loader fetched, so the page need not ask again. */
+  initial?: FeedsAnswer
 }
 
 export function FeedsListPage({
   loaderError,
   onRetryLoader,
+  initial,
 }: FeedsListPageProps) {
   const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
@@ -76,10 +80,7 @@ export function FeedsListPage({
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
-  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>(
-    'feeds-read-filter',
-    'all'
-  )
+  const [readFilter, setReadFilter] = useReadFilter()
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
@@ -106,6 +107,7 @@ export function FeedsListPage({
     hasAi,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
+    initial,
   })
 
   // Refresh both local state and Zustand store (sidebar) together
@@ -233,15 +235,6 @@ export function FeedsListPage({
     [subscribedFeeds]
   )
 
-  // Get fingerprints for WebSocket subscriptions
-  const feedFingerprints = useMemo(
-    () =>
-      subscribedFeeds
-        .map((feed) => feed.fingerprint ?? feed.id)
-        .filter(Boolean) as string[],
-    [subscribedFeeds]
-  )
-
   // Queue real-time new posts behind a "new posts available" pill instead of
   // injecting them while the user is reading the aggregate timeline.
   const newPosts = usePendingItems()
@@ -264,7 +257,7 @@ export function FeedsListPage({
   })
 
   // Connect to WebSockets for all subscribed feeds for real-time updates
-  useFeedsWebsocket(feedFingerprints, userId, undefined, (postId, feedId) => {
+  useFeedsWebsocket(subscribedFeeds, userId, undefined, (postId, feedId) => {
     // A post/create can arrive for a post the timeline already shows — RSS
     // ingestion inserts the row immediately but defers the event until AI
     // tagging completes, so a load in between sees the post before its
@@ -376,30 +369,22 @@ export function FeedsListPage({
     [handlePostReaction, markRead]
   )
 
+  // Each passes its arguments on whole, the account to answer from among
+  // them, so none is lost on the way to the request.
   const handleAddCommentAndRead = useCallback(
-    (
-      feedId: string,
-      postId: string,
-      body?: string,
-      files?: File[],
-      attachment?: string
-    ) => {
+    (...args: Parameters<typeof handleAddComment>) => {
+      const [feedId, postId] = args
       markRead(postId, feedId)
-      return handleAddComment(feedId, postId, body, files, attachment)
+      return handleAddComment(...args)
     },
     [handleAddComment, markRead]
   )
 
   const handleReplyAndRead = useCallback(
-    (
-      feedId: string,
-      postId: string,
-      parentCommentId: string,
-      body: string,
-      files?: File[]
-    ) => {
+    (...args: Parameters<typeof handleReplyToComment>) => {
+      const [feedId, postId] = args
       markRead(postId, feedId)
-      return handleReplyToComment(feedId, postId, parentCommentId, body, files)
+      return handleReplyToComment(...args)
     },
     [handleReplyToComment, markRead]
   )

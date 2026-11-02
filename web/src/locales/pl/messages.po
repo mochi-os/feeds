@@ -492,15 +492,9 @@ msgstr "Zezwól na sortowanie według"
 msgid "Also delete posts imported from this source"
 msgstr "Usuń również posty zaimportowane z tego źródła"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Również w serwisie {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Odpowiedz także z"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Opublikuj też w"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Kanał lub lista Bluesky"
 msgid "Board"
 msgstr "Tablica"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Podbij z {0}"
@@ -2036,6 +2030,10 @@ msgstr "Obserwuj hashtag"
 msgid "Follow a person or community"
 msgstr "Obserwuj osobę lub społeczność"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Obserwuj ponownie"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Obserwuj z innej sieci"
@@ -2043,10 +2041,6 @@ msgstr "Obserwuj z innej sieci"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Obserwowanie oczekuje"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Obserwowanie odrzucone"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grupa: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Ukryj wpis"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Ukryj wyniki"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Brak dostępu"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Nie skonfigurowano żadnych reguł dostępu. Dodaj reguły, aby kontrolować, kto ma dostęp do tego zasobu."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Brak konta"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Brak aktywności"
@@ -2674,6 +2671,10 @@ msgstr "Nie porównano: większy niż {0}"
 msgid "Not compared: over the size limit"
 msgstr "Nie porównano: przekracza limit rozmiaru"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Nie obserwujesz"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Otwórz menu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Otwórz nawigację"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Otwórz w {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Wpisy i komentarze"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Posty w Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Posty w ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Wpisy w fediwersum"
+msgid "Posts on Bluesky"
+msgstr "Posty w Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Publiczny"
 msgid "Publish as a Bluesky feed"
 msgstr "Opublikuj jako kanał Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Publikuj w"
 
@@ -3392,6 +3398,10 @@ msgstr "Szukaj..."
 msgid "Searching..."
 msgstr "Wyszukiwanie..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Pokaż wyniki"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Lista wyboru"
@@ -3520,17 +3530,13 @@ msgstr "Pokaż klasy"
 msgid "Show fields"
 msgstr "Pokaż pola"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Pokaż mniej"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Pokaż więcej"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Pokaż tylko komentarze do tego obrazu"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Pokaż wpis"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Żądanie kamery pozostało bez odpowiedzi"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Kanał opublikował tam posty: {0}. Pozostaną, dopóki ich nie usuniesz."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Nie udało się wysłać obserwowania"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

@@ -17,10 +17,12 @@
 		"activitypub/object": {"function": "function_activitypub_object"},
 		"activitypub/receive": {"function": "function_activitypub_receive"},
 		// The objects the account pins, for its featured collection.
-		"activitypub/featured": {"function": "function_activitypub_featured"},
+		"activitypub/featured": {"function": "function_featured"},
 		// The posts of a feed published as a Bluesky custom feed, asked for by
 		// core's feed generator when Bluesky's index wants the feed (phase 19).
 		"atproto/skeleton": {"function": "function_atproto_skeleton"},
+		// The posts the account pins, the newest its profile's pinned post.
+		"atproto/featured": {"function": "function_featured"},
 		// What core's Mastodon interface reads and writes as a hosted
 		// fediverse account (phase 28, mastodon.star).
 		"mastodon/posts": {"function": "function_mastodon_posts"},
@@ -31,6 +33,7 @@
 		"mastodon/delete": {"function": "function_mastodon_delete"},
 		"mastodon/react": {"function": "function_mastodon_react"},
 		"mastodon/save": {"function": "function_mastodon_save"},
+		"mastodon/pin": {"function": "function_mastodon_pin"},
 		"mastodon/boost": {"function": "function_mastodon_boost"},
 		"mastodon/hold": {"function": "function_mastodon_hold"},
 		"mastodon/vote": {"function": "function_mastodon_vote"},
@@ -51,11 +54,11 @@
 	},
 
 	"architecture": {"engine": "starlark", "version": 4},
-	"execute": ["lib/attachments.star", "feeds.star", "accounts.star", "mastodon.star"],
+	"execute": ["lib/attachments.star", "lib/assets.star", "lib/recommendations.star", "feeds.star", "accounts.star", "mastodon.star"],
 	"require": {"version": {"minimum": "2.0.12"}},
 
 	"database": {
-		"schema": 16,
+		"schema": 20,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -114,6 +117,7 @@
 		":feed/-/sources/remove": {"function": "action_sources_remove"},
 		":feed/-/sources/edit": {"function": "action_sources_edit"},
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
+		":feed/-/sources/follow": {"function": "action_sources_follow"},
 		":feed/-/follow": {"function": "action_follow", "public": true},
 		":feed/-/reply": {"function": "action_reply", "public": true},
 		":feed/-/:post/:comment/block": {"function": "action_comment_block"},

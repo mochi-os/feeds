@@ -492,15 +492,9 @@ msgstr "Atļaut kārtot pēc"
 msgid "Also delete posts imported from this source"
 msgstr "Dzēst arī ierakstus, kas importēti no šī avota"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Arī tīklā {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Atbildēt arī no"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Publicēt arī"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky plūsma vai saraksts"
 msgid "Board"
 msgstr "Dēlis"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Kopīgot no {0}"
@@ -2036,6 +2030,10 @@ msgstr "Sekot tēmturim"
 msgid "Follow a person or community"
 msgstr "Sekot personai vai kopienai"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Sekot vēlreiz"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Sekot no cita tīkla"
@@ -2043,10 +2041,6 @@ msgstr "Sekot no cita tīkla"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Sekošana gaida apstiprinājumu"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Sekošana noraidīta"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grupa: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Tēmturis"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Paslēpt ierakstu"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Paslēpt rezultātus"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Nav piekļuves"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Piekļuves noteikumi nav konfigurēti. Pievienojiet noteikumus, lai kontrolētu, kam ir piekļuve šim resursam."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Nav konta"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Vēl nav aktivitātes"
@@ -2674,6 +2671,10 @@ msgstr "Nav salīdzināts: lielāks par {0}"
 msgid "Not compared: over the size limit"
 msgstr "Nav salīdzināts: pārsniedz izmēra ierobežojumu"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Nesekojat"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Atvērt izvēlni"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Atvērt navigāciju"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Atvērt vietnē {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Ieraksti un komentāri"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Ieraksti Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Ieraksti ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Ieraksti fediverse tīklos"
+msgid "Posts on Bluesky"
+msgstr "Ieraksti Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Publisks"
 msgid "Publish as a Bluesky feed"
 msgstr "Publicēt kā Bluesky plūsmu"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Kur publicēt"
 
@@ -3392,6 +3398,10 @@ msgstr "Meklēt..."
 msgid "Searching..."
 msgstr "Meklē..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Rādīt rezultātus"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Izvēle"
@@ -3520,17 +3530,13 @@ msgstr "Rādīt klases"
 msgid "Show fields"
 msgstr "Rādīt laukus"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Rādīt mazāk"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Rādīt vairāk"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Rādīt tikai šī attēla komentārus"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Rādīt ierakstu"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Uz kameras pieprasījumu netika atbildēts"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Plūsma tur publicēja ierakstus: {0}. Tie paliks, ja vien jūs tos neizdzēsīsiet."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Sekošanu nevarēja nosūtīt"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

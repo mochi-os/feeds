@@ -492,15 +492,9 @@ msgstr "Ba da damar tsara ta"
 msgid "Also delete posts imported from this source"
 msgstr "Hakanan goge saƙonnin da aka shigo da su daga wannan tushe"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Har ila yau a {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Kuma amsa daga"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Haka kuma wallafa zuwa"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Jerin labarai ko jeri na Bluesky"
 msgid "Board"
 msgstr "Allo"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Haɓaka daga {0}"
@@ -2036,6 +2030,10 @@ msgstr "Bi hashtag"
 msgid "Follow a person or community"
 msgstr "Bi mutum ko al'umma"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Sake bi"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Bi daga wata hanyar sadarwa"
@@ -2043,10 +2041,6 @@ msgstr "Bi daga wata hanyar sadarwa"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Bi yana jira"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "An ƙi bi"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Rukuni: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Ɓoye post"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Ɓoye sakamako"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Babu damar shiga"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Ba a saita ka'idojin shiga ba. Ƙara ka'idoji don sarrafa wanda zai iya shiga wannan albarkatun."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Babu asusu"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Babu aiki tukuna"
@@ -2674,6 +2671,10 @@ msgstr "Ba a kwatanta ba: ya fi {0} girma"
 msgid "Not compared: over the size limit"
 msgstr "Ba a kwatanta ba: ya wuce iyakar girma"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Ba a bi ba"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Buɗe menu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Buɗe navigation"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Buɗe a {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Posts da sharhi"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Saƙonni a Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Saƙonni a ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Sakonni a fediverse"
+msgid "Posts on Bluesky"
+msgstr "Saƙonni a Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Na jama'a"
 msgid "Publish as a Bluesky feed"
 msgstr "Wallafa a matsayin jerin labarai na Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Wallafa zuwa"
 
@@ -3392,6 +3398,10 @@ msgstr "Bincika..."
 msgid "Searching..."
 msgstr "Ana bincike..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Nuna sakamako"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Zaɓi"
@@ -3520,17 +3530,13 @@ msgstr "Nuna classes"
 msgid "Show fields"
 msgstr "Nuna fagage"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Nuna kaɗan"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Nuna ƙari"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Nuna sharhin wannan hoton kawai"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Nuna post"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Ba a amsa buƙatar kyamara ba"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Jerin labarai ya wallafa saƙonni {0} a can. Za su kasance sai dai idan ka goge su."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Ba a iya aika bi ba"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

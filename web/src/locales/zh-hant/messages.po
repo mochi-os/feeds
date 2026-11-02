@@ -492,15 +492,9 @@ msgstr "允許排序依據"
 msgid "Also delete posts imported from this source"
 msgstr "同時刪除從此來源匯入的貼文"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "也發布於 {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "同時從此回覆"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "同時發布到"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky 資訊流或清單"
 msgid "Board"
 msgstr "看板"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "以 {0} 轉發"
@@ -2036,6 +2030,10 @@ msgstr "追蹤主題標籤"
 msgid "Follow a person or community"
 msgstr "追蹤使用者或社群"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "重新追蹤"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "從其他網路追蹤"
@@ -2043,10 +2041,6 @@ msgstr "從其他網路追蹤"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "追蹤待確認"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "追蹤遭拒"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "群組：{0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "主題標籤"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "隱藏貼文"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "隱藏結果"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "無存取權"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "未設定存取規則。新增規則以控制誰可以存取此資源。"
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "無帳號"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "尚無活動"
@@ -2674,6 +2671,10 @@ msgstr "未比較：大於 {0}"
 msgid "Not compared: over the size limit"
 msgstr "未比較：超過大小限制"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "未追蹤"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "開啟選單"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "開啟導覽"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "在 {0} 上開啟"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "貼文和留言"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky 上的貼文"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub 上的貼文"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "聯邦宇宙上的貼文"
+msgid "Posts on Bluesky"
+msgstr "Bluesky 上的貼文"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "公開"
 msgid "Publish as a Bluesky feed"
 msgstr "以 Bluesky 資訊流發布"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "發布到"
 
@@ -3392,6 +3398,10 @@ msgstr "搜尋..."
 msgid "Searching..."
 msgstr "搜尋中..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "顯示結果"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "選擇"
@@ -3520,17 +3530,13 @@ msgstr "顯示類別"
 msgid "Show fields"
 msgstr "顯示欄位"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "顯示較少"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "顯示更多"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "僅顯示這張圖片的評論"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "顯示貼文"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "相機要求未獲回應"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "此資訊流已在該處發布 {0} 則貼文。除非你刪除，否則它們會保留。"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "無法傳送追蹤要求"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

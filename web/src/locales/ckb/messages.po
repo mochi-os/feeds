@@ -492,15 +492,9 @@ msgstr "ڕێگە بدە بە ڕیزکردن بەپێی"
 msgid "Also delete posts imported from this source"
 msgstr "هەروەها پۆستە هاوردەکراوەکان لەم سەرچاوەوە بسڕەوە"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "هەروەها لە {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "هەروەها وەڵام بدەرەوە لە"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "هەروەها بڵاوبکەرەوە بۆ"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "فید یان لیستی Bluesky"
 msgid "Board"
 msgstr "تەختە"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "بڵاوکردنەوە لە ڕێگەی {0}"
@@ -2036,6 +2030,10 @@ msgstr "شوێنکەوتنی هاشتاگێک"
 msgid "Follow a person or community"
 msgstr "شوێنکەوتنی کەسێک یان کۆمەڵگەیەک"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "دووبارە شوێنکەوتن"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "شوێنکەوتن لە تۆڕێکی ترەوە"
@@ -2043,10 +2041,6 @@ msgstr "شوێنکەوتن لە تۆڕێکی ترەوە"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "شوێنکەوتن چاوەڕوانە"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "شوێنکەوتن ڕەتکرایەوە"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "گروپ: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "هاشتاگ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "پۆست بشارەوە"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "ئەنجامەکان بشارەوە"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "دەستڕاگەیشتن نییە"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "هیچ ڕێسایەکی دەستڕاگەیشتن ڕێکنەخراوە. ڕێسا زیاد بکە بۆ کۆنترۆڵکردنی ئەوەی کێ دەتوانێت دەستی بەم سەرچاوەیە بگات."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "هەژمار نییە"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "هێشتا هیچ چالاکییەک نییە"
@@ -2674,6 +2671,10 @@ msgstr "بەراورد نەکراوە: گەورەترە لە {0}"
 msgid "Not compared: over the size limit"
 msgstr "بەراورد نەکراوە: لە سنووری قەبارە زیاترە"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "شوێنی ناکەویت"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "کردنەوەی لیست"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "کردنەوەی ڕێدۆزی"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "لە {0} بیکەرەوە"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "پۆستەکان و بۆچوونەکان"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "پۆستەکان لە Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "پۆستەکان لە ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "پۆستەکان لەسەر Fediverse"
+msgid "Posts on Bluesky"
+msgstr "پۆستەکان لە Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "گشتی"
 msgid "Publish as a Bluesky feed"
 msgstr "بڵاوکردنەوە وەک فیدی Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "بڵاوکردنەوە بۆ"
 
@@ -3392,6 +3398,10 @@ msgstr "گەڕان..."
 msgid "Searching..."
 msgstr "گەڕان..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "ئەنجامەکان پیشان بدە"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "هەڵبژاردن"
@@ -3520,17 +3530,13 @@ msgstr "پۆلەکان پیشانبدە"
 msgid "Show fields"
 msgstr "خانەکان پیشانبدە"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "کەمتر پیشان بدە"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "زیاتر پیشان بدە"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "تەنها سەرنجەکانی ئەم وێنەیە پیشان بدە"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "پۆست پیشان بدە"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "داواکاری کامێرا وەڵام نەدرایەوە"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "فیدەکە {0} پۆستی لەوێ بڵاو کردەوە. دەمێننەوە مەگەر بیانسڕیتەوە."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "شوێنکەوتنەکە نەتوانرا بنێردرێت"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

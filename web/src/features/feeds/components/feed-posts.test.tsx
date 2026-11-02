@@ -12,9 +12,16 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { FeedPost } from '@/types'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
-import { render, screen, fireEvent, within } from '@testing-library/react'
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { feedsApi } from '@/api/feeds'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { FeedPosts } from './feed-posts'
 
@@ -22,6 +29,8 @@ import { FeedPosts } from './feed-posts'
 const mockNavigate = vi.fn()
 vi.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
+  // A post's thread builds its comments' share addresses from the router.
+  useRouter: () => ({}),
   // The timestamp permalink renders a Link; there is no router in this test,
   // so it stands in as a plain anchor. The assertions below are about the
   // card's own click handler, not about where the Link points.
@@ -34,12 +43,58 @@ vi.mock('@tanstack/react-router', () => ({
 vi.mock('@/api/feeds', () => ({
   feedsApi: {
     searchMembers: vi.fn().mockResolvedValue([]),
+    boostAccounts: vi.fn().mockResolvedValue([
+      {
+        id: 'account-1',
+        type: 'fediverse',
+        identifier: '@me@example.com',
+        name: 'Me',
+        server: 'example.com',
+        hosted: true,
+      },
+      {
+        id: 'account-2',
+        type: 'bluesky',
+        identifier: 'me.example.com',
+        name: 'Me',
+        server: 'example.com',
+        hosted: true,
+      },
+    ]),
+    boostPost: vi.fn().mockResolvedValue({ copies: [] }),
+    pinPost: vi.fn().mockResolvedValue({ pinned: 1 }),
   },
 }))
 
 // The card's children each pull their own API/store graph; the behaviour
-// under test lives on the card itself, so they render as nothing.
-vi.mock('./comment-thread', () => ({ CommentThread: () => null }))
+// under test lives on the card itself, so they render as nothing. The thread
+// stands in as what the card hands it for a reply: a draft and a send.
+vi.mock('./comment-thread', () => ({
+  CommentThread: (props: {
+    comment: { id: string; subscriberId: string }
+    avatars?: ReadonlyMap<string, string>
+    onReplyDraftChange: (value: string) => void
+    onSubmitReply: (commentId: string) => void | Promise<void>
+  }) => (
+    <div>
+      <span data-testid='avatar-source'>
+        {props.avatars?.get(props.comment.subscriberId)}
+      </span>
+      <button
+        type='button'
+        onClick={() => props.onReplyDraftChange('An answer')}
+      >
+        Type reply
+      </button>
+      <button
+        type='button'
+        onClick={() => void props.onSubmitReply(props.comment.id)}
+      >
+        Send reply
+      </button>
+    </div>
+  ),
+}))
 vi.mock('./saved-button', () => ({ SavedButton: () => null }))
 vi.mock('./post-attachments', () => ({ PostAttachments: () => null }))
 vi.mock('./attachment-comments', () => ({ AttachmentComments: () => null }))
@@ -66,7 +121,11 @@ function post(id = 'post-1', body = 'Hello world'): FeedPost {
   }
 }
 
-function renderPosts(posts: FeedPost[] = [post()]) {
+function renderPosts(
+  posts: FeedPost[] = [post()],
+  onReplyToComment: (...args: unknown[]) => void = () => {},
+  owner = true
+) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
@@ -78,12 +137,12 @@ function renderPosts(posts: FeedPost[] = [post()]) {
           commentDrafts={{}}
           onDraftChange={() => {}}
           onAddComment={() => {}}
-          onReplyToComment={() => {}}
+          onReplyToComment={onReplyToComment}
           onPostReaction={() => {}}
           onCommentReaction={() => {}}
           onEditPost={async () => true}
           onDeletePost={() => {}}
-          isFeedOwner
+          isFeedOwner={owner}
           isLoggedIn
           currentUserId='user-1'
         />
@@ -236,25 +295,273 @@ describe('FeedPosts card navigation', () => {
     expect(mockNavigate).toHaveBeenCalledTimes(1)
   })
 
-  it('links to a post\'s copies on other networks', () => {
-    renderPosts([
-      {
-        ...post(),
-        copies: [
-          {
-            address: '@alice@mastodon.social',
-            network: 'mastodon',
-            remote: '101',
-            url: 'https://mastodon.social/@alice/101',
-          },
-          { address: 'alice.bsky.social', network: 'bluesky', remote: 'at://x', url: '' },
-        ],
-      },
-    ])
-    const link = screen.getByRole('link', { name: 'Also on Mastodon' })
+  const copies = [
+    {
+      address: '@alice@mastodon.social',
+      network: 'mastodon',
+      remote: '101',
+      url: 'https://mastodon.social/@alice/101',
+    },
+    { address: 'alice.bsky.social', network: 'bluesky', remote: 'at://x', url: '' },
+  ]
+
+  it('opens a post\'s copies on other networks from its menu, not a row on the card', async () => {
+    const user = userEvent.setup()
+    renderPosts([{ ...post(), copies }])
+    expect(within(card()).queryByText(/Also on/)).toBeNull()
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    const link = await screen.findByRole('menuitem', { name: 'Open on Mastodon' })
     expect(link).toHaveAttribute('href', 'https://mastodon.social/@alice/101')
-    // A copy with no page is named without a link.
-    expect(screen.getByText('Also on Bluesky')).toBeTruthy()
-    expect(screen.queryByRole('link', { name: 'Also on Bluesky' })).toBeNull()
+    expect(link).toHaveAttribute('target', '_blank')
+    // A copy with no page has nothing to open.
+    expect(screen.queryByRole('menuitem', { name: 'Open on Bluesky' })).toBeNull()
+    expect(screen.getByRole('menuitem', { name: 'Edit post' })).toBeTruthy()
+  })
+
+  it('gives a reader who cannot manage the post a menu of its copies alone', async () => {
+    const user = userEvent.setup()
+    renderPosts([{ ...post(), isOwner: false, copies }], () => {}, false)
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    expect(
+      await screen.findByRole('menuitem', { name: 'Open on Mastodon' })
+    ).toBeTruthy()
+    expect(screen.queryByRole('menuitem', { name: 'Edit post' })).toBeNull()
+    expect(screen.queryByRole('menuitem', { name: 'Delete post' })).toBeNull()
+  })
+
+  // A hosted account's copy is the post on the user's own server, whose link
+  // leads straight back to it.
+  const hosted = {
+    address: '@alice@example.com',
+    network: 'fediverse',
+    remote: 'https://example.com/~alice/1',
+    url: 'https://example.com/~alice/1',
+  }
+
+  it('offers no link to a hosted account\'s copy, which is the post itself', async () => {
+    const user = userEvent.setup()
+    renderPosts([{ ...post(), copies: [hosted, ...copies] }])
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    expect(
+      await screen.findByRole('menuitem', { name: 'Open on Mastodon' })
+    ).toBeTruthy()
+    expect(screen.queryByRole('menuitem', { name: /ActivityPub|Fediverse/ })).toBeNull()
+  })
+
+  it('gives a reader no menu for a post whose only copy is a hosted account\'s', () => {
+    renderPosts([{ ...post(), isOwner: false, copies: [hosted] }], () => {}, false)
+    expect(
+      within(card()).queryByRole('button', { name: 'More options' })
+    ).toBeNull()
+  })
+
+  it('counts a post\'s boosts beside its reactions', () => {
+    renderPosts([{ ...post(), boosts: 3 }])
+    const count = within(card()).getByText('Boosted 3 times')
+    // In the row of reactions and actions, not under the post's text.
+    expect(count.closest('.mt-4')).not.toBeNull()
+    expect(within(card()).getByText('3')).toBeTruthy()
+  })
+
+  it('folds a post behind its content warning, a strip that opens and closes it in place', () => {
+    renderPosts([{ ...post('post-1', 'Spoilers ahead'), warning: 'Film plot' }])
+    const strip = screen.getByRole('button', { name: /Film plot/ })
+    expect(screen.queryByText('Spoilers ahead')).toBeNull()
+    expect(strip).toHaveAttribute('aria-expanded', 'false')
+    expect(within(strip).getByText('Show post')).toBeTruthy()
+
+    fireEvent.click(strip)
+    expect(screen.getByText('Spoilers ahead')).toBeTruthy()
+    expect(strip).toHaveAttribute('aria-expanded', 'true')
+    expect(within(strip).getByText('Hide post')).toBeTruthy()
+    // Opening the warning does not open the post.
+    expect(mockNavigate).not.toHaveBeenCalled()
+
+    fireEvent.click(strip)
+    expect(screen.queryByText('Spoilers ahead')).toBeNull()
+    expect(within(strip).getByText('Show post')).toBeTruthy()
+  })
+})
+
+describe('FeedPosts replying to a comment from another network', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  // A post published to a hosted fediverse account, with a comment that came
+  // back from there.
+  function published(): FeedPost {
+    return {
+      ...post(),
+      copies: [
+        {
+          address: '@me@example.com',
+          network: 'fediverse',
+          remote: 'https://example.com/~me/1',
+          url: '',
+        },
+      ],
+      comments: [
+        {
+          id: 'comment-1',
+          subscriberId: 'https://remote.example/u/bob',
+          author: 'Bob',
+          created: 1,
+          body: 'Nice',
+          format: 'html',
+          reactions: createReactionCounts(),
+          userReaction: null,
+          replies: [],
+        },
+      ],
+    }
+  }
+
+  // The server sends a comment wherever the post or the comment answered is,
+  // so there is nothing to choose before replying.
+  it('offers no account to reply from, and sends the reply as written', async () => {
+    const user = userEvent.setup()
+    const onReplyToComment = vi.fn()
+    renderPosts([published()], onReplyToComment)
+    await user.click(screen.getByRole('button', { name: 'Comment' }))
+    expect(screen.queryByRole('combobox')).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'Type reply' }))
+    await user.click(screen.getByRole('button', { name: 'Send reply' }))
+    expect(onReplyToComment).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'comment-1',
+      'An answer',
+      undefined
+    )
+  })
+})
+
+// A post from another network is boosted from the user's hosted account on
+// its own network: one from Bluesky had been offered the fediverse account,
+// which the server refuses for it.
+describe('FeedPosts boosting a post from another network', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  function from(remote: string, copies: FeedPost['copies'] = []): FeedPost {
+    const bluesky = remote.startsWith('at://')
+    return {
+      ...post(),
+      remote,
+      authorId: bluesky ? 'did:plc:alice' : 'https://there.example/u/alice',
+      copies,
+    }
+  }
+
+  async function boost(label: string) {
+    const user = userEvent.setup()
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    await user.click(await screen.findByText(label))
+    // The menu closes once the item is chosen.
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+  }
+
+  it('boosts a post from Bluesky from the hosted Bluesky account', async () => {
+    renderPosts([from('at://did:plc:alice/app.bsky.feed.post/1')])
+    await boost('Boost from me.example.com')
+    expect(feedsApi.boostPost).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'account-2',
+      true
+    )
+    expect(screen.queryByText('Boost from @me@example.com')).toBeNull()
+  })
+
+  it('boosts a post from the fediverse from the hosted fediverse account', async () => {
+    renderPosts([from('https://there.example/notes/1')])
+    await boost('Boost from @me@example.com')
+    expect(feedsApi.boostPost).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'account-1',
+      true
+    )
+  })
+
+  it("takes a boost back by its copy on the post's own network", async () => {
+    renderPosts([
+      from('at://did:plc:alice/app.bsky.feed.post/1', [
+        {
+          address: 'me.example.com',
+          network: 'bluesky',
+          remote: 'at://did:plc:me/app.bsky.feed.repost/1',
+          url: '',
+        },
+      ]),
+    ])
+    await boost('Take the boost back')
+    expect(feedsApi.boostPost).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'account-2',
+      false
+    )
+  })
+})
+
+// Pinning is done where the menu was opened: the menu closes on it, as on
+// every item that does its work in place.
+describe('FeedPosts pinning a post', () => {
+  it('pins the post and closes the menu', async () => {
+    const user = userEvent.setup()
+    renderPosts()
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    await user.click(await screen.findByText('Pin post'))
+    expect(feedsApi.pinPost).toHaveBeenCalledWith('feed-1', 'post-1', true)
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+  })
+})
+
+// A commenter's avatar route names one of their comments, so a page that
+// built each comment's own address fetched the same picture once per comment.
+describe('FeedPosts commenter avatars', () => {
+  function commented(id: string, feedId: string, by: string[]): FeedPost {
+    return {
+      ...post(id),
+      feedId,
+      comments: by.map((subscriberId, n) => ({
+        id: `${id}-comment-${n}`,
+        subscriberId,
+        author: subscriberId,
+        created: 1,
+        body: 'Nice',
+        reactions: createReactionCounts(),
+        userReaction: null,
+        replies: [],
+      })),
+    }
+  }
+
+  it('builds every comment by one person from their first comment on the page', () => {
+    renderPosts([
+      commented('post-1', 'feed-1', ['ann', 'bob']),
+      commented('post-2', 'feed-2', ['bob', 'ann']),
+    ])
+    expect(
+      screen.getAllByTestId('avatar-source').map((span) => span.textContent)
+    ).toEqual([
+      '/feed-1/-/post-1/post-1-comment-0/asset',
+      '/feed-1/-/post-1/post-1-comment-1/asset',
+      '/feed-1/-/post-1/post-1-comment-1/asset',
+      '/feed-1/-/post-1/post-1-comment-0/asset',
+    ])
   })
 })

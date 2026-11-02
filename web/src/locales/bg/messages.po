@@ -492,15 +492,9 @@ msgstr "Позволи сортиране по"
 msgid "Also delete posts imported from this source"
 msgstr "Също изтрий публикациите, импортирани от този източник"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Също в {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Отговори също от"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Публикуване и в"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Емисия или списък от Bluesky"
 msgid "Board"
 msgstr "Дъска"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Сподели от {0}"
@@ -2036,6 +2030,10 @@ msgstr "Последвай хаштаг"
 msgid "Follow a person or community"
 msgstr "Последване на човек или общност"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Последвай отново"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Последване от друга мрежа"
@@ -2043,10 +2041,6 @@ msgstr "Последване от друга мрежа"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Последването чака одобрение"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Последването е отказано"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Група: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Хаштаг"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Скрий публикацията"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Скрий резултатите"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Няма достъп"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Няма конфигурирани правила за достъп. Добавете правила, за да контролирате кой има достъп до този ресурс."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Без акаунт"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Все още няма активност"
@@ -2674,6 +2671,10 @@ msgstr "Не е сравнен: по-голям от {0}"
 msgid "Not compared: over the size limit"
 msgstr "Не е сравнен: над ограничението за размер"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Не е последван"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Отвори менюто"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Отвори навигацията"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Отваряне в {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Публикации и коментари"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Публикации в Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Публикации в ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Публикации във федиверса"
+msgid "Posts on Bluesky"
+msgstr "Публикации в Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Публичен"
 msgid "Publish as a Bluesky feed"
 msgstr "Публикувай като емисия в Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Публикуване в"
 
@@ -3392,6 +3398,10 @@ msgstr "Търси..."
 msgid "Searching..."
 msgstr "Търси се..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Покажи резултатите"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Падащ списък"
@@ -3520,17 +3530,13 @@ msgstr "Покажи класовете"
 msgid "Show fields"
 msgstr "Покажи полетата"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Покажи по-малко"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Покажи повече"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Показвай само коментарите към това изображение"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Покажи публикацията"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Заявката за камера остана без отговор"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Емисията е публикувала там {0} публикации. Те остават, освен ако не ги изтриете."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Последването не можа да бъде изпратено"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

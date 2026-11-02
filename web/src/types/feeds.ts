@@ -201,10 +201,14 @@ export interface Source {
   fetched: number
   transform: string
   // The hosted account a person is followed through, and how the follow
-  // stands: following, pending the other server's acceptance, or refused.
+  // stands: following, pending the other server's acceptance, or unfollowed,
+  // the follow gone - refused or later dropped by their server, or taken by
+  // a block.
   account?: string
-  state?: 'following' | 'pending' | 'refused' | ''
+  state?: SourceState
 }
+
+export type SourceState = 'following' | 'pending' | 'unfollowed' | ''
 
 // A keyword filter on a feed: posts naming the phrase are hidden.
 export interface Filter {

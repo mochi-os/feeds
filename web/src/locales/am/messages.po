@@ -492,15 +492,9 @@ msgstr "ደርድር በ ፍቀድ"
 msgid "Also delete posts imported from this source"
 msgstr "ከዚህ ምንጭ የገቡ ልጥፎችንም ሰርዝ"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "በ{0} ላይም"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "እንዲሁም ከዚህ ይመልሱ"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "በተጨማሪ የሚታተምበት"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "የBluesky ፊድ ወይም ዝርዝር"
 msgid "Board"
 msgstr "ሰሌዳ"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "ከ{0} አጋራ"
@@ -2036,6 +2030,10 @@ msgstr "ሃሽታግ ተከተል"
 msgid "Follow a person or community"
 msgstr "ሰውን ወይም ማህበረሰብን ተከተል"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "እንደገና ተከተል"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "ከሌላ አውታረ መረብ ይከተሉ"
@@ -2043,10 +2041,6 @@ msgstr "ከሌላ አውታረ መረብ ይከተሉ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "መከተል በመጠባበቅ ላይ"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "መከተል ተቀባይነት አላገኘም"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "ቡድን፦ {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ሃሽታግ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "ልጥፍ ደብቅ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "ውጤቶችን ደብቅ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "ምንም ድረሳ የለም"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ምንም የድረሳ ህጎች አልተዋቀሩም። ይህን ሀብት ማን እንደሚደርስ ለመቆጣጠር ህጎችን ያክሉ።"
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "መለያ የለም"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "እስካሁን ምንም እንቅስቃሴ የለም"
@@ -2674,6 +2671,10 @@ msgstr "አልተነጻጸረም፦ ከ{0} ይበልጣል"
 msgid "Not compared: over the size limit"
 msgstr "አልተነጻጸረም፦ ከመጠን ገደብ በላይ ነው"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "አልተከተሉም"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "ምናሌ ክፈት"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "ዳሰሳ ክፈት"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "በ{0} ላይ ክፈት"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "ልጥፎች እና አስተያየቶች"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "በBluesky ላይ ያሉ ልጥፎች"
+msgid "Posts on ActivityPub"
+msgstr "በActivityPub ላይ ያሉ ልጥፎች"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "በFediverse ላይ ያሉ ልጥፎች"
+msgid "Posts on Bluesky"
+msgstr "በBluesky ላይ ያሉ ልጥፎች"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "ሕዝባዊ"
 msgid "Publish as a Bluesky feed"
 msgstr "እንደ Bluesky ፊድ አትም"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "የሚታተምበት"
 
@@ -3392,6 +3398,10 @@ msgstr "ይፈልጉ..."
 msgid "Searching..."
 msgstr "በመፈለግ ላይ..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "ውጤቶችን አሳይ"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "ምርጫ"
@@ -3520,17 +3530,13 @@ msgstr "ክፍሎችን አሳይ"
 msgid "Show fields"
 msgstr "መስኮችን አሳይ"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "ያነሰ አሳይ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "ተጨማሪ አሳይ"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "በዚህ ምስል ላይ ያሉ አስተያየቶችን ብቻ አሳይ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "ልጥፍ አሳይ"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "የካሜራ ጥያቄው መልስ አላገኘም"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "ፊዱ በዚያ {0} ልጥፎችን አትሟል። ካልሰረዟቸው በስተቀር ይቆያሉ።"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "መከተሉ ሊላክ አልቻለም"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

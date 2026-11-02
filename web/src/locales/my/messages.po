@@ -492,15 +492,9 @@ msgstr "စီစဉ်ခွင့်ပြုသည်"
 msgid "Also delete posts imported from this source"
 msgstr "ဤအရင်းအမြစ်မှ တင်သွင်းထားသော ပို့စ်များကိုလည်း ဖျက်မည်"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} တွင်လည်း ရှိသည်"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "ဤမှလည်း ပြန်ကြားရန်"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "ထပ်မံ ထုတ်ဝေရန် နေရာ"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky ဖိဒ် သို့မဟုတ် စာရင်း"
 msgid "Board"
 msgstr "ဘုတ်"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} မှ မျှဝေမည်"
@@ -2036,6 +2030,10 @@ msgstr "ဟက်ရှ်တက်ကို စောင့်ကြည့်�
 msgid "Follow a person or community"
 msgstr "လူ သို့မဟုတ် အသိုင်းအဝိုင်းကို စောင့်ကြည့်မည်"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "ထပ်မံ စောင့်ကြည့်မည်"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "အခြားကွန်ရက်မှ စောင့်ကြည့်မည်"
@@ -2043,10 +2041,6 @@ msgstr "အခြားကွန်ရက်မှ စောင့်ကြည�
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "စောင့်ကြည့်မှု ဆိုင်းငံ့ထားသည်"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "စောင့်ကြည့်မှု ငြင်းပယ်ခံရသည်"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "အုပ်စု- {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ဟက်ရှ်တက်"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "ပို့စ်ကို ဝှက်ရန်"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "ရလဒ်များကို ဝှက်ရန်"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "ဝင်ရောက်ခွင့်မရှိ"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ဝင်ရောက်ခွင့်စည်းမျဉ်းများ မသတ်မှတ်ထားပါ။ ဤအရင်းအမြစ်ကို မည်သူဝင်နိုင်သည်ကို ထိန်းချုပ်ရန် စည်းမျဉ်းများ ထည့်ပါ။"
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "အကောင့်မရှိပါ"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "လှုပ်ရှားမှုများ မရှိသေးပါ"
@@ -2674,6 +2671,10 @@ msgstr "နှိုင်းယှဉ်မထားပါ - {0} ထက်က�
 msgid "Not compared: over the size limit"
 msgstr "နှိုင်းယှဉ်မထားပါ - အရွယ်အစားကန့်သတ်ချက်ကို ကျော်လွန်သည်"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "စောင့်ကြည့်မနေပါ"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "မီနူးကို ဖွင့်"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "လမ်းညွှန်မှု ကို ဖွင့်"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} တွင် ဖွင့်ရန်"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "ပို့စ်နှင့် comment များ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky ရှိ ပို့စ်များ"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub ရှိ ပို့စ်များ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Fediverse ရှိ ပို့စ်များ"
+msgid "Posts on Bluesky"
+msgstr "Bluesky ရှိ ပို့စ်များ"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "အများသုံး"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky ဖိဒ်အဖြစ် ထုတ်ဝေမည်"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "ထုတ်ဝေရန် နေရာ"
 
@@ -3392,6 +3398,10 @@ msgstr "ရှာဖွေ..."
 msgid "Searching..."
 msgstr "ရှာဖွေနေသည်..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "ရလဒ်များကို ပြရန်"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "ရွေးချယ်မှု"
@@ -3520,17 +3530,13 @@ msgstr "Class များ ပြမည်"
 msgid "Show fields"
 msgstr "ကွက်လပ်များ ပြမည်"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "လျှော့ပြရန်"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "ပိုပြရန်"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ဤပုံအပေါ် မှတ်ချက်များကိုသာ ပြရန်"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "ပို့စ်ကို ပြရန်"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "ကင်မရာ တောင်းဆိုမှုကို မဖ�
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "ဖိဒ်သည် ထိုနေရာတွင် ပို့စ် {0} ခု ထုတ်ဝေခဲ့သည်။ သင် မဖျက်မချင်း ၎င်းတို့ ကျန်ရှိနေမည်။"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "စောင့်ကြည့်မှုကို ပို့၍ မရပါ"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

@@ -492,15 +492,9 @@ msgstr "Ippermetti ssortjar bi"
 msgid "Also delete posts imported from this source"
 msgstr "Ħassar ukoll posts importati minn dan is-sors"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Ukoll fuq {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Wieġeb ukoll minn"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Ippubblika wkoll fuq"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Feed jew lista ta' Bluesky"
 msgid "Board"
 msgstr "Bord"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Aqsam minn {0}"
@@ -2036,6 +2030,10 @@ msgstr "Segwi hashtag"
 msgid "Follow a person or community"
 msgstr "Segwi persuna jew komunità"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Erġa' segwi"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Segwi minn netwerk ieħor"
@@ -2043,10 +2041,6 @@ msgstr "Segwi minn netwerk ieħor"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Segwiment pendenti"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Segwiment miċħud"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grupp: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Aħbi l-post"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Aħbi r-riżultati"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "L-ebda aċċess"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "L-ebda regoli ta' aċċess ikkonfigurati. Żid regoli biex tikkontrolla min jista' jaċċessa din ir-riżorsa."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "L-ebda kont"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "L-ebda attività s'issa"
@@ -2674,6 +2671,10 @@ msgstr "Mhux imqabbel: akbar minn {0}"
 msgid "Not compared: over the size limit"
 msgstr "Mhux imqabbel: jaqbeż il-limitu tad-daqs"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Mhux qed issegwi"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Iftaħ menu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Iftaħ navigazzjoni"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Iftaħ fuq {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Posts u kummenti"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Posts fuq Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Posts fuq ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Posts fuq il-fediverse"
+msgid "Posts on Bluesky"
+msgstr "Posts fuq Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Pubbliku"
 msgid "Publish as a Bluesky feed"
 msgstr "Ippubblika bħala feed ta' Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Ippubblika fuq"
 
@@ -3392,6 +3398,10 @@ msgstr "Fittex..."
 msgid "Searching..."
 msgstr "Qed ifittex..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Uri r-riżultati"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Għażla"
@@ -3520,17 +3530,13 @@ msgstr "Uri klassijiet"
 msgid "Show fields"
 msgstr "Uri kampi"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Uri inqas"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Uri aktar"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Uri biss il-kummenti fuq din l-immaġni"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Uri l-post"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "It-talba għall-kamera ma twiġbitx"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Il-feed ippubblika {0} posts hemmhekk. Jibqgħu sakemm ma tħassarhomx."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Is-segwiment ma setax jintbagħat"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

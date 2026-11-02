@@ -14,6 +14,7 @@ import {
   ConfirmDialog,
   EntityAvatar,
   authenticatedUrl,
+  AssetImage,
   getAppPath,
   normalizeEntityUrl,
   MentionTextarea,
@@ -40,7 +41,7 @@ import {
   Trash2,
   VolumeX,
 } from 'lucide-react'
-import endpoints from '@/api/endpoints'
+import { commentAssets } from '../author-assets'
 import { sanitizeHtml } from '../utils'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
@@ -85,6 +86,11 @@ type CommentThreadProps = {
   onOpenAttachment?: (attachmentId: string) => void
   /** The full address of a comment, for its Share button. */
   shareUrl?: (commentId: string) => string
+  /**
+   * One asset address per commenter across the list (`authorAssets`), so a
+   * commenter's avatar and style are fetched once, not once per comment.
+   */
+  avatars?: ReadonlyMap<string, string>
 }
 
 export function CommentThread({
@@ -111,6 +117,7 @@ export function CommentThread({
   onSearchPeople,
   onOpenAttachment,
   shareUrl,
+  avatars,
 }: CommentThreadProps) {
   const { formatTimestamp } = useFormat()
   const [collapsed, setCollapsed] = useState(false)
@@ -202,8 +209,10 @@ export function CommentThread({
   const iconActionButtonClass =
     'inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active'
 
-  const assetUrl = (slot: string) =>
-    `${getAppPath()}/${endpoints.feeds.comment.asset(feedId, postId, comment.id, slot)}`
+  const assets =
+    avatars?.get(comment.subscriberId) ??
+    commentAssets(feedId, postId, comment.id)
+  const assetUrl = (slot: string) => `${assets}/${slot}`
   const avatar = (
     <EntityAvatar
       src={assetUrl('avatar')}
@@ -273,7 +282,7 @@ export function CommentThread({
               title={comment.attachmentName || t`On this image`}
               aria-label={t`View the image this comment is about`}
             >
-              <img
+              <AssetImage
                 src={authenticatedUrl(
                   normalizeEntityUrl(
                     `${getAppPath()}/${feedId}/-/attachments/${comment.attachment}/thumbnail`
@@ -497,19 +506,20 @@ export function CommentThread({
       </div>
 
       {isReplying && (
-        <CommentBox
-          kind='reply'
-          className='mt-2 border-t pt-2'
-          value={replyDraft}
-          onValueChange={onReplyDraftChange}
-          onSubmit={handleSubmitReply}
-          onClose={requestCloseReply}
-          onFilesChange={handleReplyFilesChange}
-          onSearchPeople={onSearchPeople}
-          progress={progress}
-          placeholder={t`Reply to ${comment.author}...`}
-          autoFocus
-        />
+        <div className='mt-2 border-t pt-2'>
+          <CommentBox
+            kind='reply'
+            value={replyDraft}
+            onValueChange={onReplyDraftChange}
+            onSubmit={handleSubmitReply}
+            onClose={requestCloseReply}
+            onFilesChange={handleReplyFilesChange}
+            onSearchPeople={onSearchPeople}
+            progress={progress}
+            placeholder={t`Reply to ${comment.author}...`}
+            autoFocus
+          />
+        </div>
       )}
 
       <ConfirmDialog
@@ -603,6 +613,7 @@ export function CommentThread({
           onSearchPeople={onSearchPeople}
           onOpenAttachment={onOpenAttachment}
           shareUrl={shareUrl}
+          avatars={avatars}
         />
       ))}
     </>

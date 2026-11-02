@@ -492,15 +492,9 @@ msgstr "Иҷозати ҷобаҷогузорӣ аз рӯи"
 msgid "Also delete posts imported from this source"
 msgstr "Ҳамчунин паёмҳои аз ин манбаъ воридшударо нест кунед"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Инчунин дар {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Инчунин аз ин ҷавоб додан"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Инчунин нашр дар"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Фид ё рӯйхати Bluesky"
 msgid "Board"
 msgstr "Тахта"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Мубодила аз {0}"
@@ -2036,6 +2030,10 @@ msgstr "Обуна шудан ба хештег"
 msgid "Follow a person or community"
 msgstr "Обуна ба шахс ё ҷомеа"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Аз нав обуна шудан"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Аз шабакаи дигар обуна шудан"
@@ -2043,10 +2041,6 @@ msgstr "Аз шабакаи дигар обуна шудан"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Обуна дар интизор"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Обуна рад карда шуд"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Гурӯҳ: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Хештег"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Пинҳон кардани паём"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Пинҳон кардани натиҷаҳо"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Дастрасӣ нест"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Ягон қоидаи дастрасӣ танзим нашудааст. Барои назорати касе ки ба ин манбаъ дастрасӣ дорад қоидаҳо илова кунед."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Ҳисоб нест"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "То ҳол ягон фаъолият нест"
@@ -2674,6 +2671,10 @@ msgstr "Муқоиса нашуд: калонтар аз {0}"
 msgid "Not compared: over the size limit"
 msgstr "Муқоиса нашуд: аз ҳадди андоза зиёд"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Обуна нашудаед"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Кушодани меню"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Кушодани навигатсия"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Дар {0} кушодан"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Постҳо ва шарҳҳо"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Постҳо дар Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Постҳо дар ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Постҳо дар федиверс"
+msgid "Posts on Bluesky"
+msgstr "Постҳо дар Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Ҷамъиятӣ"
 msgid "Publish as a Bluesky feed"
 msgstr "Нашр ҳамчун фиди Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Нашр дар"
 
@@ -3392,6 +3398,10 @@ msgstr "Ҷустуҷӯ..."
 msgid "Searching..."
 msgstr "Ҷустуҷӯ карда мешавад..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Нишон додани натиҷаҳо"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Интихоб"
@@ -3520,17 +3530,13 @@ msgstr "Синфҳоро нишон додан"
 msgid "Show fields"
 msgstr "Майдонҳоро нишон додан"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Камтар нишон додан"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Бештар нишон додан"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Танҳо шарҳҳои ин тасвирро нишон додан"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Нишон додани паём"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Ба дархости камера ҷавоб дода нашуд"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Фид дар он ҷо {0} пост нашр кард. Онҳо то он даме ки нест накунед, боқӣ мемонанд."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Обунаро фиристодан нашуд"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

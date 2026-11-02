@@ -492,15 +492,9 @@ msgstr "Tillat sortering etter"
 msgid "Also delete posts imported from this source"
 msgstr "Slett òg innlegg importerte frå denne kjelda"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Òg på {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Svar òg frå"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Publiser òg til"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky-straum eller -liste"
 msgid "Board"
 msgstr "Tavle"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Framhev frå {0}"
@@ -2036,6 +2030,10 @@ msgstr "Følg ein emneknagg"
 msgid "Follow a person or community"
 msgstr "Følg ein person eller eit fellesskap"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Følg igjen"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Følg frå eit anna nettverk"
@@ -2043,10 +2041,6 @@ msgstr "Følg frå eit anna nettverk"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Følging ventar"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Følging avvist"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Gruppe: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Emneknagg"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Gøym innlegget"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Gøym resultata"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Ingen tilgang"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Ingen tilgangsreglar er sette opp. Legg til reglar for å styra kven som har tilgang til denne ressursen."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Ingen konto"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Ingen aktivitet enno"
@@ -2674,6 +2671,10 @@ msgstr "Ikkje samanlikna: større enn {0}"
 msgid "Not compared: over the size limit"
 msgstr "Ikkje samanlikna: over storleiksgrensa"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Følgjer ikkje"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Opna meny"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Opna navigasjon"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Opne på {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Innlegg og kommentarar"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Innlegg på Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Innlegg på ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Innlegg på fediverset"
+msgid "Posts on Bluesky"
+msgstr "Innlegg på Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Offentleg"
 msgid "Publish as a Bluesky feed"
 msgstr "Publiser som Bluesky-straum"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Publiser til"
 
@@ -3392,6 +3398,10 @@ msgstr "Søk..."
 msgid "Searching..."
 msgstr "Søkjer..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Vis resultata"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Val"
@@ -3520,17 +3530,13 @@ msgstr "Vis klassar"
 msgid "Show fields"
 msgstr "Vis felt"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Vis mindre"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Vis meir"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Vis berre kommentarar til dette biletet"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Vis innlegget"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Kameraførespurnaden vart ikkje svara på"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Straumen publiserte {0} innlegg der. Dei blir verande med mindre du slettar dei."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Klarte ikkje å sende følginga"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

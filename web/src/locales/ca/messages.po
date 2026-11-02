@@ -492,15 +492,9 @@ msgstr "Permet ordenar per"
 msgid "Also delete posts imported from this source"
 msgstr "Elimina també les publicacions importades d'aquesta font"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "També a {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Respon també des de"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Publica també a"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Canal o llista de Bluesky"
 msgid "Board"
 msgstr "Tauler"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Impulsa des de {0}"
@@ -2036,6 +2030,10 @@ msgstr "Segueix una etiqueta"
 msgid "Follow a person or community"
 msgstr "Segueix una persona o una comunitat"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Torna a seguir"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Segueix des d'una altra xarxa"
@@ -2043,10 +2041,6 @@ msgstr "Segueix des d'una altra xarxa"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Seguiment pendent"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Seguiment rebutjat"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grup: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Etiqueta"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Amaga la publicació"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Amaga els resultats"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Sense accés"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "No s'han configurat regles d'accés. Afegeix regles per controlar qui pot accedir a aquest recurs."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Cap compte"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Encara no hi ha activitat"
@@ -2674,6 +2671,10 @@ msgstr "No s'ha comparat: més gran que {0}"
 msgid "Not compared: over the size limit"
 msgstr "No s'ha comparat: supera el límit de mida"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "No el segueixes"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Obre el menú"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Obre la navegació"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Obre a {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Publicacions i comentaris"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Publicacions a Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Publicacions a ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Publicacions al fedivers"
+msgid "Posts on Bluesky"
+msgstr "Publicacions a Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Públic"
 msgid "Publish as a Bluesky feed"
 msgstr "Publica com a canal de Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Publica a"
 
@@ -3392,6 +3398,10 @@ msgstr "Cerca..."
 msgid "Searching..."
 msgstr "Cercant..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Mostra els resultats"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Selecció"
@@ -3520,17 +3530,13 @@ msgstr "Mostra classes"
 msgid "Show fields"
 msgstr "Mostra camps"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Mostra'n menys"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Mostra'n més"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Mostra només els comentaris d'aquesta imatge"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Mostra la publicació"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "La sol·licitud de càmera no s'ha respost"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "El canal hi ha publicat {0} publicacions. Es mantenen tret que les suprimeixis."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "No s'ha pogut enviar el seguiment"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

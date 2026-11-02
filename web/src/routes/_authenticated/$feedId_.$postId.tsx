@@ -231,7 +231,13 @@ function SinglePostPage() {
     ) => {
       if (!body) return
       try {
-        const payload = { feed: postFeedId, post: pId, body, files, attachment }
+        const payload = {
+          feed: postFeedId,
+          post: pId,
+          body,
+          files,
+          attachment,
+        }
         if (files?.length) {
           await uploadComment(
             (onProgress) => feedsApi.createComment(payload, onProgress),

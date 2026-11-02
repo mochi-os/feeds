@@ -492,15 +492,9 @@ msgstr "Luba sortimine"
 msgid "Also delete posts imported from this source"
 msgstr "Kustuta ka sellest allikast imporditud postitused"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Ka võrgus {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Vasta ka kontolt"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Avalda ka"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky voog või loend"
 msgid "Board"
 msgstr "Tahvel"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Jaga kontolt {0}"
@@ -2036,6 +2030,10 @@ msgstr "Jälgi teemaviidet"
 msgid "Follow a person or community"
 msgstr "Jälgi inimest või kogukonda"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Jälgi uuesti"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Jälgi teisest võrgust"
@@ -2043,10 +2041,6 @@ msgstr "Jälgi teisest võrgust"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Jälgimine ootel"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Jälgimine keelatud"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Rühm: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Teemaviide"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Peida postitus"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Peida tulemused"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Juurdepääs puudub"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Juurdepääsureegleid pole seadistatud. Lisa reeglid, et määrata, kes pääseb sellele ressursile ligi."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Kontota"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Tegevust veel pole"
@@ -2674,6 +2671,10 @@ msgstr "Võrdlemata: suurem kui {0}"
 msgid "Not compared: over the size limit"
 msgstr "Võrdlemata: üle suuruspiirangu"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Ei jälgi"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Ava menüü"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Ava navigatsioon"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Ava võrgus {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Postitused ja kommentaarid"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky postitused"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub postitused"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Postitused fediverse'is"
+msgid "Posts on Bluesky"
+msgstr "Bluesky postitused"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Avalik"
 msgid "Publish as a Bluesky feed"
 msgstr "Avalda Bluesky voona"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Kuhu avaldada"
 
@@ -3392,6 +3398,10 @@ msgstr "Otsi..."
 msgid "Searching..."
 msgstr "Otsimine..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Näita tulemusi"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Valik"
@@ -3520,17 +3530,13 @@ msgstr "Näita klasse"
 msgid "Show fields"
 msgstr "Näita välju"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Näita vähem"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Näita rohkem"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Näita ainult selle pildi kommentaare"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Näita postitust"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Kaamera päringule ei vastatud"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Voog avaldas sinna postitusi: {0}. Need jäävad alles, kui sa neid ei kustuta."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Jälgimist ei õnnestunud saata"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

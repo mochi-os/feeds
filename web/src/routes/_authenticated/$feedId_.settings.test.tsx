@@ -9,7 +9,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { feedsApi } from '@/api/feeds'
-import { SubscribersSection } from './$feedId_.settings'
+import { SubscribersSection, settingsTabs } from './$feedId_.settings'
 
 vi.mock('@/api/feeds', () => ({
   feedsApi: {
@@ -147,5 +147,34 @@ describe('SubscribersSection', () => {
 
     await screen.findByRole('status')
     expect(screen.queryByText('Subscriber One')).not.toBeInTheDocument()
+  })
+})
+
+describe('settingsTabs', () => {
+  it('puts Publish to before Access where the feed has somewhere to publish', () => {
+    expect(settingsTabs(undefined, true)).toEqual({
+      tabs: ['general', 'publish', 'access'],
+      active: 'general',
+    })
+    expect(settingsTabs('publish', true).active).toBe('publish')
+  })
+
+  it('leaves Publish to out where there is nowhere to publish, and opens the settings for a link to it', () => {
+    expect(settingsTabs('publish', false)).toEqual({
+      tabs: ['general', 'access'],
+      active: 'general',
+    })
+    expect(settingsTabs('access', false).active).toBe('access')
+  })
+
+  it('keeps a link to Publish to while that is asked', () => {
+    expect(settingsTabs('publish', undefined)).toEqual({
+      tabs: ['general', 'publish', 'access'],
+      active: 'publish',
+    })
+    expect(settingsTabs(undefined, undefined).tabs).toEqual([
+      'general',
+      'access',
+    ])
   })
 })

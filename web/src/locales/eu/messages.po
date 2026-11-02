@@ -492,15 +492,9 @@ msgstr "Baimendu honela ordenatzea"
 msgid "Also delete posts imported from this source"
 msgstr "Ezabatu, gainera, iturri honetatik inportatutako argitalpenak"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0}(e)n ere bai"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Erantzun hemendik ere"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Argitaratu hemen ere"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky jarioa edo zerrenda"
 msgid "Board"
 msgstr "Taula"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Bultzatu {0} kontutik"
@@ -2036,6 +2030,10 @@ msgstr "Jarraitu traola bati"
 msgid "Follow a person or community"
 msgstr "Jarraitu pertsona edo komunitate bat"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Jarraitu berriro"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Jarraitu beste sare batetik"
@@ -2043,10 +2041,6 @@ msgstr "Jarraitu beste sare batetik"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Jarraipena zain"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Jarraipena ukatuta"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Taldea: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Traola"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Ezkutatu argitalpena"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Ezkutatu emaitzak"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Sarbiderik ez"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Ez da sarbide-araurik konfiguratu. Gehitu arauak baliabide honetara nork sarbidea duen kontrolatzeko."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Konturik ez"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Oraindik jardueririk ez"
@@ -2674,6 +2671,10 @@ msgstr "Ez da konparatu: {0} baino handiagoa"
 msgid "Not compared: over the size limit"
 msgstr "Ez da konparatu: tamaina-muga gainditzen du"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Ez duzu jarraitzen"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Ireki menua"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Ireki nabigazioa"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Ireki hemen: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Argitalpenak eta iruzkinak"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky-ko argitalpenak"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub-ko argitalpenak"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Fedibertsoko argitalpenak"
+msgid "Posts on Bluesky"
+msgstr "Bluesky-ko argitalpenak"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Publikoa"
 msgid "Publish as a Bluesky feed"
 msgstr "Argitaratu Bluesky jario gisa"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Argitaratu hemen"
 
@@ -3392,6 +3398,10 @@ msgstr "Bilatu..."
 msgid "Searching..."
 msgstr "Bilatzen..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Erakutsi emaitzak"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Hautapena"
@@ -3520,17 +3530,13 @@ msgstr "Erakutsi klaseak"
 msgid "Show fields"
 msgstr "Erakutsi eremuak"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Erakutsi gutxiago"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Erakutsi gehiago"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Erakutsi irudi honetako iruzkinak soilik"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Erakutsi argitalpena"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Kamera eskaerak ez du erantzunik jaso"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Jarioak {0} argitalpen argitaratu ditu han. Bertan geratzen dira ezabatzen ez badituzu."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Ezin izan da jarraipena bidali"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

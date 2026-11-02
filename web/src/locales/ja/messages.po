@@ -492,15 +492,9 @@ msgstr "並べ替えを許可"
 msgid "Also delete posts imported from this source"
 msgstr "このソースから取り込まれた投稿も削除する"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} にも投稿"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "こちらからも返信"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "あわせて公開する先"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky のフィードまたはリスト"
 msgid "Board"
 msgstr "ボード"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} からブースト"
@@ -2036,6 +2030,10 @@ msgstr "ハッシュタグをフォロー"
 msgid "Follow a person or community"
 msgstr "人またはコミュニティをフォロー"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "もう一度フォロー"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "別のネットワークからフォロー"
@@ -2043,10 +2041,6 @@ msgstr "別のネットワークからフォロー"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "フォロー承認待ち"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "フォローが拒否されました"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "グループ: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ハッシュタグ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "投稿を隠す"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "結果を隠す"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "アクセスなし"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "アクセスルールが設定されていません。このリソースへのアクセスを制御するルールを追加してください。"
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "アカウントなし"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "まだアクティビティがありません"
@@ -2674,6 +2671,10 @@ msgstr "比較されていません: {0} を超えています"
 msgid "Not compared: over the size limit"
 msgstr "比較されていません: サイズ制限を超えています"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "フォローしていません"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "メニューを開く"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "ナビゲーションを開く"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} で開く"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "投稿とコメント"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky の投稿"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub の投稿"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "フェディバースの投稿"
+msgid "Posts on Bluesky"
+msgstr "Bluesky の投稿"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "公開"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky フィードとして公開"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "公開先"
 
@@ -3392,6 +3398,10 @@ msgstr "検索…"
 msgid "Searching..."
 msgstr "検索中..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "結果を表示"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "セレクト"
@@ -3520,17 +3530,13 @@ msgstr "クラスを表示"
 msgid "Show fields"
 msgstr "フィールドを表示"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "折りたたむ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "もっと見る"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "この画像へのコメントのみ表示"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "投稿を表示"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "カメラの要求に応答がありませんでした"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "このフィードはそこに {0} 件の投稿を公開しました。削除しない限り残ります。"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "フォローを送信できませんでした"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

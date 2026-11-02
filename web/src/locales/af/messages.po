@@ -492,15 +492,9 @@ msgstr "Laat sortering toe volgens"
 msgid "Also delete posts imported from this source"
 msgstr "Verwyder ook plasings ingevoer vanaf hierdie bron"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Ook op {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Antwoord ook van"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Plaas ook op"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky-voer of -lys"
 msgid "Board"
 msgstr "Bord"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Versterk vanaf {0}"
@@ -2036,6 +2030,10 @@ msgstr "Volg 'n hutsetiket"
 msgid "Follow a person or community"
 msgstr "Volg 'n persoon of gemeenskap"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Volg weer"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Volg vanaf 'n ander netwerk"
@@ -2043,10 +2041,6 @@ msgstr "Volg vanaf 'n ander netwerk"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Volgversoek hangende"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Volgversoek geweier"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Groep: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hutsetiket"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Versteek plasing"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Versteek resultate"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Geen toegang"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Geen toegangsreëls gekonfigureer nie. Voeg reëls by om te beheer wie toegang tot hierdie hulpbron het."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Geen rekening"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Nog geen aktiwiteit nie"
@@ -2674,6 +2671,10 @@ msgstr "Nie vergelyk nie: groter as {0}"
 msgid "Not compared: over the size limit"
 msgstr "Nie vergelyk nie: bo die groottelimiet"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Volg nie"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Maak kieslys oop"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Maak navigasie oop"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Maak oop op {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Plasings en kommentaar"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Plasings op Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Plasings op ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Plasings op die fediverse"
+msgid "Posts on Bluesky"
+msgstr "Plasings op Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Publiek"
 msgid "Publish as a Bluesky feed"
 msgstr "Publiseer as 'n Bluesky-voer"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Publiseer na"
 
@@ -3392,6 +3398,10 @@ msgstr "Soek..."
 msgid "Searching..."
 msgstr "Besig om te soek..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Wys resultate"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Keuselys"
@@ -3520,17 +3530,13 @@ msgstr "Wys klasse"
 msgid "Show fields"
 msgstr "Wys velde"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Wys minder"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Wys meer"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Wys slegs kommentaar op hierdie beeld"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Wys plasing"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Die kameraversoek is nie beantwoord nie"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Die voer het {0} plasings daar gepubliseer. Hulle bly tensy jy hulle verwyder."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Die volgversoek kon nie gestuur word nie"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

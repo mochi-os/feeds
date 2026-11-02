@@ -492,15 +492,9 @@ msgstr "Idinkeun urutkeun ku"
 msgid "Also delete posts imported from this source"
 msgstr "Hapus ogé pos nu diimpor ti sumber ieu"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Ogé di {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Bales ogé ti"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Medalkeun ogé ka"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Feed atawa daptar Bluesky"
 msgid "Board"
 msgstr "Papan"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Bagikeun ti {0}"
@@ -2036,6 +2030,10 @@ msgstr "Turutan tagar"
 msgid "Follow a person or community"
 msgstr "Turutan jalma atawa komunitas"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Turutan deui"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Turutan ti jaringan séjén"
@@ -2043,10 +2041,6 @@ msgstr "Turutan ti jaringan séjén"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Nuturkeun keur ditungguan"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Nuturkeun ditolak"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grup: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Tagar"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Sumputkeun pos"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Sumputkeun hasil"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Teu boga aksés"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Euweuh aturan aksés. Tambahan aturan pikeun ngatur saha nu bisa ngakses sumber ieu."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Teu aya akun"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Tacan aya kagiatan"
@@ -2674,6 +2671,10 @@ msgstr "Teu dibandingkeun: leuwih badag ti {0}"
 msgid "Not compared: over the size limit"
 msgstr "Teu dibandingkeun: ngaleuwihan wates ukuran"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Teu nuturkeun"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Buka menu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Buka navigasi"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Buka di {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Pos jeung koméntar"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Pos di Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Pos di ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Pos di fediverse"
+msgid "Posts on Bluesky"
+msgstr "Pos di Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Publik"
 msgid "Publish as a Bluesky feed"
 msgstr "Medalkeun salaku feed Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Medalkeun ka"
 
@@ -3392,6 +3398,10 @@ msgstr "Paluruh..."
 msgid "Searching..."
 msgstr "Maluruh..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Témbongkeun hasil"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Pilihan"
@@ -3520,17 +3530,13 @@ msgstr "Tembongkeun kelas"
 msgid "Show fields"
 msgstr "Tembongkeun widang"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Témbongkeun saeutik"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Témbongkeun leuwih loba"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Tampilkeun ukur koméntar dina gambar ieu"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Témbongkeun pos"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Paménta kaméra teu diwaler"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Feed medalkeun {0} pos di dinya. Éta bakal tetep aya iwal anjeun ngahapusna."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Paménta nuturkeun teu bisa dikirim"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

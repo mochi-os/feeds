@@ -492,15 +492,9 @@ msgstr "ترتيب جي اجازت ڏيو"
 msgid "Also delete posts imported from this source"
 msgstr "هن ذريعي مان درآمد ٿيل پوسٽون پڻ ختم ڪريو"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} تي پڻ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "هن مان به جواب ڏيو"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "هتي به شايع ڪريو"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky فيڊ يا لسٽ"
 msgid "Board"
 msgstr "بورڊ"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} مان بوسٽ ڪريو"
@@ -2036,6 +2030,10 @@ msgstr "هيش ٽيگ فالو ڪريو"
 msgid "Follow a person or community"
 msgstr "ڪنهن شخص يا برادري کي فالو ڪريو"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "ٻيهر فالو ڪريو"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "ٻئي نيٽ ورڪ مان فالو ڪريو"
@@ -2043,10 +2041,6 @@ msgstr "ٻئي نيٽ ورڪ مان فالو ڪريو"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "فالو التوا ۾"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "فالو رد ٿيو"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "گروپ: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "هيش ٽيگ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "پوسٽ لڪايو"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "نتيجا لڪايو"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "ڪو رسائي نه"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ڪي به رسائي قاعدا ترتيب نه ڏنا ويا. هن وسيلي تائين رسائي ڪنٽرول ڪرڻ لاءِ قاعدا شامل ڪريو."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "ڪو اڪائونٽ ناهي"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "اڃا ڪا سرگرمي نه آهي"
@@ -2674,6 +2671,10 @@ msgstr "ڀيٽ نه ڪئي وئي: {0} کان وڏي"
 msgid "Not compared: over the size limit"
 msgstr "ڀيٽ نه ڪئي وئي: سائيز جي حد کان وڌيڪ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "فالو نه ڪري رهيا آهيو"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "مينيو کوليو"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "نيويگيشن کوليو"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} تي کوليو"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "پوسٽون ۽ تبصرا"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky تي پوسٽون"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub تي پوسٽون"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Fediverse تي پوسٽون"
+msgid "Posts on Bluesky"
+msgstr "Bluesky تي پوسٽون"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "عوامي"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky فيڊ طور شايع ڪريو"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "شايع ڪرڻ جا هنڌ"
 
@@ -3392,6 +3398,10 @@ msgstr "ڳوليو..."
 msgid "Searching..."
 msgstr "ڳولي رهيو آهي..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "نتيجا ڏيکاريو"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "چونڊ"
@@ -3520,17 +3530,13 @@ msgstr "ڪلاسز ڏيکاريو"
 msgid "Show fields"
 msgstr "فيلڊ ڏيکاريو"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "گهٽ ڏيکاريو"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "وڌيڪ ڏيکاريو"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "صرف هن تصوير جا تبصرا ڏيکاريو"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "پوسٽ ڏيکاريو"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "ڪئميرا درخواست جو جواب نه مليو"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "فيڊ اتي {0} پوسٽون شايع ڪيون. اهي تيستائين رهنديون جيستائين اوهان انهن کي ختم نه ڪريو."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "فالو موڪلي نه سگهيو"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

@@ -492,15 +492,9 @@ msgstr "Jẹ́ kí a tò nípa"
 msgid "Also delete posts imported from this source"
 msgstr "Bákan náà pa àwọn ìfìránṣẹ́ tí a kó wọlé láti orísun yìí rẹ́"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Ó tún wà lórí {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Dáhùn pẹ̀lú láti"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Tún tẹ̀jáde sí"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Fíìdì tàbí àkójọ Bluesky"
 msgid "Board"
 msgstr "Pátákó"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Gbé e ga láti {0}"
@@ -2036,6 +2030,10 @@ msgstr "Tẹ̀lé hashtag kan"
 msgid "Follow a person or community"
 msgstr "Tẹ̀lé ènìyàn tàbí àwùjọ kan"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Tẹ̀lé lẹ́ẹ̀kan sí i"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Tẹ̀lé láti nẹ́tíwọ́kì mìíràn"
@@ -2043,10 +2041,6 @@ msgstr "Tẹ̀lé láti nẹ́tíwọ́kì mìíràn"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Ìtẹ̀lé ń dúró"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "A kọ ìtẹ̀lé"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Ẹgbẹ́: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Fi ìfìránṣẹ́ pamọ́"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Fi àbájáde pamọ́"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Kò sí àyè"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "A kò ṣètò àwọn òfin àyè kankan. Fi àwọn òfin kún láti ṣàkóso ẹni tó lè ní àyè sí ohun àmúṣọ̀rọ̀ yìí."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Kò sí àkàǹtì"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Kò sí iṣẹ́ síbẹ̀"
@@ -2674,6 +2671,10 @@ msgstr "Kò ṣe àfiwé: tóbi ju {0} lọ"
 msgid "Not compared: over the size limit"
 msgstr "Kò ṣe àfiwé: kọjá ààlà ìwọ̀n"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Kò tẹ̀lé"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Ṣí ìtòlẹ́sẹẹsẹ"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Ṣí ìṣàkóso"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Ṣí lórí {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Àwọn ìfìránṣẹ́ àti àlàyé"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Àwọn ìfìránṣẹ́ lórí Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Àwọn ìfìránṣẹ́ lórí ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Àwọn ìfìránṣẹ́ lórí fediverse"
+msgid "Posts on Bluesky"
+msgstr "Àwọn ìfìránṣẹ́ lórí Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Gbangba"
 msgid "Publish as a Bluesky feed"
 msgstr "Tẹ̀jáde gẹ́gẹ́ bí fíìdì Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Tẹ̀jáde sí"
 
@@ -3392,6 +3398,10 @@ msgstr "Wá..."
 msgid "Searching..."
 msgstr "Ń wá..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Fi àbájáde hàn"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Àṣàyàn"
@@ -3520,17 +3530,13 @@ msgstr "Fi àwọn classes hàn"
 msgid "Show fields"
 msgstr "Fi àwọn aaye hàn"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Fi díẹ̀ hàn"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Fi púpọ̀ sí i hàn"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Fi àwọn ọ̀rọ̀ lórí àwòrán yìí nìkan hàn"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Fi ìfìránṣẹ́ hàn"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "A kò dáhùn ìbéèrè kámẹ́rà náà"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Fíìdì náà tẹ ìfìránṣẹ́ {0} jáde níbẹ̀. Wọn yóò wà níbẹ̀ àyàfi tí o bá pa wọ́n rẹ́."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "A kò lè fi ìtẹ̀lé ránṣẹ́"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

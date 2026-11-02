@@ -492,15 +492,9 @@ msgstr "Caniatáu trefnu yn ôl"
 msgid "Also delete posts imported from this source"
 msgstr "Hefyd dileu postiadau a fewnforiwyd o'r ffynhonnell hon"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Hefyd ar {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Ateb hefyd o"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Cyhoeddi hefyd i"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Ffrwd neu restr Bluesky"
 msgid "Board"
 msgstr "Bwrdd"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Hybu o {0}"
@@ -2036,6 +2030,10 @@ msgstr "Dilyn hashnod"
 msgid "Follow a person or community"
 msgstr "Dilyn person neu gymuned"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Dilyn eto"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Dilyn o rwydwaith arall"
@@ -2043,10 +2041,6 @@ msgstr "Dilyn o rwydwaith arall"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Dilyn yn aros"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Dilyn wedi'i wrthod"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grŵp: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashnod"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Cuddio'r postiad"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Cuddio'r canlyniadau"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Dim mynediad"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Dim rheolau mynediad wedi'u ffurfweddu. Ychwanegwch reolau i reoli pwy sy'n gallu cyrchu'r adnodd hwn."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Dim cyfrif"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Dim gweithgaredd eto"
@@ -2674,6 +2671,10 @@ msgstr "Heb ei gymharu: yn fwy na {0}"
 msgid "Not compared: over the size limit"
 msgstr "Heb ei gymharu: dros y terfyn maint"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Ddim yn dilyn"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Agor dewislen"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Agor llywio"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Agor ar {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Postiadau a sylwadau"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Postiadau ar Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Postiadau ar ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Postiadau ar y fediverse"
+msgid "Posts on Bluesky"
+msgstr "Postiadau ar Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Cyhoeddus"
 msgid "Publish as a Bluesky feed"
 msgstr "Cyhoeddi fel ffrwd Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Cyhoeddi i"
 
@@ -3392,6 +3398,10 @@ msgstr "Chwilio..."
 msgid "Searching..."
 msgstr "Yn chwilio..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Dangos y canlyniadau"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Dewis"
@@ -3520,17 +3530,13 @@ msgstr "Dangos dosbarthiadau"
 msgid "Show fields"
 msgstr "Dangos meysydd"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Dangos llai"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Dangos mwy"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Dangos sylwadau ar y ddelwedd hon yn unig"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Dangos y postiad"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Ni chafodd y cais camera ei ateb"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Cyhoeddodd y llif {0} postiad yno. Byddant yn aros oni bai eich bod yn eu dileu."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Methu anfon y dilyn"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

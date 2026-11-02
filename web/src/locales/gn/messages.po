@@ -492,15 +492,9 @@ msgstr "Eipysyrõ emoĩporã ko'ã rupive"
 msgid "Also delete posts imported from this source"
 msgstr "Avei ehundi umi marandu ojegueruva'ekue ko heñoihágui"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0}-pe avei"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Embohovái avei ko'águi"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Emoherakuã avei"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky marandu syry térã tysýi"
 msgid "Board"
 msgstr "Tablero"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Emombarete {0} rupive"
@@ -2036,6 +2030,10 @@ msgstr "Emoirũ peteĩ teramoĩ"
 msgid "Follow a person or community"
 msgstr "Emoirũ peteĩ tapicha térã aty"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Emoirũ jey"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Emoirũ ambue ñandutigui"
@@ -2043,10 +2041,6 @@ msgstr "Emoirũ ambue ñandutigui"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Jemoirũ oha'arõ"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Jemoirũ oñembotove"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Atypy: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Teramoĩ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Ekañymi marandu"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Ekañymi voto papapy"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Ndaipóri jeike"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Ndaipóri léi oñembosako'íva. Embojuaju léi resãmbyhy hag̃ua mávapa ikatu oike ko recurso-pe."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Ndaipóri cuenta"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Ndaipóri tembiapo gueteri"
@@ -2674,6 +2671,10 @@ msgstr "Noñembojojái: {0} ári"
 msgid "Not compared: over the size limit"
 msgstr "Noñembojojái: ohasa tuichakue límite"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Ndaremoirũi"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Eipe'a menú"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Eipe'a navegación"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Embojuruja {0}-pe"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Marandu ha comentario"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Marandu Bluesky-pe"
+msgid "Posts on ActivityPub"
+msgstr "Marandu ActivityPub-pe"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Marandu fediverse-pe"
+msgid "Posts on Bluesky"
+msgstr "Marandu Bluesky-pe"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Ojeikéva"
 msgid "Publish as a Bluesky feed"
 msgstr "Emoherakuã Bluesky marandu syryramo"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Moõpe emoherakuã"
 
@@ -3392,6 +3398,10 @@ msgstr "Eheka..."
 msgid "Searching..."
 msgstr "Ojehekahína..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Ehechauka voto papapy"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Eiporavo"
@@ -3520,17 +3530,13 @@ msgstr "Ehechauka clase"
 msgid "Show fields"
 msgstr "Ehechauka campokuéra"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Ehechauka sa'ive"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Ehechauka hetave"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Ehechauka comentario ko ta'anga rehegua añoite"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Ehechauka marandu"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Cámara jerure ndojehechái mbohovái"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Feed omoherakuã {0} marandu upépe. Opytáta rehundi peve."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Jemoirũ ndaikatúi oñembohasa"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

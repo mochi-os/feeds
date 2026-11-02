@@ -492,15 +492,9 @@ msgstr "Дозволити сортування за"
 msgid "Also delete posts imported from this source"
 msgstr "Також видалити дописи, імпортовані з цього джерела"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Також у {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Також відповісти від"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Також публікувати в"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Стрічка або список Bluesky"
 msgid "Board"
 msgstr "Дошка"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Поширити з {0}"
@@ -2036,6 +2030,10 @@ msgstr "Підписатися на хештег"
 msgid "Follow a person or community"
 msgstr "Підписатися на людину чи спільноту"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Підписатися знову"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Підписатися з іншої мережі"
@@ -2043,10 +2041,6 @@ msgstr "Підписатися з іншої мережі"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Підписка очікує"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Підписку відхилено"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Група: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Хештег"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Сховати допис"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Сховати результати"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Немає доступу"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Правила доступу не налаштовано. Додайте правила, щоб керувати, хто може мати доступ до цього ресурсу."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Без облікового запису"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Активності ще немає"
@@ -2674,6 +2671,10 @@ msgstr "Не порівняно: більше за {0}"
 msgid "Not compared: over the size limit"
 msgstr "Не порівняно: перевищує ліміт розміру"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Ви не підписані"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Відкрити меню"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Відкрити навігацію"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Відкрити в {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Дописи та коментарі"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Дописи в Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Дописи в ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Дописи у федіверсі"
+msgid "Posts on Bluesky"
+msgstr "Дописи в Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Публічний"
 msgid "Publish as a Bluesky feed"
 msgstr "Опублікувати як стрічку Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Публікувати в"
 
@@ -3392,6 +3398,10 @@ msgstr "Пошук..."
 msgid "Searching..."
 msgstr "Пошук..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Показати результати"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Вибір"
@@ -3520,17 +3530,13 @@ msgstr "Показати класи"
 msgid "Show fields"
 msgstr "Показати поля"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Згорнути"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Показати більше"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Показувати лише коментарі до цього зображення"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Показати допис"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Запит камери залишився без відповіді"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Стрічка опублікувала там дописів: {0}. Вони залишаться, якщо ви їх не видалите."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Не вдалося надіслати підписку"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

@@ -33,6 +33,7 @@ function FeedsLayoutInner() {
   const tiles = useFeedsStore((state) => state.tiles)
   const isLoading = useFeedsStore((state) => state.isLoading)
   const refresh = useFeedsStore((state) => state.refresh)
+  const load = useFeedsStore((state) => state.load)
   const {
     newPostDialogOpen,
     newPostFeedId,
@@ -45,8 +46,9 @@ function FeedsLayoutInner() {
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    // Always refresh feeds list for sidebar display
-    void refresh()
+    // Load the feeds list for the sidebar, unless the route loader already
+    // has; a load already under way is shared rather than repeated.
+    if (!useFeedsStore.getState().loaded) void load()
 
     // Hydrate the saved-posts mirror so bookmarks reflect server state
     void loadSaved()
@@ -57,16 +59,23 @@ function FeedsLayoutInner() {
     }
     document.addEventListener('visibilitychange', onVisible)
 
-    // Refresh sidebar when a notification arrives (broadcast from menu app)
+    // Refresh sidebar when a notification arrives (broadcast from menu app).
+    // A new one can come with a new post, which a list already on its way may
+    // have missed, so that asks again after it. Notifications read or cleared
+    // change nothing the list holds, so those only load a list not yet held,
+    // sharing a load under way. Opening a feed clears its notifications, and
+    // the service announces a clear whether or not it cleared anything.
     const unsubscribe = onShellMessage((msg) => {
-      if (msg.type === 'notification-update') void refresh()
+      if (msg.type !== 'notification-update') return
+      if (msg.event === 'new') void refresh()
+      else if (!useFeedsStore.getState().loaded) void load()
     })
 
     return () => {
       document.removeEventListener('visibilitychange', onVisible)
       unsubscribe()
     }
-  }, [refresh])
+  }, [refresh, load])
 
   // Find target feed(s) for NewPostDialog based on which feed's "New post" was clicked
   // Empty string means "All feeds" - show all owned feeds

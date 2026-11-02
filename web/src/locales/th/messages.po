@@ -492,15 +492,9 @@ msgstr "อนุญาตให้เรียงตาม"
 msgid "Also delete posts imported from this source"
 msgstr "ลบโพสต์ที่นำเข้าจากแหล่งนี้ด้วย"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "มีบน {0} ด้วย"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "ตอบกลับจากบัญชีนี้ด้วย"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "เผยแพร่เพิ่มเติมไปยัง"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "ฟีดหรือรายการ Bluesky"
 msgid "Board"
 msgstr "กระดาน"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "บูสต์จาก {0}"
@@ -2036,6 +2030,10 @@ msgstr "ติดตามแฮชแท็ก"
 msgid "Follow a person or community"
 msgstr "ติดตามบุคคลหรือชุมชน"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "ติดตามอีกครั้ง"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "ติดตามจากเครือข่ายอื่น"
@@ -2043,10 +2041,6 @@ msgstr "ติดตามจากเครือข่ายอื่น"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "รอการติดตาม"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "การติดตามถูกปฏิเสธ"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "กลุ่ม: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "แฮชแท็ก"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "ซ่อนโพสต์"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "ซ่อนผลลัพธ์"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "ไม่มีสิทธิ์เข้าถึง"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ยังไม่ได้ตั้งกฎการเข้าถึง เพิ่มกฎเพื่อควบคุมว่าใครสามารถเข้าถึงทรัพยากรนี้ได้"
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "ไม่มีบัญชี"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "ยังไม่มีกิจกรรม"
@@ -2674,6 +2671,10 @@ msgstr "ไม่ได้เปรียบเทียบ: ใหญ่กว�
 msgid "Not compared: over the size limit"
 msgstr "ไม่ได้เปรียบเทียบ: เกินขีดจำกัดขนาด"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "ไม่ได้ติดตาม"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "เปิดเมนู"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "เปิดการนำทาง"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "เปิดใน {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "โพสต์และความคิดเห็น"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "โพสต์บน Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "โพสต์บน ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "โพสต์บน fediverse"
+msgid "Posts on Bluesky"
+msgstr "โพสต์บน Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "สาธารณะ"
 msgid "Publish as a Bluesky feed"
 msgstr "เผยแพร่เป็นฟีด Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "เผยแพร่ไปยัง"
 
@@ -3392,6 +3398,10 @@ msgstr "ค้นหา..."
 msgid "Searching..."
 msgstr "กำลังค้นหา..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "แสดงผลลัพธ์"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "ตัวเลือก"
@@ -3520,17 +3530,13 @@ msgstr "แสดงคลาส"
 msgid "Show fields"
 msgstr "แสดงฟิลด์"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "แสดงน้อยลง"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "แสดงเพิ่มเติม"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "แสดงเฉพาะความคิดเห็นต่อรูปนี้"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "แสดงโพสต์"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "คำขอกล้องไม่ได้รับการตอบ
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "ฟีดเผยแพร่ {0} โพสต์ที่นั่น โพสต์เหล่านั้นจะยังคงอยู่จนกว่าคุณจะลบ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "ไม่สามารถส่งการติดตามได้"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

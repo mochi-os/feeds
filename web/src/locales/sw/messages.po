@@ -492,15 +492,9 @@ msgstr "Ruhusu kupanga kwa"
 msgid "Also delete posts imported from this source"
 msgstr "Pia futa machapisho yaliyoletwa kutoka chanzo hiki"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Pia kwenye {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Jibu pia kutoka"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Chapisha pia kwenye"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Mlisho au orodha ya Bluesky"
 msgid "Board"
 msgstr "Ubao"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Shiriki kutoka {0}"
@@ -2036,6 +2030,10 @@ msgstr "Fuata hashtag"
 msgid "Follow a person or community"
 msgstr "Fuata mtu au jumuiya"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Fuata tena"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Fuata kutoka mtandao mwingine"
@@ -2043,10 +2041,6 @@ msgstr "Fuata kutoka mtandao mwingine"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Ufuatiliaji unasubiri"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Ufuatiliaji umekataliwa"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Kikundi: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Ficha chapisho"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Ficha matokeo"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Hakuna ufikiaji"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Hakuna sheria za ufikiaji zilizosanidiwa. Ongeza sheria kudhibiti nani anaweza kufikia rasilimali hii."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Hakuna akaunti"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Hakuna shughuli bado"
@@ -2674,6 +2671,10 @@ msgstr "Haijalinganishwa: kubwa kuliko {0}"
 msgid "Not compared: over the size limit"
 msgstr "Haijalinganishwa: inazidi kikomo cha ukubwa"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Hufuati"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Fungua menyu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Fungua urambazaji"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Fungua kwenye {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Machapisho na maoni"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Machapisho kwenye Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Machapisho kwenye ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Machapisho kwenye fediverse"
+msgid "Posts on Bluesky"
+msgstr "Machapisho kwenye Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Ya umma"
 msgid "Publish as a Bluesky feed"
 msgstr "Chapisha kama mlisho wa Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Chapisha kwenye"
 
@@ -3392,6 +3398,10 @@ msgstr "Tafuta..."
 msgid "Searching..."
 msgstr "Inatafuta..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Onyesha matokeo"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Chaguo"
@@ -3520,17 +3530,13 @@ msgstr "Onyesha madarasa"
 msgid "Show fields"
 msgstr "Onyesha sehemu"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Onyesha kidogo"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Onyesha zaidi"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Onyesha maoni kuhusu picha hii pekee"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Onyesha chapisho"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Ombi la kamera halikujibiwa"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Mlisho ulichapisha machapisho {0} huko. Yatabaki isipokuwa uyafute."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Ufuatiliaji haukuweza kutumwa"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

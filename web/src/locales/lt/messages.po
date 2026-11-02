@@ -492,15 +492,9 @@ msgstr "Leisti rūšiuoti pagal"
 msgid "Also delete posts imported from this source"
 msgstr "Taip pat ištrinti įrašus, importuotus iš šio šaltinio"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Taip pat tinkle {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Atsakyti ir iš"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Taip pat skelbti į"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky srautas arba sąrašas"
 msgid "Board"
 msgstr "Lenta"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Pasidalinti iš {0}"
@@ -2036,6 +2030,10 @@ msgstr "Sekti grotažymę"
 msgid "Follow a person or community"
 msgstr "Sekti asmenį arba bendruomenę"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Sekti vėl"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Sekti iš kito tinklo"
@@ -2043,10 +2041,6 @@ msgstr "Sekti iš kito tinklo"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Sekimas laukia patvirtinimo"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Sekimas atmestas"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grupė: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Grotažymė"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Slėpti įrašą"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Slėpti rezultatus"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Nėra prieigos"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Prieigos taisyklių nesukonfigūruota. Pridėkite taisykles, kad valdytumėte, kas gali pasiekti šį išteklių."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Be paskyros"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Dar nėra veiklos"
@@ -2674,6 +2671,10 @@ msgstr "Nepalyginta: didesnis nei {0}"
 msgid "Not compared: over the size limit"
 msgstr "Nepalyginta: viršija dydžio limitą"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Nesekama"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Atidaryti meniu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Atidaryti naršymą"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Atidaryti tinkle {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Įrašai ir komentarai"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Įrašai Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Įrašai ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Įrašai fediverse"
+msgid "Posts on Bluesky"
+msgstr "Įrašai Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Viešas"
 msgid "Publish as a Bluesky feed"
 msgstr "Skelbti kaip Bluesky srautą"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Skelbti į"
 
@@ -3392,6 +3398,10 @@ msgstr "Ieškoti..."
 msgid "Searching..."
 msgstr "Ieškoma..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Rodyti rezultatus"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Pasirinkimas"
@@ -3520,17 +3530,13 @@ msgstr "Rodyti klases"
 msgid "Show fields"
 msgstr "Rodyti laukus"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Rodyti mažiau"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Rodyti daugiau"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Rodyti tik šio vaizdo komentarus"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Rodyti įrašą"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Į kameros užklausą neatsakyta"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Srautas ten paskelbė įrašų: {0}. Jie liks, nebent juos ištrinsite."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Nepavyko išsiųsti sekimo"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

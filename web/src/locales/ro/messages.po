@@ -492,15 +492,9 @@ msgstr "Permite sortarea după"
 msgid "Also delete posts imported from this source"
 msgstr "Șterge și postările importate din această sursă"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Și pe {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Răspunde și de la"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Publică și pe"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Flux sau listă Bluesky"
 msgid "Board"
 msgstr "Tablă"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Distribuie de pe {0}"
@@ -2036,6 +2030,10 @@ msgstr "Urmărește un hashtag"
 msgid "Follow a person or community"
 msgstr "Urmărește o persoană sau o comunitate"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Urmărește din nou"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Urmărește din altă rețea"
@@ -2043,10 +2041,6 @@ msgstr "Urmărește din altă rețea"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Urmărire în așteptare"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Urmărire refuzată"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grup: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Ascunde postarea"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Ascunde rezultatele"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Fără acces"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Nu sunt configurate reguli de acces. Adaugă reguli pentru a controla cine poate accesa această resursă."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Fără cont"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Încă nicio activitate"
@@ -2674,6 +2671,10 @@ msgstr "Necomparat: mai mare decât {0}"
 msgid "Not compared: over the size limit"
 msgstr "Necomparat: depășește limita de dimensiune"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Neurmărit"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Deschide meniul"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Deschide navigarea"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Deschide pe {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Postări și comentarii"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Postări pe Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Postări pe ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Postări în fedivers"
+msgid "Posts on Bluesky"
+msgstr "Postări pe Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Public"
 msgid "Publish as a Bluesky feed"
 msgstr "Publică drept flux Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Publică pe"
 
@@ -3392,6 +3398,10 @@ msgstr "Caută..."
 msgid "Searching..."
 msgstr "Se caută..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Afișează rezultatele"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Selecție"
@@ -3520,17 +3530,13 @@ msgstr "Arată clasele"
 msgid "Show fields"
 msgstr "Arată câmpurile"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Afișează mai puțin"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Afișează mai mult"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Arată doar comentariile la această imagine"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Afișează postarea"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Solicitarea camerei nu a primit răspuns"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Fluxul a publicat acolo {0} postări. Rămân acolo dacă nu le ștergi."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Urmărirea nu a putut fi trimisă"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

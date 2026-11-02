@@ -492,15 +492,9 @@ msgstr "Benarkan susun mengikut"
 msgid "Also delete posts imported from this source"
 msgstr "Padam juga pos yang diimport daripada sumber ini"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Juga di {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Balas juga daripada"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Terbitkan juga ke"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Suapan atau senarai Bluesky"
 msgid "Board"
 msgstr "Papan"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Kongsi daripada {0}"
@@ -2036,6 +2030,10 @@ msgstr "Ikuti tanda pagar"
 msgid "Follow a person or community"
 msgstr "Ikuti orang atau komuniti"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Ikuti semula"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Ikuti dari rangkaian lain"
@@ -2043,10 +2041,6 @@ msgstr "Ikuti dari rangkaian lain"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Ikutan belum selesai"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Ikutan ditolak"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Kumpulan: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Tanda pagar"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Sembunyikan hantaran"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Sembunyikan keputusan"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Tiada akses"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Tiada peraturan akses dikonfigurasikan. Tambah peraturan untuk mengawal siapa yang boleh mengakses sumber ini."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Tiada akaun"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Tiada aktiviti lagi"
@@ -2674,6 +2671,10 @@ msgstr "Tidak dibandingkan: lebih besar daripada {0}"
 msgid "Not compared: over the size limit"
 msgstr "Tidak dibandingkan: melebihi had saiz"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Tidak mengikuti"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Buka menu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Buka navigasi"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Buka di {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Hantaran dan komen"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Hantaran di Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Hantaran di ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Hantaran di fediverse"
+msgid "Posts on Bluesky"
+msgstr "Hantaran di Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Awam"
 msgid "Publish as a Bluesky feed"
 msgstr "Terbitkan sebagai suapan Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Terbitkan ke"
 
@@ -3392,6 +3398,10 @@ msgstr "Cari..."
 msgid "Searching..."
 msgstr "Sedang mencari..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Tunjukkan keputusan"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Pilihan"
@@ -3520,17 +3530,13 @@ msgstr "Tunjukkan kelas"
 msgid "Show fields"
 msgstr "Tunjukkan medan"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Tunjukkan kurang"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Tunjukkan lagi"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Tunjukkan komen tentang imej ini sahaja"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Tunjukkan hantaran"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Permintaan kamera tidak dijawab"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Suapan ini menerbitkan {0} hantaran di sana. Hantaran itu kekal melainkan anda memadamnya."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Ikutan tidak dapat dihantar"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

@@ -492,15 +492,9 @@ msgstr "Թույլատրել տեսակավորել ըստ"
 msgid "Also delete posts imported from this source"
 msgstr "Ջնջել նաև այս աղբյուրից ներմուծված գրառումները"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Նաև {0}-ում"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Պատասխանել նաև այս հաշվից"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Հրապարակել նաև"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky հոսք կամ ցանկ"
 msgid "Board"
 msgstr "Տախտակ"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Տարածել {0}-ից"
@@ -2036,6 +2030,10 @@ msgstr "Հետևել հեշթեգի"
 msgid "Follow a person or community"
 msgstr "Հետևել անձի կամ համայնքի"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Կրկին հետևել"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Հետևել այլ ցանցից"
@@ -2043,10 +2041,6 @@ msgstr "Հետևել այլ ցանցից"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Հետևումը սպասման մեջ է"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Հետևումը մերժվեց"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Խումբ՝ {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Հեշթեգ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Թաքցնել գրառումը"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Թաքցնել արդյունքները"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Մուտք չկա"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Մուտքի կանոններ կարգավորված չեն։ Ավելացրեք կանոններ՝ կառավարելու, թե ով կարող է մուտք գործել այս ռեսուրսը։"
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Առանց հաշվի"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Դեռ ակտիվություն չկա"
@@ -2674,6 +2671,10 @@ msgstr "Չի համեմատվել. ավելի մեծ է, քան {0}"
 msgid "Not compared: over the size limit"
 msgstr "Չի համեմատվել. գերազանցում է չափի սահմանը"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Չեք հետևում"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Բացել մենյուն"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Բացել նավիգացիան"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Բացել {0}-ում"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Գրառումներ և մեկնաբանություններ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Գրառումներ Bluesky-ում"
+msgid "Posts on ActivityPub"
+msgstr "Գրառումներ ActivityPub-ում"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Գրառումներ fediverse-ում"
+msgid "Posts on Bluesky"
+msgstr "Գրառումներ Bluesky-ում"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Հանրային"
 msgid "Publish as a Bluesky feed"
 msgstr "Հրապարակել որպես Bluesky հոսք"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Որտեղ հրապարակել"
 
@@ -3392,6 +3398,10 @@ msgstr "Որոնում..."
 msgid "Searching..."
 msgstr "Որոնում..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Ցույց տալ արդյունքները"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Ընտրություն"
@@ -3520,17 +3530,13 @@ msgstr "Ցույց տալ դասերը"
 msgid "Show fields"
 msgstr "Ցույց տալ դաշտերը"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Ցույց տալ ավելի քիչ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Ցույց տալ ավելին"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Ցուցադրել միայն այս պատկերի մեկնաբանությունները"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Ցույց տալ գրառումը"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Տեսախցիկի հարցումը չպատասխանվեց"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Հոսքն այնտեղ հրապարակել է {0} գրառում։ Դրանք կմնան, եթե չջնջեք։"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Չհաջողվեց ուղարկել հետևումը"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

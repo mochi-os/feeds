@@ -492,15 +492,9 @@ msgstr "អនុញ្ញាតការតម្រៀបតាម"
 msgid "Also delete posts imported from this source"
 msgstr "លុបការបង្ហោះដែលបាននាំចូលពីប្រភពនេះផងដែរ"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "មាននៅលើ {0} ផងដែរ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "ឆ្លើយតបពីនេះផងដែរ"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "បោះផ្សាយទៅផងដែរ"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "ព័ត៌មានបង្ហាញ ឬបញ្ជី Bluesky"
 msgid "Board"
 msgstr "ក្តារ"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "ចែករំលែកពី {0}"
@@ -2036,6 +2030,10 @@ msgstr "តាមដានហាស់ថេក"
 msgid "Follow a person or community"
 msgstr "តាមដានមនុស្ស ឬសហគមន៍"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "តាមដានម្ដងទៀត"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "តាមដានពីបណ្តាញផ្សេង"
@@ -2043,10 +2041,6 @@ msgstr "តាមដានពីបណ្តាញផ្សេង"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "ការតាមដានកំពុងរង់ចាំ"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "ការតាមដានត្រូវបានបដិសេធ"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "ក្រុម៖ {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ហាស់ថេក"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "លាក់ការបង្ហោះ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "លាក់លទ្ធផល"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "គ្មានសិទ្ធិចូលប្រើ"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "មិនមានច្បាប់ចូលប្រើបានកំណត់រចនាសម្ព័ន្ធទេ។ បន្ថែមច្បាប់ដើម្បីគ្រប់គ្រងអ្នកដែលអាចចូលប្រើធនធាននេះ។"
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "គ្មានគណនី"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "មិនទាន់មានសកម្មភាព"
@@ -2674,6 +2671,10 @@ msgstr "មិនបានប្រៀបធៀបទេ៖ ធំជាង {0}"
 msgid "Not compared: over the size limit"
 msgstr "មិនបានប្រៀបធៀបទេ៖ លើសដែនកំណត់ទំហំ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "មិនកំពុងតាមដាន"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "បើកម៉ឺនុយ"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "បើកការរុករក"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "បើកនៅលើ {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "ប្រកាស និងមតិយោបល់"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "ការបង្ហោះនៅលើ Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "ការបង្ហោះនៅលើ ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "ការប្រកាសនៅលើ fediverse"
+msgid "Posts on Bluesky"
+msgstr "ការបង្ហោះនៅលើ Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "សាធារណៈ"
 msgid "Publish as a Bluesky feed"
 msgstr "បោះផ្សាយជាព័ត៌មានបង្ហាញ Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "បោះផ្សាយទៅ"
 
@@ -3392,6 +3398,10 @@ msgstr "ស្វែងរក..."
 msgid "Searching..."
 msgstr "កំពុងស្វែងរក..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "បង្ហាញលទ្ធផល"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "ការជ្រើសរើស"
@@ -3520,17 +3530,13 @@ msgstr "បង្ហាញថ្នាក់"
 msgid "Show fields"
 msgstr "បង្ហាញវាល"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "បង្ហាញតិច"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "បង្ហាញបន្ថែម"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "បង្ហាញតែមតិលើរូបភាពនេះ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "បង្ហាញការបង្ហោះ"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "សំណើកាមេរ៉ាមិនត្រូវបានឆ្
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "ព័ត៌មានបង្ហាញបានបោះផ្សាយការបង្ហោះ {0} នៅទីនោះ។ ពួកវានៅដដែល លុះត្រាតែអ្នកលុបវា។"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "មិនអាចផ្ញើការតាមដានបានទេ"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

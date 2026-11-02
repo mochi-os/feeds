@@ -209,7 +209,9 @@ def function_mastodon_posts(context, account, home, kind="home", feed="", tag=""
 		where = " where v.user=?"
 		args = [user_id]
 	elif kind in ("own", "pinned"):
-		joins = " inner join publish b on b.feed = p.feed"
+		# The posts that went out through the account, as a home feed's do
+		# though no publish row names the account.
+		joins = " inner join copies b on b.post = p.id"
 		where = " where b.account=? and p.author=?" + (" and p.pinned>0" if kind == "pinned" else "")
 		args = [account, user_id]
 	else:
@@ -414,7 +416,8 @@ def function_mastodon_delete(context, account, home, id):
 
 def function_mastodon_react(context, account, home, id, on=True):
 	"""Favourite a status a feed holds, or take it back: the user's reaction
-	to the post or the comment ("c:" and its id)."""
+	to the post or the comment ("c:" and its id), a like of one from another
+	network going out from the account the app is signed in to."""
 	identity = mastodon_identity()
 	if not identity:
 		return {"error": mochi.app.label("errors.identity_required")}
@@ -423,14 +426,14 @@ def function_mastodon_react(context, account, home, id, on=True):
 		comment = mochi.db.row("select * from comments where id=?", id[2:])
 		if not comment:
 			return {"error": mochi.app.label("errors.comment_not_found")}
-		result, failure = comment_react(comment["feed"], comment["id"], identity["id"], identity["name"], reaction)
+		result, failure = comment_react(comment["feed"], comment["id"], identity["id"], identity["name"], reaction, account)
 		if failure:
 			return mastodon_failure(failure)
 		return {"comment": mastodon_comment_of(comment["id"], identity["id"])}
 	post = mochi.db.row("select * from posts where id=?", id)
 	if not post:
 		return {"error": mochi.app.label("errors.post_not_found")}
-	result, failure = post_react(post["feed"], post["id"], identity["id"], identity["name"], reaction, "")
+	result, failure = post_react(post["feed"], post["id"], identity["id"], identity["name"], reaction, account)
 	if failure:
 		return mastodon_failure(failure)
 	return {"post": mastodon_post_of(post["id"], identity["id"])}
@@ -447,6 +450,23 @@ def function_mastodon_save(context, account, home, id, on=True):
 		saved_set(identity["id"], id, json.encode({"id": id, "feed": shown["feed"], "feed_name": shown["feed_name"], "feed_fingerprint": shown["fingerprint"], "body": shown["body"], "created": shown["created"]}))
 	else:
 		mochi.db.execute("delete from saved where user=? and post=?", identity["id"], id)
+	return {"post": mastodon_post_of(id, identity["id"])}
+
+def function_mastodon_pin(context, account, home, id, on=True):
+	"""Pin one of the account's own posts, or unpin it, as the user pins it
+	in the feed. Mastodon pins only the account's own posts, as its own
+	statuses list them: the user's posts that went out through the account,
+	so not a boost of someone else's."""
+	identity = mastodon_identity()
+	if not identity:
+		return {"error": mochi.app.label("errors.identity_required")}
+	post = mochi.db.row("select * from posts where id=?", id)
+	feed = mochi.db.row("select * from feeds where id=?", post["feed"]) if post else None
+	if not feed:
+		return {"error": mochi.app.label("errors.post_not_found")}
+	if not is_feed_owner(identity["id"], feed) or post.get("author") != identity["id"] or not mochi.db.exists("select 1 from copies where post=? and account=?", id, account):
+		return {"error": mochi.app.label("errors.access_denied")}
+	pin_apply(feed, post, on, identity["id"])
 	return {"post": mastodon_post_of(id, identity["id"])}
 
 def function_mastodon_boost(context, account, home, id="", remote="", on=True):
@@ -513,7 +533,7 @@ def mastodon_hold(account, home, note):
 		if item.get(key):
 			data[key] = item[key]
 	data = sanitize_post_data(data)
-	body = "\n\n".join([p for p in [item["text"], item["link"]] if p])
+	body = printable("\n\n".join([p for p in [item["text"], item["link"]] if p]))
 	created = item["created"] or mochi.time.now()
 	post_id = mochi.uid()
 	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
@@ -743,14 +763,25 @@ def function_atproto_written(context, account, home, action, collection, rkey, u
 	if collection == "app.bsky.feed.post":
 		return bluesky_post_written(acc, home, action, uri, record, media, user_id, name)
 	if collection == "app.bsky.feed.like":
-		post = bluesky_held(bluesky_subject(record))
-		if not post:
+		# A like of a post, or of a comment: one from Bluesky by its own id,
+		# or one of ours by the reply it went out as.
+		subject = bluesky_subject(record)
+		post = bluesky_held(subject)
+		comment = None if post else fediverse_target(account, subject)[1]
+		if not post and not comment:
 			return None
-		if action == "delete":
-			post_react(post["feed"], post["id"], user_id, name, "", account)
-		elif action == "create":
-			mochi.db.execute("insert or replace into likes (post, account, remote, created) values (?, ?, ?, ?)", post["id"], account, uri, mochi.time.now())
-			post_react(post["feed"], post["id"], user_id, name, "like", account)
+		target = post or comment
+		if action == "create":
+			reaction = "like"
+			mochi.db.execute("insert or replace into likes (object, account, remote, created) values (?, ?, ?, ?)", target["id"], account, uri, mochi.time.now())
+		elif action == "delete":
+			reaction = ""
+		else:
+			return {}
+		if post:
+			post_react(post["feed"], post["id"], user_id, name, reaction, account)
+		else:
+			comment_react(comment["feed"], comment["id"], user_id, name, reaction, account)
 		return {}
 	if collection == "app.bsky.feed.repost":
 		if action == "delete":
@@ -760,6 +791,8 @@ def function_atproto_written(context, account, home, action, collection, rkey, u
 		if post and action == "create":
 			copy_record(post["feed"], post["id"], acc, {"id": uri, "url": ""})
 		return {}
+	if collection == "app.bsky.actor.profile":
+		return bluesky_profile_written(acc, action, record, user_id)
 	if collection == "app.bsky.graph.follow":
 		did = str(record.get("subject", "") or "")
 		if not did.startswith("did:"):
@@ -783,6 +816,24 @@ def function_atproto_written(context, account, home, action, collection, rkey, u
 		person_follow_create(feed, found, acc, found["name"], user_id)
 		return {}
 	return None
+
+def bluesky_profile_written(acc, action, record, user_id):
+	"""The profile record an app wrote, whose pinned post is the account's
+	pin. Bluesky shows one, the newest pinned post with a copy there: a feed
+	post the profile names is pinned as the user pins it in the feed, unless
+	it is the one already shown, and with none named the one shown is
+	unpinned. A post no feed of the user's holds changes nothing."""
+	named = record.get("pinnedPost") if action != "delete" and type(record.get("pinnedPost")) == "dict" else {}
+	uri = str(named.get("uri", "") or "")
+	shown = mochi.db.row("select c.remote, c.post from copies c join posts p on p.id=c.post where c.account=? and p.pinned>0 and c.remote like ? order by p.pinned desc", acc["id"], "at://%/app.bsky.feed.post/%")
+	if shown and shown["remote"] == uri:
+		return {}
+	target = mochi.db.row("select post from copies where account=? and remote=?", acc["id"], uri) if uri else shown
+	post = mochi.db.row("select * from posts where id=?", target["post"]) if target else None
+	feed = mochi.db.row("select * from feeds where id=?", post["feed"]) if post else None
+	if feed and is_feed_owner(user_id, feed):
+		pin_apply(feed, post, uri != "", user_id)
+	return {}
 
 def bluesky_post_written(acc, home, action, uri, record, media, user_id, name):
 	"""A post record written, changed or deleted by an app."""
@@ -825,11 +876,11 @@ def bluesky_post_written(acc, home, action, uri, record, media, user_id, name):
 	held = bluesky_held(parent)
 	if held:
 		# A reply to a post a feed holds is a comment on it, the record its
-		# reply on the network.
-		result, failure = comment_create(held["feed"], held["id"], "", user_id, name, text, "", "", None, mastodon_media_save(media))
+		# reply on the network, so the comment is not published there again.
+		made = [{"account": acc["id"], "address": acc.get("identifier", ""), "network": "bluesky", "remote": uri, "url": ""}]
+		result, failure = comment_create(held["feed"], held["id"], "", user_id, name, text, "", "", None, mastodon_media_save(media), made)
 		if failure:
 			return mastodon_failure(failure)
-		replies_record(result["id"], acc["id"], {"address": acc.get("identifier", ""), "network": "bluesky", "remote": uri, "url": ""})
 		return {"comment": result["id"]}
 	feed, refusal = mastodon_home(home)
 	if refusal:

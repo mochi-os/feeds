@@ -492,15 +492,9 @@ msgstr "אפשר מיון לפי"
 msgid "Also delete posts imported from this source"
 msgstr "מחק גם פוסטים שיובאו ממקור זה"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "גם ב-{0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "להשיב גם מ"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "פרסום גם אל"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "פיד או רשימה של Bluesky"
 msgid "Board"
 msgstr "לוח"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "הדהוד מ-{0}"
@@ -2036,6 +2030,10 @@ msgstr "מעקב אחר תגית"
 msgid "Follow a person or community"
 msgstr "מעקב אחר אדם או קהילה"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "עקוב שוב"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "מעקב מרשת אחרת"
@@ -2043,10 +2041,6 @@ msgstr "מעקב מרשת אחרת"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "מעקב ממתין"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "המעקב נדחה"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "קבוצה: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "תגית"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "הסתר פוסט"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "הסתר תוצאות"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "אין גישה"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "לא הוגדרו כללי גישה. הוסף כללים כדי לשלוט במי יכול לגשת למשאב זה."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "ללא חשבון"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "עדיין אין פעילות"
@@ -2674,6 +2671,10 @@ msgstr "לא הושווה: גדול מ-{0}"
 msgid "Not compared: over the size limit"
 msgstr "לא הושווה: חורג ממגבלת הגודל"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "לא במעקב"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "פתח תפריט"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "פתח ניווט"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "פתיחה ב-{0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "פוסטים ותגובות"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "פוסטים ב-Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "פוסטים ב-ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "פוסטים ב-Fediverse"
+msgid "Posts on Bluesky"
+msgstr "פוסטים ב-Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "ציבורי"
 msgid "Publish as a Bluesky feed"
 msgstr "פרסום כפיד של Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "פרסום אל"
 
@@ -3392,6 +3398,10 @@ msgstr "חיפוש..."
 msgid "Searching..."
 msgstr "מחפש..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "הצג תוצאות"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "רשימה נפתחת"
@@ -3520,17 +3530,13 @@ msgstr "הצג מחלקות"
 msgid "Show fields"
 msgstr "הצג שדות"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "הצג פחות"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "הצג עוד"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "הצגת תגובות לתמונה זו בלבד"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "הצג פוסט"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "בקשת המצלמה לא נענתה"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "הפיד פרסם שם {0} פוסטים. הם יישארו אלא אם תמחק אותם."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "לא ניתן היה לשלוח את המעקב"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

@@ -492,15 +492,9 @@ msgstr "დახარისხების დაშვება"
 msgid "Also delete posts imported from this source"
 msgstr "ასევე წაშალე ამ წყაროდან იმპორტირებული პოსტები"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "ასევე {0}-ზე"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "ასევე უპასუხე აქედან"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "ასევე გამოქვეყნდეს"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky-ის არხი ან სია"
 msgid "Board"
 msgstr "დაფა"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "გაზიარება {0}-დან"
@@ -2036,6 +2030,10 @@ msgstr "ჰეშთეგის გამოწერა"
 msgid "Follow a person or community"
 msgstr "პიროვნების ან საზოგადოების გამოწერა"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "ხელახლა გამოწერა"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "სხვა ქსელიდან გამოწერა"
@@ -2043,10 +2041,6 @@ msgstr "სხვა ქსელიდან გამოწერა"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "გამოწერა მოლოდინშია"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "გამოწერა უარყოფილია"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "ჯგუფი: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ჰეშთეგი"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "პოსტის დამალვა"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "შედეგების დამალვა"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "წვდომა არ არის"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "წვდომის წესები არ არის კონფიგურირებული. დაამატეთ წესები იმის მართვისთვის, თუ ვის აქვს წვდომა ამ რესურსზე."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "ანგარიშის გარეშე"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "აქტივობა ჯერ არ არის"
@@ -2674,6 +2671,10 @@ msgstr "არ შედარებულა: აღემატება {0}-�
 msgid "Not compared: over the size limit"
 msgstr "არ შედარებულა: აღემატება ზომის ლიმიტს"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "არ არის გამოწერილი"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "მენიუს გახსნა"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "ნავიგაციის გახსნა"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "გახსნა {0}-ზე"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "პოსტები და კომენტარები"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "პოსტები Bluesky-ზე"
+msgid "Posts on ActivityPub"
+msgstr "პოსტები ActivityPub-ზე"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "პოსტები fediverse-ში"
+msgid "Posts on Bluesky"
+msgstr "პოსტები Bluesky-ზე"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "საჯარო"
 msgid "Publish as a Bluesky feed"
 msgstr "გამოქვეყნება Bluesky-ის არხად"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "სად გამოქვეყნდეს"
 
@@ -3392,6 +3398,10 @@ msgstr "ძიება..."
 msgid "Searching..."
 msgstr "ძიება..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "შედეგების ჩვენება"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "არჩევა"
@@ -3520,17 +3530,13 @@ msgstr "კლასების ჩვენება"
 msgid "Show fields"
 msgstr "ველების ჩვენება"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "ნაკლების ჩვენება"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "მეტის ჩვენება"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "მხოლოდ ამ სურათის კომენტარების ჩვენება"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "პოსტის ჩვენება"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "კამერის მოთხოვნას პასუხი ა
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "არხმა იქ {0} პოსტი გამოაქვეყნა. ისინი დარჩება, თუ არ წაშლით."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "გამოწერის გაგზავნა ვერ მოხერხდა"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

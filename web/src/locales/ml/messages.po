@@ -492,15 +492,9 @@ msgstr "സോർട്ട് ചെയ്യാൻ അനുവദിക്ക�
 msgid "Also delete posts imported from this source"
 msgstr "ഈ ഉറവിടത്തിൽ നിന്ന് ഇറക്കുമതി ചെയ്ത പോസ്റ്റുകളും ഇല്ലാതാക്കുക"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0}-ലും ഉണ്ട്"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "ഇതിൽ നിന്നും മറുപടി നൽകുക"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "ഇവിടെയും പ്രസിദ്ധീകരിക്കുക"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky ഫീഡ് അല്ലെങ്കിൽ ലിസ്റ്�
 msgid "Board"
 msgstr "ബോർഡ്"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0}-ൽ നിന്ന് ബൂസ്റ്റ് ചെയ്യുക"
@@ -2036,6 +2030,10 @@ msgstr "ഒരു ഹാഷ്‌ടാഗ് പിന്തുടരുക"
 msgid "Follow a person or community"
 msgstr "ഒരു വ്യക്തിയെയോ കമ്മ്യൂണിറ്റിയെയോ പിന്തുടരുക"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "വീണ്ടും പിന്തുടരുക"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "മറ്റൊരു നെറ്റ്‌വർക്കിൽ നിന്ന് പിന്തുടരുക"
@@ -2043,10 +2041,6 @@ msgstr "മറ്റൊരു നെറ്റ്‌വർക്കിൽ നി�
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "പിന്തുടരൽ തീർപ്പാക്കാനുണ്ട്"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "പിന്തുടരൽ നിരസിച്ചു"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "ഗ്രൂപ്പ്: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ഹാഷ്‌ടാഗ്"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "പോസ്റ്റ് മറയ്ക്കുക"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "ഫലങ്ങൾ മറയ്ക്കുക"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "ആക്സസ് ഇല്ല"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ആക്സസ് നിയമങ്ങളൊന്നും കോൺഫിഗർ ചെയ്തിട്ടില്ല. ഈ റിസോഴ്സ് ആർക്കെല്ലാം ആക്സസ് ചെയ്യാമെന്ന് നിയന്ത്രിക്കാൻ നിയമങ്ങൾ ചേർക്കുക."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "അക്കൗണ്ട് ഇല്ല"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "പ്രവർത്തനം ഇതുവരെയില്ല"
@@ -2674,6 +2671,10 @@ msgstr "താരതമ്യം ചെയ്തിട്ടില്ല: {0}-�
 msgid "Not compared: over the size limit"
 msgstr "താരതമ്യം ചെയ്തിട്ടില്ല: വലുപ്പ പരിധിക്ക് മുകളിൽ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "പിന്തുടരുന്നില്ല"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "മെനു തുറക്കുക"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "നാവിഗേഷൻ തുറക്കുക"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0}-ൽ തുറക്കുക"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "പോസ്റ്റുകളും അഭിപ്രായങ്ങളും"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky-ലെ പോസ്റ്റുകൾ"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub-ലെ പോസ്റ്റുകൾ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "ഫെഡിവേഴ്സിലെ പോസ്റ്റുകൾ"
+msgid "Posts on Bluesky"
+msgstr "Bluesky-ലെ പോസ്റ്റുകൾ"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "പൊതു"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky ഫീഡായി പ്രസിദ്ധീകരിക്കുക"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "പ്രസിദ്ധീകരിക്കേണ്ട ഇടം"
 
@@ -3392,6 +3398,10 @@ msgstr "തിരയുക..."
 msgid "Searching..."
 msgstr "തിരയുന്നു..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "ഫലങ്ങൾ കാണിക്കുക"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "തിരഞ്ഞെടുപ്പ്"
@@ -3520,17 +3530,13 @@ msgstr "ക്ലാസുകൾ കാണിക്കുക"
 msgid "Show fields"
 msgstr "ഫീൽഡുകൾ കാണിക്കുക"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "കുറച്ച് കാണിക്കുക"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "കൂടുതൽ കാണിക്കുക"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ഈ ചിത്രത്തിലെ അഭിപ്രായങ്ങൾ മാത്രം കാണിക്കുക"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "പോസ്റ്റ് കാണിക്കുക"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "ക്യാമറ അഭ്യർത്ഥനയ്ക്ക് മറ�
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "ഫീഡ് അവിടെ {0} പോസ്റ്റുകൾ പ്രസിദ്ധീകരിച്ചു. നിങ്ങൾ ഇല്ലാതാക്കിയില്ലെങ്കിൽ അവ നിലനിൽക്കും."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "പിന്തുടരൽ അയയ്ക്കാൻ കഴിഞ്ഞില്ല"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

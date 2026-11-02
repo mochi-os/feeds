@@ -492,15 +492,9 @@ msgstr "Pèmèt klasman pa"
 msgid "Also delete posts imported from this source"
 msgstr "Efase tou piblikasyon enpòte nan sous sa a"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Sou {0} tou"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Reponn tou soti nan"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Pibliye tou sou"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Fil oswa lis Bluesky"
 msgid "Board"
 msgstr "Tablo"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Pataje depi {0}"
@@ -2036,6 +2030,10 @@ msgstr "Swiv yon etikèt"
 msgid "Follow a person or community"
 msgstr "Swiv yon moun oswa yon kominote"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Swiv ankò"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Swiv depi yon lòt rezo"
@@ -2043,10 +2041,6 @@ msgstr "Swiv depi yon lòt rezo"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Swiv an atant"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Swiv refize"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Gwoup: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Etikèt"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Kache piblikasyon"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Kache rezilta yo"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Pa gen aksè"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Pa gen règ aksè konfigire. Ajoute règ pou kontwole kiyès ki ka jwenn aksè nan resous sa a."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Pa gen kont"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Poko gen aktivite"
@@ -2674,6 +2671,10 @@ msgstr "Pa konpare: pi gwo pase {0}"
 msgid "Not compared: over the size limit"
 msgstr "Pa konpare: depase limit gwosè a"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Pa swiv"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Ouvri meni"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Ouvri navigasyon"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Louvri sou {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Pòs ak kòmantè"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Pòs sou Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Pòs sou ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Pòs sou fediverse la"
+msgid "Posts on Bluesky"
+msgstr "Pòs sou Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Piblik"
 msgid "Publish as a Bluesky feed"
 msgstr "Pibliye kòm fil Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Pibliye sou"
 
@@ -3392,6 +3398,10 @@ msgstr "Chèche..."
 msgid "Searching..."
 msgstr "Ap chèche..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Montre rezilta yo"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Chwa"
@@ -3520,17 +3530,13 @@ msgstr "Montre klas yo"
 msgid "Show fields"
 msgstr "Montre chan yo"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Montre mwens"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Montre plis"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Montre sèlman kòmantè sou imaj sa a"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Montre piblikasyon"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Demann kamera a pa jwenn repons"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Fil la te pibliye {0} pòs la. Yo rete sof si ou efase yo."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Pa t kapab voye swiv la"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

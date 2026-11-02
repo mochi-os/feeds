@@ -50,12 +50,6 @@ import {
   type ComposerItem,
   getErrorMessage,
   useFormat,
-  Label,
-  SelectValue,
-  SelectTrigger,
-  SelectItem,
-  SelectContent,
-  Select,
   toast,
   useListAutoAnimate,
   moveItem,
@@ -88,8 +82,6 @@ import {
   Bell,
   BellRing,
   Check,
-  ChevronDown,
-  ChevronUp,
   MapPin,
   MessageSquare,
   MoreHorizontal,
@@ -98,10 +90,13 @@ import {
   PinOff,
   Plane,
   Repeat2,
+  ExternalLink,
   Trash2,
+  TriangleAlert,
   X,
 } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
+import { authorAssets } from '../author-assets'
 import {
   buildFeedPostEditDraft,
   feedPostEditOriginalFromPost,
@@ -144,8 +139,7 @@ type FeedPostsProps = {
     postId: string,
     body?: string,
     files?: File[],
-    attachment?: string,
-    account?: string
+    attachment?: string
   ) => void | Promise<void>
   onReplyToComment: (
     feedId: string,
@@ -309,6 +303,8 @@ export type PostCommentsListProps = {
    * not follow a navigation, so the thread would change behind it.
    */
   continueThread?: boolean
+  /** One asset address per commenter across the list (`authorAssets`). */
+  avatars?: ReadonlyMap<string, string>
 }
 
 export function PostCommentsList({
@@ -337,6 +333,7 @@ export function PostCommentsList({
   emptyState,
   focusedComment,
   continueThread = true,
+  avatars,
 }: PostCommentsListProps) {
   const navigate = useNavigate()
   const router = useRouter()
@@ -422,6 +419,7 @@ export function PostCommentsList({
             canComment={canComment}
             canManageComments={canManageComments}
             onOpenAttachment={onOpenAttachment}
+            avatars={avatars}
           />
         ))}
       </div>
@@ -443,41 +441,23 @@ export function PostCommentsList({
   )
 }
 
-// Where else a post is: its copies on other networks, each a link to the copy
-// under the account it was published through.
-export function PostCopies({
-  copies,
-  boosts,
-}: {
-  copies?: PostCopy[]
-  boosts?: number
-}) {
-  if ((!copies || copies.length === 0) && !boosts) return null
+// Whether a copy of a post can be opened somewhere else. A hosted account's
+// copy is this post on the user's own server, and its link leads back here.
+function openable(copy: PostCopy): boolean {
+  return !!copy.url && copy.network !== 'fediverse'
+}
+
+// How many times a post was boosted on other networks, beside its reactions.
+function PostBoosts({ boosts }: { boosts: number }) {
+  const { formatNumber } = useFormat()
   return (
-    <div className='text-muted-foreground mt-1 flex flex-wrap gap-x-3 text-xs'>
-      {(copies ?? []).map((copy) =>
-        copy.url ? (
-          <a
-            key={copy.address}
-            href={safeHref(copy.url)}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='hover:underline'
-          >
-            <Trans>Also on {providerName(copy.network)}</Trans>
-          </a>
-        ) : (
-          <span key={copy.address}>
-            <Trans>Also on {providerName(copy.network)}</Trans>
-          </span>
-        )
-      )}
-      {!!boosts && (
-        <span>
-          <Plural value={boosts} _1='Boosted once' other='Boosted # times' />
-        </span>
-      )}
-    </div>
+    <span className='text-muted-foreground inline-flex items-center gap-1 px-1 text-xs'>
+      <Repeat2 className='size-3.5' aria-hidden='true' />
+      <span aria-hidden='true'>{formatNumber(boosts)}</span>
+      <span className='sr-only'>
+        <Plural value={boosts} _1='Boosted once' other='Boosted # times' />
+      </span>
+    </span>
   )
 }
 
@@ -522,6 +502,8 @@ export function FeedPosts({
   // For aggregate view (showFeedName), use per-post permissions
   const canReact = permissions?.react || permissions?.comment || isFeedOwner
   const canComment = permissions?.comment || isFeedOwner
+  // One avatar address per commenter across every post on the page.
+  const avatars = useMemo(() => authorAssets(posts), [posts])
 
   // One lightbox opener per post: a comment's image chip reaches into that
   // post's gallery to open the lightbox on its attachment, comments showing.
@@ -572,13 +554,10 @@ export function FeedPosts({
     [onDraftChange]
   )
 
-  // Rejects on failure so the box keeps its draft and files for Retry: the
-  // comment was rolled back and the draft restored upstream.
-  // The commenter's hosted accounts on the fediverse, for a comment to go out
-  // from one as a reply to the post's copy (decision 31): read once a post
-  // with such a copy is shown, and the account chosen per post.
-  const [replyAccounts, setReplyAccounts] = useState<PublishAccount[]>([])
-  const [replyFrom, setReplyFrom] = useState<Record<string, string>>({})
+  // The user's hosted accounts on the fediverse and Bluesky, for boosting a
+  // post from there (phases 17 and 19): read once a post from another
+  // network is shown.
+  const [hostedAccounts, setHostedAccounts] = useState<PublishAccount[]>([])
   const anyFediverseCopy = posts.some(
     (p) =>
       p.copies?.some((copy) => copy.network === 'fediverse') ||
@@ -588,9 +567,9 @@ export function FeedPosts({
     if (!isLoggedIn || readOnly || !anyFediverseCopy) return
     let cancelled = false
     feedsApi
-      .hostedAccounts()
+      .boostAccounts()
       .then((accounts) => {
-        if (!cancelled) setReplyAccounts(accounts)
+        if (!cancelled) setHostedAccounts(accounts)
       })
       .catch(() => {})
     return () => {
@@ -598,24 +577,19 @@ export function FeedPosts({
     }
   }, [isLoggedIn, readOnly, anyFediverseCopy])
 
+  // Rejects on failure so the box keeps its draft and files for Retry: the
+  // comment was rolled back and the draft restored upstream.
   const submitComment = useCallback(
     async (feedId: string, postId: string, body: string, files?: File[]) => {
       setIsSubmittingComment(true)
       try {
-        await onAddComment(
-          feedId,
-          postId,
-          body,
-          files,
-          undefined,
-          replyFrom[postId] || undefined
-        )
+        await onAddComment(feedId, postId, body, files)
         setCommentingOn(null)
       } finally {
         setIsSubmittingComment(false)
       }
     },
-    [onAddComment, replyFrom]
+    [onAddComment]
   )
 
   // Pinning a post of the owner's feed, and boosting a post from another
@@ -639,30 +613,43 @@ export function FeedPosts({
     },
     [reloadPosts]
   )
-  const boostAccount = replyAccounts[0]
+  // A post is boosted from the user's first hosted account on its own
+  // network: Bluesky for one whose id there is an at:// URI, else the
+  // fediverse.
+  const boostAccountFor = useCallback(
+    (post: FeedPost) => {
+      const network = post.remote?.startsWith('at://') ? 'bluesky' : 'fediverse'
+      return hostedAccounts.find((account) => account.type === network)
+    },
+    [hostedAccounts]
+  )
   const isBoosted = useCallback(
-    (post: FeedPost) =>
-      !!boostAccount &&
-      !!post.copies?.some(
-        (copy) =>
-          copy.network === 'fediverse' &&
-          copy.address === boostAccount.identifier
-      ),
-    [boostAccount]
+    (post: FeedPost) => {
+      const account = boostAccountFor(post)
+      return (
+        !!account &&
+        !!post.copies?.some(
+          (copy) =>
+            copy.network === account.type && copy.address === account.identifier
+        )
+      )
+    },
+    [boostAccountFor]
   )
   const boostPost = useCallback(
     async (post: FeedPost) => {
-      if (!boostAccount) return
+      const account = boostAccountFor(post)
+      if (!account) return
       const boosted = isBoosted(post)
       try {
-        await feedsApi.boostPost(post.feedId, post.id, boostAccount.id, !boosted)
+        await feedsApi.boostPost(post.feedId, post.id, account.id, !boosted)
         await reloadPosts(post.feedId)
         toast.success(boosted ? t`Boost taken back` : t`Boosted`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not boost`))
       }
     },
-    [boostAccount, isBoosted, reloadPosts]
+    [boostAccountFor, isBoosted, reloadPosts]
   )
   // A post behind a content warning shows its warning until the reader asks
   // for the rest.
@@ -977,6 +964,7 @@ export function FeedPosts({
   // post's thread scoped to an image, not a second thread with fewer powers.
   const threadPropsFor = (post: FeedPost) => ({
     post,
+    avatars,
     focusedComment,
     onOpenAttachment: (attachmentId: string) =>
       openerFor(post.id).current?.(attachmentId),
@@ -1497,32 +1485,32 @@ export function FeedPosts({
                   <>
                     <PostHeadline post={post} />
                     {post.warning && (
-                      <div className='flex flex-wrap items-center gap-2 text-sm'>
-                        <span className='font-medium'>{post.warning}</span>
-                        <Button
-                          type='button'
-                          variant='outline'
-                          size='sm'
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setRevealed((current) => ({
-                              ...current,
-                              [post.id]: !current[post.id],
-                            }))
-                          }}
-                        >
+                      // The warning is a quiet strip, opened or closed by a
+                      // click anywhere on it; being a button, the card's own
+                      // click leaves it alone rather than opening the post.
+                      <button
+                        type='button'
+                        aria-expanded={!!revealed[post.id]}
+                        className='bg-muted hover:bg-hover flex w-full items-center gap-2 rounded-lg px-3 py-2 text-start text-sm'
+                        onClick={() => {
+                          setRevealed((current) => ({
+                            ...current,
+                            [post.id]: !current[post.id],
+                          }))
+                        }}
+                      >
+                        <TriangleAlert className='text-muted-foreground size-4 shrink-0' />
+                        <span className='min-w-0 flex-1 font-medium break-words'>
+                          {post.warning}
+                        </span>
+                        <span className='text-primary shrink-0'>
                           {revealed[post.id] ? (
-                            <ChevronUp className='size-4' />
+                            <Trans>Hide post</Trans>
                           ) : (
-                            <ChevronDown className='size-4' />
+                            <Trans>Show post</Trans>
                           )}
-                          {revealed[post.id] ? (
-                            <Trans>Show less</Trans>
-                          ) : (
-                            <Trans>Show more</Trans>
-                          )}
-                        </Button>
-                      </div>
+                        </span>
+                      </button>
                     )}
                     {(!post.warning || revealed[post.id]) && (
                     <>
@@ -1544,7 +1532,6 @@ export function FeedPosts({
                         )}
                       </div>
                     )}
-                    <PostCopies copies={post.copies} boosts={post.boosts} />
                     {!isLoggedIn &&
                       post.copies?.some(
                         (copy) => copy.network === 'fediverse'
@@ -1766,8 +1753,19 @@ export function FeedPosts({
                     canComment ||
                     isFeedOwner ||
                     post.isOwner ||
-                    usePerPostPermissions) &&
+                    usePerPostPermissions ||
+                    !!post.boosts ||
+                    !!post.copies?.some(openable)) &&
                   (() => {
+                    // A post's copies on other networks, each opened from its
+                    // menu, below the owner's own items.
+                    const links = (post.copies ?? []).filter(openable)
+                    const manage =
+                      !readOnly &&
+                      (isFeedOwner || post.isOwner) &&
+                      !!onEditPost &&
+                      !!onDeletePost
+                    const boosts = post.boosts ?? 0
                     const hasReactions = !!(
                       (post.reactions &&
                         Object.values(post.reactions).some(
@@ -1802,6 +1800,8 @@ export function FeedPosts({
                             />
                           )}
                         </div>
+
+                        {boosts > 0 && <PostBoosts boosts={boosts} />}
 
                         {/* Action pill: stored reaction chips stay visible; actions expand on hover */}
                         <div className='group/actions flex items-center gap-1'>
@@ -1957,105 +1957,127 @@ export function FeedPosts({
                               </Tooltip>
                             )}
 
-                          {/* More Options (Edit / Delete) */}
-                          {!readOnly &&
-                            (isFeedOwner || post.isOwner) &&
-                            onEditPost &&
-                            onDeletePost && (
-                              <ActionPill
-                                hoverGroup='card'
-                                expandWidth={300}
-                                emptyReveal='max-width'
-                                className={HOLD_OPEN}
-                              >
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button
-                                      type='button'
-                                      variant='ghost'
-                                      size='icon'
-                                      className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
-                                      aria-label={t`More options`}
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                      }}
-                                    >
-                                      <MoreHorizontal className='size-4' />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent
-                                    align='end'
-                                    onClick={(e) => e.stopPropagation()}
+                          {/* More options: Edit / Delete, then the post's copies */}
+                          {(manage || links.length > 0) && (
+                            <ActionPill
+                              hoverGroup='card'
+                              expandWidth={300}
+                              emptyReveal='max-width'
+                              className={HOLD_OPEN}
+                            >
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    type='button'
+                                    variant='ghost'
+                                    size='icon'
+                                    className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
+                                    aria-label={t`More options`}
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      e.stopPropagation()
+                                    }}
                                   >
-                                    <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                        handleStartEdit(post)
-                                      }}
-                                    >
-                                      <Pencil className='me-2 size-4' />
-                                      <Trans>Edit post</Trans>
-                                    </DropdownMenuItem>
-                                    {isFeedOwner && (
+                                    <MoreHorizontal className='size-4' />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                  align='end'
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  {manage && (
+                                    <>
                                       <DropdownMenuItem
                                         onClick={(e) => {
                                           e.preventDefault()
                                           e.stopPropagation()
-                                          void pinPost(post)
+                                          handleStartEdit(post)
                                         }}
                                       >
-                                        {post.pinned ? (
-                                          <PinOff className='me-2 size-4' />
-                                        ) : (
-                                          <Pin className='me-2 size-4' />
-                                        )}
-                                        {post.pinned ? (
-                                          <Trans>Unpin post</Trans>
-                                        ) : (
-                                          <Trans>Pin post</Trans>
-                                        )}
+                                        <Pencil className='me-2 size-4' />
+                                        <Trans>Edit post</Trans>
                                       </DropdownMenuItem>
-                                    )}
-                                    {isFeedOwner &&
-                                      boostAccount &&
-                                      post.remote &&
-                                      post.authorId && (
+                                      {isFeedOwner && (
                                         <DropdownMenuItem
                                           onClick={(e) => {
-                                            e.preventDefault()
+                                            // Prevented, the menu stays open.
                                             e.stopPropagation()
-                                            void boostPost(post)
+                                            void pinPost(post)
                                           }}
                                         >
-                                          <Repeat2 className='me-2 size-4' />
-                                          {isBoosted(post) ? (
-                                            <Trans>Take the boost back</Trans>
+                                          {post.pinned ? (
+                                            <PinOff className='me-2 size-4' />
                                           ) : (
-                                            <Trans>
-                                              Boost from {boostAccount.identifier}
-                                            </Trans>
+                                            <Pin className='me-2 size-4' />
+                                          )}
+                                          {post.pinned ? (
+                                            <Trans>Unpin post</Trans>
+                                          ) : (
+                                            <Trans>Pin post</Trans>
                                           )}
                                         </DropdownMenuItem>
                                       )}
+                                      {isFeedOwner &&
+                                        post.remote &&
+                                        post.authorId &&
+                                        boostAccountFor(post) && (
+                                          <DropdownMenuItem
+                                            onClick={(e) => {
+                                              // Prevented, the menu stays open.
+                                              e.stopPropagation()
+                                              void boostPost(post)
+                                            }}
+                                          >
+                                            <Repeat2 className='me-2 size-4' />
+                                            {isBoosted(post) ? (
+                                              <Trans>Take the boost back</Trans>
+                                            ) : (
+                                              <Trans>
+                                                Boost from{' '}
+                                                {
+                                                  boostAccountFor(post)
+                                                    ?.identifier
+                                                }
+                                              </Trans>
+                                            )}
+                                          </DropdownMenuItem>
+                                        )}
+                                      <DropdownMenuItem
+                                        onClick={(e) => {
+                                          e.preventDefault()
+                                          e.stopPropagation()
+                                          setDeletingPost({
+                                            id: post.id,
+                                            feedId: post.feedId,
+                                          })
+                                        }}
+                                      >
+                                        <Trash2 className='me-2 size-4' />
+                                        <Trans>Delete post</Trans>
+                                      </DropdownMenuItem>
+                                    </>
+                                  )}
+                                  {links.map((copy) => (
                                     <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                        setDeletingPost({
-                                          id: post.id,
-                                          feedId: post.feedId,
-                                        })
-                                      }}
+                                      key={copy.address}
+                                      asChild
                                     >
-                                      <Trash2 className='me-2 size-4' />
-                                      <Trans>Delete post</Trans>
+                                      <a
+                                        href={safeHref(copy.url)}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                      >
+                                        <ExternalLink className='me-2 size-4' />
+                                        <Trans>
+                                          Open on {providerName(copy.network)}
+                                        </Trans>
+                                      </a>
                                     </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </ActionPill>
-                            )}
+                                  ))}
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </ActionPill>
+                          )}
                         </div>
                       </div>
                     )
@@ -2064,43 +2086,6 @@ export function FeedPosts({
                 {/* Expanded comment input */}
                 {commentingOn === post.id && (
                   <div onClick={(e) => e.stopPropagation()}>
-                    {replyAccounts.length > 0 &&
-                      (post.copies?.some(
-                        (copy) => copy.network === 'fediverse'
-                      ) ||
-                        (post.remote && post.authorId)) && (
-                        <div className='mb-2 flex items-center gap-2 text-xs'>
-                          <Label htmlFor={`reply-from-${post.id}`}>
-                            <Trans>Also reply from</Trans>
-                          </Label>
-                          <Select
-                            value={replyFrom[post.id] ?? ''}
-                            onValueChange={(value) =>
-                              setReplyFrom((current) => ({
-                                ...current,
-                                [post.id]: value === 'none' ? '' : value,
-                              }))
-                            }
-                          >
-                            <SelectTrigger
-                              id={`reply-from-${post.id}`}
-                              className='h-7 w-auto min-w-40 text-xs'
-                            >
-                              <SelectValue placeholder={t`No account`} />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value='none'>
-                                <Trans>No account</Trans>
-                              </SelectItem>
-                              {replyAccounts.map((account) => (
-                                <SelectItem key={account.id} value={account.id}>
-                                  {account.identifier}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      )}
                     <CommentBox
                       value={commentDrafts[post.id] ?? ''}
                       onValueChange={(value) => onDraftChange(post.id, value)}

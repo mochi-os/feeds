@@ -492,14 +492,8 @@ msgstr ""
 msgid "Also delete posts imported from this source"
 msgstr ""
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr ""
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
 msgstr ""
 
 #: src/features/feeds/constants.ts
@@ -724,7 +718,7 @@ msgstr ""
 msgid "Board"
 msgstr ""
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr ""
@@ -2036,16 +2030,16 @@ msgstr "Suivre un mot-clic"
 msgid "Follow a person or community"
 msgstr ""
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr ""
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
-msgstr ""
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
 msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr ""
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Mot-clic"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr ""
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr ""
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr ""
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr ""
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr ""
@@ -2674,6 +2671,10 @@ msgstr ""
 msgid "Not compared: over the size limit"
 msgstr ""
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr ""
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2739,6 +2740,11 @@ msgstr ""
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
+msgstr ""
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
 msgstr ""
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
@@ -2906,11 +2912,11 @@ msgid "Posts and comments"
 msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
+msgid "Posts on ActivityPub"
 msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
+msgid "Posts on Bluesky"
 msgstr ""
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr ""
 msgid "Publish as a Bluesky feed"
 msgstr ""
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr ""
 
@@ -3392,6 +3398,10 @@ msgstr ""
 msgid "Searching..."
 msgstr ""
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr ""
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr ""
@@ -3520,16 +3530,12 @@ msgstr ""
 msgid "Show fields"
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr ""
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr ""
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
 msgstr ""
 
 #: src/features/feeds/components/post-media.tsx
@@ -3777,6 +3783,10 @@ msgstr ""
 #. placeholder {0}: kept.count
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
 msgstr ""
 
 #: ../../../lib/web/src/lib/shell-errors.ts

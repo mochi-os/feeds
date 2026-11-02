@@ -50,6 +50,7 @@ import {
   Plus,
   Rss,
   Settings,
+  Share2,
   Shield,
   Trash2,
   UserMinus,
@@ -58,7 +59,10 @@ import { mapFeedsToSummaries } from '@/api/adapters'
 import endpoints from '@/api/endpoints'
 import { feedsApi, type AccessRule } from '@/api/feeds'
 import { FiltersSection } from '@/features/feeds/components/filters-section'
-import { PublishingSection } from '@/features/feeds/components/publishing-section'
+import {
+  PublishingSection,
+  usePublishOffered,
+} from '@/features/feeds/components/publishing-section'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 
@@ -67,7 +71,7 @@ function toError(error: unknown, fallback: string): Error {
   return new Error(fallback)
 }
 
-type TabId = 'general' | 'access'
+type TabId = 'general' | 'publish' | 'access'
 
 type SettingsSearch = {
   tab?: TabId
@@ -76,7 +80,9 @@ type SettingsSearch = {
 export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
   validateSearch: (search: Record<string, unknown>): SettingsSearch => ({
     tab:
-      search.tab === 'general' || search.tab === 'access'
+      search.tab === 'general' ||
+      search.tab === 'publish' ||
+      search.tab === 'access'
         ? search.tab
         : undefined,
   }),
@@ -89,21 +95,28 @@ interface Tab {
   icon: React.ReactNode
 }
 
+// The owner's tabs, with Publish to before Access where the feed has
+// somewhere to publish, and the tab the address opens: a link to Publish to
+// holds it while that is asked, and opens the settings once it is not so.
+export function settingsTabs(
+  tab: TabId | undefined,
+  publishable: boolean | undefined
+): { tabs: TabId[]; active: TabId } {
+  const active =
+    tab === 'publish' && publishable === false ? 'general' : (tab ?? 'general')
+  const tabs: TabId[] =
+    publishable || active === 'publish'
+      ? ['general', 'publish', 'access']
+      : ['general', 'access']
+  return { tabs, active }
+}
+
 function FeedSettingsPage() {
   const { t } = useLingui()
-  const tabs: Tab[] = [
-    {
-      id: 'general',
-      label: t`Settings`,
-      icon: <Settings className='h-4 w-4' />,
-    },
-    { id: 'access', label: t`Access`, icon: <Shield className='h-4 w-4' /> },
-  ]
   const { feedId } = Route.useParams()
   const navigate = useNavigate()
   const navigateSettings = Route.useNavigate()
   const { tab } = Route.useSearch()
-  const activeTab = tab ?? 'general'
   const getCachedFeed = useFeedsStore((state) => state.getCachedFeed)
   const refreshSidebar = useFeedsStore((state) => state.refresh)
   const cachedFeed = getCachedFeed(feedId)
@@ -277,6 +290,22 @@ function FeedSettingsPage() {
 
   const canUnsubscribe = selectedFeed?.isSubscribed && !selectedFeed?.isOwner
 
+  // Publish to is a tab of its own, shown only where the feed has somewhere
+  // to publish; a link to it while that is not so opens the settings.
+  const publishable = usePublishOffered(
+    selectedFeed?.id ?? '',
+    selectedFeed?.privacy ?? 'public',
+    !!selectedFeed?.isOwner
+  )
+  const shown = settingsTabs(tab, publishable)
+  const activeTab = shown.active
+  const labels: Record<TabId, Omit<Tab, 'id'>> = {
+    general: { label: t`Settings`, icon: <Settings className='h-4 w-4' /> },
+    publish: { label: t`Publish to`, icon: <Share2 className='h-4 w-4' /> },
+    access: { label: t`Access`, icon: <Shield className='h-4 w-4' /> },
+  }
+  const tabs: Tab[] = shown.tabs.map((id) => ({ id, ...labels[id] }))
+
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
     return (
       <>
@@ -381,6 +410,12 @@ function FeedSettingsPage() {
                 setFeeds={setFeeds}
               />
             )}
+            {activeTab === 'publish' && selectedFeed.isOwner && (
+              <PublishingSection
+                feedId={selectedFeed.id}
+                privacy={selectedFeed.privacy ?? 'public'}
+              />
+            )}
             {activeTab === 'access' && selectedFeed.isOwner && (
               <AccessTab feedId={selectedFeed.id} />
             )}
@@ -462,13 +497,6 @@ function GeneralTab({
       </Section>
 
       {feed.isOwner && <BannerSection entityId={feed.id} api={feedsApi} />}
-
-      {feed.isOwner && (
-        <PublishingSection
-          feedId={feed.id}
-          privacy={feed.privacy ?? 'public'}
-        />
-      )}
 
       <FiltersSection feedId={feed.id} />
 

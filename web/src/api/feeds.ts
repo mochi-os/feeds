@@ -41,6 +41,7 @@ import type {
   PublishAccount,
   PublishResponse,
   PublishSetResponse,
+  SourceState,
 } from '@/types/feeds'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 import endpoints from '@/api/endpoints'
@@ -129,6 +130,7 @@ interface GetFeedParams {
   sort?: string
   tag?: string
   unread?: string
+  local?: string // '1': only a feed held here; one held elsewhere is not found
   _t?: number // Cache buster
 }
 
@@ -147,6 +149,7 @@ const getFeed = async (
       sort: params?.sort,
       tag: params?.tag,
       unread: params?.unread,
+      local: params?.local,
       _t: params?._t?.toString(),
     }),
   })
@@ -415,11 +418,17 @@ const importFollows = async (
   feedId: string,
   addresses: string,
   account?: string
-): Promise<ImportFollowsResponse> =>
-  client.post<ImportFollowsResponse, Record<string, string>>(
-    endpoints.feeds.sourcesImport(feedId),
-    { feed: feedId, addresses, ...(account ? { account } : {}) }
-  )
+): Promise<ImportFollowsResponse> => {
+  const response = await client.post<
+    MaybeWrapped<ImportFollowsResponse>,
+    Record<string, string>
+  >(endpoints.feeds.sourcesImport(feedId), {
+    feed: feedId,
+    addresses,
+    ...(account ? { account } : {}),
+  })
+  return toDataResponse<ImportFollowsResponse>(response, 'import follows').data
+}
 
 // The user's contacts with a handle on another network, to follow.
 const people = async (): Promise<{ people: Person[] }> =>
@@ -567,9 +576,6 @@ const createComment = async (
   }
   if (payload.attachment) {
     formData.append('attachment', payload.attachment)
-  }
-  if (payload.account) {
-    formData.append('account', payload.account)
   }
   if (payload.files) {
     for (const file of payload.files) {
@@ -831,6 +837,10 @@ interface SourceRemoveResponse {
   data: { success: boolean }
 }
 
+interface SourceFollowResponse {
+  data: { state: SourceState }
+}
+
 interface SourcePollResponse {
   data: { fetched: number }
 }
@@ -916,13 +926,26 @@ const moderateComment = async (
   )
 }
 
-// The user's hosted accounts on other networks, for replying from one.
+// The user's hosted fediverse accounts, which a person is followed and a post
+// boosted through.
 const hostedAccounts = async (): Promise<PublishAccount[]> => {
   const accounts = await client.post<PublishAccount[], { capability: string }>(
     endpoints.feeds.accounts,
     { capability: 'network' }
   )
   return (accounts ?? []).filter((a) => a.hosted && a.type === 'fediverse')
+}
+
+// The user's hosted accounts a post from another network is boosted from:
+// the fediverse's and Bluesky's, one on the post's own network.
+const boostAccounts = async (): Promise<PublishAccount[]> => {
+  const accounts = await client.post<PublishAccount[], { capability: string }>(
+    endpoints.feeds.accounts,
+    { capability: 'network' }
+  )
+  return (accounts ?? []).filter(
+    (a) => a.hosted && (a.type === 'fediverse' || a.type === 'bluesky')
+  )
 }
 
 // The owner's accounts on Bluesky, hosted or linked, one of which reads a
@@ -979,10 +1002,13 @@ const addSource = async (
   // The hosted account a person on the fediverse is followed through.
   if (account) payload.account = account
 
+  // No limit of the client's own: adding fetches the source, which the server
+  // bounds and always answers, and a limit shorter than its slowest fetch
+  // reported a failure for a source that was added.
   const response = await client.post<
     SourceAddResponse | SourceAddResponse['data'],
     Record<string, string>
-  >(endpoints.feeds.sourcesAdd(feedId), payload)
+  >(endpoints.feeds.sourcesAdd(feedId), payload, { timeout: 0 })
 
   return toDataResponse<SourceAddResponse['data']>(response, 'add source')
 }
@@ -1035,6 +1061,19 @@ const pollSource = async (
   >(endpoints.feeds.sourcesPoll(feedId), payload)
 
   return toDataResponse<SourcePollResponse['data']>(response, 'poll source')
+}
+
+// Follow a followed source's person again where the follow is gone.
+const followSource = async (
+  feedId: string,
+  sourceId: string
+): Promise<SourceFollowResponse> => {
+  const response = await client.post<
+    SourceFollowResponse | SourceFollowResponse['data'],
+    Record<string, string>
+  >(endpoints.feeds.sourcesFollow(feedId), { feed: feedId, source: sourceId })
+
+  return toDataResponse<SourceFollowResponse['data']>(response, 'follow source')
 }
 
 const getPostImage = async (
@@ -1270,6 +1309,7 @@ export const feedsApi = {
   reply,
   moderateComment,
   hostedAccounts,
+  boostAccounts,
   editComment,
   deleteComment,
   reactToComment,
@@ -1301,6 +1341,7 @@ export const feedsApi = {
   editSource,
   removeSource,
   pollSource,
+  followSource,
   importFollows,
   pinPost,
   votePoll,

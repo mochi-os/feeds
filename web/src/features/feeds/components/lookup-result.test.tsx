@@ -94,7 +94,7 @@ describe('LookupResult', () => {
     show('@alice@mastodon.social')
     expect(await screen.findByText('Alice')).toBeTruthy()
     expect(
-      screen.getByText('@alice@mastodon.social · Fediverse')
+      screen.getByText('@alice@mastodon.social · ActivityPub')
     ).toBeTruthy()
     await user.click(screen.getByRole('button', { name: 'Follow' }))
     // Only the feeds the user owns take a source.
@@ -124,7 +124,7 @@ describe('LookupResult', () => {
     show('!technology@lemmy.world')
     expect(await screen.findByText('Technology')).toBeTruthy()
     expect(
-      screen.getByText('@technology@lemmy.world · Fediverse · Community')
+      screen.getByText('@technology@lemmy.world · ActivityPub · Community')
     ).toBeTruthy()
   })
 

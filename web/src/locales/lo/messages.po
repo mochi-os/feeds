@@ -492,15 +492,9 @@ msgstr "ອະນຸຍາດການຈັດລຽງຕາມ"
 msgid "Also delete posts imported from this source"
 msgstr "ລົບໂພສທີ່ນຳເຂົ້າຈາກແຫຼ່ງນີ້ດ້ວຍ"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "ມີຢູ່ໃນ {0} ນຳ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "ຕອບກັບຈາກນີ້ນຳ"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "ເຜີຍແຜ່ໄປທີ່ດ້ວຍ"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "ຟີດ ຫຼື ລາຍຊື່ Bluesky"
 msgid "Board"
 msgstr "ກະດານ"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "ບູສຈາກ {0}"
@@ -2036,6 +2030,10 @@ msgstr "ຕິດຕາມແຮຊແທັກ"
 msgid "Follow a person or community"
 msgstr "ຕິດຕາມບຸກຄົນ ຫຼື ຊຸມຊົນ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "ຕິດຕາມອີກຄັ້ງ"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "ຕິດຕາມຈາກເຄືອຂ່າຍອື່ນ"
@@ -2043,10 +2041,6 @@ msgstr "ຕິດຕາມຈາກເຄືອຂ່າຍອື່ນ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "ການຕິດຕາມລໍຖ້າຢູ່"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "ການຕິດຕາມຖືກປະຕິເສດ"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "ກຸ່ມ: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "ແຮຊແທັກ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "ເຊື່ອງໂພສ"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "ເຊື່ອງຜົນ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "ບໍ່ມີການເຂົ້າເຖິງ"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ບໍ່ມີກົດການເຂົ້າເຖິງທີ່ຕັ້ງຄ່າໄວ້. ເພີ່ມກົດເພື່ອຄວບຄຸມຜູ້ທີ່ສາມາດເຂົ້າເຖິງຊັບພະຍາກອນນີ້."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "ບໍ່ມີບັນຊີ"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "ຍັງບໍ່ມີກິດຈະກຳ"
@@ -2674,6 +2671,10 @@ msgstr "ບໍ່ໄດ້ປຽບທຽບ: ໃຫຍ່ກວ່າ {0}"
 msgid "Not compared: over the size limit"
 msgstr "ບໍ່ໄດ້ປຽບທຽບ: ເກີນຂີດຈຳກັດຂະໜາດ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "ບໍ່ໄດ້ຕິດຕາມ"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "ເປີດເມນູ"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "ເປີດການນຳທາງ"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "ເປີດໃນ {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "ໂພສແລະຄຳເຫັນ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "ໂພສໃນ Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "ໂພສໃນ ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "ໂພສໃນ fediverse"
+msgid "Posts on Bluesky"
+msgstr "ໂພສໃນ Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "ສາທາລະນະ"
 msgid "Publish as a Bluesky feed"
 msgstr "ເຜີຍແຜ່ເປັນຟີດ Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "ເຜີຍແຜ່ໄປທີ່"
 
@@ -3392,6 +3398,10 @@ msgstr "ຄົ້ນຫາ..."
 msgid "Searching..."
 msgstr "ກຳລັງຄົ້ນຫາ..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "ສະແດງຜົນ"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "ລາຍການເລືອກ"
@@ -3520,17 +3530,13 @@ msgstr "ສະແດງຄລາສ"
 msgid "Show fields"
 msgstr "ສະແດງຊ່ອງ"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "ສະແດງໜ້ອຍລົງ"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "ສະແດງເພີ່ມເຕີມ"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ສະແດງສະເພາະຄວາມເຫັນຕໍ່ຮູບນີ້"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "ສະແດງໂພສ"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "ຄຳຮ້ອງຂໍກ້ອງບໍ່ໄດ້ຮັບການ
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "ຟີດນີ້ໄດ້ເຜີຍແຜ່ {0} ໂພສຢູ່ທີ່ນັ້ນ. ພວກມັນຈະຍັງຢູ່ ເວັ້ນເສຍແຕ່ທ່ານຈະລົບອອກ."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "ບໍ່ສາມາດສົ່ງການຕິດຕາມໄດ້"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

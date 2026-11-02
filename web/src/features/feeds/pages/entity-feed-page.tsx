@@ -42,7 +42,6 @@ import {
   usePendingItems,
   useMergeOnScrollTop,
   GeneralError,
-  useShellStorage,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -67,6 +66,8 @@ import { mapFeedsToSummaries } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
+import type { PostsPrefetch } from '@/hooks/use-infinite-posts'
+import { useReadFilter } from '@/hooks/use-read-filter'
 import type { FeedGoneReason } from '@/hooks/useFeedWebsocket'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedGone } from '@/features/feeds/components/feed-gone'
@@ -74,16 +75,19 @@ import { FeedBanner } from '../components/feed-banner'
 import { FeedPosts } from '../components/feed-posts'
 import { FollowButton } from '../components/follow-button'
 import { usePostHandlers } from '../hooks'
-import { removeCommentFromTree } from '../utils'
+import { initialSort, removeCommentFromTree } from '../utils'
 
 interface EntityFeedPageProps {
   feed: Feed
   permissions?: FeedPermissions
+  /** The first page of posts the route loader started for this navigation. */
+  prefetched?: PostsPrefetch
 }
 
 export function EntityFeedPage({
   feed,
   permissions: _initialPermissions,
+  prefetched,
 }: EntityFeedPageProps) {
   const { t } = useLingui()
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
@@ -94,10 +98,7 @@ export function EntityFeedPage({
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
-  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>(
-    'feeds-read-filter',
-    'all'
-  )
+  const [readFilter, setReadFilter] = useReadFilter()
   const navigate = useNavigate()
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -112,9 +113,7 @@ export function EntityFeedPage({
   useEffect(() => {
     setFeedSortOverride(feed.sort ?? '')
   }, [feed.id, feed.sort])
-  const sort: SortType = (
-    isLoggedIn ? feedSortOverride || defaultSort || 'interests' : 'new'
-  ) as SortType
+  const sort = initialSort(feedSortOverride, defaultSort, isLoggedIn)
   const setSort = useCallback(
     (value: SortType) => {
       setFeedSortOverride(value)
@@ -150,6 +149,7 @@ export function EntityFeedPage({
     tag: activeTag,
     sort,
     unread: readFilter === 'unread',
+    prefetched,
   })
   const sortOptions: SortType[] = useMemo(() => {
     const opts: SortType[] = []
@@ -379,31 +379,22 @@ export function EntityFeedPage({
     [handlePostReaction, markRead, feed.fingerprint, feed.id]
   )
 
+  // Each passes its arguments on whole, the account to answer from among
+  // them, so none is lost on the way to the request.
   const handleAddCommentAndRead = useCallback(
-    (
-      feedId: string,
-      postId: string,
-      body?: string,
-      files?: File[],
-      attachment?: string,
-      account?: string
-    ) => {
+    (...args: Parameters<typeof handleAddComment>) => {
+      const postId = args[1]
       markRead(postId, feed.fingerprint ?? feed.id)
-      return handleAddComment(feedId, postId, body, files, attachment, account)
+      return handleAddComment(...args)
     },
     [handleAddComment, markRead, feed.fingerprint, feed.id]
   )
 
   const handleReplyAndRead = useCallback(
-    (
-      feedId: string,
-      postId: string,
-      parentCommentId: string,
-      body: string,
-      files?: File[]
-    ) => {
+    (...args: Parameters<typeof handleReplyToComment>) => {
+      const postId = args[1]
       markRead(postId, feed.fingerprint ?? feed.id)
-      return handleReplyToComment(feedId, postId, parentCommentId, body, files)
+      return handleReplyToComment(...args)
     },
     [handleReplyToComment, markRead, feed.fingerprint, feed.id]
   )

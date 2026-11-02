@@ -492,15 +492,9 @@ msgstr "Сұрыптауға рұқсат ету"
 msgid "Also delete posts imported from this source"
 msgstr "Осы дереккөзден импортталған жазбаларды да жою"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Сондай-ақ {0} желісінде"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Сондай-ақ осыдан жауап беру"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Сондай-ақ жариялау"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky таспасы не тізімі"
 msgid "Board"
 msgstr "Тақта"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} атынан бөлісу"
@@ -2036,6 +2030,10 @@ msgstr "Хэштегке жазылу"
 msgid "Follow a person or community"
 msgstr "Адамға немесе қауымдастыққа жазылу"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Қайта жазылу"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Басқа желіден жазылу"
@@ -2043,10 +2041,6 @@ msgstr "Басқа желіден жазылу"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Жазылу күтуде"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Жазылу қабылданбады"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Топ: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Хэштег"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Жазбаны жасыру"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Нәтижелерді жасыру"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Қолжетімсіз"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Қатынау ережелері реттелмеген. Кімнің қатынай алатынын реттеу үшін ереже қосыңыз."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Тіркелгі жоқ"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Әрекет әлі жоқ"
@@ -2674,6 +2671,10 @@ msgstr "Салыстырылмады: {0} мәнінен үлкен"
 msgid "Not compared: over the size limit"
 msgstr "Салыстырылмады: өлшем шегінен асады"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Жазылмағансыз"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Мәзірді ашу"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Навигацияны ашу"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} ішінде ашу"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Жазбалар мен пікірлер"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky жазбалары"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub жазбалары"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Федиверстегі жазбалар"
+msgid "Posts on Bluesky"
+msgstr "Bluesky жазбалары"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Қоғамдық"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky таспасы ретінде жариялау"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Жариялау орны"
 
@@ -3392,6 +3398,10 @@ msgstr "Іздеу..."
 msgid "Searching..."
 msgstr "Іздеуде..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Нәтижелерді көрсету"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Таңдау"
@@ -3520,17 +3530,13 @@ msgstr "Класстарды көрсету"
 msgid "Show fields"
 msgstr "Өрістерді көрсету"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Қысқарту"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Көбірек көрсету"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Тек осы суреттің пікірлерін көрсету"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Жазбаны көрсету"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Камера сұрауына жауап берілмеді"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Таспа онда {0} жазба жариялады. Оларды жоймасаңыз, сақталып қалады."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Жазылуды жіберу мүмкін болмады"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

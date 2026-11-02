@@ -492,15 +492,9 @@ msgstr "Ceadaigh sórtáil de réir"
 msgid "Also delete posts imported from this source"
 msgstr "Scrios postálacha a iompórtáladh ón bhfoinse seo freisin"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Ar {0} freisin"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Freagair freisin ó"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Foilsigh freisin chuig"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Fotha nó liosta Bluesky"
 msgid "Board"
 msgstr "Clár"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Treisigh ó {0}"
@@ -2036,6 +2030,10 @@ msgstr "Lean haischlib"
 msgid "Follow a person or community"
 msgstr "Lean duine nó pobal"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Lean arís"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Lean ó líonra eile"
@@ -2043,10 +2041,6 @@ msgstr "Lean ó líonra eile"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Leanúint ar feitheamh"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Leanúint diúltaithe"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grúpa: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Haischlib"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Folaigh postáil"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Folaigh torthaí"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Gan rochtain"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Níl aon rialacha rochtana cumraithe. Cuir rialacha leis chun rialú a dhéanamh ar cé atá in ann an acmhainn seo a rochtain."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Gan chuntas"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Níl aon ghníomhaíocht fós"
@@ -2674,6 +2671,10 @@ msgstr "Níor cuireadh i gcomparáid é: níos mó ná {0}"
 msgid "Not compared: over the size limit"
 msgstr "Níor cuireadh i gcomparáid é: os cionn na teorann méide"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Gan leanúint"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Oscail roghchlár"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Oscail nascleanúint"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Oscail ar {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Postálacha agus tráchtanna"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Postálacha ar Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Postálacha ar ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Postálacha ar an Fediverse"
+msgid "Posts on Bluesky"
+msgstr "Postálacha ar Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Poiblí"
 msgid "Publish as a Bluesky feed"
 msgstr "Foilsigh mar fhotha Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Foilsigh chuig"
 
@@ -3392,6 +3398,10 @@ msgstr "Cuardaigh..."
 msgid "Searching..."
 msgstr "Ag cuardach..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Taispeáin torthaí"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Roghnúchán"
@@ -3520,17 +3530,13 @@ msgstr "Taispeáin ranganna"
 msgid "Show fields"
 msgstr "Taispeáin réimsí"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Taispeáin níos lú"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Taispeáin níos mó"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Ná taispeáin ach tuairimí ar an íomhá seo"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Taispeáin postáil"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Níor freagraíodh an t-iarratas ceamara"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Postálacha a d'fhoilsigh an fotha ansin: {0}. Fanann siad mura scriosann tú iad."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Níorbh fhéidir an leanúint a sheoladh"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

@@ -492,15 +492,9 @@ msgstr "Povolit řazení podle"
 msgid "Also delete posts imported from this source"
 msgstr "Smazat také příspěvky importované z tohoto zdroje"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Také na {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Odpovědět také z"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Publikovat také do"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Kanál nebo seznam z Bluesky"
 msgid "Board"
 msgstr "Tabule"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Sdílet z {0}"
@@ -2036,6 +2030,10 @@ msgstr "Sledovat hashtag"
 msgid "Follow a person or community"
 msgstr "Sledovat osobu nebo komunitu"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Znovu sledovat"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Sledovat z jiné sítě"
@@ -2043,10 +2041,6 @@ msgstr "Sledovat z jiné sítě"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Sledování čeká na schválení"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Sledování odmítnuto"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Skupina: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Skrýt příspěvek"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Skrýt výsledky"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Žádný přístup"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Nejsou nakonfigurována žádná pravidla přístupu. Přidejte pravidla pro řízení přístupu k tomuto zdroji."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Žádný účet"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Zatím žádná aktivita"
@@ -2674,6 +2671,10 @@ msgstr "Neporovnáno: větší než {0}"
 msgid "Not compared: over the size limit"
 msgstr "Neporovnáno: přesahuje limit velikosti"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Nesledováno"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Otevřít menu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Otevřít navigaci"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Otevřít na {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Příspěvky a komentáře"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Příspěvky na Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Příspěvky na ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Příspěvky ve fediverzu"
+msgid "Posts on Bluesky"
+msgstr "Příspěvky na Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Veřejné"
 msgid "Publish as a Bluesky feed"
 msgstr "Publikovat jako kanál Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Publikovat do"
 
@@ -3392,6 +3398,10 @@ msgstr "Hledat..."
 msgid "Searching..."
 msgstr "Hledá se..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Zobrazit výsledky"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Výběr"
@@ -3520,17 +3530,13 @@ msgstr "Zobrazit třídy"
 msgid "Show fields"
 msgstr "Zobrazit pole"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Zobrazit méně"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Zobrazit více"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Zobrazit jen komentáře k tomuto obrázku"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Zobrazit příspěvek"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Požadavek na kameru zůstal bez odpovědi"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Počet příspěvků, které tam kanál zveřejnil: {0}. Zůstanou tam, dokud je nesmažete."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Sledování se nepodařilo odeslat"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

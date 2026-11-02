@@ -492,15 +492,9 @@ msgstr "Dovoli razvrščanje po"
 msgid "Also delete posts imported from this source"
 msgstr "Izbriši tudi objave, uvožene iz tega vira"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Tudi na {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Odgovori tudi z"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Objavi tudi v"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Kanal ali seznam Bluesky"
 msgid "Board"
 msgstr "Tabla"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Deli z računom {0}"
@@ -2036,6 +2030,10 @@ msgstr "Sledi ključniku"
 msgid "Follow a person or community"
 msgstr "Sledi osebi ali skupnosti"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Znova sledi"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Sledi iz drugega omrežja"
@@ -2043,10 +2041,6 @@ msgstr "Sledi iz drugega omrežja"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Sledenje čaka"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Sledenje zavrnjeno"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Skupina: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Ključnik"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Skrij objavo"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Skrij rezultate"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Brez dostopa"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Pravila dostopa niso nastavljena. Dodajte pravila za nadzor dostopa do tega vira."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Brez računa"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Še ni dejavnosti"
@@ -2674,6 +2671,10 @@ msgstr "Ni primerjano: večje od {0}"
 msgid "Not compared: over the size limit"
 msgstr "Ni primerjano: presega omejitev velikosti"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Ne sledite"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Odpri meni"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Odpri navigacijo"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Odpri v {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Objave in komentarji"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Objave na Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Objave na ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Objave v fediverzumu"
+msgid "Posts on Bluesky"
+msgstr "Objave na Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Javno"
 msgid "Publish as a Bluesky feed"
 msgstr "Objavi kot kanal Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Objavi v"
 
@@ -3392,6 +3398,10 @@ msgstr "Iskanje..."
 msgid "Searching..."
 msgstr "Iskanje..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Pokaži rezultate"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Izbira"
@@ -3520,17 +3530,13 @@ msgstr "Prikaži razrede"
 msgid "Show fields"
 msgstr "Prikaži polja"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Pokaži manj"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Pokaži več"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Pokaži samo komentarje k tej sliki"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Pokaži objavo"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Zahteva za kamero ni dobila odgovora"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Kanal je tam objavil objav: {0}. Ostanejo tam, razen če jih izbrišete."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Sledenja ni bilo mogoče poslati"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

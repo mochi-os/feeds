@@ -492,15 +492,9 @@ msgstr "Şuna göre sıralamaya izin ver"
 msgid "Also delete posts imported from this source"
 msgstr "Bu kaynaktan içe aktarılan gönderileri de sil"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} üzerinde de"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Şuradan da yanıtla"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Ayrıca yayımlanacak yerler"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky akışı veya listesi"
 msgid "Board"
 msgstr "Pano"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} hesabından boostla"
@@ -2036,6 +2030,10 @@ msgstr "Bir etiketi takip et"
 msgid "Follow a person or community"
 msgstr "Bir kişiyi veya topluluğu takip et"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Yeniden takip et"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Başka bir ağdan takip et"
@@ -2043,10 +2041,6 @@ msgstr "Başka bir ağdan takip et"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Takip beklemede"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Takip reddedildi"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Grup: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Etiket"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Gönderiyi gizle"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Sonuçları gizle"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Erişim yok"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Erişim kuralı yapılandırılmamış. Bu kaynağa kimin erişebileceğini kontrol etmek için kural ekleyin."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Hesap yok"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Henüz aktivite yok"
@@ -2674,6 +2671,10 @@ msgstr "Karşılaştırılmadı: {0} boyutundan büyük"
 msgid "Not compared: over the size limit"
 msgstr "Karşılaştırılmadı: boyut sınırının üzerinde"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Takip edilmiyor"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Menüyü aç"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Gezinmeyi aç"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} üzerinde aç"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Gönderiler ve yorumlar"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky'daki gönderiler"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub'daki gönderiler"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Fediverse'teki gönderiler"
+msgid "Posts on Bluesky"
+msgstr "Bluesky'daki gönderiler"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Herkese açık"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky akışı olarak yayımla"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Yayımlanacak yerler"
 
@@ -3392,6 +3398,10 @@ msgstr "Ara..."
 msgid "Searching..."
 msgstr "Aranıyor..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Sonuçları göster"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Seçim"
@@ -3520,17 +3530,13 @@ msgstr "Sınıfları göster"
 msgid "Show fields"
 msgstr "Alanları göster"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Daha az göster"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Daha fazla göster"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Yalnızca bu görselin yorumlarını göster"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Gönderiyi göster"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Kamera isteği yanıtlanmadı"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Akış orada {0} gönderi yayımladı. Siz silmedikçe orada kalırlar."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Takip isteği gönderilemedi"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

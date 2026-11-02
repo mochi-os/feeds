@@ -492,15 +492,9 @@ msgstr "Akhamat siqichañ iyawsaña"
 msgid "Also delete posts imported from this source"
 msgstr "Aka jalsut apantat qillqatanaks chhaqtayaña"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0} ukansa"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Ukhamarak akat jaysaña"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Ukhamaraki kawkir yatiyaña"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky feed jan ukax lista"
 msgid "Board"
 msgstr "Tabla"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} ukat yatiyaña"
@@ -2036,6 +2030,10 @@ msgstr "Mä hashtag arkaña"
 msgid "Follow a person or community"
 msgstr "Mä jaqi jan ukax ayllu arkaña"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Wasitat arkaña"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Yaqha redat arkaña"
@@ -2043,10 +2041,6 @@ msgstr "Yaqha redat arkaña"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Arkañax suyt'ayatawa"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Arkañax jan katuqatawa"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Tama: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Qillqata imantaña"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Chhijllawinaka imantaña"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Janiw mantañax utjkiti"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Janiw mantañ kamachinakax wakichatäkiti. Khitis aka recurso mantaspa uk apnaqañatakix kamachinak yapxatam."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Jan cuentani"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Janira lurawi"
@@ -2674,6 +2671,10 @@ msgstr "Janiw uñakipatakiti: {0} sipana jach'a"
 msgid "Not compared: over the size limit"
 msgstr "Janiw uñakipatäkiti: jach'akama límite sipan jilawa"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Janiw arkatäkiti"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Menú jist'arma"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Navegación jist'arma"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0} ukan jist'ara"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Qillqatanak comentarionakampi"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky ukan qillqatanaka"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub ukan qillqatanaka"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Fediverse ukan qillqatanaka"
+msgid "Posts on Bluesky"
+msgstr "Bluesky ukan qillqatanaka"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Taqiniru"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky feed ukham yatiyaña"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Kawkir yatiyaña"
 
@@ -3392,6 +3398,10 @@ msgstr "Thaqhama..."
 msgid "Searching..."
 msgstr "Thaqhaski..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Chhijllawinaka uñachayaña"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Ajlliña"
@@ -3520,17 +3530,13 @@ msgstr "Clasenak uñstayaña"
 msgid "Show fields"
 msgstr "Camponaka uñstayaña"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Juk'a uñachayaña"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Juk'amp uñachayaña"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Aka jamuqan comentarionakapak uñacht'ayaña"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Qillqata uñachayaña"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Cámara mayiwix janiw jaysatäkiti"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Feedax {0} qillqatanak ukan yatiyawayi. Jumax jan chhaqtaykasmaxa, ukankaskaniwa."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Arkañax janiw apayasiñjamäkänti"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

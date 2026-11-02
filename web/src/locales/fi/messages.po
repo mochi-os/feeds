@@ -492,15 +492,9 @@ msgstr "Salli järjestäminen"
 msgid "Also delete posts imported from this source"
 msgstr "Poista myös tästä lähteestä tuodut julkaisut"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Myös palvelussa {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Vastaa myös tililtä"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Julkaise myös kohteisiin"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky-syöte tai -luettelo"
 msgid "Board"
 msgstr "Taulu"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Tehosta tililtä {0}"
@@ -2036,6 +2030,10 @@ msgstr "Seuraa aihetunnistetta"
 msgid "Follow a person or community"
 msgstr "Seuraa henkilöä tai yhteisöä"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Seuraa uudelleen"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Seuraa toisesta verkosta"
@@ -2043,10 +2041,6 @@ msgstr "Seuraa toisesta verkosta"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Seuraaminen odottaa"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Seuraaminen hylätty"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Ryhmä: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Aihetunniste"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Piilota julkaisu"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Piilota tulokset"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Ei käyttöoikeutta"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Käyttöoikeussääntöjä ei ole määritetty. Lisää sääntöjä hallitaksesi, kuka voi käyttää tätä resurssia."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Ei tiliä"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Ei vielä toimintaa"
@@ -2674,6 +2671,10 @@ msgstr "Ei verrattu: suurempi kuin {0}"
 msgid "Not compared: over the size limit"
 msgstr "Ei verrattu: ylittää kokorajan"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Ei seurata"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Avaa valikko"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Avaa navigointi"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Avaa palvelussa {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Julkaisut ja kommentit"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky-julkaisut"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub-julkaisut"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Julkaisut fediversumissa"
+msgid "Posts on Bluesky"
+msgstr "Bluesky-julkaisut"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Julkinen"
 msgid "Publish as a Bluesky feed"
 msgstr "Julkaise Bluesky-syötteenä"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Julkaise kohteisiin"
 
@@ -3392,6 +3398,10 @@ msgstr "Hae..."
 msgid "Searching..."
 msgstr "Haetaan..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Näytä tulokset"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Valinta"
@@ -3520,17 +3530,13 @@ msgstr "Näytä luokat"
 msgid "Show fields"
 msgstr "Näytä kentät"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Näytä vähemmän"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Näytä lisää"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Näytä vain tämän kuvan kommentit"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Näytä julkaisu"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Kamerapyyntöön ei vastattu"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Syöte julkaisi sinne julkaisuja: {0}. Ne säilyvät, ellet poista niitä."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Seurauspyyntöä ei voitu lähettää"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

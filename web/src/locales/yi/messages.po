@@ -492,15 +492,9 @@ msgstr "דערלויבן סאָרטירן לויט"
 msgid "Also delete posts imported from this source"
 msgstr "אויך אויסמעקן פּאָסטן אימפּאָרטירט פֿון דעם מקור"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "אויך אויף {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "אויך ענטפֿערן פֿון"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "אויך פּובליקירן אויף"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky־פֿיד אָדער רשימה"
 msgid "Board"
 msgstr "ברעט"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "פֿאַרשפּרייטן פֿון {0}"
@@ -2036,6 +2030,10 @@ msgstr "נאָכפֿאָלגן אַ האַשטאַג"
 msgid "Follow a person or community"
 msgstr "נאָכפֿאָלגן אַ מענטש אָדער קהילה"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "נאָכפֿאָלגן ווידער"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "נאָכפֿאָלגן פֿון אַן אַנדער נעץ"
@@ -2043,10 +2041,6 @@ msgstr "נאָכפֿאָלגן פֿון אַן אַנדער נעץ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "נאָכפֿאָלגן וואַרט"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "נאָכפֿאָלגן אָפּגעוואָרפֿן"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "גרופּע: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "האַשטאַג"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "באַהאַלטן פּאָסט"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "באַהאַלטן רעזולטאַטן"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "קיין צוטריט"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "קיין צוטריט כּללים קאָנפֿיגורירט. צולייג כּללים צו קאָנטראָלירן ווער קען האָבן צוטריט צו דעם רעסורס."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "קיין קאָנטע נישט"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "נאָך קיין אַקטיוויטעט"
@@ -2674,6 +2671,10 @@ msgstr "נישט פֿאַרגליכן: גרעסער ווי {0}"
 msgid "Not compared: over the size limit"
 msgstr "נישט פֿאַרגליכן: איבער דער גרייס־גרענעץ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "פֿאָלגט ניט נאָך"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "עפֿן מעניו"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "עפֿן נאַוויגאַציע"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "עפֿענען אויף {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "פּאָסטן און באַמערקונגען"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "פּאָסטן אויף Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "פּאָסטן אויף ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "פּאָסטן אויפֿן fediverse"
+msgid "Posts on Bluesky"
+msgstr "פּאָסטן אויף Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "עפֿנטלעך"
 msgid "Publish as a Bluesky feed"
 msgstr "פּובליקירן ווי אַ Bluesky־פֿיד"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "פּובליקירן אויף"
 
@@ -3392,6 +3398,10 @@ msgstr "זוך..."
 msgid "Searching..."
 msgstr "זוכן..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "ווײַזן רעזולטאַטן"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "אויסוואַל"
@@ -3520,17 +3530,13 @@ msgstr "ווײַז קלאַסן"
 msgid "Show fields"
 msgstr "ווײַז פֿעלדער"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "ווײַזן ווייניקער"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "ווײַזן מער"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "ווײַזן נאָר קאָמענטאַרן אויף דעם בילד"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "ווײַזן פּאָסט"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "די קאַמערע־בקשה איז נישט געענטפֿערט גע�
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "דער פֿיד האָט דאָרט פּובליקירט {0} פּאָסטן. זיי בלײַבן סײַדן איר מעקט זיי אויס."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "מען האָט ניט געקענט שיקן דאָס נאָכפֿאָלגן"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

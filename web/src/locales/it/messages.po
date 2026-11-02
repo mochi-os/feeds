@@ -492,15 +492,9 @@ msgstr "Consenti ordinamento per"
 msgid "Also delete posts imported from this source"
 msgstr "Elimina anche i post importati da questa sorgente"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Anche su {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Rispondi anche da"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Pubblica anche su"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Feed o elenco Bluesky"
 msgid "Board"
 msgstr "Bacheca"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Condividi da {0}"
@@ -2036,6 +2030,10 @@ msgstr "Segui un hashtag"
 msgid "Follow a person or community"
 msgstr "Segui una persona o una comunità"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Segui di nuovo"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Segui da un'altra rete"
@@ -2043,10 +2041,6 @@ msgstr "Segui da un'altra rete"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Follow in attesa"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Follow rifiutato"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Gruppo: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Nascondi post"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Nascondi risultati"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Nessun accesso"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Nessuna regola di accesso configurata. Aggiungi regole per controllare chi può accedere a questa risorsa."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Nessun account"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Ancora nessuna attività"
@@ -2674,6 +2671,10 @@ msgstr "Non confrontato: più grande di {0}"
 msgid "Not compared: over the size limit"
 msgstr "Non confrontato: oltre il limite di dimensione"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Non segui"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Apri menu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Apri navigazione"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Apri su {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Post e commenti"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Post su Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Post su ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Post sul fediverso"
+msgid "Posts on Bluesky"
+msgstr "Post su Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Pubblico"
 msgid "Publish as a Bluesky feed"
 msgstr "Pubblica come feed Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Pubblica su"
 
@@ -3392,6 +3398,10 @@ msgstr "Cerca..."
 msgid "Searching..."
 msgstr "Ricerca in corso..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Mostra risultati"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Selezione"
@@ -3520,17 +3530,13 @@ msgstr "Mostra classi"
 msgid "Show fields"
 msgstr "Mostra campi"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Mostra meno"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Mostra di più"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Mostra solo i commenti su questa immagine"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Mostra post"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "La richiesta della fotocamera non ha ricevuto risposta"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Il feed vi ha pubblicato {0} post. Restano lì a meno che non li elimini."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Impossibile inviare il follow"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

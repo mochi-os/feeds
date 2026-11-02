@@ -492,15 +492,9 @@ msgstr "Tertipleşdirmäge rugsat bermek"
 msgid "Also delete posts imported from this source"
 msgstr "Bu çeşmeden import edilen ýazgylary hem pozmak"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Şeýle hem {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Şundan hem jogap bermek"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Şeýle hem neşir et"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky akymy ýa-da sanawy"
 msgid "Board"
 msgstr "Tagta"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0} hasabyndan paýlaş"
@@ -2036,6 +2030,10 @@ msgstr "Heşteg yzarla"
 msgid "Follow a person or community"
 msgstr "Adamy ýa-da jemgyýeti yzarla"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Täzeden yzarla"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Başga tordan yzarla"
@@ -2043,10 +2041,6 @@ msgstr "Başga tordan yzarla"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Yzarlama garaşylýar"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Yzarlama ret edildi"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Topar: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Heşteg"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Ýazgyny gizle"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Netijeleri gizle"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Girip bolmaýar"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Giriş düzgünleri ýok. Bu çeşmä kim girip biljekdigini dolandyrmak üçin düzgünler goşuň."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Hasap ýok"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Heniz işjeňlik ýok"
@@ -2674,6 +2671,10 @@ msgstr "Deňeşdirilmedi: {0}-dan uly"
 msgid "Not compared: over the size limit"
 msgstr "Deňeşdirilmedi: ölçeg çäginden ýokary"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Yzarlanmaýar"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Menýuny aç"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Nawigasiýany aç"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0}-da aç"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Postlar we teswirler"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky-daky postlar"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub-daky postlar"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Fediwersdäki postlar"
+msgid "Posts on Bluesky"
+msgstr "Bluesky-daky postlar"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Köpçülige açyk"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky akymy hökmünde neşir et"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Neşir edilýän ýerler"
 
@@ -3392,6 +3398,10 @@ msgstr "Gözle..."
 msgid "Searching..."
 msgstr "Gözlenýär..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Netijeleri görkez"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Saýlaw"
@@ -3520,17 +3530,13 @@ msgstr "Synplary görkez"
 msgid "Show fields"
 msgstr "Meýdanlary görkez"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Azrak görkez"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Köpräk görkez"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Diňe bu suratyň teswirlerini görkez"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Ýazgyny görkez"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Kamera haýyşyna jogap berilmedi"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Akym ol ýerde {0} post neşir etdi. Siz pozmasaňyz, olar galar."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Yzarlamany iberip bolmady"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

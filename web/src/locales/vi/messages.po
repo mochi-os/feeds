@@ -492,15 +492,9 @@ msgstr "Cho phép sắp xếp theo"
 msgid "Also delete posts imported from this source"
 msgstr "Đồng thời xóa các bài đã nhập từ nguồn này"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "Cũng có trên {0}"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "Cũng trả lời từ"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "Đăng cả lên"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Nguồn cấp hoặc danh sách Bluesky"
 msgid "Board"
 msgstr "Bảng"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "Chia sẻ lại từ {0}"
@@ -2036,6 +2030,10 @@ msgstr "Theo dõi một hashtag"
 msgid "Follow a person or community"
 msgstr "Theo dõi một người hoặc cộng đồng"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "Theo dõi lại"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "Theo dõi từ mạng khác"
@@ -2043,10 +2041,6 @@ msgstr "Theo dõi từ mạng khác"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "Đang chờ theo dõi"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "Theo dõi bị từ chối"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "Nhóm: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "Hashtag"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "Ẩn bài viết"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "Ẩn kết quả"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "Không có quyền truy cập"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Chưa cấu hình quy tắc truy cập. Thêm quy tắc để kiểm soát ai có thể truy cập tài nguyên này."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "Không có tài khoản"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "Chưa có hoạt động"
@@ -2674,6 +2671,10 @@ msgstr "Không so sánh: lớn hơn {0}"
 msgid "Not compared: over the size limit"
 msgstr "Không so sánh: vượt quá giới hạn kích thước"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "Không theo dõi"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "Mở menu"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "Mở điều hướng"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "Mở trên {0}"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "Bài viết và bình luận"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bài viết trên Bluesky"
+msgid "Posts on ActivityPub"
+msgstr "Bài viết trên ActivityPub"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "Bài viết trên fediverse"
+msgid "Posts on Bluesky"
+msgstr "Bài viết trên Bluesky"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "Công khai"
 msgid "Publish as a Bluesky feed"
 msgstr "Đăng dưới dạng nguồn cấp Bluesky"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "Đăng lên"
 
@@ -3392,6 +3398,10 @@ msgstr "Tìm kiếm..."
 msgid "Searching..."
 msgstr "Đang tìm kiếm..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "Hiện kết quả"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "Lựa chọn"
@@ -3520,17 +3530,13 @@ msgstr "Hiển thị lớp"
 msgid "Show fields"
 msgstr "Hiển thị trường"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "Thu gọn"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "Xem thêm"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "Chỉ hiển thị bình luận về hình ảnh này"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "Hiện bài viết"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "Yêu cầu máy ảnh không được trả lời"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "Nguồn cấp đã đăng {0} bài viết ở đó. Chúng sẽ được giữ lại trừ khi bạn xóa."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "Không thể gửi yêu cầu theo dõi"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"

@@ -3,9 +3,12 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 /**
- * Multi-feed WebSocket hook for the feeds list page. Each key is a subscription
- * on the shared entityWebsocketManager, so sockets are shared with any open
- * single-feed page.
+ * Multi-feed WebSocket hook for the feeds list page. It holds one socket for
+ * every feed: the server sends each feed's frames to the aggregate key as well
+ * as to the feed's own, and core caps a user's sockets at 32 across all their
+ * apps and devices, which one socket per feed used most of. The aggregate key
+ * carries every feed the user holds, sources included, so a frame counts only
+ * when its feed is one the page lists.
  */
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
@@ -17,6 +20,19 @@ import {
 import { useFeedsStore } from '@/stores/feeds-store'
 import { applyFrame } from '@/lib/patch'
 
+// The aggregate key every feed's frames also reach (websocket_key in feeds.star).
+export const feedsKey = 'feeds'
+
+// On the aggregate key a feed's frame arrives wrapped, naming its feed, so
+// that core's other listeners to websocket writes see each event once.
+const wrapped = 'feeds/frame'
+
+/** A feed the page lists: its entity id, which frames name, and the fingerprint its queries may be keyed by. */
+export interface ListedFeed {
+  id: string
+  fingerprint?: string
+}
+
 interface FeedWebsocketEvent {
   type: string
   feed: string
@@ -26,7 +42,7 @@ interface FeedWebsocketEvent {
 }
 
 export function useFeedsWebsocket(
-  feedFingerprints: string[],
+  feeds: ListedFeed[],
   userId?: string,
   onUpdate?: (feedId: string) => void,
   onNewPost?: (postId: string | undefined, feedId: string) => void
@@ -37,22 +53,36 @@ export function useFeedsWebsocket(
   const userIdRef = useRef(userId)
   const onUpdateRef = useRef(onUpdate)
   const onNewPostRef = useRef(onNewPost)
-  const fingerprintsRef = useRef(feedFingerprints)
+  const feedsRef = useRef(feeds)
 
   // Keep refs updated
   userIdRef.current = userId
   onUpdateRef.current = onUpdate
   onNewPostRef.current = onNewPost
-  fingerprintsRef.current = feedFingerprints
-
-  // Create stable key for dependency
-  const fingerprintsKey = feedFingerprints.join(',')
+  feedsRef.current = feeds
 
   useEffect(() => {
     if (!authReady) return
 
     const handleMessage = (event: EntityWebsocketEvent) => {
-      const data = event as unknown as FeedWebsocketEvent
+      const raw = event as unknown as {
+        type?: string
+        frame?: FeedWebsocketEvent
+      }
+      const data =
+        raw.type === wrapped && raw.frame
+          ? raw.frame
+          : (event as unknown as FeedWebsocketEvent)
+
+      // A frame from a feed the page does not list, such as a source a feed
+      // of the user's pulls from, is not the page's to count or reload for.
+      // One with no feed (the socket reopening) is about every feed.
+      if (
+        data.feed &&
+        !feedsRef.current.some((feed) => feed.id === data.feed)
+      ) {
+        return
+      }
 
       // Skip if the event originated from the current user
       if (userIdRef.current && data.sender === userIdRef.current) {
@@ -88,7 +118,10 @@ export function useFeedsWebsocket(
             return (
               queryFeedId === '__all__' ||
               queryFeedId === data.feed ||
-              fingerprintsRef.current.includes(queryFeedId)
+              feedsRef.current.some(
+                (feed) =>
+                  feed.id === data.feed && feed.fingerprint === queryFeedId
+              )
             )
           },
         })
@@ -98,12 +131,6 @@ export function useFeedsWebsocket(
       onUpdateRef.current?.(data.feed)
     }
 
-    const unsubscribes = fingerprintsRef.current.map((fingerprint) =>
-      entityWebsocketManager.subscribe(fingerprint, handleMessage)
-    )
-
-    return () => {
-      for (const unsubscribe of unsubscribes) unsubscribe()
-    }
-  }, [authReady, authToken, fingerprintsKey, queryClient])
+    return entityWebsocketManager.subscribe(feedsKey, handleMessage)
+  }, [authReady, authToken, queryClient])
 }

@@ -19,8 +19,8 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
   ResponsiveDialogTrigger,
+  PublishChoice,
   Select,
-  Switch,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -410,37 +410,6 @@ export function NewPostDialog({
                   </Select>
                 </div>
               )}
-              {publishAccounts.length > 0 && (
-                <div className='space-y-2'>
-                  <Label>
-                    <Trans>Publish to</Trans>
-                  </Label>
-                  <div className='flex flex-wrap gap-3'>
-                    {[...publishAccounts]
-                      .sort((a, b) => naturalCompare(a.identifier, b.identifier))
-                      .map((account) => (
-                        <label
-                          key={account.id}
-                          className='flex items-center gap-2 text-sm'
-                        >
-                          <Switch
-                            checked={publishChosen.includes(account.id)}
-                            aria-label={account.identifier}
-                            onCheckedChange={(on) =>
-                              setForm((prev) => ({
-                                ...prev,
-                                accounts: on
-                                  ? [...publishChosen, account.id]
-                                  : publishChosen.filter((id) => id !== account.id),
-                              }))
-                            }
-                          />
-                          {account.identifier}
-                        </label>
-                      ))}
-                  </div>
-                </div>
-              )}
               <div className='space-y-2'>
                 <Label htmlFor='legacy-post-body'>
                   <Trans>Post content</Trans>
@@ -645,6 +614,15 @@ export function NewPostDialog({
                   onChange={handleFileChange}
                 />
               </div>
+
+              <PublishChoice
+                label={t`Also post to`}
+                accounts={publishAccounts}
+                selected={publishChosen}
+                onChange={(accounts) =>
+                  setForm((prev) => ({ ...prev, accounts }))
+                }
+              />
             </div>
             <UploadProgress progress={progress ?? null} className='pt-2' />
             <ResponsiveDialogFooter className='gap-2 pt-4'>

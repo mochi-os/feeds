@@ -492,15 +492,9 @@ msgstr "정렬 허용"
 msgid "Also delete posts imported from this source"
 msgstr "이 소스에서 가져온 게시물도 함께 삭제"
 
-#. placeholder {0}: providerName(copy.network)
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also on {0}"
-msgstr "{0}에도 게시됨"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Also reply from"
-msgstr "이 계정으로도 답글"
+#: src/features/feeds/components/new-post-dialog.tsx
+msgid "Also post to"
+msgstr "함께 게시할 곳"
 
 #: src/features/feeds/constants.ts
 msgid "Amazed"
@@ -724,7 +718,7 @@ msgstr "Bluesky 피드 또는 목록"
 msgid "Board"
 msgstr "보드"
 
-#. placeholder {0}: boostAccount.identifier
+#. placeholder {0}: boostAccountFor(post) ?.identifier
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Boost from {0}"
 msgstr "{0}(으)로 부스트"
@@ -2036,6 +2030,10 @@ msgstr "해시태그 팔로우"
 msgid "Follow a person or community"
 msgstr "사람 또는 커뮤니티 팔로우"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Follow again"
+msgstr "다시 팔로우"
+
 #: src/features/feeds/components/follow-button.tsx
 msgid "Follow from another network"
 msgstr "다른 네트워크에서 팔로우"
@@ -2043,10 +2041,6 @@ msgstr "다른 네트워크에서 팔로우"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Follow pending"
 msgstr "팔로우 대기 중"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Follow refused"
-msgstr "팔로우 거절됨"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -2109,6 +2103,14 @@ msgstr "그룹: {0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Hashtag"
 msgstr "해시태그"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Hide post"
+msgstr "게시물 숨기기"
+
+#: src/features/feeds/components/post-poll.tsx
+msgid "Hide results"
+msgstr "결과 숨기기"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "History"
@@ -2540,11 +2542,6 @@ msgstr "접근 권한 없음"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "설정된 접근 규칙이 없어요. 이 리소스에 접근할 수 있는 사용자를 제어하려면 규칙을 추가하세요."
 
-#: src/features/feeds/components/feed-posts.tsx
-#: src/features/feeds/components/feed-posts.tsx
-msgid "No account"
-msgstr "계정 없음"
-
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "No activity yet"
 msgstr "아직 활동이 없어요"
@@ -2674,6 +2671,10 @@ msgstr "비교하지 않음: {0}보다 큼"
 msgid "Not compared: over the size limit"
 msgstr "비교하지 않음: 크기 제한 초과"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Not following"
+msgstr "팔로우하지 않음"
+
 #: ../../../lib/web/src/components/attachment-image.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "Not found"
@@ -2740,6 +2741,11 @@ msgstr "메뉴 열기"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 msgid "Open navigation"
 msgstr "내비게이션 열기"
+
+#. placeholder {0}: providerName(copy.network)
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Open on {0}"
+msgstr "{0}에서 열기"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Open option actions"
@@ -2906,12 +2912,12 @@ msgid "Posts and comments"
 msgstr "게시물 및 댓글"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on Bluesky"
-msgstr "Bluesky 게시물"
+msgid "Posts on ActivityPub"
+msgstr "ActivityPub 게시물"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
-msgid "Posts on the fediverse"
-msgstr "페디버스의 게시물"
+msgid "Posts on Bluesky"
+msgstr "Bluesky 게시물"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -2951,8 +2957,8 @@ msgstr "공개"
 msgid "Publish as a Bluesky feed"
 msgstr "Bluesky 피드로 게시"
 
-#: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Publish to"
 msgstr "게시 대상"
 
@@ -3392,6 +3398,10 @@ msgstr "검색..."
 msgid "Searching..."
 msgstr "검색 중..."
 
+#: src/features/feeds/components/post-poll.tsx
+msgid "See results"
+msgstr "결과 보기"
+
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
 msgstr "선택"
@@ -3520,17 +3530,13 @@ msgstr "클래스 표시"
 msgid "Show fields"
 msgstr "필드 표시"
 
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show less"
-msgstr "간략히 보기"
-
-#: src/features/feeds/components/feed-posts.tsx
-msgid "Show more"
-msgstr "더 보기"
-
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "Show only comments on this image"
 msgstr "이 이미지의 댓글만 표시"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgid "Show post"
+msgstr "게시물 보기"
 
 #: src/features/feeds/components/post-media.tsx
 msgid "Show sensitive media"
@@ -3778,6 +3784,10 @@ msgstr "카메라 요청에 응답이 없었습니다"
 #: src/features/feeds/components/publishing-section.tsx
 msgid "The feed published {0} posts there. They stay unless you delete them."
 msgstr "이 피드는 그곳에 게시물 {0}개를 게시했어요. 삭제하지 않으면 그대로 남아요."
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "The follow could not be sent"
+msgstr "팔로우를 보낼 수 없었어요"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The microphone request was not answered"
