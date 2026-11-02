@@ -365,14 +365,14 @@ export function PostCommentsList({
       )
     : undefined
   const [suppressBatchReveal, setSuppressBatchReveal] = useState(false)
-  const [commentsListRef] = useListAutoAnimate<HTMLDivElement>({
-    disabled: suppressBatchReveal,
-  })
-
   const source = filter ? post.comments.filter(filter) : post.comments
   const visibleComments = isExpanded
     ? source
     : source.slice(0, INITIAL_COMMENT_COUNT)
+  const [commentsListRef] = useListAutoAnimate<HTMLDivElement>({
+    disabled: suppressBatchReveal,
+    count: focused ? 1 : visibleComments.length,
+  })
   const remaining = source.length - INITIAL_COMMENT_COUNT
 
   useLayoutEffect(() => {
@@ -497,6 +497,7 @@ export function FeedPosts({
   const { formatTimestamp } = useFormat()
   const [listRef] = useListAutoAnimate<HTMLDivElement>({
     disabled: isFetchingNextPage,
+    count: posts.length,
   })
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
