@@ -2205,6 +2205,10 @@ def database_upgrade(version):
 		# a comment.
 		if any([c["name"] == "post" for c in mochi.db.table("likes")]):
 			mochi.db.execute("alter table likes rename column post to object")
+	if version == 21:
+		# A comment's reply on another network keeps the id there of what it
+		# answers.
+		replies_schema_create()
 
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
@@ -4613,8 +4617,9 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name, comment=""):
 # changed 2026-10-30). save(comment) keeps the comment's attachments;
 # account is the one to answer from first where the user has several on a
 # network; made is the replies already published, as a Bluesky app writes
-# one. Answers ({id, feed, post}, None) or (None, failure).
-def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor_input, account, input_id, save, made=None):
+# one; writer is the account an app wrote the comment as, which answers on
+# its network. Answers ({id, feed, post}, None) or (None, failure).
+def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor_input, account, input_id, save, made=None, writer=""):
 	# Get local feed data if available
 	feed = None
 	if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
@@ -4655,7 +4660,7 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 		attachments = save(uid)
 		# The replies from the commenter's own accounts, wherever the post or
 		# the comment answered is on another network.
-		copies = reply_publish(post_id, parent_id, uid, body, account, made)
+		copies = reply_publish(post_id, parent_id, uid, body, account, made, writer)
 
 		set_post_updated(post_id)
 		set_feed_updated(feed_id)
@@ -4718,7 +4723,7 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 	submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": user_name, "attachment": anchor_input}
 	if attachments:
 		submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
-	copies = reply_publish(post_id, parent_id, uid, body, account, made)
+	copies = reply_publish(post_id, parent_id, uid, body, account, made, writer)
 	if copies:
 		submit_data["copies"] = copies
 
@@ -10603,13 +10608,16 @@ FEDIVERSE_REACTIONS = {"👍": "like", "👎": "dislike", "❤️": "love", "❤
 def replies_schema_create():
 	"""The copies a comment was published as (decision 31): the comment, the
 	account it went out through (empty for a copy another server made), the
-	address, the network, the id there and its page."""
-	mochi.db.execute("create table if not exists replies ( comment text not null, account text not null default '', address text not null, network text not null, remote text not null, url text not null default '', created integer not null, primary key ( comment, address ) )")
+	address, the network, the id there and its page, and the id there of
+	what it answers, so an edit answers the same place again."""
+	mochi.db.execute("create table if not exists replies ( comment text not null, account text not null default '', address text not null, network text not null, remote text not null, url text not null default '', created integer not null, parent text not null default '', primary key ( comment, address ) )")
 	mochi.db.execute("create index if not exists replies_remote on replies( remote )")
+	if not any([c["name"] == "parent" for c in mochi.db.table("replies")]):
+		mochi.db.execute("alter table replies add column parent text not null default ''")
 
 def replies_record(comment_id, account_id, entry):
-	mochi.db.execute("insert or replace into replies ( comment, account, address, network, remote, url, created ) values ( ?, ?, ?, ?, ?, ?, ? )",
-		comment_id, account_id, entry["address"], entry["network"], entry["remote"], entry.get("url", ""), mochi.time.now())
+	mochi.db.execute("insert or replace into replies ( comment, account, address, network, remote, url, created, parent ) values ( ?, ?, ?, ?, ?, ?, ?, ? )",
+		comment_id, account_id, entry["address"], entry["network"], entry["remote"], entry.get("url", ""), mochi.time.now(), entry.get("parent", ""))
 
 def replies_store(comment_id, copies):
 	"""Keep the copies a comment event carries, and answer them as the event
@@ -10703,14 +10711,17 @@ def reply_network(network):
 	fediverse and linked Mastodon accounts are both on the fediverse."""
 	return "bluesky" if network == "bluesky" else "fediverse"
 
-def reply_plan(post_id, parent_id, preferred=""):
+def reply_plan(post_id, parent_id, preferred="", writer="", answered=""):
 	"""The replies a comment goes out as: one from each of the commenter's
 	own accounts that holds a place the comment answers - the account the
 	post came through or went out from, or the comment it answers came
 	through - and for a place no account of theirs holds, one from their
 	account on that network, the one named first, else their first there.
-	A network with no account of theirs is not answered on. Answers
-	[(account, place)], an account at most once."""
+	A network with no account of theirs is not answered on. A comment an
+	app wrote as one of the accounts, the writer, is that account's on its
+	network: it answers the place its reply answered, given by its id there,
+	else the place there it holds, else the first there, whichever account
+	holds it. Answers [(account, place)], an account at most once."""
 	places = reply_places(post_id, parent_id)
 	if not places:
 		return []
@@ -10721,6 +10732,13 @@ def reply_plan(post_id, parent_id, preferred=""):
 		network = reply_network(acc["type"])
 		if network not in defaults or acc["id"] == preferred:
 			defaults[network] = acc
+	target = answered
+	if writer in mine and not target:
+		network = reply_network(mine[writer]["type"])
+		there = [p for p in places if reply_network(p["network"]) == network]
+		held = [p for p in there if p["account"] == writer]
+		if held or there:
+			target = (held or there)[0]["remote"]
 	plan = []
 	used = {}
 	for place in places:
@@ -10728,6 +10746,8 @@ def reply_plan(post_id, parent_id, preferred=""):
 		acc = mine.get(place["account"])
 		if not acc or reply_network(acc["type"]) != network:
 			acc = defaults.get(network)
+		if target and place["remote"] == target and writer in mine and reply_network(mine[writer]["type"]) == network:
+			acc = mine[writer]
 		if not acc or acc["id"] in used:
 			continue
 		used[acc["id"]] = True
@@ -10830,27 +10850,40 @@ def reply_object(acc, comment_id, place, body):
 	return None
 
 def reply_made(acc, comment, body):
-	"""The reply a comment went out as from an account, made again as the plan
-	has it: for an edit, and for the network to fetch it by its id."""
+	"""The reply a comment went out as from an account, made again where it
+	answers: for an edit, and for the network to fetch it by its id. None
+	where that place is gone. A reply kept before replies kept what they
+	answer is placed as the plan has it."""
+	row = mochi.db.row("select parent from replies where comment=? and account=?", comment["id"], acc["id"])
+	answered = str(row["parent"] or "") if row else ""
+	if answered:
+		for place in reply_places(comment["post"], comment.get("parent", "") or ""):
+			if place["remote"] == answered:
+				return reply_object(acc, comment["id"], place, body)
+		return None
 	for chosen, place in reply_plan(comment["post"], comment.get("parent", "") or "", acc["id"]):
 		if chosen["id"] == acc["id"]:
 			return reply_object(acc, comment["id"], place, body)
 	return None
 
-def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None):
+def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None, writer=""):
 	"""Publish a comment wherever the post, or the comment it answers, is on
 	another network (decision 31, as changed 2026-10-30): a reply from each
 	account the plan names, the account named first where the plan leaves
-	the choice; a reply the commenter already made there, as a Bluesky app
-	writes one, is recorded and not made again. Answers the copies, for the
+	the choice, and the writer, the account an app wrote the comment as,
+	answering on its network. A reply the commenter already made there, as a
+	Bluesky app writes one, is recorded and not made again, its account the
+	writer of the place it answers (its parent). Answers the copies, for the
 	comment's event."""
 	entries = []
 	done = {}
+	answered = ""
 	for entry in made or []:
 		replies_record(comment_id, entry["account"], entry)
 		done[entry["account"]] = True
+		writer, answered = entry["account"], entry.get("parent", "")
 		entries.append({"address": entry["address"], "network": entry["network"], "remote": entry["remote"], "url": entry.get("url", "")})
-	for acc, place in reply_plan(post_id, parent_id, preferred):
+	for acc, place in reply_plan(post_id, parent_id, preferred, writer, answered):
 		if acc["id"] in done:
 			continue
 		object = reply_object(acc, comment_id, place, body)
@@ -10862,7 +10895,7 @@ def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None)
 			mochi.log.warn("Feeds could not publish comment %s from %s", comment_id, acc.get("identifier", acc["id"]))
 			continue
 		entry = {"address": acc.get("identifier", ""), "network": acc["type"], "remote": str(result["id"]), "url": str(result.get("url", "") or "")}
-		replies_record(comment_id, acc["id"], entry)
+		replies_record(comment_id, acc["id"], dict(entry, parent=place["remote"]))
 		entries.append(entry)
 	return entries
 
