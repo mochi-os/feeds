@@ -28,6 +28,8 @@ const state = vi.hoisted(() => ({
   info: vi.fn(),
   allowWaiting: vi.fn(),
   request: vi.fn(),
+  getBackups: vi.fn(),
+  downloadBackup: vi.fn(),
 }))
 
 vi.mock('@/api/feeds', () => ({
@@ -38,8 +40,8 @@ vi.mock('@/api/feeds', () => ({
     importAccount: state.importAccount,
     allowWaiting: state.allowWaiting,
     setGenerator: state.setGenerator,
-    getBackups: vi.fn().mockResolvedValue({ files: [] }),
-    backupFileUrl: () => '',
+    getBackups: state.getBackups,
+    downloadBackup: state.downloadBackup,
   },
 }))
 
@@ -106,6 +108,7 @@ describe('Publishing section', () => {
     state.forgetCopies.mockReset()
     state.importAccount.mockReset()
     state.setGenerator.mockReset()
+    state.getBackups.mockReset().mockResolvedValue({ files: [] })
     state.success.mockReset()
     state.error.mockReset()
   })
@@ -285,6 +288,45 @@ describe('Publishing section', () => {
       })
     )
     expect(state.allowWaiting).toHaveBeenCalledTimes(1)
+  })
+
+  // Each file of an account's Backups downloads when clicked; one the shell
+  // could not save says so.
+  const openBackups = async () => {
+    state.getBackups
+      .mockReset()
+      .mockResolvedValue({ files: ['posts-2026-11.jsonl'] })
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('@alice@mastodon.social')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[0]
+    )
+    await user.click(await screen.findByRole('menuitem', { name: 'Backups' }))
+    await user.click(
+      await screen.findByRole('button', { name: 'posts-2026-11.jsonl' })
+    )
+  }
+
+  it('downloads a backup file when it is clicked', async () => {
+    state.downloadBackup.mockReset().mockResolvedValue(true)
+    await openBackups()
+    await waitFor(() =>
+      expect(state.downloadBackup).toHaveBeenCalledWith(
+        'feed-1',
+        'm1',
+        'posts-2026-11.jsonl'
+      )
+    )
+    expect(state.error).not.toHaveBeenCalled()
+  })
+
+  it('says so when a backup file could not be saved', async () => {
+    state.downloadBackup.mockReset().mockResolvedValue(false)
+    await openBackups()
+    await waitFor(() =>
+      expect(state.error).toHaveBeenCalledWith('Download failed')
+    )
   })
 
   it('shows nothing on a private feed', async () => {

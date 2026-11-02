@@ -327,6 +327,19 @@ function BackupsDialog({
     queryFn: () => feedsApi.getBackups(feedId, account.id),
   })
   const files = data?.files ?? []
+  const [saving, setSaving] = useState<string | null>(null)
+  const save = async (name: string) => {
+    setSaving(name)
+    try {
+      if (!(await feedsApi.downloadBackup(feedId, account.id, name))) {
+        toast.error(t`Download failed`)
+      }
+    } catch (err) {
+      toast.error(getErrorMessage(err, t`Download failed`))
+    } finally {
+      setSaving(null)
+    }
+  }
   return (
     <ConfirmDialog
       open
@@ -341,13 +354,14 @@ function BackupsDialog({
           <ul className='space-y-1'>
             {files.map((name) => (
               <li key={name}>
-                <a
-                  className='text-primary underline underline-offset-4'
-                  href={feedsApi.backupFileUrl(feedId, account.id, name)}
-                  download={name}
+                <button
+                  type='button'
+                  className='text-primary underline underline-offset-4 disabled:opacity-50'
+                  disabled={saving !== null}
+                  onClick={() => void save(name)}
                 >
                   {name}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

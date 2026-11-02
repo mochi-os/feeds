@@ -4,11 +4,16 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-const { post, get } = vi.hoisted(() => ({ post: vi.fn(), get: vi.fn() }))
+const { post, get, save } = vi.hoisted(() => ({
+  post: vi.fn(),
+  get: vi.fn(),
+  save: vi.fn(),
+}))
 
 vi.mock('@mochi/web', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@mochi/web')>()),
   createAppClient: () => ({ get, post, delete: vi.fn() }),
+  shellSaveBlob: save,
 }))
 
 import { feedsApi } from './feeds'
@@ -27,6 +32,23 @@ describe('feedsApi.get', () => {
     expect(get.mock.calls[0][1].params).toEqual(
       expect.objectContaining({ limit: '20', local: '1' })
     )
+  })
+})
+
+// A backup is fetched through the app's own client, which carries its token
+// to the action's address, and saved by the shell: a plain link carried no
+// token, resolved against the page and was ignored in the sandbox.
+describe('feedsApi.downloadBackup', () => {
+  it('fetches the file as a blob from the feed\'s action and has the shell save it', async () => {
+    const blob = new Blob(['{}'])
+    get.mockReset().mockResolvedValue(blob)
+    save.mockReset().mockResolvedValue(true)
+    expect(await feedsApi.downloadBackup('f1', 'a1', 'posts-2026-11.jsonl')).toBe(true)
+    expect(get).toHaveBeenCalledWith('f1/-/backups/file', {
+      params: { account: 'a1', name: 'posts-2026-11.jsonl' },
+      responseType: 'blob',
+    })
+    expect(save).toHaveBeenCalledWith(blob, 'posts-2026-11.jsonl')
   })
 })
 

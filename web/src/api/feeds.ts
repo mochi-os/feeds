@@ -44,7 +44,12 @@ import type {
   SourceState,
   WaitingServer,
 } from '@/types/feeds'
-import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
+import {
+  requestHelpers,
+  createAppClient,
+  getAppPath,
+  shellSaveBlob,
+} from '@mochi/web'
 import endpoints from '@/api/endpoints'
 
 const client = createAppClient({ appName: 'feeds' })
@@ -977,9 +982,21 @@ const getBackups = async (
     params: { account },
   })
 
-// The address of one archive file, for the browser to save.
-const backupFileUrl = (feedId: string, account: string, name: string): string =>
-  `${endpoints.feeds.backupFile(feedId)}?account=${encodeURIComponent(account)}&name=${encodeURIComponent(name)}`
+// Save one archive file: fetched through the app's own client, which sends
+// its token to the action's own address, and handed to the shell to save,
+// since a plain link carries no token and a sandboxed page cannot save a
+// file itself. False when it could not be saved.
+const downloadBackup = async (
+  feedId: string,
+  account: string,
+  name: string
+): Promise<boolean> => {
+  const blob = await client.get<Blob>(endpoints.feeds.backupFile(feedId), {
+    params: { account, name },
+    responseType: 'blob',
+  })
+  return shellSaveBlob(blob, name)
+}
 
 // Add the people of the feed's imports who waited on a server, once the
 // user has let the app read it.
@@ -1349,7 +1366,7 @@ export const feedsApi = {
   blueskyAccounts,
   importAccount,
   getBackups,
-  backupFileUrl,
+  downloadBackup,
   getSources,
   allowWaiting,
   addSource,
