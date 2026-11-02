@@ -348,23 +348,30 @@ function BackupsDialog({
       desc={
         isLoading ? (
           <ListSkeleton variant='simple' height='h-6' count={2} />
-        ) : files.length === 0 ? (
-          <Trans>No backup has been made yet. One is made each day.</Trans>
         ) : (
-          <ul className='space-y-1'>
-            {files.map((name) => (
-              <li key={name}>
-                <button
-                  type='button'
-                  className='text-primary underline underline-offset-4 disabled:opacity-50'
-                  disabled={saving !== null}
-                  onClick={() => void save(name)}
-                >
-                  {name}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className='space-y-2'>
+            {files.length === 0 ? (
+              <Trans>No backup has been made yet. One is made each day.</Trans>
+            ) : (
+              <ul className='space-y-1'>
+                {files.map((name) => (
+                  <li key={name}>
+                    <button
+                      type='button'
+                      className='text-primary underline underline-offset-4 disabled:opacity-50'
+                      disabled={saving !== null}
+                      onClick={() => void save(name)}
+                    >
+                      {name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {data?.repository && (
+              <p className='text-destructive text-sm'>{data.repository}</p>
+            )}
+          </div>
         )
       }
       confirmText={t`Close`}

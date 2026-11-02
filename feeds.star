@@ -3104,8 +3104,9 @@ def view_remote(a, user_id, feed_id, server):
 	if sort:
 		params["sort"] = sort
 
-	# If no peer, mochi.remote.request will use directory lookup
-	response = mochi.remote.request(feed_id, "feeds", "view", params, peer)
+	# If no peer, mochi.remote.request will use directory lookup. The page is
+	# asked for in parts, each bounded.
+	response = view_gather(feed_id, params, peer)
 	if response.get("error"):
 		remote_error(a, response, 500)
 		return
@@ -7033,6 +7034,237 @@ def event_update(e): # feeds_update_event
 
 	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", int(subscribers), mochi.time.now(), feed_id)
 
+# VIEW PARTS
+#
+# Core decodes at most 10,000 elements in one array and 100 MB on one stream,
+# each read within 30 seconds, so a page of a busy feed - every reaction and
+# comment of up to 100 posts - cannot travel as one reply. A view request
+# carrying `part` (a cursor) is answered in parts: the first holds the posts
+# without their reactions and comments, and each after it at most VIEW_ROWS
+# reactions and comments of those posts, about VIEW_BYTES bytes, in key order,
+# with `next` naming the cursor of the part after it. The last part carries no
+# `next`. A request without `part` gets the whole page, as owners before parts
+# answered every one, and a requester takes a reply without the `part` echo as
+# whole.
+VIEW_ROWS = 1000
+VIEW_BYTES = 8388608
+# The most parts a requester follows: core allows an app 600 remote calls a
+# minute to one target.
+VIEW_PARTS = 500
+# The bytes one attachment row is counted as.
+VIEW_ATTACHMENT = 1024
+VIEW_KEYS = {"posts": [], "reactions": ["post", "comment", "subscriber"], "comments": ["id"]}
+VIEW_LISTS = ["reactions", "comments"]
+
+# view_cursor(value) -> bool: whether value is a part cursor: the list the part
+# starts in, and the key of the last row already sent from it (empty at the
+# start of the list).
+def view_cursor(value):
+	if type(value) != "dict" or len(value) != 2:
+		return False
+	name = value.get("list")
+	if type(name) != "string" or name not in VIEW_KEYS:
+		return False
+	after = value.get("after")
+	if type(after) not in ["list", "tuple"]:
+		return False
+	if after and len(after) != len(VIEW_KEYS[name]):
+		return False
+	for key in after:
+		if type(key) != "string" or len(key) > 256:
+			return False
+	return True
+
+# view_compare(keys, values, last) -> (condition, args): rows whose key sorts
+# after values, or, with last, at or before them.
+def view_compare(keys, values, last=False):
+	clauses = []
+	args = []
+	for index in range(len(keys)):
+		terms = []
+		for earlier in range(index):
+			terms.append(keys[earlier] + "=?")
+			args.append(values[earlier])
+		final = index == len(keys) - 1
+		terms.append(keys[index] + ("<=?" if last and final else ("<?" if last else ">?")))
+		args.append(values[index])
+		clauses.append("(" + " and ".join(terms) + ")")
+	return "(" + " or ".join(clauses) + ")", args
+
+# view_list(source, size, keys, scope, after, budget) -> (rows, key): one
+# list's share of a part, and the key to resume it from, or None when the list
+# is done. The part's first row always fits, so a row larger than the byte
+# budget travels alone; the resume key is the last row sent, not the last row
+# sized, so a row written between the two queries is never stepped over.
+def view_list(source, size, keys, scope, after, budget):
+	if budget["rows"] <= 0:
+		return [], list(after)
+	beyond, beyond_args = ("1=1", []) if not after else view_compare(keys, after)
+	order = ", ".join(keys)
+	sizes = mochi.db.rows("select " + order + ", 64 + " + size + " as size from " + source + " and " + beyond + " order by " + order + " limit ?", *(scope + beyond_args + [budget["rows"] + 1])) or []
+	count = 0
+	for row in sizes:
+		if budget["rows"] <= 0:
+			break
+		if budget["taken"] > 0 and row["size"] > budget["bytes"]:
+			break
+		budget["rows"] -= 1
+		budget["bytes"] -= row["size"]
+		budget["taken"] += 1
+		count += 1
+	rows = []
+	if count:
+		upto, upto_args = view_compare(keys, [sizes[count - 1][k] for k in keys], True)
+		rows = list(mochi.db.rows("select * from " + source + " and " + beyond + " and " + upto + " order by " + order + " limit ?", *(scope + beyond_args + upto_args + [count])) or [])
+	if count >= len(sizes):
+		return rows, None
+	if rows:
+		return rows, [str(rows[-1][k]) for k in keys]
+	if count:
+		return rows, [str(sizes[count - 1][k]) for k in keys]
+	return rows, list(after)
+
+# view_items(e, feed_id, part): a part after the first, holding the reactions
+# and comments of the posts the first part carried, which the requester names.
+# Comments travel flat and formatted as feed_comments formats them for a remote
+# viewer; the requester hangs the reactions on them and builds the tree.
+def view_items(e, feed_id, part):
+	named = e.content("posts")
+	if type(named) not in ["list", "tuple"] or len(named) > 101:
+		e.stream.write({"error": "errors.invalid_data", "code": 400})
+		return
+	ids = [i for i in named if type(i) == "string" and i]
+	held = []
+	if ids:
+		held = [r["id"] for r in mochi.db.rows("select id from posts where feed=? and id in (" + ",".join(["?" for _ in ids]) + ")", feed_id, *ids) or []]
+	reply = {"reactions": [], "comments": [], "part": part}
+	if not held:
+		e.stream.write(reply)
+		return
+	marks = ",".join(["?" for _ in held])
+	scope = [feed_id] + held
+	sources = {
+		"reactions": ("reactions where feed=? and post in (" + marks + ") and reaction!=''", "length(cast(name as blob))"),
+		"comments": ("comments where feed=? and post in (" + marks + ")", "length(cast(body as blob)) + length(cast(name as blob))"),
+	}
+	budget = {"rows": VIEW_ROWS, "bytes": VIEW_BYTES, "taken": 0}
+	after = list(part["after"])
+	next = None
+	for name in VIEW_LISTS[VIEW_LISTS.index(part["list"]):]:
+		rows, last = view_list(sources[name][0], sources[name][1], VIEW_KEYS[name], scope, after, budget)
+		reply[name] = rows
+		if last != None:
+			next = {"list": name, "after": last}
+			break
+		after = []
+
+	# Each comment's attachments ride inside it, charged to the bytes left; a
+	# comment whose attachments overrun them waits for the next part.
+	comments = reply["comments"]
+	attached = attachment_list_many([c["id"] for c in comments], feed_id) if comments else {}
+	anchors = attachment_get_many([c.get("attachment", "") for c in comments]) if comments else {}
+	kept = []
+	for c in comments:
+		attachments = (attached.get(c["id"]) or [])[:attachment_object_maximum]
+		cost = VIEW_ATTACHMENT * len(attachments)
+		if kept and cost > budget["bytes"]:
+			next = {"list": "comments", "after": [kept[-1]["id"]]}
+			break
+		budget["bytes"] -= cost
+		c["feed_fingerprint"] = mochi.entity.fingerprint(c["feed"])
+		if c.get("format", "text") == "markdown":
+			c["body_markdown"] = mochi.text.markdown(c["body"])
+		c["user"] = ""
+		c["attachments"] = attachments
+		anchor = anchors.get(c.get("attachment", "")) if c.get("attachment", "") else None
+		c["attachment_name"] = (anchor.get("caption") or anchor.get("name", "")) if anchor else ""
+		c["attachment_caption"] = anchor.get("caption", "") if anchor else ""
+		c["my_reaction"] = ""
+		kept.append(c)
+	reply["comments"] = kept
+	if next:
+		reply["next"] = next
+	e.stream.write(reply)
+
+# view_gather(feed_id, params, peer) -> the owner's answer to a view request,
+# asked for in parts: each post given its reactions and comment tree, as a
+# whole page carries them. An owner that predates parts answers whole; a page
+# whose parts stopped short is an error, never a short page.
+def view_gather(feed_id, params, peer):
+	first = mochi.remote.request(feed_id, "feeds", "view", dict(params, part={"list": "posts", "after": []}), peer)
+	if type(first) != "dict":
+		return {"error": "errors.remote", "code": 502}
+	if first.get("error") or first.get("part") == None:
+		return first
+	failed = {"error": "errors.remote", "code": 502}
+	posts = [p for p in (first.get("posts") or []) if type(p) == "dict" and type(p.get("id")) == "string"]
+	ids = [p["id"] for p in posts]
+	reactions = []
+	comments = []
+	part = first.get("next")
+	for _ in range(VIEW_PARTS):
+		if part == None:
+			break
+		if not view_cursor(part):
+			return failed
+		reply = mochi.remote.request(feed_id, "feeds", "view", dict(params, part=part, posts=ids), peer)
+		if type(reply) != "dict" or reply.get("error") or reply.get("part") == None:
+			return failed
+		if type(reply.get("reactions")) not in ["list", "tuple"] or type(reply.get("comments")) not in ["list", "tuple"]:
+			return failed
+		if len(reply["reactions"]) + len(reply["comments"]) > VIEW_ROWS:
+			return failed
+		reactions.extend(reply["reactions"])
+		comments.extend(reply["comments"])
+		part = reply.get("next")
+	if part != None:
+		return failed
+
+	marks = {}
+	for r in reactions:
+		if type(r) == "dict":
+			marks.setdefault((r.get("post"), r.get("comment") or ""), []).append(r)
+	threads = {}
+	for c in comments:
+		if type(c) == "dict" and type(c.get("id")) == "string":
+			c["reactions"] = marks.get((c.get("post"), c["id"]), [])
+			threads.setdefault(c.get("post"), []).append(c)
+	for p in posts:
+		p["reactions"] = marks.get((p["id"], ""), [])
+		p["comments"] = view_tree(threads.get(p["id"], []))
+	first["posts"] = posts
+	first.pop("part", None)
+	first.pop("next", None)
+	return first
+
+# view_tree(comments) -> a post's comment tree from its comments gathered flat:
+# newest first among siblings, as feed_comments orders them. Each id is placed
+# once and the walk has a depth cap: the rows are the owner's word, and `parent`
+# is not a foreign key, so a hostile chain can point anywhere.
+def view_tree(comments):
+	children = {}
+	seen = {}
+	for c in sorted(comments, key=lambda c: c.get("created") or 0, reverse=True):
+		if c["id"] in seen or c.get("parent") == c["id"]:
+			continue
+		seen[c["id"]] = True
+		children.setdefault(c.get("parent") or "", []).append(c)
+	placed = {}
+
+	def branch(parent_id, depth):
+		if depth > 100:
+			return []
+		out = []
+		for c in children.get(parent_id, []):
+			if c["id"] in placed:
+				continue
+			placed[c["id"]] = True
+			c["children"] = branch(c["id"], depth + 1)
+			out.append(c)
+		return out
+
+	return branch("", 0)
+
 # Handle view request from non-subscriber (stream-based request/response)
 def event_view(e):
 	feed_id = e.header("to")
@@ -7055,6 +7287,17 @@ def event_view(e):
 	# NOTE: We do NOT auto-subscribe viewers. Permissions are determined solely by
 	# check_event_access which respects ACLs like "+" (Authenticated users).
 	# Users must explicitly subscribe to receive updates.
+
+	# A part of the page. The gate above runs for every part, so a peer that
+	# loses view access stops at its next part.
+	part = e.content("part")
+	if part != None:
+		if not view_cursor(part):
+			e.stream.write({"error": "errors.invalid_data", "code": 400})
+			return
+		if part["list"] != "posts":
+			view_items(e, feed_id, part)
+			return
 
 	# Read optional query parameters from P2P request. Stream events carry
 	# the payload via e.content() - e.data exists only on schedule events.
@@ -7095,12 +7338,17 @@ def event_view(e):
 		else:
 			post_data["data"] = {}
 		post_data["my_reaction"] = ""
-		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", post["id"])
-		# None, not e.user: on a stream event e.user is the recipient (this feed's
-		# owner), and feed_comments treats its argument as the viewer - stamping
-		# comment["user"], my_reaction and the reaction filter with it. A remote
-		# viewer has no local reaction state.
-		post_data["comments"] = feed_comments(None, post_data, None, 0)
+		if part != None:
+			# The parts after this one carry them.
+			post_data["reactions"] = []
+			post_data["comments"] = []
+		else:
+			post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", post["id"])
+			# None, not e.user: on a stream event e.user is the recipient (this
+			# feed's owner), and feed_comments treats its argument as the viewer
+			# - stamping comment["user"], my_reaction and the reaction filter with
+			# it. A remote viewer has no local reaction state.
+			post_data["comments"] = feed_comments(None, post_data, None, 0)
 		# Raw tags only: a remote viewer's interests live on their own host, so
 		# enriching here would colour their tags by this owner's interests.
 		# action_view enriches for local viewers.
@@ -7133,7 +7381,7 @@ def event_view(e):
 	banner_html = mochi.text.markdown(banner) if banner else ""
 
 	subscribers = mochi.db.row("select subscribers from feeds where id=?", feed_id)
-	e.stream.write({
+	reply = {
 		"name": feed_name,
 		"fingerprint": feed_fingerprint,
 		"privacy": feed_privacy,
@@ -7144,7 +7392,12 @@ def event_view(e):
 		"permissions": permissions,
 		"hasMore": has_more,
 		"nextCursor": next_cursor,
-	})
+	}
+	if part != None:
+		reply["part"] = part
+		if formatted_posts:
+			reply["next"] = {"list": "reactions", "after": []}
+	e.stream.write(reply)
 
 # Handle attachment view request (stream-based request/response)
 def event_attachment_fetch(e):
@@ -9323,7 +9576,9 @@ def publish_media(acc, attachments, limits):
 			omitted = True
 			continue
 		description = text_cut(att.get("description") or att.get("caption") or "", limits["description"])
-		upload = mochi.account.upload(acc["id"], data, mochi.file.type(att["name"]), name=att.get("name", "file"), description=description)
+		# Typed by the bytes: an image over the limit goes as its preview, and
+		# a WebP's preview is a JPEG.
+		upload = mochi.account.upload(acc["id"], data, attachment_sniff(data) or mochi.file.type(att["name"]), name=att.get("name", "file"), description=description)
 		if not upload or not upload.get("id"):
 			omitted = True
 			continue
@@ -10310,13 +10565,43 @@ def backup_account(acc):
 		mochi.file.write(name, data)
 	if newest:
 		account_cursor_set(acc["id"], "backup/posts", newest)
-	if acc["type"] == "bluesky" and acc.get("server"):
-		did = (mochi.account.get(acc["id"]) or {}).get("did", "")
-		if did:
-			answer = mochi.account.media(acc["id"], "https://" + acc["server"] + "/xrpc/com.atproto.sync.getRepo?did=" + did)
-			if answer and answer.get("status") == 200 and answer.get("data"):
-				mochi.file.write(directory + "/repository.car", answer["data"])
+	if acc["type"] == "bluesky" and not acc.get("hosted"):
+		backup_repository(acc, directory)
 	account_cursor_set(acc["id"], "backup", "")
+
+def backup_repository(acc, directory):
+	"""A linked Bluesky account's repository as its server exports it, beside
+	its posts; a hosted account's is this server's own. Why the last attempt
+	kept none is kept for Backups to say."""
+	server = acc.get("server", "")
+	did = (mochi.account.get(acc["id"]) or {}).get("did", "")
+	failure = None
+	if not server or not did:
+		failure = {"reason": "identifier"}
+	else:
+		answer = mochi.account.media(acc["id"], "https://" + server + "/xrpc/com.atproto.sync.getRepo?did=" + did)
+		if not answer:
+			failure = {"reason": "fetch", "server": server}
+		elif answer.get("status") != 200 or not answer.get("data"):
+			failure = {"reason": "answer", "server": server, "status": answer.get("status") or 0, "detail": str(answer.get("data") or "")[:200]}
+		else:
+			mochi.file.write(directory + "/repository.car", answer["data"])
+	if failure:
+		mochi.log.info("feeds: the backup of %s kept no repository: %s", acc["id"], json.encode(failure))
+	account_cursor_set(acc["id"], "backup/repository", json.encode(failure) if failure else "")
+
+def backup_repository_failure(account):
+	"""Why the last backup of a linked Bluesky account kept no repository, in
+	the user's language, or "" when it kept one or none has run."""
+	cursor, _ = account_cursor(account, "backup/repository")
+	if not cursor:
+		return ""
+	failure = json.decode(cursor)
+	if failure.get("reason") == "fetch":
+		return mochi.app.label("backups.repository_fetch", server=failure.get("server", ""))
+	if failure.get("reason") == "answer":
+		return mochi.app.label("backups.repository_answer", server=failure.get("server", ""), status=str(int(failure.get("status") or 0)), detail=failure.get("detail", ""))
+	return mochi.app.label("backups.repository_identifier")
 
 def action_backups(a):
 	"""The archive files of an account the feed publishes to."""
@@ -10327,7 +10612,13 @@ def action_backups(a):
 	if not acc:
 		a.error.label(404, "errors.account_not_linked")
 		return
-	a.json({"files": sorted([str(entry) for entry in mochi.file.list("backups/" + acc["id"]) or []])})
+	# An account none has been made for yet has no directory, which listing
+	# refuses.
+	directory = "backups/" + acc["id"]
+	answer = {"files": sorted([str(entry) for entry in mochi.file.list(directory) or []]) if mochi.file.exists(directory) else []}
+	if acc["type"] == "bluesky" and not acc.get("hosted"):
+		answer["repository"] = backup_repository_failure(acc["id"])
+	a.json(answer)
 
 def action_backup_file(a):
 	"""One archive file, for the owner to download."""

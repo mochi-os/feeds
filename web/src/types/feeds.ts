@@ -296,4 +296,7 @@ export interface ImportResponse {
 
 export interface BackupsResponse {
   files: string[]
+  // On a linked Bluesky account, why the last backup kept no repository, or
+  // empty when it kept one.
+  repository?: string
 }

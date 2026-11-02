@@ -329,6 +329,29 @@ describe('Publishing section', () => {
     )
   })
 
+  it('says why the last backup kept no repository', async () => {
+    state.getBackups.mockReset().mockResolvedValue({
+      files: ['posts-2026-11.jsonl'],
+      repository:
+        'The repository could not be saved: bsky.example answered 400: RepoNotFound',
+    })
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('@alice@mastodon.social')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[0]
+    )
+    await user.click(await screen.findByRole('menuitem', { name: 'Backups' }))
+    expect(
+      await screen.findByText(
+        'The repository could not be saved: bsky.example answered 400: RepoNotFound'
+      )
+    ).toBeTruthy()
+    expect(
+      screen.getByRole('button', { name: 'posts-2026-11.jsonl' })
+    ).toBeTruthy()
+  })
+
   it('shows nothing on a private feed', async () => {
     show('private')
     await act(async () => {})
