@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# нусха} other {# нусха}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# файл тағйир ёфт} other {# файл тағйир ёфт}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {# обуна ворид карда шуд} other {# обуна ворид карда шуд}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {# обуна ворид карда шуд} other {# о�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# паёми нав} other {# паёмҳои нав}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# нафар} other {# нафар}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# дохилӣ} other {+# дохилӣ}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# манбаъ илова шуд} other {# манбаъ илова шуд}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Иловаи намуд"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "То ҳол {0} манбаъ илова шуд; боқимонда баъдтар илова мешавад"
 
@@ -475,6 +484,10 @@ msgstr "Ҳама наворҳо"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "Ҳама ҳамчун хонда шуд қайд карда шуд"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Иҷозат додан"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Илова кардани ҷавоб ба анҷом нарасид. Лутфан боз кӯшиш кунед."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Илова кардани манбаъ ба анҷом нарасид"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "То ҳол {0} ворид карда шуд; боқимонда баъдтар ворид мешавад"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "{0} обуна ворид карда мешавад; то ҳол {1} илова шуд"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Маълумот ворид карда мешавад..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "Сабти овоз дар ин браузер дастгирӣ наме
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Овоз додан"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Интизори иҷозат"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Интизори иҷозат: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

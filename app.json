@@ -58,7 +58,7 @@
 	"require": {"version": {"minimum": "2.0.12"}},
 
 	"database": {
-		"schema": 21,
+		"schema": 22,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -118,6 +118,7 @@
 		":feed/-/sources/edit": {"function": "action_sources_edit"},
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
 		":feed/-/sources/follow": {"function": "action_sources_follow"},
+		":feed/-/sources/allow": {"function": "action_sources_allow"},
 		":feed/-/follow": {"function": "action_follow", "public": true},
 		":feed/-/reply": {"function": "action_reply", "public": true},
 		":feed/-/:post/:comment/block": {"function": "action_comment_block"},

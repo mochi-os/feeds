@@ -27,6 +27,7 @@ export type {
   Filter,
   Person,
   ImportFollowsResponse,
+  WaitingServer,
   SubscribeFeedResponse,
   UnsubscribeFeedResponse,
   ViewFeedParams,

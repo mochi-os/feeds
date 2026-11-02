@@ -2002,7 +2002,7 @@ export function FeedPosts({
                                     <>
                                       <DropdownMenuItem
                                         onClick={(e) => {
-                                          e.preventDefault()
+                                          // Prevented, the menu stays open.
                                           e.stopPropagation()
                                           handleStartEdit(post)
                                         }}
@@ -2057,7 +2057,8 @@ export function FeedPosts({
                                         )}
                                       <DropdownMenuItem
                                         onClick={(e) => {
-                                          e.preventDefault()
+                                          // Prevented, the menu stays open
+                                          // behind the confirmation.
                                           e.stopPropagation()
                                           setDeletingPost({
                                             id: post.id,

@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# kopia} other {# kopia}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {fitxategi # aldatuta} other {# fitxategi aldatuta}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {Jarraitutako # inportatu da} other {Jarraitutako # inportatu dira}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {Jarraitutako # inportatu da} other {Jarraitutako # inpo
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# argitalpen berri} other {# argitalpen berri}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# pertsona} other {# pertsona}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# habiaratu} other {+# habiaratu}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# iturri gehitu da} other {# iturri gehitu dira}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Gehitu ikuspegia"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Orain arte {0} iturri gehitu dira; gainerakoak ondoren datoz"
 
@@ -475,6 +484,10 @@ msgstr "Jario guztiak"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "Guztiak irakurritzat markatuta"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Baimendu"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Ezin izan da erantzuna gehitu. Saiatu berriro."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Ezin izan da iturria gehitu"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Orain arte {0} inportatu dira; gainerakoak ondoren datoz"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "{0} jarraitutako inportatzen; orain arte {1} gehitu dira"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Datuak inportatzen..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "Nabigatzaile honek ez du ahots-grabazioa onartzen"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Bozkatu"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Baimenaren zain"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Baimenaren zain: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# պատճեն} other {# պատճեն}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ֆայլ փոխվել է} other {# ֆայլ փոխվել է}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {Ներմուծվեց # հետևում} other {Ներմուծվեց # հետևում}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {Ներմուծվեց # հետևում} other {Ներմ�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# նոր գրառում} other {# նոր գրառում}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# մարդ} other {# մարդ}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ներդրված} other {+# ներդրված}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Ավելացվեց # աղբյուր} other {Ավելացվեց # աղբյուր}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Ավելացնել տեսք"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Առայժմ ավելացվել է {0} աղբյուր, մնացածը՝ հետո"
 
@@ -475,6 +484,10 @@ msgstr "Բոլոր հոսքերը"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "Բոլորը նշվեցին որպես կարդացված"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Թույլատրել"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Չհաջողվեց ավելացնել պատասխանը։ Խնդրում ենք կրկին փորձել։"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Չհաջողվեց ավելացնել աղբյուրը"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Առայժմ ներմուծվել է {0}, մնացածը՝ հետո"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Ներմուծվում է {0} հետևում, մինչ այժմ ավելացվել է {1}"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Տվյալները ներմուծվում են…"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "Ձայնագրումն այս դիտարկիչում չի աջակցվո
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Քվեարկել"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Սպասում է թույլտվության"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Սպասում է թույլտվության: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -70,7 +70,7 @@ msgstr "{0, plural, one {ẹ̀dà #} other {ẹ̀dà #}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {fáìlì # yípadà} other {àwọn fáìlì # yípadà}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {A kó ìtẹ̀lé # wọlé} other {A kó ìtẹ̀lé # wọlé}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {A kó ìtẹ̀lé # wọlé} other {A kó ìtẹ̀lé #
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# ìfìwéránṣẹ́ tuntun} other {# ìfìwéránṣẹ́ tuntun}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {ènìyàn #} other {ènìyàn #}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, other {+# nínú}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {A ti fi orísun # kún} other {A ti fi orísun # kún}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Fi ìran kún"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "A ti fi orísun {0} kún báyìí; àwọn yòókù ń bọ̀"
 
@@ -475,6 +484,10 @@ msgstr "Gbogbo feed"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "A ti samì sí gbogbo wọn gẹ́gẹ́ bí kíkà"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Gbà láàyè"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Kò lè fi ìdáhùn kún. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Kò lè fi orísun kún"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "A ti kó {0} wọlé báyìí; àwọn yòókù ń bọ̀"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "A ń kó ìtẹ̀lé {0} wọlé; a ti fi {1} kún báyìí"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Ń gbé dátà wọlé..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "Aṣàwákiri yìí kò ṣe àtìlẹ́yìn fún gbigbasilẹ ohùn"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Dìbò"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Ń dúró de ìyọ̀ǹda"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Ń dúró de ìyọ̀ǹda: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

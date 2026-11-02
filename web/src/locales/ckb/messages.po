@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# کۆپی} other {# کۆپی}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# فایل گۆڕدرا} other {# فایل گۆڕدران}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {# شوێنکەوتن هاوردە کرا} other {# شوێنکەوتن هاوردە کران}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {# شوێنکەوتن هاوردە کرا} other {# شو
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# پۆستی نوێ} other {# پۆستی نوێ}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# کەس} other {# کەس}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ناوەکی} other {+# ناوەکی}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# سەرچاوە زیادکرا} other {# سەرچاوە زیادکران}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "زیادکردنی ڕوانگە"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "تا ئێستا {0} سەرچاوە زیادکران؛ ئەوانی تر بەدوایدا دێن"
 
@@ -475,6 +484,10 @@ msgstr "هەموو فیدەکان"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "هەموو وەک خوێنراوە نیشانە کرا"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "ڕێگەپێدان"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "زیادکردنی وەڵام سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "زیادکردنی سەرچاوە سەرکەوتوو نەبوو"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "تا ئێستا {0} هاوردەکرا؛ ئەوانی تر بەدوایدا دێن"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "هاوردەکردنی {0} شوێنکەوتن؛ تا ئێستا {1} زیاد کراوە"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "داتا هاوردە دەکرێت..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "تۆمارکردنی دەنگ لەم وێبگەڕەدا پشتگیری �
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "دەنگدان"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "چاوەڕێی مۆڵەت"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "چاوەڕێی مۆڵەت: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

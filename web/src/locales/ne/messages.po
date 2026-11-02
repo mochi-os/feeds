@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# प्रतिलिपि} other {# प्रति
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# फाइल परिवर्तन गरियो} other {# फाइलहरू परिवर्तन गरियो}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {फलो गरिएको # खाता आयात गरियो} other {फलो गरिएका # खाताहरू आयात गरिए}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {फलो गरिएको # खाता आया�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# नयाँ पोस्ट} other {# नयाँ पोस्ट}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# व्यक्ति} other {# व्यक्ति}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# नेस्टेड} other {+# नेस्टेड}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# स्रोत थपियो} other {# स्रोतहरू थपिए}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "दृश्य थप्नुहोस्"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "अहिलेसम्म {0} स्रोतहरू थपिए; बाँकी पछि थपिनेछन्"
 
@@ -475,6 +484,10 @@ msgstr "सबै फिडहरू"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "सबै पढिएको रूपमा चिन्ह लगाइयो"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "अनुमति दिनुहोस्"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "जवाफ थप्न असफल। फेरि प्रयास गर्नुहोस्।"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "स्रोत थप्न असफल"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "अहिलेसम्म {0} आयात गरियो; बाँकी पछि आउनेछन्"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "{0} फलो गरिएका खाताहरू आयात गर्दै; हालसम्म {1} थपियो"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "डेटा आयात हुँदै..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "यो ब्राउजरमा भ्वाइस रेकर्ड
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "मत दिनुहोस्"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "अनुमतिको प्रतीक्षा गर्दै"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "अनुमतिको प्रतीक्षा गर्दै: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

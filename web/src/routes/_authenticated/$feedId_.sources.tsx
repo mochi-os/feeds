@@ -47,6 +47,7 @@ import {
   useFormat,
   naturalCompare,
 } from '@mochi/web'
+import { allowServer, allowServers } from '@/lib/waiting'
 import {
   Calendar,
   Check,
@@ -354,7 +355,7 @@ interface SourcesPanelProps {
 
 export function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
   const { t } = useLingui()
-  const { formatTimestamp } = useFormat()
+  const { formatTimestamp, formatList } = useFormat()
   const navigateRoute = Route.useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(!!addUrl)
   const [addSourceType, setAddSourceType] = useState<SourceKind>(
@@ -374,6 +375,9 @@ export function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
     refetchOnWindowFocus: false,
   })
   const sources = sourcesData?.data?.sources ?? []
+  // The servers people of the feed's imports wait on, until the user allows
+  // the app to read them.
+  const waiting = sourcesData?.data?.waiting ?? []
   const sourcesError = sourcesErrorRaw
     ? toError(sourcesErrorRaw, t`Failed to load sources`)
     : null
@@ -396,21 +400,67 @@ export function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
   const [importing, setImporting] = useState(false)
   const handleImport = async (file: File) => {
     setImporting(true)
+    // One toast from the start, which becomes the result: the asking and
+    // adding that follow the import can take a while.
+    const progress = toast.loading(t`Importing data...`)
     try {
       const answer = await feedsApi.importFollows(feedId, await file.text())
-      toast.success(
-        answer.more
-          ? t`Importing ${answer.total} follows; ${answer.imported} added so far`
-          : plural(answer.imported, {
-              one: '# follow imported',
-              other: '# follows imported',
-            })
+      // People on a server the app may not read yet: the user is asked for
+      // each server now, and those allowed are added. The ones declined
+      // wait in the list, named beneath what was imported.
+      const allowed = await allowServers(
+        feedId,
+        (answer.waiting ?? []).map((w) => w.server)
       )
+      const result = {
+        added: answer.imported + allowed.added,
+        more: answer.more || allowed.more,
+      }
+      const imported = result.more
+        ? t`Importing ${answer.total} follows; ${result.added} added so far`
+        : plural(result.added, {
+            one: '# follow imported',
+            other: '# follows imported',
+          })
+      if (allowed.waiting.length > 0) {
+        toast.success(imported, {
+          id: progress,
+          description: t`Waiting for permission: ${formatList(allowed.waiting)}`,
+        })
+      } else {
+        toast.success(imported, { id: progress })
+      }
       await refetchSources()
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Failed to import follows`))
+      toast.error(getErrorMessage(err, t`Failed to import follows`), {
+        id: progress,
+      })
     } finally {
       setImporting(false)
+    }
+  }
+
+  // Allowing a server people wait on asks for it, then adds them.
+  const [allowing, setAllowing] = useState<string | null>(null)
+  const handleAllow = async (server: string) => {
+    setAllowing(server)
+    try {
+      const answer = await allowServer(feedId, server)
+      if (answer) {
+        toast.success(
+          answer.more
+            ? t`Added ${answer.imported} sources so far; the rest follow`
+            : plural(answer.imported, {
+                one: 'Added # source',
+                other: 'Added # sources',
+              })
+        )
+        await refetchSources()
+      }
+    } catch (err) {
+      toast.error(getErrorMessage(err, t`Failed to add source`))
+    } finally {
+      setAllowing(null)
     }
   }
 
@@ -540,6 +590,42 @@ export function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
             if (file) void handleImport(file)
           }}
         />
+        {waiting.length > 0 && (
+          <div className='rounded-lg border p-3'>
+            <div className='text-sm font-medium'>
+              <Trans>Waiting for permission</Trans>
+            </div>
+            <div className='divide-y'>
+              {[...waiting]
+                .sort((a, b) => naturalCompare(a.server, b.server))
+                .map((w) => (
+                  <div
+                    key={w.server}
+                    className='flex items-center justify-between gap-3 py-2'
+                  >
+                    <div className='min-w-0'>
+                      <div className='truncate text-sm'>{w.server}</div>
+                      <div className='text-muted-foreground text-xs'>
+                        {plural(w.count, {
+                          one: '# person',
+                          other: '# people',
+                        })}
+                      </div>
+                    </div>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      loading={allowing === w.server}
+                      disabled={allowing !== null}
+                      onClick={() => void handleAllow(w.server)}
+                    >
+                      <Trans>Allow</Trans>
+                    </Button>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
         {isLoading ? (
           <div className='space-y-3'>
             <Skeleton className='h-16 w-full rounded-lg' />

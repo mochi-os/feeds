@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# kopia} few {# kopie} many {# kopii} other {# kopii}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# plik zmieniony} few {# pliki zmienione} many {# plików zmienionych} other {# pliku zmienionego}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {Zaimportowano # obserwowane konto} few {Zaimportowano # obserwowane konta} many {Zaimportowano # obserwowanych kont} other {Zaimportowano # obserwowanego konta}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {Zaimportowano # obserwowane konto} few {Zaimportowano #
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nowy post} few {# nowe posty} many {# nowych postów} other {# nowego posta}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# osoba} few {# osoby} many {# osób} other {# osoby}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# zagnieżdżony} few {+# zagnieżdżone} many {+# zagnieżdżonych} other {+# zagnieżdżonych}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Dodano # źródło} few {Dodano # źródła} many {Dodano # źródeł} other {Dodano # źródła}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Dodaj widok"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Dotąd dodano źródła: {0}; reszta wkrótce"
 
@@ -475,6 +484,10 @@ msgstr "Wszystkie kanały"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "Wszystkie oznaczone jako przeczytane"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Zezwól"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Nie udało się dodać odpowiedzi. Spróbuj ponownie."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Nie udało się dodać źródła"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Dotąd zaimportowano: {0}; reszta wkrótce"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Importowanie obserwowanych kont: {0}; dotąd dodano {1}"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Importowanie danych..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "Nagrywanie głosu nie jest obsługiwane w tej przeglądarce"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Zagłosuj"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Oczekiwanie na uprawnienie"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Oczekiwanie na uprawnienie: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

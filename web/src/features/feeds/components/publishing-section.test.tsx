@@ -25,6 +25,9 @@ const state = vi.hoisted(() => ({
   setGenerator: vi.fn(),
   success: vi.fn(),
   error: vi.fn(),
+  info: vi.fn(),
+  allowWaiting: vi.fn(),
+  request: vi.fn(),
 }))
 
 vi.mock('@/api/feeds', () => ({
@@ -33,6 +36,7 @@ vi.mock('@/api/feeds', () => ({
     setPublish: state.setPublish,
     forgetCopies: state.forgetCopies,
     importAccount: state.importAccount,
+    allowWaiting: state.allowWaiting,
     setGenerator: state.setGenerator,
     getBackups: vi.fn().mockResolvedValue({ files: [] }),
     backupFileUrl: () => '',
@@ -41,7 +45,14 @@ vi.mock('@/api/feeds', () => ({
 
 vi.mock('@mochi/web', async (original) => ({
   ...(await original<typeof import('@mochi/web')>()),
-  toast: { success: state.success, error: state.error },
+  toast: {
+    success: state.success,
+    error: state.error,
+    info: state.info,
+    loading: () => 'progress',
+  },
+  isInShell: () => true,
+  shellRequestPermission: state.request,
 }))
 
 const accounts = [
@@ -211,7 +222,69 @@ describe('Publishing section', () => {
     await waitFor(() =>
       expect(state.importAccount).toHaveBeenCalledWith('feed-1', 'm1', 'follows')
     )
-    expect(state.success).toHaveBeenCalledWith('Added 4 sources')
+    expect(state.success).toHaveBeenCalledWith('Added 4 sources', {
+      id: 'progress',
+    })
+  })
+
+  // A person whose server the app may not read is not added by the import
+  // itself: the user is asked for the server there and then, and allowing it
+  // adds them. One toast says what came of both.
+  const refused = {
+    response: {
+      data: {
+        error: 'permission_required',
+        app: 'feeds',
+        permission: 'url:wasabi.example',
+        restricted: false,
+      },
+    },
+  }
+  const importWaiting = async () => {
+    state.importAccount.mockResolvedValue({
+      imported: 1,
+      more: false,
+      waiting: [{ server: 'wasabi.example', count: 2 }],
+    })
+    state.allowWaiting
+      .mockReset()
+      .mockRejectedValueOnce(refused)
+      .mockResolvedValue({ imported: 2, more: false })
+    state.info.mockReset()
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('@alice@mastodon.social')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[0]
+    )
+    await user.click(
+      await screen.findByRole('menuitem', { name: 'Import follows as sources' })
+    )
+  }
+
+  it('asks for each server the import left people waiting on, and adds them', async () => {
+    state.request.mockReset().mockResolvedValue('granted')
+    await importWaiting()
+    await waitFor(() =>
+      expect(state.success).toHaveBeenCalledWith('Added 3 sources', {
+        id: 'progress',
+      })
+    )
+    expect(state.request).toHaveBeenCalledWith('url:wasabi.example')
+    expect(state.allowWaiting).toHaveBeenCalledWith('feed-1', 'wasabi.example')
+    expect(state.info).not.toHaveBeenCalled()
+  })
+
+  it('names beneath what was added the servers the user does not allow', async () => {
+    state.request.mockReset().mockResolvedValue('denied')
+    await importWaiting()
+    await waitFor(() =>
+      expect(state.success).toHaveBeenCalledWith('Added 1 source', {
+        id: 'progress',
+        description: 'Waiting for permission: wasabi.example',
+      })
+    )
+    expect(state.allowWaiting).toHaveBeenCalledTimes(1)
   })
 
   it('shows nothing on a private feed', async () => {

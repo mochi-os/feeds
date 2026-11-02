@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# kopja} two {# kopji} few {# kopji} many {# kopja} oth
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# fajl mibdul} two {# fajls mibdula} few {# fajls mibdula} many {# fajl mibdula} other {# fajl mibdula}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {# kont segwit importat} two {# kontijiet segwiti importati} few {# kontijiet segwiti importati} many {# kont segwit importat} other {# kont segwit importat}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {# kont segwit importat} two {# kontijiet segwiti import
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# post ġdid} two {# posts ġodda} few {# posts ġodda} many {# post ġdid} other {# post ġdid}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# persuna} two {# persuni} few {# persuni} many {# persuna} other {# persuna}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# innestjat} few {+# innestjati} many {+# innestjati} other {+# innestjati}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# sors miżjud} two {# sorsi miżjuda} few {# sorsi miżjuda} many {# sors miżjud} other {# sors miżjud}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Żid view"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "S'issa żdiedu {0} sorsi; il-bqija ġejjin"
 
@@ -475,6 +484,10 @@ msgstr "Il-feeds kollha"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "Kollha mmarkati bħala maqruwa"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Ippermetti"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Ma rnexxiex jiżdied ir-risposta. Erġa' pprova."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Ma rnexxiex jiżdied is-sors"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "S'issa importati: {0}; il-bqija ġejjin"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Qed jiġu importati {0} kontijiet segwiti; {1} miżjuda s'issa"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Qed tiġi importata d-data..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "Ir-reġistrazzjoni tal-vuċi mhijiex appoġġjata f'dan il-brawżer"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Ivvota"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Qed nistennew il-permess"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Qed nistennew il-permess: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

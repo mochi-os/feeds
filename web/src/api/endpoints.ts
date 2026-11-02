@@ -146,6 +146,7 @@ const endpoints = {
     sourcesPoll: (feedId: string) => `${feedId}/-/sources/poll`,
     sourcesFollow: (feedId: string) => `${feedId}/-/sources/follow`,
     sourcesImport: (feedId: string) => `${feedId}/-/sources/import`,
+    sourcesAllow: (feedId: string) => `${feedId}/-/sources/allow`,
     // Keyword filters on a feed
     filters: (feedId: string) => `${feedId}/-/filters`,
     filtersAdd: (feedId: string) => `${feedId}/-/filters/add`,

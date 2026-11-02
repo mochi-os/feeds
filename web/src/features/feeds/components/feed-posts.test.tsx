@@ -265,9 +265,13 @@ describe('FeedPosts card navigation', () => {
     await user.click(
       within(card('post-2')).getByRole('button', { name: 'More options' })
     )
-    await user.click(await screen.findByText('Edit post'))
+    // A prevented click leaves the menu open behind the question in a
+    // browser (the test DOM closes it anyway), so the click is checked.
+    const item = await screen.findByRole('menuitem', { name: 'Edit post' })
+    expect(fireEvent.click(item)).toBe(true)
 
     expect(screen.getByText('Discard draft?')).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
     // Still the first post's editor, still holding what was typed.
     expect(screen.getByDisplayValue('Edited but not saved')).toBeInTheDocument()
     expect(screen.queryByDisplayValue('Second post')).not.toBeInTheDocument()
@@ -530,6 +534,27 @@ describe('FeedPosts boosting a post from another network', () => {
       'account-2',
       false
     )
+  })
+})
+
+// Delete asks first: the menu closes as the question opens, rather than
+// staying open behind it.
+describe('FeedPosts deleting a post', () => {
+  it('closes the menu when the confirmation opens', async () => {
+    const user = userEvent.setup()
+    renderPosts()
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    // A prevented click skips the select that closes a Radix menu. The test
+    // DOM closes it anyway when the dialog takes focus, a browser does not,
+    // so the click itself is what is checked.
+    const item = await screen.findByRole('menuitem', { name: 'Delete post' })
+    expect(fireEvent.click(item)).toBe(true)
+    expect(
+      await screen.findByText(/Are you sure you want to delete this post/)
+    ).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
   })
 })
 

@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# ቅጂ} other {# ቅጂዎች}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ፋይል ተቀይሯል} other {# ፋይሎች ተቀይረዋል}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {# የሚከተሉት መለያ ገብቷል} other {# የሚከተሏቸው መለያዎች ገብተዋል}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {# የሚከተሉት መለያ ገብቷል} other {# �
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# አዲስ ልጥፍ} other {# አዲስ ልጥፎች}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# ሰው} other {# ሰዎች}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ውስጠኛ} other {+# ውስጠኛ}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# ምንጭ ተጨምሯል} other {# ምንጮች ተጨምረዋል}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "እይታ ጨምር"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "እስካሁን {0} ምንጮች ተጨምረዋል፤ የቀሩት ይከተላሉ"
 
@@ -475,6 +484,10 @@ msgstr "ሁሉም ፊዶች"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "ሁሉም እንደተነበበ ምልክት ተደርጓል"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "ፍቀድ"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "ምላሽ መጨመር አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "ምንጭ መጨመር አልተሳካም"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "እስካሁን {0} ገብተዋል፤ የቀሩት ይከተላሉ"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "{0} የሚከተሏቸው መለያዎች በማስመጣት ላይ፤ እስካሁን {1} ታክለዋል"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "ውሂብ በማስመጣት ላይ..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "በዚህ አሳሽ ውስጥ የድምፅ ቀረጻ አይደገፍም"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "ድምጽ ስጥ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "ፈቃድ በመጠበቅ ላይ"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "ፈቃድ በመጠበቅ ላይ: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

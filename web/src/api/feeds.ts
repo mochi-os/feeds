@@ -42,6 +42,7 @@ import type {
   PublishResponse,
   PublishSetResponse,
   SourceState,
+  WaitingServer,
 } from '@/types/feeds'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 import endpoints from '@/api/endpoints'
@@ -822,7 +823,7 @@ const listGroups = async (): Promise<GroupListResponse> => {
 
 // Source management types
 interface SourcesListResponse {
-  data: { sources: Source[] }
+  data: { sources: Source[]; waiting?: WaitingServer[] }
 }
 
 interface SourceAddResponse {
@@ -979,6 +980,19 @@ const getBackups = async (
 // The address of one archive file, for the browser to save.
 const backupFileUrl = (feedId: string, account: string, name: string): string =>
   `${endpoints.feeds.backupFile(feedId)}?account=${encodeURIComponent(account)}&name=${encodeURIComponent(name)}`
+
+// Add the people of the feed's imports who waited on a server, once the
+// user has let the app read it.
+const allowWaiting = async (
+  feedId: string,
+  server: string
+): Promise<ImportResponse> => {
+  const response = await client.post<
+    MaybeWrapped<ImportResponse>,
+    { feed: string; server: string }
+  >(endpoints.feeds.sourcesAllow(feedId), { feed: feedId, server })
+  return toDataResponse<ImportResponse>(response, 'allow server').data
+}
 
 const getSources = async (feedId: string): Promise<SourcesListResponse> => {
   const response = await client.get<
@@ -1337,6 +1351,7 @@ export const feedsApi = {
   getBackups,
   backupFileUrl,
   getSources,
+  allowWaiting,
   addSource,
   editSource,
   removeSource,

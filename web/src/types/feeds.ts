@@ -238,6 +238,14 @@ export interface ImportFollowsResponse {
   imported: number
   more: boolean
   total: number
+  waiting?: WaitingServer[]
+}
+
+// A server the people of a feed's imports wait on, with how many, until the
+// user lets the app read it.
+export interface WaitingServer {
+  server: string
+  count: number
 }
 
 // Client-side feed summary for display
@@ -283,6 +291,7 @@ export interface PublishSetResponse {
 export interface ImportResponse {
   imported: number
   more: boolean
+  waiting?: WaitingServer[]
 }
 
 export interface BackupsResponse {

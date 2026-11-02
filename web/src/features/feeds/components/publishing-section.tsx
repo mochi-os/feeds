@@ -8,6 +8,7 @@
 // the copies already there, keeping them by default. Each account's history
 // can be imported into the feed, and its archive downloaded.
 import { useState } from 'react'
+import { allowServers } from '@/lib/waiting'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { plural } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -26,6 +27,7 @@ import {
   naturalCompare,
   providerName,
   toast,
+  useFormat,
 } from '@mochi/web'
 import { Archive, Download, MoreHorizontal, Rss, X } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
@@ -59,6 +61,7 @@ export function PublishingSection({
   privacy: string
 }) {
   const { t } = useLingui()
+  const { formatList } = useFormat()
   const queryClient = useQueryClient()
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['feeds', 'publish', feedId],
@@ -135,17 +138,37 @@ export function PublishingSection({
     kind: 'posts' | 'bookmarks' | 'follows'
   ) => {
     setBusy(account.id)
+    // One toast from the start, which becomes the result: the asking and
+    // adding that follow an import of follows can take a while.
+    const progress = toast.loading(t`Importing data...`)
     try {
       const answer = await feedsApi.importAccount(feedId, account.id, kind)
       if (kind === 'follows') {
-        toast.success(
-          answer.more
-            ? t`Added ${answer.imported} sources so far; the rest follow`
-            : plural(answer.imported, {
-                one: 'Added # source',
-                other: 'Added # sources',
-              })
+        // People on a server the app may not read yet: the user is asked for
+        // each server now, and those allowed are added. The ones declined
+        // wait in Sources, named beneath what was added.
+        const allowed = await allowServers(
+          feedId,
+          (answer.waiting ?? []).map((w) => w.server)
         )
+        const result = {
+          added: answer.imported + allowed.added,
+          more: answer.more || allowed.more,
+        }
+        const added = result.more
+          ? t`Added ${result.added} sources so far; the rest follow`
+          : plural(result.added, {
+              one: 'Added # source',
+              other: 'Added # sources',
+            })
+        if (allowed.waiting.length > 0) {
+          toast.success(added, {
+            id: progress,
+            description: t`Waiting for permission: ${formatList(allowed.waiting)}`,
+          })
+        } else {
+          toast.success(added, { id: progress })
+        }
         await queryClient.invalidateQueries({
           queryKey: ['feeds', 'sources', feedId],
         })
@@ -154,11 +177,12 @@ export function PublishingSection({
       toast.success(
         answer.more
           ? t`Imported ${answer.imported} so far; the rest follow`
-          : t`Imported ${answer.imported}`
+          : t`Imported ${answer.imported}`,
+        { id: progress }
       )
       await queryClient.invalidateQueries({ queryKey: ['posts', feedId] })
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Could not import`))
+      toast.error(getErrorMessage(err, t`Could not import`), { id: progress })
     } finally {
       setBusy(null)
     }

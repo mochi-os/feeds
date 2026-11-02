@@ -2209,12 +2209,21 @@ def database_upgrade(version):
 		# A comment's reply on another network keeps the id there of what it
 		# answers.
 		replies_schema_create()
+	if version == 22:
+		# The people an import could not add yet wait on their server.
+		waiting_schema_create()
 
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
 # reaction as post/comment/subscriber.
 def withheld_schema_create():
 	mochi.db.execute("create table if not exists withheld ( feed text not null, object text not null, primary key ( feed, object ) )")
+
+# waiting_schema_create lays the table of the people a follows import could
+# not add yet, since their web feed is on a server the app may not read: kept
+# by feed and the person's address, with the server they wait on.
+def waiting_schema_create():
+	mochi.db.execute("create table if not exists waiting ( feed text not null, server text not null, network text not null, identifier text not null, name text not null default '', created integer not null, primary key ( feed, identifier ) )")
 
 # posts_index_create lays the indexes a feed's unread count and a feed's page of
 # posts read: each was a search of the feed's posts and a sort of all of them.
@@ -2319,6 +2328,7 @@ def database_create():
 	publish_schema_create()
 	features_schema_create()
 	bluesky_schema_create()
+	waiting_schema_create()
 	mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
 
 	# Attachments now live in this database, owned by the shared library.
@@ -5031,12 +5041,17 @@ def action_post_image(a):
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 	return a.json({"image": rss.get("image", "")})
 
-def link_reachable(link):
-	"""Whether the app holds the grant to fetch from a link's host."""
+def link_server(link):
+	"""A link's host, as a url: grant names it, or '' for a link without one."""
 	parts = link.split("/")
 	if len(parts) < 3 or not parts[2]:
-		return False
-	return mochi.permission.check("url:" + parts[2].split("@")[-1].split(":")[0].lower())
+		return ""
+	return parts[2].split("@")[-1].split(":")[0].lower()
+
+def link_reachable(link):
+	"""Whether the app holds the grant to fetch from a link's host."""
+	server = link_server(link)
+	return bool(server) and mochi.permission.check("url:" + server)
 
 # post_react sets or takes back the user's reaction to a post: on a feed
 # they own, here and for the subscribers; on one they follow, sent to its
@@ -7380,7 +7395,7 @@ def action_sources_list(a):
 	for source in sources:
 		if source["type"] == "person/posts" and source.get("account"):
 			source["state"] = source_state(source)
-	return {"data": {"sources": sources}}
+	return {"data": {"sources": sources, "waiting": waiting_servers(feed["id"])}}
 
 # Edit a source (owner only)
 def action_sources_edit(a):
@@ -9316,14 +9331,16 @@ def publish_media(acc, attachments, limits):
 	return (uploads, omitted)
 
 def mastodon_limits(acc):
+	"""The account's server's limits, as whole numbers: the stored ones come
+	back from JSON as decimals, which a byte count or a cut cannot take."""
 	limits = acc.get("limits") or {}
 	return {
-		"characters": number(limits.get("characters")) or MASTODON_CHARACTERS,
-		"images": number(limits.get("attachments")) or MASTODON_ATTACHMENTS,
+		"characters": int(number(limits.get("characters")) or MASTODON_CHARACTERS),
+		"images": int(number(limits.get("attachments")) or MASTODON_ATTACHMENTS),
 		"video": 1,
-		"image_bytes": number(limits.get("image")) or MASTODON_IMAGE_BYTES,
-		"video_bytes": number(limits.get("video")) or MASTODON_VIDEO_BYTES,
-		"description": number(limits.get("description")) or MASTODON_DESCRIPTION,
+		"image_bytes": int(number(limits.get("image")) or MASTODON_IMAGE_BYTES),
+		"video_bytes": int(number(limits.get("video")) or MASTODON_VIDEO_BYTES),
+		"description": int(number(limits.get("description")) or MASTODON_DESCRIPTION),
 	}
 
 BLUESKY_LIMITS = {"characters": BLUESKY_CHARACTERS, "images": BLUESKY_IMAGES, "video": 1, "image_bytes": BLUESKY_IMAGE_BYTES, "video_bytes": BLUESKY_VIDEO_BYTES, "description": BLUESKY_DESCRIPTION}
@@ -10051,7 +10068,10 @@ def action_import(a):
 		a.error.label(400, "errors.invalid_import")
 		return
 	count, more = import_step(feed, acc, kind, "", a.user.identity.id)
-	a.json({"imported": count, "more": more})
+	answer = {"imported": count, "more": more}
+	if kind == "follows":
+		answer["waiting"] = waiting_servers(feed["id"])
+	a.json(answer)
 
 IMPORT_KINDS = ["posts", "bookmarks", "follows"]
 
@@ -10139,6 +10159,10 @@ def schedule_import(e):
 		import_file_step(e.data.get("import", ""), user_id)
 		return
 	feed = mochi.db.row("select * from feeds where id=?", e.data.get("feed", ""))
+	if kind == "waiting":
+		if feed:
+			waiting_step(feed, e.data.get("server", ""), user_id)
+		return
 	acc = publish_account(e.data.get("account", ""))
 	if not feed or not acc or kind not in IMPORT_KINDS:
 		return
@@ -11589,10 +11613,11 @@ def person_feeds(found):
 	urls.append(base + "/users/" + name + ".atom")
 	return urls
 
-def person_feed(found):
-	"""The first web feed of a person's or community's that answers, with its
-	document, or (None, None)."""
-	for url in person_feeds(found):
+def person_feed(found, urls=None):
+	"""The first web feed of a person's or community's that answers, of urls
+	or else of every form their server may use, with its document, or (None,
+	None)."""
+	for url in (person_feeds(found) if urls == None else urls):
 		result = mochi.rss.fetch(url, {})
 		status = result.get("status", 0)
 		if status >= 200 and status < 300 and (result.get("items") or result.get("title")):
@@ -11863,11 +11888,69 @@ def follow_source(feed, follow, user_id, acc=None):
 			return False
 		source, _ = person_follow_create(feed, found, acc, follow["name"] or found["name"], user_id)
 		return bool(source)
-	url, result = person_feed(found)
-	if not url or mochi.db.exists("select 1 from sources where feed=? and url=?", feed_id, url):
+	# Only the servers the app may read are asked. A person whose web feed
+	# could only be on one it may not waits for the user to allow it, rather
+	# than the refusal ending the import.
+	urls = person_feeds(found)
+	allowed = [u for u in urls if link_reachable(u)]
+	url, result = person_feed(found, allowed)
+	if not url:
+		refused = [u for u in urls if u not in allowed]
+		if refused:
+			waiting_add(feed_id, link_server(refused[0]), follow, found)
+		return False
+	mochi.db.execute("delete from waiting where feed=? and identifier=?", feed_id, follow["identifier"])
+	if mochi.db.exists("select 1 from sources where feed=? and url=?", feed_id, url):
 		return False
 	rss_source_create(feed_id, url, follow["name"] or found["name"], result, user_id)
 	return True
+
+def waiting_add(feed_id, server, follow, found):
+	"""A person an import could not add yet: their web feed is on a server the
+	app may not read until the user allows it."""
+	mochi.db.execute("insert into waiting (feed, server, network, identifier, name, created) values (?, ?, ?, ?, ?, ?) on conflict (feed, identifier) do update set server=excluded.server",
+		feed_id, server, follow["network"], follow["identifier"], follow["name"] or found["name"], mochi.time.now())
+
+def waiting_servers(feed_id):
+	"""The servers people of a feed's imports wait on, each with how many."""
+	return [{"server": row["server"], "count": row["count"]} for row in mochi.db.rows("select server, count(*) as count from waiting where feed=? group by server order by min(created)", feed_id)]
+
+def waiting_step(feed, server, user_id):
+	"""A step of adding the people who waited on a server, once the app may
+	read it: each tried again until the step's budget is spent, the next step
+	booked for the rest. Answers (count, more)."""
+	if not server or not mochi.permission.check("url:" + server):
+		return (0, False)
+	deadline = mochi.time.now() + FOLLOWS_BUDGET
+	count = 0
+	for row in mochi.db.rows("select * from waiting where feed=? and server=? order by created", feed["id"], server):
+		if mochi.time.now() >= deadline:
+			mochi.schedule.after("schedule_import", {"feed": feed["id"], "kind": "waiting", "server": server}, 2)
+			return (count, True)
+		mochi.db.execute("delete from waiting where feed=? and identifier=?", feed["id"], row["identifier"])
+		if follow_source(feed, {"network": row["network"], "identifier": row["identifier"], "name": row["name"]}, user_id):
+			count += 1
+	return (count, False)
+
+def action_sources_allow(a):
+	"""Add the people of a feed's imports who waited on a server, once the
+	user has let the app read it: the first within this request's budget,
+	the rest in scheduled steps. Answers how many were added so far, whether
+	more follow, and the servers still waited on. Without the grant it is
+	refused with the permission named, so the client asks the user for it
+	and tries again, as adding a source does."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	feed = get_feed(a)
+	if not feed or not is_feed_owner(a.user.identity.id, feed):
+		a.error.label(403, "errors.access_denied")
+		return
+	server = a.input("server", "")
+	if server:
+		mochi.permission.require("url:" + server)
+	count, more = waiting_step(feed, server, a.user.identity.id)
+	return {"data": {"imported": count, "more": more, "waiting": waiting_servers(feed["id"])}}
 
 def import_follows_step(feed, acc, cursor, user_id):
 	"""A step of a follows import: the follows of one page from where the last
@@ -12864,7 +12947,7 @@ def action_sources_import(a):
 	import_id = mochi.uid()
 	mochi.db.execute("insert into imports (id, feed, account, addresses, position, created) values (?, ?, ?, ?, 0, ?)", import_id, feed["id"], acc["id"] if acc else "", json.encode(addresses), mochi.time.now())
 	count, more = import_file_step(import_id, a.user.identity.id)
-	return {"data": {"imported": count, "more": more, "total": len(addresses)}}
+	return {"data": {"imported": count, "more": more, "total": len(addresses), "waiting": waiting_servers(feed["id"])}}
 
 def import_file_step(import_id, user_id):
 	"""A step of a follow list import: the addresses from where the last step

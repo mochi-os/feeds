@@ -23,8 +23,11 @@ const state = vi.hoisted(() => ({
   blueskyAccounts: vi.fn(),
   hostedAccounts: vi.fn(),
   followSource: vi.fn(),
+  allowWaiting: vi.fn(),
+  request: vi.fn(),
   success: vi.fn(),
   error: vi.fn(),
+  info: vi.fn(),
 }))
 
 vi.mock('@/api/feeds', () => ({
@@ -37,6 +40,7 @@ vi.mock('@/api/feeds', () => ({
     getPublish: vi.fn().mockResolvedValue({ accounts: [], publish: [], copies: {} }),
     updateSource: vi.fn(),
     followSource: state.followSource,
+    allowWaiting: state.allowWaiting,
   },
 }))
 
@@ -51,7 +55,14 @@ vi.mock('@tanstack/react-router', async (original) => ({
 
 vi.mock('@mochi/web', async (original) => ({
   ...(await original<typeof import('@mochi/web')>()),
-  toast: { success: state.success, error: state.error },
+  toast: {
+    success: state.success,
+    error: state.error,
+    info: state.info,
+    loading: () => 'progress',
+  },
+  isInShell: () => true,
+  shellRequestPermission: state.request,
 }))
 
 // Radix's Select reaches for pointer capture and scrolling, which jsdom lacks.
@@ -234,9 +245,128 @@ describe('Import follows from a file', () => {
     await waitFor(() => expect((add as HTMLButtonElement).disabled).toBe(true))
     expect(add.querySelector('.animate-spin')).toBeTruthy()
     finish({ imported: 2, more: false, total: 3 })
-    await waitFor(() => expect(state.success).toHaveBeenCalledWith('2 follows imported'))
+    await waitFor(() =>
+      expect(state.success).toHaveBeenCalledWith('2 follows imported', {
+        id: 'progress',
+      })
+    )
     await waitFor(() => expect((add as HTMLButtonElement).disabled).toBe(false))
     expect(add.querySelector('.animate-spin')).toBeNull()
+  })
+})
+
+describe('People waiting on a server the app may not read', () => {
+  beforeEach(() => {
+    i18n.load('en', {})
+    i18n.activate('en')
+    state.getSources.mockReset().mockResolvedValue({
+      data: { sources: [], waiting: [{ server: 'wasabi.example', count: 2 }] },
+    })
+    state.importFollows.mockReset()
+    state.allowWaiting.mockReset().mockResolvedValue({ imported: 2, more: false })
+    state.request.mockReset()
+    state.success.mockReset()
+    state.info.mockReset()
+  })
+
+  const show = () => {
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    })
+    return render(
+      <QueryClientProvider client={client}>
+        <I18nProvider i18n={i18n}>
+          <SourcesPanel feedId='f1' />
+        </I18nProvider>
+      </QueryClientProvider>
+    )
+  }
+
+  it('lists each server with how many wait on it', async () => {
+    show()
+    expect(await screen.findByText('Waiting for permission')).toBeTruthy()
+    expect(screen.getByText('wasabi.example')).toBeTruthy()
+    expect(screen.getByText('2 people')).toBeTruthy()
+  })
+
+  // The server answers the permission it lacks, as adding a source does.
+  const refused = {
+    response: {
+      data: {
+        error: 'permission_required',
+        app: 'feeds',
+        permission: 'url:wasabi.example',
+        restricted: false,
+      },
+    },
+  }
+
+  it('asks for the server it is refused, then adds the people waiting on it', async () => {
+    state.allowWaiting.mockRejectedValueOnce(refused)
+    state.request.mockResolvedValue('granted')
+    const user = userEvent.setup()
+    show()
+    await user.click(await screen.findByRole('button', { name: 'Allow' }))
+    await waitFor(() => expect(state.success).toHaveBeenCalledWith('Added 2 sources'))
+    expect(state.request).toHaveBeenCalledWith('url:wasabi.example')
+    expect(state.allowWaiting).toHaveBeenCalledTimes(2)
+    expect(state.allowWaiting).toHaveBeenCalledWith('f1', 'wasabi.example')
+  })
+
+  it('adds nobody when the user does not allow the server', async () => {
+    state.allowWaiting.mockRejectedValueOnce(refused)
+    state.request.mockResolvedValue('denied')
+    const user = userEvent.setup()
+    show()
+    await user.click(await screen.findByRole('button', { name: 'Allow' }))
+    await waitFor(() => expect(state.request).toHaveBeenCalled())
+    expect(state.allowWaiting).toHaveBeenCalledTimes(1)
+    expect(state.success).not.toHaveBeenCalled()
+  })
+
+  const importFile = async () => {
+    state.getSources.mockResolvedValue({ data: { sources: [] } })
+    state.importFollows.mockResolvedValue({
+      imported: 0,
+      more: false,
+      total: 1,
+      waiting: [{ server: 'wasabi.example', count: 1 }],
+    })
+    state.allowWaiting
+      .mockReset()
+      .mockRejectedValueOnce(refused)
+      .mockResolvedValue({ imported: 1, more: false })
+    const { container } = show()
+    await screen.findByRole('button', { name: 'Add source' })
+    const input = container.querySelector('input[type=file]') as HTMLInputElement
+    const file = new File(['Account address\nbob@wasabi.example\n'], 'following_accounts.csv', { type: 'text/csv' })
+    Object.defineProperty(file, 'text', {
+      value: () => Promise.resolve('Account address\nbob@wasabi.example\n'),
+    })
+    fireEvent.change(input, { target: { files: [file] } })
+  }
+
+  it('asks for the server a file import left people waiting on, and adds them', async () => {
+    state.request.mockResolvedValue('granted')
+    await importFile()
+    await waitFor(() =>
+      expect(state.success).toHaveBeenCalledWith('1 follow imported', {
+        id: 'progress',
+      })
+    )
+    expect(state.request).toHaveBeenCalledWith('url:wasabi.example')
+  })
+
+  it('names beneath what a file import brought the servers the user does not allow', async () => {
+    state.request.mockResolvedValue('denied')
+    await importFile()
+    await waitFor(() =>
+      expect(state.success).toHaveBeenCalledWith('0 follows imported', {
+        id: 'progress',
+        description: 'Waiting for permission: wasabi.example',
+      })
+    )
+    expect(state.info).not.toHaveBeenCalled()
   })
 })
 

@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# kópia} few {# kópie} many {# kópie} other {# kópi
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# súbor zmenený} few {# súbory zmenené} many {# súboru zmeneného} other {# súborov zmenených}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {Importovaný # sledovaný účet} few {Importované # sledované účty} many {Importovaného # sledovaného účtu} other {Importovaných # sledovaných účtov}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {Importovaný # sledovaný účet} few {Importované # s
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nový príspevok} few {# nové príspevky} many {# nového príspevku} other {# nových príspevkov}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# osoba} few {# osoby} many {# osoby} other {# osôb}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# vnorená} few {+# vnorené} many {+# vnorených} other {+# vnorených}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Pridaný # zdroj} few {Pridané # zdroje} many {Pridaného # zdroja} other {Pridaných # zdrojov}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Pridať zobrazenie"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Zatiaľ pridané zdroje: {0}; ostatné budú nasledovať"
 
@@ -475,6 +484,10 @@ msgstr "Všetky kanály"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "All marked as read"
 msgstr "Všetko označené ako prečítané"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Povoliť"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
@@ -1600,6 +1613,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Nepodarilo sa pridať odpoveď. Skúste to znova."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Nepodarilo sa pridať zdroj"
 
@@ -2172,10 +2186,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Zatiaľ importované: {0}; ostatné budú nasledovať"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Importuje sa {0} sledovaných účtov; zatiaľ pridané: {1}"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Importujú sa údaje…"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4170,16 @@ msgstr "Nahrávanie hlasu nie je v tomto prehliadači podporované"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Hlasovať"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Čaká sa na povolenie"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Čaká sa na povolenie: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
