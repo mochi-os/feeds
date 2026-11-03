@@ -449,14 +449,17 @@ const importFollows = async (
   addresses: string,
   account?: string
 ): Promise<ImportFollowsResponse> => {
+  // No limit of the client's own: the server works within its budget, books
+  // the rest and always answers, and a limit shorter than its budget reported
+  // a failure for an import that went on to finish.
   const response = await client.post<
     MaybeWrapped<ImportFollowsResponse>,
     Record<string, string>
-  >(endpoints.feeds.sourcesImport(feedId), {
-    feed: feedId,
-    addresses,
-    ...(account ? { account } : {}),
-  })
+  >(
+    endpoints.feeds.sourcesImport(feedId),
+    { feed: feedId, addresses, ...(account ? { account } : {}) },
+    { timeout: 0 }
+  )
   return toDataResponse<ImportFollowsResponse>(response, 'import follows').data
 }
 
@@ -997,9 +1000,13 @@ const importAccount = async (
   account: string,
   kind: 'posts' | 'bookmarks' | 'follows'
 ): Promise<ImportResponse> =>
+  // No limit of the client's own: the server works within its budget, books
+  // the rest and always answers, and a limit shorter than its budget reported
+  // a failure for an import that went on to finish.
   client.post<ImportResponse, { account: string; kind: string }>(
     endpoints.feeds.importAccount(feedId),
-    { account, kind }
+    { account, kind },
+    { timeout: 0 }
   )
 
 const getBackups = async (
@@ -1032,10 +1039,17 @@ const allowWaiting = async (
   feedId: string,
   server: string
 ): Promise<ImportResponse> => {
+  // No limit of the client's own: the server works within its budget, books
+  // the rest and always answers, and a limit shorter than its budget reported
+  // a failure for an import that went on to finish.
   const response = await client.post<
     MaybeWrapped<ImportResponse>,
     { feed: string; server: string }
-  >(endpoints.feeds.sourcesAllow(feedId), { feed: feedId, server })
+  >(
+    endpoints.feeds.sourcesAllow(feedId),
+    { feed: feedId, server },
+    { timeout: 0 }
+  )
   return toDataResponse<ImportResponse>(response, 'allow server').data
 }
 

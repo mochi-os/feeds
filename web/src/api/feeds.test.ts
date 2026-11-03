@@ -88,6 +88,31 @@ describe('feedsApi.addSource', () => {
   })
 })
 
+// Imports work within the server's budget and book the rest, so the client
+// sets no limit of its own: a limit shorter than the budget reported a failure
+// for an import that went on to finish.
+describe('imports wait for the server', () => {
+  beforeEach(() => {
+    post.mockReset()
+    post.mockResolvedValue({ data: { imported: 1, more: false } })
+  })
+
+  it('importFollows', async () => {
+    await feedsApi.importFollows('f', 'Account address\nbob@there.example\n')
+    expect(post.mock.calls[0][2]).toEqual({ timeout: 0 })
+  })
+
+  it('importAccount', async () => {
+    await feedsApi.importAccount('f', 'a1', 'follows')
+    expect(post.mock.calls[0][2]).toEqual({ timeout: 0 })
+  })
+
+  it('allowWaiting', async () => {
+    await feedsApi.allowWaiting('f', 'there.example')
+    expect(post.mock.calls[0][2]).toEqual({ timeout: 0 })
+  })
+})
+
 describe('feedsApi.importFollows', () => {
   beforeEach(() => {
     post.mockReset()
