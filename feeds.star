@@ -7053,6 +7053,14 @@ VIEW_BYTES = 8388608
 VIEW_PARTS = 500
 # The bytes one attachment row is counted as.
 VIEW_ATTACHMENT = 1024
+# The most bytes a cursor key holds. A row whose key is longer could not be
+# resumed after, so the owner never pages one.
+VIEW_KEY = 256
+# The seconds a requester spends gathering a page's parts, well under the time
+# limit of the action it runs in, and the most bytes it holds across them: what
+# one whole reply could carry before parts. Past either it refuses the page.
+VIEW_TIME = 60
+VIEW_GATHERED = 104857600
 VIEW_KEYS = {"posts": [], "reactions": ["post", "comment", "subscriber"], "comments": ["id"]}
 VIEW_LISTS = ["reactions", "comments"]
 
@@ -7071,7 +7079,7 @@ def view_cursor(value):
 	if after and len(after) != len(VIEW_KEYS[name]):
 		return False
 	for key in after:
-		if type(key) != "string" or len(key) > 256:
+		if type(key) != "string" or len(key) > VIEW_KEY:
 			return False
 	return True
 
@@ -7095,13 +7103,17 @@ def view_compare(keys, values, last=False):
 # list's share of a part, and the key to resume it from, or None when the list
 # is done. The part's first row always fits, so a row larger than the byte
 # budget travels alone; the resume key is the last row sent, not the last row
-# sized, so a row written between the two queries is never stepped over.
+# sized, so a row written between the two queries is never stepped over, and
+# the list is done only when every row sized was sent. A row whose key a
+# cursor cannot carry is never paged.
 def view_list(source, size, keys, scope, after, budget):
 	if budget["rows"] <= 0:
 		return [], list(after)
 	beyond, beyond_args = ("1=1", []) if not after else view_compare(keys, after)
+	fits = " and ".join(["length(cast(" + k + " as blob))<=?" for k in keys])
+	fits_args = [VIEW_KEY] * len(keys)
 	order = ", ".join(keys)
-	sizes = mochi.db.rows("select " + order + ", 64 + " + size + " as size from " + source + " and " + beyond + " order by " + order + " limit ?", *(scope + beyond_args + [budget["rows"] + 1])) or []
+	sizes = mochi.db.rows("select " + order + ", 64 + " + size + " as size from " + source + " and " + beyond + " and " + fits + " order by " + order + " limit ?", *(scope + beyond_args + fits_args + [budget["rows"] + 1])) or []
 	count = 0
 	for row in sizes:
 		if budget["rows"] <= 0:
@@ -7115,8 +7127,8 @@ def view_list(source, size, keys, scope, after, budget):
 	rows = []
 	if count:
 		upto, upto_args = view_compare(keys, [sizes[count - 1][k] for k in keys], True)
-		rows = list(mochi.db.rows("select * from " + source + " and " + beyond + " and " + upto + " order by " + order + " limit ?", *(scope + beyond_args + upto_args + [count])) or [])
-	if count >= len(sizes):
+		rows = list(mochi.db.rows("select * from " + source + " and " + beyond + " and " + upto + " and " + fits + " order by " + order + " limit ?", *(scope + beyond_args + upto_args + fits_args + [count])) or [])
+	if count >= len(sizes) and len(rows) >= count:
 		return rows, None
 	if rows:
 		return rows, [str(rows[-1][k]) for k in keys]
@@ -7189,8 +7201,10 @@ def view_items(e, feed_id, part):
 # view_gather(feed_id, params, peer) -> the owner's answer to a view request,
 # asked for in parts: each post given its reactions and comment tree, as a
 # whole page carries them. An owner that predates parts answers whole; a page
-# whose parts stopped short is an error, never a short page.
+# whose parts stopped short, ran past VIEW_TIME or held more than
+# VIEW_GATHERED bytes is an error, never a short page.
 def view_gather(feed_id, params, peer):
+	started = mochi.time.now()
 	first = mochi.remote.request(feed_id, "feeds", "view", dict(params, part={"list": "posts", "after": []}), peer)
 	if type(first) != "dict":
 		return {"error": "errors.remote", "code": 502}
@@ -7202,10 +7216,11 @@ def view_gather(feed_id, params, peer):
 	reactions = []
 	comments = []
 	part = first.get("next")
+	held = len(str(first))
 	for _ in range(VIEW_PARTS):
 		if part == None:
 			break
-		if not view_cursor(part):
+		if not view_cursor(part) or mochi.time.now() - started >= VIEW_TIME:
 			return failed
 		reply = mochi.remote.request(feed_id, "feeds", "view", dict(params, part=part, posts=ids), peer)
 		if type(reply) != "dict" or reply.get("error") or reply.get("part") == None:
@@ -7214,21 +7229,26 @@ def view_gather(feed_id, params, peer):
 			return failed
 		if len(reply["reactions"]) + len(reply["comments"]) > VIEW_ROWS:
 			return failed
+		held += len(str(reply))
+		if held > VIEW_GATHERED:
+			return failed
 		reactions.extend(reply["reactions"])
 		comments.extend(reply["comments"])
 		part = reply.get("next")
 	if part != None:
 		return failed
 
+	# Keyed on strings alone: a row naming its post or comment with another type
+	# hangs on nothing rather than raising on an unhashable key.
 	marks = {}
 	for r in reactions:
-		if type(r) == "dict":
-			marks.setdefault((r.get("post"), r.get("comment") or ""), []).append(r)
+		if type(r) == "dict" and type(r.get("post")) == "string" and type(r.get("comment") or "") == "string":
+			marks.setdefault((r["post"], r.get("comment") or ""), []).append(r)
 	threads = {}
 	for c in comments:
-		if type(c) == "dict" and type(c.get("id")) == "string":
-			c["reactions"] = marks.get((c.get("post"), c["id"]), [])
-			threads.setdefault(c.get("post"), []).append(c)
+		if type(c) == "dict" and type(c.get("id")) == "string" and type(c.get("post")) == "string":
+			c["reactions"] = marks.get((c["post"], c["id"]), [])
+			threads.setdefault(c["post"], []).append(c)
 	for p in posts:
 		p["reactions"] = marks.get((p["id"], ""), [])
 		p["comments"] = view_tree(threads.get(p["id"], []))
@@ -7240,15 +7260,20 @@ def view_gather(feed_id, params, peer):
 # view_tree(comments) -> a post's comment tree from its comments gathered flat:
 # newest first among siblings, as feed_comments orders them. Each id is placed
 # once and the walk has a depth cap: the rows are the owner's word, and `parent`
-# is not a foreign key, so a hostile chain can point anywhere.
+# is not a foreign key, so a hostile chain can point anywhere. Sorting and
+# grouping read only values of the type they compare, so a row of another shape
+# cannot raise.
 def view_tree(comments):
 	children = {}
 	seen = {}
-	for c in sorted(comments, key=lambda c: c.get("created") or 0, reverse=True):
-		if c["id"] in seen or c.get("parent") == c["id"]:
+	for c in sorted(comments, key=lambda c: view_number(c.get("created")), reverse=True):
+		parent = c.get("parent")
+		if type(parent) != "string":
+			parent = ""
+		if c["id"] in seen or parent == c["id"]:
 			continue
 		seen[c["id"]] = True
-		children.setdefault(c.get("parent") or "", []).append(c)
+		children.setdefault(parent, []).append(c)
 	placed = {}
 
 	def branch(parent_id, depth):
@@ -7264,6 +7289,11 @@ def view_tree(comments):
 		return out
 
 	return branch("", 0)
+
+# view_number(value) -> value when it is a number, else 0: an owner's field a
+# requester sorts on.
+def view_number(value):
+	return value if type(value) in ["int", "float"] else 0
 
 # Handle view request from non-subscriber (stream-based request/response)
 def event_view(e):
@@ -10189,7 +10219,11 @@ def ingest_account_items(feed, source, acc, items, user_id, deadline):
 			continue
 		if item["created"] and item["created"] <= since:
 			continue
-		if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source["id"], item["guid"]):
+		# Seen by any of the feed's sources, not only this one: a home
+		# timeline carries the account's own statuses, and two timelines can
+		# both follow one person. An item's guid is its network's own id for
+		# it, so the same guid is the same post.
+		if mochi.db.exists("select 1 from source_posts sp join posts p on p.id=sp.post where sp.guid=? and p.feed=?", item["guid"], feed["id"]):
 			continue
 		if published_has(feed["id"], item["remotes"]):
 			continue
