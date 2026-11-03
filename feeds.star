@@ -9364,6 +9364,9 @@ ACCOUNT_JOBS_INTERVAL = 300
 BLUESKY_LIKES_WINDOW = 30 * 86400
 BLUESKY_LIKERS_PAGES = 10
 BACKUP_INTERVAL = 86400
+# The most a linked Bluesky account's repository may take of the user's
+# storage; the busiest accounts' run to around a hundred megabytes.
+REPOSITORY_MAXIMUM = 1 << 30
 
 # === The accounts ===
 
@@ -10578,7 +10581,16 @@ def backup_repository(acc, directory):
 	failure = None
 	if not server or not did:
 		failure = {"reason": "identifier"}
+	elif hasattr(mochi.account, "download"):
+		# Streamed to the file: a busy account's repository runs to tens of
+		# megabytes, past what media holds in memory.
+		answer = mochi.account.download(acc["id"], "https://" + server + "/xrpc/com.atproto.sync.getRepo?did=" + did, directory + "/repository.car", maximum=REPOSITORY_MAXIMUM)
+		if not answer.get("status"):
+			failure = {"reason": "fetch", "server": server, "detail": str(answer.get("error", ""))[:200]}
+		elif answer.get("status") != 200 or answer.get("error"):
+			failure = {"reason": "answer", "server": server, "status": answer.get("status"), "detail": str(answer.get("error", ""))[:200]}
 	else:
+		# A core before download: media, up to ten megabytes.
 		answer = mochi.account.media(acc["id"], "https://" + server + "/xrpc/com.atproto.sync.getRepo?did=" + did)
 		if not answer:
 			failure = {"reason": "fetch", "server": server}
@@ -10597,6 +10609,8 @@ def backup_repository_failure(account):
 	if not cursor:
 		return ""
 	failure = json.decode(cursor)
+	if failure.get("reason") == "fetch" and failure.get("detail"):
+		return mochi.app.label("backups.repository_error", server=failure.get("server", ""), detail=failure.get("detail", ""))
 	if failure.get("reason") == "fetch":
 		return mochi.app.label("backups.repository_fetch", server=failure.get("server", ""))
 	if failure.get("reason") == "answer":
