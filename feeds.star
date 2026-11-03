@@ -346,8 +346,9 @@ idle_resync_age = 7 * 86400
 
 # request_resync pulls a fresh schema dump from the owner when an incoming event
 # references data we lack; subscribers only, throttled to once per 60 seconds
-# per feed.
-def request_resync(feed_id):
+# per feed. name, when given, asks as a subscriber of that name, which the
+# owner registers before it reads the schema.
+def request_resync(feed_id, name=None):
     """Returns True iff a fresh schema was actually fetched and applied."""
     row = mochi.db.row("select server, synced from feeds where id=?", feed_id)
     if not row:
@@ -362,19 +363,76 @@ def request_resync(feed_id):
         return False
     mochi.db.execute("update feeds set synced=? where id=?", now, feed_id)
     peer = mochi.remote.peer(row["server"])
-    schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
+    schema = mochi.remote.request(feed_id, "feeds", "schema", {"register": {"name": name}} if name else {}, peer)
     if not schema_arrived(schema):
         return False
     insert_feed_schema(feed_id, schema)
+    feed_completed(feed_id)
     mochi.broadcast.touch(feed_id)
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         websocket_write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
     return True
 
-# maybe_resubscribe re-subscribes an idle remote feed (idle_resync_age). The
-# owner's event_subscribe is idempotent and pushes catch-up; touch() stamps the
-# timer so a dead owner is poked once per window.
+# fill_waits: the seconds before each pull of a subscription still filling
+# (schedule_fill): the first past the 60 in which request_resync lets no second
+# pull start, each after four times the last. Past the last, a view of the feed
+# starts them again (maybe_fill), so a subscription nobody looks at wakes
+# nothing.
+fill_waits = [61, 244, 976, 3904, 15616]
+
+# fill_pending(feed_id) -> bool: whether a pull of the subscription is
+# scheduled.
+def fill_pending(feed_id):
+	for scheduled in mochi.schedule.list():
+		if scheduled.event == "schedule_fill" and scheduled.data.get("feed") == feed_id:
+			return True
+	return False
+
+# fill_schedule(feed_id, attempt, name, delay) schedules a subscription's pull
+# after fill_waits[attempt], or after delay when one is given, unless one is
+# pending or the waits have run out; the pull that follows waits the next wait
+# in turn. name, when given, asks as a subscriber.
+def fill_schedule(feed_id, attempt=0, name=None, delay=None):
+	if attempt >= len(fill_waits) or fill_pending(feed_id):
+		return
+	data = {"feed": feed_id, "attempt": attempt if delay != None else attempt + 1}
+	if name:
+		data["name"] = name
+	mochi.schedule.after("schedule_fill", data, fill_waits[attempt] if delay == None else delay)
+
+# schedule_fill(e): a subscription still filling pulls the schema, and asks
+# again later until it is whole.
+def schedule_fill(e):
+	if e.source != "schedule":
+		return
+	feed_id = e.data.get("feed", "")
+	if not mochi.text.valid(feed_id, "entity"):
+		return
+	attempt = int(number(e.data.get("attempt"), 0))
+	name = e.data.get("name")
+	if type(name) != "string" or not mochi.text.valid(name, "line"):
+		name = None
+	row = mochi.db.row("select populated from feeds where id=?", feed_id)
+	if not row or row["populated"] != 0:
+		return
+	if not request_resync(feed_id, name):
+		fill_schedule(feed_id, attempt, name)
+
+# maybe_fill(a, feed_id): a view of a subscription still filling pulls the
+# schema when no pull is waiting.
+def maybe_fill(a, feed_id):
+	if not a.user:
+		return
+	row = mochi.db.row("select server, populated from feeds where id=?", feed_id)
+	if row and row["server"] and row["populated"] == 0:
+		fill_schedule(feed_id, 0, a.user.identity.name, 0)
+
+# maybe_resubscribe re-subscribes an idle remote feed (idle_resync_age), for an
+# owner that let the subscriber go, and fills the subscription again from the
+# feed's schema, as what was missed is past what the broadcast replays; the
+# pull asks as a subscriber, which registers them again before it is read.
+# touch() stamps the timer so a dead owner is poked once per window.
 def maybe_resubscribe(a, feed_id):
 	user_id = a.user.identity.id if a.user else None
 	if not user_id:
@@ -386,6 +444,8 @@ def maybe_resubscribe(a, feed_id):
 		return
 	registration_send(row["server"], headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(feed_id)
+	mochi.db.execute("update feeds set populated=0 where id=?", feed_id)
+	fill_schedule(feed_id, 0, a.user.identity.name, 0)
 
 # websocket_key is the key every feed's frames also reach, so a page or drawer
 # following all of a user's feeds holds one socket rather than one per feed:
@@ -521,31 +581,6 @@ def comment_anchor(post_id, feed_id, value):
 			return value
 	return ""
 
-# comment_anchor_name resolves an anchored comment's attachment to a display
-# name (its caption when it has one, else the file name), so a client never
-# has to show the raw id. Empty for an unanchored comment or one whose
-# attachment has since gone.
-def comment_anchor_name(comment):
-	anchor = comment.get("attachment", "")
-	if not anchor:
-		return ""
-	att = attachment_get(anchor)
-	if not att:
-		return ""
-	return att.get("caption") or att.get("name", "")
-
-# comment_anchor_caption is the anchored attachment's caption alone - "" when
-# it has none - so a client can show a caption as text but keep a bare file
-# name to a hover: readers care what an image is, rarely what it was called.
-def comment_anchor_caption(comment):
-	anchor = comment.get("attachment", "")
-	if not anchor:
-		return ""
-	att = attachment_get(anchor)
-	if not att:
-		return ""
-	return att.get("caption", "")
-
 # feed_comments builds the whole comment tree for one post. It fetches every
 # comment for the post in a single query and assembles the tree in memory,
 # batching attachments, anchor lookups and reactions across the whole set. It
@@ -635,91 +670,6 @@ def feed_update(user_id, feed_data):
 	# The count is not sent to the subscribers: one sign-up then cost one event
 	# per subscriber, quadratic in a number anyone can grow, and no page shows
 	# a subscriber the count.
-
-# Send recent posts to a new subscriber
-# Batches database queries to avoid N+1 pattern
-def send_recent_posts(user_id, feed_data, subscriber_id):
-	feed_id = feed_data["id"]
-	feed_posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 100", feed_id)
-	if not feed_posts:
-		return
-
-	# Collect all post IDs for batch queries
-	post_ids = [p["id"] for p in feed_posts]
-	marks = ", ".join(["?" for _ in post_ids])
-
-	# Only the comments and reactions on the posts sent, not the whole feed's.
-	all_comments = mochi.db.rows("select * from comments where feed=? and post in (" + marks + ") order by created", *([feed_id] + post_ids))
-	all_reactions = mochi.db.rows("select * from reactions where feed=? and post in (" + marks + ")", *([feed_id] + post_ids))
-
-	# Index comments by post
-	comments_by_post = {}
-	for c in all_comments:
-		c["attachment_name"] = comment_anchor_name(c)
-		c["attachment_caption"] = comment_anchor_caption(c)
-		pid = c.get("post", "")
-		if pid not in comments_by_post:
-			comments_by_post[pid] = []
-		comments_by_post[pid].append(c)
-
-	# Index reactions by post and by comment
-	post_reactions = {}
-	comment_reactions = {}
-	for r in all_reactions:
-		pid = r.get("post", "")
-		cid = r.get("comment", "")
-		if cid:
-			if cid not in comment_reactions:
-				comment_reactions[cid] = []
-			comment_reactions[cid].append(r)
-		else:
-			if pid not in post_reactions:
-				post_reactions[pid] = []
-			post_reactions[pid].append(r)
-
-	# Batch fetch all tags for posts in this feed
-	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (" + marks + ")", *post_ids) or []
-	tags_by_post = {}
-	for t in all_tags:
-		pid = t.get("object", "")
-		if pid not in tags_by_post:
-			tags_by_post[pid] = []
-		tags_by_post[pid].append(t)
-
-	# Send posts with their comments, reactions, and tags
-	for post in feed_posts:
-		post_id = post["id"]
-		post["sync"] = True
-		post["attachments"] = attachment_list(post_id, feed_id)
-		post["copies"] = copies_present(post_id)
-		# Parse data from JSON string so receiver gets a dict (not a double-encoded string)
-		if post.get("data") and type(post["data"]) == type(""):
-			post["data"] = json.decode(post["data"], None) or {}
-		# Include tags inline with the post so subscriber gets them atomically
-		post_tags = tags_by_post.get(post_id, [])
-		if post_tags:
-			post["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "manual")} for t in post_tags]
-		mochi.message.send(headers(feed_id, subscriber_id, "post/create"), post)
-
-		# Send comments for this post
-		for c in comments_by_post.get(post_id, []):
-			c["sync"] = True
-			c["attachments"] = attachment_list(c["id"], feed_id)
-			mochi.message.send(headers(feed_id, subscriber_id, "comment/create"), c)
-
-			# Send reactions for this comment
-			for r in comment_reactions.get(c["id"], []):
-				mochi.message.send(
-					headers(feed_id, subscriber_id, "comment/react"),
-					{"feed": feed_id, "post": post_id, "comment": c["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
-				)
-
-		# Send post-level reactions
-		for r in post_reactions.get(post_id, []):
-			mochi.message.send(
-				headers(feed_id, subscriber_id, "post/react"),
-				{"feed": feed_id, "post": post_id, "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
-			)
 
 # Does the current user own this feed entity?
 # Source of truth is core/users.db.entities — the private key bearer is the owner.
@@ -2212,6 +2162,11 @@ def database_upgrade(version):
 	if version == 22:
 		# The people an import could not add yet wait on their server.
 		waiting_schema_create()
+	if version == 23:
+		# A subscriber pulls a feed's history from its schema; the owner no
+		# longer pushes it, so it no longer marks whom it was sent to.
+		if any([c["name"] == "joined" for c in mochi.db.table("subscribers")]):
+			mochi.db.execute("alter table subscribers drop column joined")
 
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
@@ -2260,7 +2215,7 @@ def database_create():
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
 
-	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', joined integer not null default 0, primary key ( feed, id ) )")
+	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
 	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, boosts integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0, novelty integer not null default 100, credibility integer not null default 100, story text not null default '' )")
@@ -2681,8 +2636,10 @@ def action_view(a):
 		if not check_access(a, feed_data["id"], "view"):
 			a.error.label(403, "errors.feed_is_private")
 			return
-		# Re-establish with the owner if this subscription has gone idle.
+		# Re-establish with the owner if this subscription has gone idle, and
+		# fill one still filling.
 		maybe_resubscribe(a, feed_data["id"])
+		maybe_fill(a, feed_data["id"])
 
 	post_id = a.input("post")
 
@@ -4372,8 +4329,9 @@ def action_subscribe(a): # feeds_subscribe
 			peer = mochi.remote.peer(server)
 
 	fp = mochi.entity.fingerprint(feed_id) or ""
-	# populated=0: posts arrive asynchronously from the owner after subscribe;
-	# event_sync_complete flips it to 1 when the owner's terminal signal lands.
+	# populated=0 until a schema arrives and is stored (feed_completed), here or
+	# by the pull the owner's answer to the subscribe starts when this one did
+	# not (event_sync_complete).
 	# Upsert only the sync columns; a re-subscribe must preserve the user's own
 	# banner, sort, read, ai_* and synced columns (replace-into wiped them).
 	mochi.db.execute("insert into feeds ( id, name, subscribers, updated, server, fingerprint, populated ) values ( ?, ?, 1, ?, ?, ?, 0 ) on conflict(id) do update set name=excluded.name, updated=excluded.updated, server=excluded.server, fingerprint=excluded.fingerprint, populated=0",
@@ -4385,20 +4343,25 @@ def action_subscribe(a): # feeds_subscribe
 
 	# The schema, asked for as a subscriber: the owner registers this user
 	# before reading it, so nothing changes between the two unseen. The feed
-	# is held already, so a post the owner broadcasts meanwhile lands.
+	# is held already, so a post the owner broadcasts meanwhile lands. The
+	# stamp holds off a resync an event starts before this reply is stored:
+	# its completion would end the withholding of what the owner removes
+	# meanwhile, and this older reply would then bring it back.
+	mochi.db.execute("update feeds set synced=? where id=?", mochi.time.now(), feed_id)
 	if peer:
 		schema = mochi.remote.request(feed_id, "feeds", "schema", {"register": {"name": a.user.identity.name}}, peer)
 	if schema_arrived(schema):
 		insert_feed_schema(feed_id, schema)
+		feed_completed(feed_id)
+	else:
+		mochi.db.execute("update feeds set synced=0 where id=?", feed_id)
 
 	mochi.log.debug("subscribe: sending P2P message from=%s to=%s", user_id, feed_id)
 	# Register with the owner. For a private feed reached by a bootstrap peer,
 	# send directly to that peer - the feed isn't resolvable via the directory,
 	# and this inbound registration is what teaches the owner our location so
 	# fan-out flows back (#209).
-	# synced tells the owner whether the schema arrived: if not, it replays
-	# the feed's newest posts though asking for the schema registered us.
-	registration = {"name": a.user.identity.name, "synced": schema_arrived(schema)}
+	registration = {"name": a.user.identity.name}
 	if peer:
 		send_result = mochi.message.send.peer(peer, headers(user_id, feed_id, "subscribe"), registration)
 	else:
@@ -4562,7 +4525,6 @@ def action_rename(a):
 
 	return {"data": {"success": True}}
 
-# Get banner text (owner only, for settings editor)
 def action_privacy(a):
 	"""Make an owner's feed public or private after it is made: its listing in
 	the directory, the access feed_create gives a public feed (anyone views,
@@ -6574,7 +6536,7 @@ def schema_list(schema, name):
 
 # withhold notes a row the owner removed while this subscriber is still taking
 # the feed's schema, so that the schema, read before the removal, does not
-# bring it back. Kept until the subscription completes (event_sync_complete).
+# bring it back. Kept until the subscription completes (feed_completed).
 def withhold(feed_data, object):
 	if feed_data.get("populated") == 0:
 		mochi.db.execute("insert or ignore into withheld (feed, object) values (?, ?)", feed_data["id"], object)
@@ -6708,7 +6670,7 @@ def event_subscribe(e): # feeds_subscribe_event
 		return
 
 	name = e.content("name")
-	if not mochi.text.valid(name, "line"):
+	if type(name) != "string" or not mochi.text.valid(name, "line"):
 		return
 
 	# Private feeds only accept subscribers who already hold view access via an
@@ -6718,31 +6680,18 @@ def event_subscribe(e): # feeds_subscribe_event
 	if not check_event_access(requester, feed_data["id"], "view"):
 		return
 
-	newly = subscriber_register(user_id, feed_data, requester, name)
+	subscriber_register(user_id, feed_data, requester, name)
 
-	# The feed's history goes to a subscription once: its first subscribe
-	# message claims it (joined), so neither a redelivery nor a repeat sends
-	# it again. A subscriber that took the schema was registered by asking for
-	# it, before it was read, so it holds what came before and the broadcast
-	# brings what came after: it is sent nothing. A new one that did not take
-	# it is sent the newest posts, and so is one whose schema failed, which
-	# says so, though asking for it registered it.
-	claimed = mochi.db.execute("update subscribers set joined=? where feed=? and id=? and joined=0", mochi.time.now(), feed_data["id"], requester) > 0
-	if claimed and (newly or e.content("synced") == False):
-		send_recent_posts(user_id, feed_data, requester)
-
-	# Terminal signal: tell the new subscriber the initial bulk content is fully
-	# sent, so it can flip its feed out of the loading state. Sent here (not in
-	# send_recent_posts, which returns early for an empty feed) so it always
-	# fires, even when the feed has no posts.
+	# The subscriber pulls the feed's history itself, from the schema; nothing
+	# is pushed post by post. This answer tells them the subscription is held,
+	# and one whose own pull of the schema never arrived pulls it then
+	# (event_sync_complete).
 	mochi.message.send(headers(feed_data["id"], requester, "sync/complete"), {"feed": feed_data["id"]})
 
-# subscriber_register records requester as a subscriber of the feed, and
-# answers whether they were not one before.
+# subscriber_register records requester as a subscriber of the feed.
 def subscriber_register(user_id, feed_data, requester, name):
-	# Only a genuinely new subscription replays the feed's history and re-announces
-	# the roster; a peer re-sending subscribe must not make the owner re-emit the
-	# whole feed each call (#319).
+	# Only a genuinely new subscription re-announces the roster; a peer
+	# re-sending subscribe must not make the owner re-emit it each call (#319).
 	newly = not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_data["id"], requester)
 
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], requester, name)
@@ -6759,20 +6708,39 @@ def subscriber_register(user_id, feed_data, requester, name):
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		websocket_write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
-	return newly
 
 def event_sync_complete(e): # feeds_sync_complete_event
-	# A subscribed feed's owner has finished pushing the initial posts/comments.
-	# Mark the local copy populated and tell the browser to refresh so the feed
-	# leaves its loading state. from = the feed entity (see send headers above).
+	# The owner answers a subscribe, holding the subscription; from = the feed
+	# entity (see send headers above). A subscription whose own pull of the
+	# schema never arrived - the owner was unreachable when it was made, or
+	# refused it - pulls it now, the owner plainly reachable; feed_completed
+	# then marks it whole, and a pull that fails or is held off is asked again
+	# (schedule_fill). An owner from before pulls were the rule pushes its
+	# history first, which the pull finds held. One reached through no peer and
+	# no server learns the peer the answer came by, so the pull, and every
+	# later resync, can reach it.
 	feed_id = e.header("from")
 	if not feed_id:
 		return
-	mochi.db.execute("update feeds set populated=1 where id=?", feed_id)
+	row = mochi.db.row("select server, populated from feeds where id=?", feed_id)
+	if not row or row["populated"] != 0:
+		return
+	peer = e.header("peer")
+	if not row["server"] and mochi.text.valid(peer, "peer"):
+		mochi.db.execute("update feeds set server=? where id=? and server=''", "p2p/" + peer, feed_id)
+	if not request_resync(feed_id):
+		fill_schedule(feed_id)
+
+# feed_completed(feed_id): a schema arrived and is stored, so a subscription
+# still filling is whole: what was withheld meanwhile goes, and the page
+# leaves its loading state.
+def feed_completed(feed_id):
+	filled = mochi.db.execute("update feeds set populated=1 where id=? and populated=0", feed_id) > 0
 	mochi.db.execute("delete from withheld where feed=?", feed_id)
-	fp = mochi.entity.fingerprint(feed_id)
-	if fp:
-		websocket_write(fp, {"type": "feed/update", "feed": feed_id})
+	if filled:
+		fp = mochi.entity.fingerprint(feed_id)
+		if fp:
+			websocket_write(fp, {"type": "feed/update", "feed": feed_id})
 
 
 def event_unsubscribe(e): # feeds_unsubscribe_event
@@ -7985,20 +7953,24 @@ def sources_add_feed(a, feed, source_feed_id, name):
 
 	# Create feed entry if it doesn't exist locally (source subscriptions tracked in sources table)
 	fp = mochi.entity.fingerprint(resolved_id) or ""
-	# populated=0: a source feed's posts arrive asynchronously from the owner;
-	# event_sync_complete flips it to 1 when the owner's terminal signal lands.
+	# populated=0 until a schema arrives and is stored, as in action_subscribe.
 	mochi.db.execute("insert or ignore into feeds (id, name, subscribers, updated, server, fingerprint, populated) values (?, ?, 0, ?, ?, ?, 0)",
 		resolved_id, feed_name, mochi.time.now(), server or "", fp)
 
-	# The schema, asked for as a subscriber, as action_subscribe asks for it
+	# The schema, asked for as a subscriber, and held from a resync until its
+	# reply is stored, as action_subscribe asks for it
+	mochi.db.execute("update feeds set synced=? where id=?", mochi.time.now(), resolved_id)
 	if peer:
 		schema = mochi.remote.request(resolved_id, "feeds", "schema", {"register": {"name": a.user.identity.name}}, peer)
 	if schema_arrived(schema):
 		insert_feed_schema(resolved_id, schema)
+		feed_completed(resolved_id)
+	else:
+		mochi.db.execute("update feeds set synced=0 where id=?", resolved_id)
 
 	# Send P2P subscribe message
 	user_id = a.user.identity.id
-	registration_send(server or "", headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name, "synced": schema_arrived(schema)})
+	registration_send(server or "", headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(resolved_id)
 
 	# Create source record
