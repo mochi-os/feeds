@@ -4563,6 +4563,42 @@ def action_rename(a):
 	return {"data": {"success": True}}
 
 # Get banner text (owner only, for settings editor)
+def action_privacy(a):
+	"""Make an owner's feed public or private after it is made: its listing in
+	the directory, the access feed_create gives a public feed (anyone views,
+	anyone signed in comments), and the subscribers' copies. Only a public
+	feed publishes to other networks, so a feed made private is changed here
+	rather than made again."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	user_id = a.user.identity.id
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	if not is_feed_owner(user_id, feed):
+		a.error.label(403, "errors.not_feed_owner")
+		return
+	privacy = a.input("privacy", "")
+	if privacy not in ["public", "private"]:
+		a.error.label(400, "errors.invalid_privacy")
+		return
+	feed_id = feed["id"]
+	mochi.entity.update(feed_id, privacy=privacy)
+	mochi.db.execute("update feeds set privacy=? where id=?", privacy, feed_id)
+	resource = "feed/" + feed_id
+	if privacy == "public":
+		mochi.access.allow("*", resource, "view", user_id)
+		mochi.access.allow("+", resource, "comment", user_id)
+	else:
+		mochi.access.revoke("*", resource, "view")
+		mochi.access.revoke("+", resource, "comment")
+	if owned(feed_id):
+		broadcast_event(feed_id, "update", {"privacy": privacy})
+	return {"data": {"privacy": privacy}}
+
+# Get banner text (owner only, for settings editor)
 def action_banner_get(a):
 	if not a.user:
 		a.error.label(401, "errors.not_logged_in")
@@ -7014,6 +7050,13 @@ def event_update(e): # feeds_update_event
 	if name != None:
 		if mochi.text.valid(name, "name"):
 			mochi.db.execute("update feeds set name=?, updated=? where id=?", name, mochi.time.now(), feed_id)
+		return
+
+	# Handle privacy update: the feed made public or private by its owner.
+	privacy = e.content("privacy")
+	if privacy != None:
+		if privacy in ["public", "private"]:
+			mochi.db.execute("update feeds set privacy=?, updated=? where id=?", privacy, mochi.time.now(), feed_id)
 		return
 
 	# Handle banner update, capped to the HTTP path's 10000 (#314).
@@ -9937,9 +9980,13 @@ def publish_feed(a):
 	return feed
 
 def action_publish_list(a):
-	"""The accounts the feed may publish to and those it does."""
+	"""The accounts the feed may publish to and those it does. A private feed
+	publishes nowhere, and is answered why, for Publish to to say."""
 	feed = publish_feed(a)
 	if not feed:
+		return
+	if feed.get("privacy", "public") != "public":
+		a.error.label(403, "errors.feed_not_public")
 		return
 	a.json({"accounts": [account_present(acc) for acc in publish_accounts()], "publish": publish_list(feed["id"]), "copies": publish_counts(feed["id"]), "generators": publish_generators(feed["id"])})
 

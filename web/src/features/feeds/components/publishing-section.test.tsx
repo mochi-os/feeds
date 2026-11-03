@@ -113,6 +113,17 @@ describe('Publishing section', () => {
     state.error.mockReset()
   })
 
+  it('says why a private feed publishes nowhere, with nothing to retry', async () => {
+    state.getPublish.mockRejectedValue(
+      new Error('Only a public feed publishes to other networks')
+    )
+    show('private')
+    expect(
+      await screen.findByText('Only a public feed publishes to other networks')
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Try again' })).toBeNull()
+  })
+
   it('lists the accounts with a switch each, on for those the feed publishes to', async () => {
     show()
     expect(await screen.findByText('@alice@mastodon.social')).toBeTruthy()
@@ -351,21 +362,14 @@ describe('Publishing section', () => {
       screen.getByRole('button', { name: 'posts-2026-11.jsonl' })
     ).toBeTruthy()
   })
-
-  it('shows nothing on a private feed', async () => {
-    show('private')
-    await act(async () => {})
-    expect(screen.queryByText('Publish to')).toBeNull()
-    expect(state.getPublish).toHaveBeenCalled()
-  })
 })
 
 describe('usePublishOffered', () => {
-  const offered = (privacy: string, owner: boolean) => {
+  const offered = (owner: boolean) => {
     const client = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     })
-    return renderHook(() => usePublishOffered('feed-1', privacy, owner), {
+    return renderHook(() => usePublishOffered('feed-1', owner), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={client}>{children}</QueryClientProvider>
       ),
@@ -378,7 +382,7 @@ describe('usePublishOffered', () => {
 
   it("offers the tab for an owner's public feed with an account, once that is known", async () => {
     state.getPublish.mockResolvedValue({ accounts, publish: [], copies: {} })
-    const result = offered('public', true)
+    const result = offered(true)
     expect(result.current).toBeUndefined()
     await waitFor(() => expect(result.current).toBe(true))
   })
@@ -389,19 +393,27 @@ describe('usePublishOffered', () => {
       publish: [],
       copies: {},
     })
-    const result = offered('public', true)
+    const result = offered(true)
     await waitFor(() => expect(result.current).toBe(false))
   })
 
   it('offers the tab where the answer failed, so the error shows', async () => {
     state.getPublish.mockRejectedValue(new Error('no'))
-    const result = offered('public', true)
+    const result = offered(true)
     await waitFor(() => expect(result.current).toBe(true))
   })
 
-  it('offers no tab, and asks nothing, for a private feed or a subscriber', () => {
-    expect(offered('private', true).current).toBe(false)
-    expect(offered('public', false).current).toBe(false)
+  // A private feed's tab says why it publishes nowhere, rather than vanish.
+  it("offers the tab for an owner's private feed, whose answer says why", async () => {
+    state.getPublish.mockRejectedValue(
+      new Error('Only a public feed publishes to other networks')
+    )
+    const result = offered(true)
+    await waitFor(() => expect(result.current).toBe(true))
+  })
+
+  it('offers no tab, and asks nothing, for a subscriber', () => {
+    expect(offered(false).current).toBe(false)
     expect(state.getPublish).not.toHaveBeenCalled()
   })
 })

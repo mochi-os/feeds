@@ -29,6 +29,7 @@ import {
   FieldRow,
   EditableFieldRow,
   DataChip,
+  Switch,
   toast,
   toastAction,
   getAppPath,
@@ -288,13 +289,26 @@ function FeedSettingsPage() {
     [t, selectedFeed, refreshSidebar, refreshFeedsFromApi]
   )
 
+  // A feed made public or private: the feed list and the sidebar carry it.
+  const handlePrivacy = useCallback(
+    (privacy: 'public' | 'private') => {
+      if (!selectedFeed) return
+      setFeeds((prev) =>
+        prev.map((f) => (f.id === selectedFeed.id ? { ...f, privacy } : f))
+      )
+      void refreshSidebar()
+      void refreshFeedsFromApi()
+    },
+    [selectedFeed, setFeeds, refreshSidebar, refreshFeedsFromApi]
+  )
+
   const canUnsubscribe = selectedFeed?.isSubscribed && !selectedFeed?.isOwner
 
   // Publish to is a tab of its own, shown only where the feed has somewhere
-  // to publish; a link to it while that is not so opens the settings.
+  // to publish or a reason it cannot; a link to it while that is not so opens
+  // the settings.
   const publishable = usePublishOffered(
     selectedFeed?.id ?? '',
-    selectedFeed?.privacy ?? 'public',
     !!selectedFeed?.isOwner
   )
   const shown = settingsTabs(tab, publishable)
@@ -407,6 +421,7 @@ function FeedSettingsPage() {
                 onUnsubscribe={handleUnsubscribe}
                 onDelete={handleDelete}
                 onRename={handleRename}
+                onPrivacy={handlePrivacy}
                 setFeeds={setFeeds}
               />
             )}
@@ -426,6 +441,50 @@ function FeedSettingsPage() {
   )
 }
 
+// Public or private after the feed is made: only a public feed is listed in
+// the directory, viewed by anyone, and published to other networks, so
+// Publish to is asked again.
+export function PrivacyRow({
+  feedId,
+  privacy,
+  onChanged,
+}: {
+  feedId: string
+  privacy: string
+  onChanged: (privacy: 'public' | 'private') => void
+}) {
+  const { t } = useLingui()
+  const queryClient = useQueryClient()
+  const [changing, setChanging] = useState(false)
+
+  const change = async (on: boolean) => {
+    const next: 'public' | 'private' = on ? 'public' : 'private'
+    setChanging(true)
+    try {
+      await feedsApi.setPrivacy(feedId, next)
+      onChanged(next)
+      void queryClient.invalidateQueries({
+        queryKey: ['feeds', 'publish', feedId],
+      })
+    } catch (e) {
+      toast.error(getErrorMessage(e, t`Failed to save`))
+    } finally {
+      setChanging(false)
+    }
+  }
+
+  return (
+    <FieldRow label={t`Allow anyone to search for feed`} inline>
+      <Switch
+        aria-label={t`Allow anyone to search for feed`}
+        checked={privacy === 'public'}
+        onCheckedChange={(on) => void change(on)}
+        loading={changing}
+      />
+    </FieldRow>
+  )
+}
+
 interface GeneralTabProps {
   feed: FeedSummary
   canUnsubscribe: boolean | undefined
@@ -438,6 +497,7 @@ interface GeneralTabProps {
   onUnsubscribe: () => void
   onDelete: () => void
   onRename: (name: string) => Promise<void>
+  onPrivacy: (privacy: 'public' | 'private') => void
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
 }
 
@@ -453,6 +513,7 @@ function GeneralTab({
   onUnsubscribe,
   onDelete,
   onRename,
+  onPrivacy,
   setFeeds,
 }: GeneralTabProps) {
   const { t } = useLingui()
@@ -492,6 +553,14 @@ function GeneralTab({
             <FieldRow label={t`Server`}>
               <DataChip value={feed.server} />
             </FieldRow>
+          )}
+
+          {feed.isOwner && (
+            <PrivacyRow
+              feedId={feed.id}
+              privacy={feed.privacy ?? 'public'}
+              onChanged={onPrivacy}
+            />
           )}
         </div>
       </Section>

@@ -5,17 +5,23 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
+import { toast } from '@mochi/web'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { feedsApi } from '@/api/feeds'
-import { SubscribersSection, settingsTabs } from './$feedId_.settings'
+import {
+  PrivacyRow,
+  SubscribersSection,
+  settingsTabs,
+} from './$feedId_.settings'
 
 vi.mock('@/api/feeds', () => ({
   feedsApi: {
     listMembers: vi.fn(),
     removeMember: vi.fn(),
     setAccessLevel: vi.fn(),
+    setPrivacy: vi.fn(),
   },
 }))
 vi.mock('@/stores/feeds-store', () => ({
@@ -176,5 +182,66 @@ describe('settingsTabs', () => {
       'general',
       'access',
     ])
+  })
+})
+
+// A feed's privacy is changed after it is made, and Publish to is asked again,
+// since only a public feed publishes.
+describe('PrivacyRow', () => {
+  function show(privacy: string, onChanged = vi.fn()) {
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    })
+    client.setQueryData(['feeds', 'publish', 'f1'], { accounts: [] })
+    render(
+      <I18nProvider i18n={i18n}>
+        <QueryClientProvider client={client}>
+          <PrivacyRow feedId='f1' privacy={privacy} onChanged={onChanged} />
+        </QueryClientProvider>
+      </I18nProvider>
+    )
+    return { client, onChanged }
+  }
+
+  it('makes a public feed private, and asks Publish to again', async () => {
+    vi.mocked(feedsApi.setPrivacy).mockResolvedValue({ privacy: 'private' })
+    const user = userEvent.setup()
+    const { client, onChanged } = show('public')
+    const toggle = screen.getByRole('switch', {
+      name: 'Allow anyone to search for feed',
+    })
+    expect(toggle).toBeChecked()
+    await user.click(toggle)
+    await waitFor(() => expect(onChanged).toHaveBeenCalledWith('private'))
+    expect(feedsApi.setPrivacy).toHaveBeenCalledWith('f1', 'private')
+    expect(
+      client.getQueryState(['feeds', 'publish', 'f1'])?.isInvalidated
+    ).toBe(true)
+  })
+
+  it('makes a private feed public', async () => {
+    vi.mocked(feedsApi.setPrivacy).mockResolvedValue({ privacy: 'public' })
+    const user = userEvent.setup()
+    const { onChanged } = show('private')
+    await user.click(
+      screen.getByRole('switch', { name: 'Allow anyone to search for feed' })
+    )
+    await waitFor(() => expect(onChanged).toHaveBeenCalledWith('public'))
+    expect(feedsApi.setPrivacy).toHaveBeenCalledWith('f1', 'public')
+  })
+
+  it("shows the server's refusal and changes nothing", async () => {
+    vi.mocked(feedsApi.setPrivacy).mockRejectedValue(
+      new Error('Not feed owner')
+    )
+    const error = vi.spyOn(toast, 'error').mockImplementation(() => '')
+    const user = userEvent.setup()
+    const { onChanged } = show('public')
+    await user.click(
+      screen.getByRole('switch', { name: 'Allow anyone to search for feed' })
+    )
+    await waitFor(() => expect(error).toHaveBeenCalledWith('Not feed owner'))
+    expect(onChanged).not.toHaveBeenCalled()
+    error.mockRestore()
   })
 })

@@ -46,6 +46,7 @@ const endpoints = {
     posts: (feedId: string) => `${feedId}/-/posts`,
     delete: (feedId: string) => `${feedId}/-/delete`,
     rename: (feedId: string) => `${feedId}/-/rename`,
+    privacy: (feedId: string) => `${feedId}/-/privacy`,
     bannerGet: (feedId: string) => `${feedId}/-/banner/get`,
     bannerSet: (feedId: string) => `${feedId}/-/banner/set`,
 

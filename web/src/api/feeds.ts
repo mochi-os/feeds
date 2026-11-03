@@ -342,6 +342,19 @@ const renameFeed = async (
   return toDataResponse<RenameFeedResponse['data']>(response, 'rename feed')
 }
 
+// A feed made public or private after it is made: only a public feed is
+// listed in the directory, viewed by anyone, and published to other networks.
+const setFeedPrivacy = async (
+  feedId: string,
+  privacy: 'public' | 'private'
+): Promise<{ privacy: string }> => {
+  const response = await client.post<
+    { data: { privacy: string } } | { privacy: string },
+    { feed: string; privacy: string }
+  >(endpoints.feeds.privacy(feedId), { feed: feedId, privacy })
+  return toDataResponse<{ privacy: string }>(response, 'set feed privacy').data
+}
+
 // A post's features as the form carries them (phase 17): each only when the
 // composer set it, so an edit that says nothing leaves the post's own.
 function appendFeatures(formData: FormData, features?: PostFeatures) {
@@ -1368,6 +1381,7 @@ export const feedsApi = {
   create: createFeed,
   delete: deleteFeed,
   rename: renameFeed,
+  setPrivacy: setFeedPrivacy,
   find: getFindFeeds,
   search: searchFeeds,
   probe: probeFeed,

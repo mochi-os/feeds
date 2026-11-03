@@ -33,15 +33,14 @@ import { Archive, Download, MoreHorizontal, Rss, X } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import type { PublishAccount } from '@/types/feeds'
 
-// Whether a feed's Publish to tab is offered: an owner's public feed with an
-// account to publish to, or whose answer failed and shows why. Undefined while
-// it is asked.
+// Whether a feed's Publish to tab is offered: an owner's feed with an account
+// to publish to, or whose answer failed and shows why - a private feed's says
+// that only a public feed publishes. Undefined while it is asked.
 export function usePublishOffered(
   feedId: string,
-  privacy: string,
   owner: boolean
 ): boolean | undefined {
-  const enabled = owner && !!feedId && privacy === 'public'
+  const enabled = owner && !!feedId
   const { data, isLoading, error } = useQuery({
     queryKey: ['feeds', 'publish', feedId],
     queryFn: () => feedsApi.getPublish(feedId),
@@ -79,7 +78,7 @@ export function PublishingSection({
   )
   const publish = data?.publish ?? []
 
-  if (privacy !== 'public' || (!isLoading && !error && accounts.length === 0)) {
+  if (!isLoading && !error && accounts.length === 0) {
     return null
   }
 
@@ -190,7 +189,13 @@ export function PublishingSection({
 
   return (
     <Section title={t`Publish to`}>
-      {error ? (
+      {error && privacy !== 'public' ? (
+        // Not a failure: the server's answer for a private feed says only a
+        // public one publishes, which a retry would not change.
+        <p className='text-muted-foreground text-sm'>
+          {getErrorMessage(error, t`Failed to load`)}
+        </p>
+      ) : error ? (
         <GeneralError error={error} minimal mode='inline' reset={refetch} />
       ) : isLoading ? (
         <ListSkeleton variant='simple' height='h-9' count={2} />

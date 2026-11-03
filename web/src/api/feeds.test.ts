@@ -151,6 +151,17 @@ describe('answers from inside the envelope', () => {
     expect(await feedsApi.votePoll('f1', 'p1', [0])).toEqual({ post: 'p1', poll, voted: [0] })
   })
 
+  it('setPrivacy sends the privacy to the feed and answers it', async () => {
+    post.mockResolvedValue({ data: { privacy: 'public' } })
+    expect(await feedsApi.setPrivacy('f1', 'public')).toEqual({
+      privacy: 'public',
+    })
+    expect(post).toHaveBeenCalledWith('f1/-/privacy', {
+      feed: 'f1',
+      privacy: 'public',
+    })
+  })
+
   it('getFilters answers the filters', async () => {
     const filters = [{ id: 'x', phrase: 'zebra' }]
     get.mockResolvedValue({ data: { filters } })
