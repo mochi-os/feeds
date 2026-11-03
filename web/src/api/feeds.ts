@@ -49,6 +49,7 @@ import {
   createAppClient,
   getAppPath,
   shellSaveBlob,
+  type PostPoll,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 
@@ -56,6 +57,13 @@ const client = createAppClient({ appName: 'feeds' })
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>
+
+// A vote's answer: the poll as it now stands, and the options voted for.
+interface PollVoteResponse {
+  post: string
+  poll?: PostPoll
+  voted: number[]
+}
 
 const devConsole = globalThis.console
 
@@ -351,29 +359,36 @@ const pinPost = async (
   feedId: string,
   postId: string,
   pinned: boolean
-): Promise<{ post: string; pinned: number }> =>
-  client.post<{ post: string; pinned: number }, { feed: string; post: string }>(
+): Promise<{ post: string; pinned: number }> => {
+  const response = await client.post<
+    MaybeWrapped<{ post: string; pinned: number }>,
+    { feed: string; post: string }
+  >(
     pinned
       ? endpoints.feeds.post.pin(feedId, postId)
       : endpoints.feeds.post.unpin(feedId, postId),
     { feed: feedId, post: postId }
   )
+  return toDataResponse<{ post: string; pinned: number }>(response, 'pin post')
+    .data
+}
 
 // Vote in a post's poll: the chosen options, by index.
 const votePoll = async (
   feedId: string,
   postId: string,
   options: number[]
-): Promise<{ post: string; voted: number[] }> => {
+): Promise<PollVoteResponse> => {
   const formData = new FormData()
   formData.append('feed', feedId)
   formData.append('post', postId)
   for (const option of options) formData.append('option', String(option))
-  return client.post<{ post: string; voted: number[] }, FormData>(
+  const response = await client.post<MaybeWrapped<PollVoteResponse>, FormData>(
     endpoints.feeds.post.vote(feedId, postId),
     formData,
     { headers: { 'Content-Type': undefined } }
   )
+  return toDataResponse<PollVoteResponse>(response, 'vote').data
 }
 
 // Boost a post from another network from one of the owner's hosted accounts,
@@ -383,9 +398,9 @@ const boostPost = async (
   postId: string,
   account: string,
   boosted: boolean
-): Promise<{ copies: PostCopy[] }> =>
-  client.post<
-    { copies: PostCopy[] },
+): Promise<{ copies: PostCopy[] }> => {
+  const response = await client.post<
+    MaybeWrapped<{ copies: PostCopy[] }>,
     { feed: string; post: string; account: string }
   >(
     boosted
@@ -393,30 +408,39 @@ const boostPost = async (
       : endpoints.feeds.post.unboost(feedId, postId),
     { feed: feedId, post: postId, account }
   )
+  return toDataResponse<{ copies: PostCopy[] }>(response, 'boost post').data
+}
 
 // Keyword filters on a feed.
-const getFilters = async (feedId: string): Promise<{ filters: Filter[] }> =>
-  client.get<{ filters: Filter[] }>(endpoints.feeds.filters(feedId), {
-    params: { feed: feedId },
-  })
+const getFilters = async (feedId: string): Promise<{ filters: Filter[] }> => {
+  const response = await client.get<MaybeWrapped<{ filters: Filter[] }>>(
+    endpoints.feeds.filters(feedId),
+    { params: { feed: feedId } }
+  )
+  return toDataResponse<{ filters: Filter[] }>(response, 'filters').data
+}
 
 const addFilter = async (
   feedId: string,
   phrase: string
-): Promise<{ filters: Filter[] }> =>
-  client.post<{ filters: Filter[] }, { feed: string; phrase: string }>(
-    endpoints.feeds.filtersAdd(feedId),
-    { feed: feedId, phrase }
-  )
+): Promise<{ filters: Filter[] }> => {
+  const response = await client.post<
+    MaybeWrapped<{ filters: Filter[] }>,
+    { feed: string; phrase: string }
+  >(endpoints.feeds.filtersAdd(feedId), { feed: feedId, phrase })
+  return toDataResponse<{ filters: Filter[] }>(response, 'add filter').data
+}
 
 const removeFilter = async (
   feedId: string,
   filter: string
-): Promise<{ filters: Filter[] }> =>
-  client.post<{ filters: Filter[] }, { feed: string; filter: string }>(
-    endpoints.feeds.filtersRemove(feedId),
-    { feed: feedId, filter }
-  )
+): Promise<{ filters: Filter[] }> => {
+  const response = await client.post<
+    MaybeWrapped<{ filters: Filter[] }>,
+    { feed: string; filter: string }
+  >(endpoints.feeds.filtersRemove(feedId), { feed: feedId, filter })
+  return toDataResponse<{ filters: Filter[] }>(response, 'remove filter').data
+}
 
 // Follow everyone in a Mastodon export of follows (following_accounts.csv)
 // into the feed, as sources.
@@ -437,8 +461,12 @@ const importFollows = async (
 }
 
 // The user's contacts with a handle on another network, to follow.
-const people = async (): Promise<{ people: Person[] }> =>
-  client.get<{ people: Person[] }>(endpoints.feeds.people)
+const people = async (): Promise<{ people: Person[] }> => {
+  const response = await client.get<MaybeWrapped<{ people: Person[] }>>(
+    endpoints.feeds.people
+  )
+  return toDataResponse<{ people: Person[] }>(response, 'people').data
+}
 
 const createPost = async (
   payload: CreatePostRequest,
