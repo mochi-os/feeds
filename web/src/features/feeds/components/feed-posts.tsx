@@ -22,6 +22,7 @@ import type {
   PublishAccount,
   ReactionId,
 } from '@/types'
+import { usePinPost } from '@/hooks/use-pin-post'
 import { t } from '@lingui/core/macro'
 import { Plural, Trans } from '@lingui/react/macro'
 import {
@@ -601,17 +602,18 @@ export function FeedPosts({
       queryClient.invalidateQueries({ queryKey: ['posts', feedId] }),
     [queryClient]
   )
+  // Shows on the click; the hook re-reads the list before this resolves.
+  const { mutateAsync: pin } = usePinPost()
   const pinPost = useCallback(
     async (post: FeedPost) => {
       try {
-        await feedsApi.pinPost(post.feedId, post.id, !post.pinned)
-        await reloadPosts(post.feedId)
+        await pin({ post, pinned: !post.pinned })
         toast.success(post.pinned ? t`Post unpinned` : t`Post pinned`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not change the pin`))
       }
     },
-    [reloadPosts]
+    [pin]
   )
   // A post is boosted from the user's first hosted account on its own
   // network: Bluesky for one whose id there is an at:// URI, else the
