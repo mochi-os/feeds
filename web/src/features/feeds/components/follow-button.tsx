@@ -23,7 +23,9 @@ import {
   SelectTrigger,
   SelectValue,
   getErrorMessage,
+  isInShell,
   shellNavigateTop,
+  shellOpenExternal,
   toast,
 } from '@mochi/web'
 import { ArrowRight, Loader2, UserPlus } from 'lucide-react'
@@ -42,16 +44,31 @@ export function FollowButton({
   const [handle, setHandle] = useState('')
   const [account, setAccount] = useState(accounts[0]?.address ?? '')
   const [sending, setSending] = useState(false)
+  // The page on the visitor's server that the browser would not open, left
+  // as a link for them to click.
+  const [blocked, setBlocked] = useState('')
 
   if (accounts.length === 0) return null
+  const server = host(blocked)
 
   const submit = async () => {
     const trimmed = handle.trim()
     if (!trimmed) return
     setSending(true)
+    setBlocked('')
     try {
       const { url } = await feedsApi.follow(feedId, trimmed, account)
-      shellNavigateTop(url)
+      // The visitor's server is another origin, which the shell never
+      // navigates its window to: a signed-in visitor gets it in a new tab.
+      // A browser may block that once the lookup has taken a while, as it is
+      // no longer the click's own doing; the link then stays to click.
+      if (!isInShell()) {
+        shellNavigateTop(url)
+      } else if (shellOpenExternal(url)) {
+        setOpen(false)
+      } else {
+        setBlocked(url)
+      }
     } catch (err) {
       toast.error(getErrorMessage(err, t`Could not find that server`))
     } finally {
@@ -113,6 +130,17 @@ export function FollowButton({
                 autoFocus
               />
             </div>
+            {blocked && (
+              <a
+                href={blocked}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-primary block text-sm underline underline-offset-4'
+                onClick={() => setOpen(false)}
+              >
+                <Trans>Continue on {server}</Trans>
+              </a>
+            )}
             <ResponsiveDialogFooter>
               <Button type='submit' disabled={sending || !handle.trim()}>
                 {sending ? (
@@ -128,4 +156,13 @@ export function FollowButton({
       </ResponsiveDialog>
     </>
   )
+}
+
+// The server an address is on, to name it.
+function host(url: string): string {
+  try {
+    return new URL(url).host
+  } catch {
+    return url
+  }
 }
