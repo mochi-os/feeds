@@ -282,7 +282,7 @@ export type PostCommentsListProps = {
     commentId: string,
     action: 'block' | 'mute' | 'report',
     reason?: string
-  ) => void | Promise<void>
+  ) => void | Promise<void | boolean>
   onSearchPeople: (query: string) => Promise<MentionUser[]>
   currentUserId?: string
   canReact: boolean
@@ -692,8 +692,10 @@ export function FeedPosts({
               ? t`Muted`
               : t`Reported`
         )
+        return true
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not do that`))
+        return false
       }
     },
     []

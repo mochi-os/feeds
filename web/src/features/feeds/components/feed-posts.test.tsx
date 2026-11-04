@@ -13,6 +13,7 @@ import type { FeedPost } from '@/types'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import {
+  act,
   render,
   screen,
   fireEvent,
@@ -73,6 +74,7 @@ vi.mock('@/api/feeds', () => ({
       ],
     }),
     pinPost: vi.fn().mockResolvedValue({ pinned: 1 }),
+    moderateComment: vi.fn(),
   },
 }))
 
@@ -88,6 +90,11 @@ vi.mock('./comment-thread', () => ({
     avatars?: ReadonlyMap<string, string>
     onReplyDraftChange: (value: string) => void
     onSubmitReply: (commentId: string) => void | Promise<void>
+    onModerate?: (
+      commentId: string,
+      action: 'block' | 'mute' | 'report',
+      reason?: string
+    ) => void | Promise<void | boolean>
   }) => (
     <div>
       <span data-testid='avatar-source'>
@@ -104,6 +111,18 @@ vi.mock('./comment-thread', () => ({
         onClick={() => void props.onSubmitReply(props.comment.id)}
       >
         Send reply
+      </button>
+      <button
+        type='button'
+        onClick={() =>
+          void Promise.resolve(
+            props.onModerate?.(props.comment.id, 'report', 'Spam')
+          ).then((done) => {
+            document.body.dataset.moderated = String(done)
+          })
+        }
+      >
+        Report
       </button>
     </div>
   ),
@@ -199,6 +218,49 @@ async function openDirtyEdit() {
 describe('FeedPosts card navigation', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+  })
+
+  // A moderation the server refuses answers false, for the dialog that asked
+  // to stay open with the reason typed into it.
+  it.each([
+    ['refused', 'false'],
+    ['taken', 'true'],
+  ])('a report %s answers %s', async (outcome, answer) => {
+    delete document.body.dataset.moderated
+    vi.mocked(feedsApi.moderateComment).mockImplementation(() =>
+      outcome === 'refused'
+        ? Promise.reject(new Error('The report could not be delivered'))
+        : Promise.resolve({} as never)
+    )
+    renderPosts([
+      {
+        ...post(),
+        comments: [
+          {
+            id: 'c1',
+            subscriberId: 'https://remote.example/u/bob',
+            author: 'Bob',
+            created: 1,
+            body: 'Nice',
+            format: 'html',
+            reactions: createReactionCounts(),
+            userReaction: null,
+            replies: [],
+          },
+        ],
+      },
+    ])
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Report' }))
+    })
+    await waitFor(() => expect(document.body.dataset.moderated).toBe(answer))
+    expect(feedsApi.moderateComment).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'c1',
+      'report',
+      'Spam'
+    )
   })
 
   it('navigates to the post when the card is clicked', () => {

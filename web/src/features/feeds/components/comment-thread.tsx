@@ -72,7 +72,7 @@ type CommentThreadProps = {
     commentId: string,
     action: 'block' | 'mute' | 'report',
     reason?: string
-  ) => void | Promise<void>
+  ) => void | Promise<void | boolean>
   currentUserId?: string
   depth?: number
   canReact?: boolean
@@ -130,6 +130,7 @@ export function CommentThread({
     'block' | 'mute' | 'report' | null
   >(null)
   const [reportReason, setReportReason] = useState('')
+  const [reporting, setReporting] = useState(false)
   // The reply box owns its files and reports their count; the guard here and
   // the one above (which arbitrates switching between reply boxes) read it.
   const [replyFileCount, setReplyFileCount] = useState(0)
@@ -567,15 +568,24 @@ export function CommentThread({
         desc={t`The report goes to the moderators of their own server, with this comment.`}
         confirmText={t`Report`}
         icon={<Flag className='size-4' />}
-        handleConfirm={() => {
-          void onModerate?.(comment.id, 'report', reportReason.trim())
-          setModerating(null)
+        isLoading={reporting}
+        handleConfirm={async () => {
+          // A refused report keeps the dialog, and the reason typed into it.
+          setReporting(true)
+          const done = await onModerate?.(
+            comment.id,
+            'report',
+            reportReason.trim()
+          )
+          setReporting(false)
+          if (done !== false) setModerating(null)
         }}
       >
         <MentionTextarea
           className='placeholder:text-muted-foreground'
           value={reportReason}
           onValueChange={setReportReason}
+          maxLength={2000}
           rows={3}
           placeholder={t`Reason`}
           aria-label={t`Reason`}

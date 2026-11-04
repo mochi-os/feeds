@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { FeedComment } from '@/types'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { authorAssets } from '../author-assets'
@@ -99,6 +99,38 @@ describe('CommentThread with a person from another network', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Block' }))
     })
     expect(onModerate).toHaveBeenCalledWith('c1', 'block')
+  })
+
+  // A refused report keeps the dialog and the reason typed into it; one
+  // the server takes closes it.
+  it.each([
+    [false, true],
+    [true, false],
+  ])('a report answered %s keeps the dialog open: %s', async (answer, kept) => {
+    const onModerate = vi.fn().mockResolvedValue(answer)
+    show(outsider, { canManageComments: true, onModerate })
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Report Bob' }))
+    })
+    expect(screen.getByLabelText('Reason').getAttribute('maxlength')).toBe(
+      '2000'
+    )
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText('Reason'), {
+        target: { value: 'Spam' },
+      })
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Report' }))
+    })
+    expect(onModerate).toHaveBeenCalledWith('c1', 'report', 'Spam')
+    if (kept) {
+      expect(
+        (screen.getByLabelText('Reason') as HTMLTextAreaElement).value
+      ).toBe('Spam')
+    } else {
+      await waitFor(() => expect(screen.queryByLabelText('Reason')).toBeNull())
+    }
   })
 
   it('offers no moderation to a reader, nor on a Mochi member', () => {
