@@ -3,17 +3,14 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { useCallback } from 'react'
+import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
 import type { FeedComment, FeedPost, FeedSummary, ReactionId } from '@/types'
 import { useLingui } from '@lingui/react/macro'
 import { toast, useUploadProgress, type Upload } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
+import { startCommentReaction } from '@/features/feeds/comment-reaction'
 import { createReactionCounts } from '@/features/feeds/constants'
-import {
-  applyReaction,
-  randomId,
-  removeCommentFromTree,
-  updateCommentTree,
-} from '@/features/feeds/utils'
+import { randomId, removeCommentFromTree } from '@/features/feeds/utils'
 
 export type UseCommentActionsOptions = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
@@ -91,6 +88,7 @@ export function useCommentActions({
   onRollbackComment,
 }: UseCommentActionsOptions): UseCommentActionsResult {
   const { t } = useLingui()
+  const queryClient = useQueryClient()
   const { progress: commentProgress, upload } = useUploadProgress()
 
   const rollbackComment = useCallback(
@@ -316,35 +314,47 @@ export function useCommentActions({
       commentId: string,
       reaction: ReactionId | ''
     ) => {
-      setPostsByFeed((current) => {
-        const posts = current[feedId] ?? []
-        const updated = posts.map((post) => {
-          if (post.id !== postId) return post
-          const comments = updateCommentTree(
-            post.comments,
-            commentId,
-            (comment) => ({
-              ...comment,
-              ...applyReaction(
-                comment.reactions,
-                comment.userReaction,
-                reaction
-              ),
-            })
-          )
-          return { ...post, comments }
+      // The list re-syncs its posts from the ['posts'] caches, so the
+      // reaction goes there too, as post reactions do, or a later page fetch
+      // would take it off the screen.
+      const change = startCommentReaction(commentId, reaction)
+      const onPost =
+        (patch: <T extends Pick<FeedPost, 'comments'>>(post: T) => T) =>
+        (post: FeedPost) => (post.id === postId ? patch(post) : post)
+      const write = (
+        patch: <T extends Pick<FeedPost, 'comments'>>(post: T) => T
+      ) => {
+        setPostsByFeed((current) => {
+          const posts = current[feedId]
+          if (!posts) return current
+          return { ...current, [feedId]: posts.map(onPost(patch)) }
         })
-        return { ...current, [feedId]: updated }
-      })
+        queryClient.setQueriesData<InfiniteData<{ posts: FeedPost[] }>>(
+          { queryKey: ['posts'] },
+          (data) =>
+            data?.pages
+              ? {
+                  ...data,
+                  pages: data.pages.map((page) => ({
+                    ...page,
+                    posts: page.posts.map(onPost(patch)),
+                  })),
+                }
+              : data
+        )
+      }
+      write(change.apply)
 
       // Call API to set or remove reaction (empty string removes)
       void feedsApi
         .reactToComment(feedId, postId, commentId, reaction)
-        .catch(() => {
+        .then(change.accepted, () => {
+          const undo = change.refused()
+          if (undo) write(undo)
           toast.error(t`Failed to save reaction. Please try again.`)
         })
     },
-    [setPostsByFeed, t]
+    [queryClient, setPostsByFeed, t]
   )
 
   return {
