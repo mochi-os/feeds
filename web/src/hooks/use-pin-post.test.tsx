@@ -12,6 +12,8 @@ import { usePinPost } from './use-pin-post'
 
 vi.mock('@/api/feeds', () => ({ feedsApi: { pinPost: vi.fn() } }))
 
+type Lists = { pages: Array<{ posts: FeedPost[] }> }
+
 // A pin shows on the post at once, in the feed's list and on the post's own
 // page, and goes back if the server refuses. The request waits until the test
 // answers it.
@@ -47,12 +49,26 @@ function mount() {
       <QueryClientProvider client={client}>{children}</QueryClientProvider>
     ),
   })
-  type Lists = { pages: Array<{ posts: FeedPost[] }> }
   const inList = () =>
     client.getQueryData<Lists>(list)?.pages[0].posts[0].pinned
   const onPage = () =>
     client.getQueryData<{ post: FeedPost }>(single)?.post.pinned
   return { client, view, inList, onPage }
+}
+
+// As use-mark-as-read does on scroll: every list is written again.
+function markRead(client: QueryClient) {
+  client.setQueriesData<Lists>({ queryKey: ['posts'] }, (data) =>
+    data
+      ? {
+          ...data,
+          pages: data.pages.map((page) => ({
+            ...page,
+            posts: page.posts.map((item) => ({ ...item, read: 1 })),
+          })),
+        }
+      : data
+  )
 }
 
 describe('usePinPost', () => {
@@ -64,6 +80,50 @@ describe('usePinPost', () => {
     expect(onPage()).toBeGreaterThan(0)
 
     act(() => refuse(new Error('refused')))
+    await waitFor(() => expect(view.result.current.isError).toBe(true))
+    expect(inList()).toBe(0)
+    expect(onPage()).toBe(0)
+  })
+
+  it('unpins when refused after a read mark rewrote the list', async () => {
+    const { client, view, inList, onPage } = mount()
+
+    act(() => view.result.current.mutate({ post, pinned: true }))
+    await waitFor(() => expect(inList()).toBeGreaterThan(0))
+    markRead(client)
+
+    act(() => refuse(new Error('refused')))
+    await waitFor(() => expect(view.result.current.isError).toBe(true))
+    expect(inList()).toBe(0)
+    expect(onPage()).toBe(0)
+    // The read mark stays.
+    expect(client.getQueryData<Lists>(list)?.pages[0].posts[0].read).toBe(1)
+  })
+
+  it('goes back to the start when pin, unpin, pin are all refused after a read mark', async () => {
+    const { client, view, inList, onPage } = mount()
+    const refusals: Array<(error: unknown) => void> = []
+    vi.mocked(feedsApi.pinPost).mockImplementation(
+      () => new Promise((_resolve, reject) => refusals.push(reject))
+    )
+    // Each click passes the post as it shows at that moment.
+    const click = async (pinned: boolean) => {
+      const shown = { ...post, pinned: inList() ?? 0 }
+      const count = refusals.length
+      act(() => view.result.current.mutate({ post: shown, pinned }))
+      await waitFor(() => expect(refusals).toHaveLength(count + 1))
+    }
+    await click(true)
+    await click(false)
+    await click(true)
+    expect(inList()).toBeGreaterThan(0)
+    markRead(client)
+
+    // Refused oldest first: the last click still waiting keeps the screen.
+    for (const refuseOne of refusals) {
+      act(() => refuseOne(new Error('refused')))
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    }
     await waitFor(() => expect(view.result.current.isError).toBe(true))
     expect(inList()).toBe(0)
     expect(onPage()).toBe(0)

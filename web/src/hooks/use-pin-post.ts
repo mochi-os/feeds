@@ -11,6 +11,7 @@ import {
 import type { FeedPost } from '@/types'
 import { optimistic } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
+import { undoChain, type UndoStep } from '@/lib/undo-chain'
 
 type Lists = InfiniteData<{ posts: FeedPost[] }>
 type Single = { post?: FeedPost | null }
@@ -24,6 +25,42 @@ const holds = (query: Query, id: string) =>
   !!(query.state.data as Lists | undefined)?.pages?.some((page) =>
     page.posts.some((item) => item.id === id)
   )
+
+// The helper puts a snapshot back only when nothing has written the query
+// since the click, so a refresh's data is never lost. Here plenty writes the
+// lists without a refresh: a read mark on scroll, a reaction, a websocket
+// fold. Then a refused pin would stay, so the pin field alone is put back on
+// the post, in click order (`undoChain`).
+const pins = undoChain<FeedPost['pinned']>()
+const steps = new WeakMap<PinVariables, UndoStep<FeedPost['pinned']>>()
+
+function setPinned(
+  queryClient: ReturnType<typeof useQueryClient>,
+  id: string,
+  pinned: FeedPost['pinned']
+) {
+  const set = (item: FeedPost) =>
+    item.id === id && item.pinned !== pinned ? { ...item, pinned } : item
+  for (const [key, data] of queryClient.getQueriesData<Lists>({
+    queryKey: ['posts'],
+  })) {
+    if (!data?.pages?.some((page) => page.posts.some((i) => set(i) !== i)))
+      continue
+    queryClient.setQueryData<Lists>(key, {
+      ...data,
+      pages: data.pages.map((page) => ({
+        ...page,
+        posts: page.posts.map(set),
+      })),
+    })
+  }
+  for (const [key, data] of queryClient.getQueriesData<Single>({
+    queryKey: ['feeds', 'single-post'],
+  })) {
+    if (!data?.post || set(data.post) === data.post) continue
+    queryClient.setQueryData<Single>(key, { ...data, post: set(data.post) })
+  }
+}
 
 // Pin and unpin show on the post at once, in every list that holds it and on
 // the post's own page, and go back if the server refuses. Where the post sits
@@ -65,10 +102,23 @@ export function usePinPost() {
   return useMutation({
     mutationFn: ({ post, pinned }: PinVariables) =>
       feedsApi.pinPost(post.feedId, post.id, pinned),
-    onMutate: patch.onMutate,
-    onError: (_error, _variables, context) => patch.rollback(context),
+    onMutate: (variables: PinVariables) => {
+      const step = pins(variables.post.id)
+      step.remember(variables.post.pinned)
+      steps.set(variables, step)
+      return patch.onMutate(variables)
+    },
+    onError: (_error, variables, context) => {
+      patch.rollback(context)
+      const before = steps.get(variables)?.refused()
+      if (before) setPinned(queryClient, variables.post.id, before.value)
+    },
     // The list re-reads the feed's posts once the server has them.
-    onSuccess: (_data, { post }) =>
-      queryClient.invalidateQueries({ queryKey: ['posts', post.feedId] }),
+    onSuccess: (_data, variables) => {
+      steps.get(variables)?.accepted()
+      return queryClient.invalidateQueries({
+        queryKey: ['posts', variables.post.feedId],
+      })
+    },
   })
 }
