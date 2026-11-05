@@ -70,7 +70,7 @@ msgstr "{0, plural, one {nakala #} other {nakala #}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {faili # limebadilishwa} other {faili # yamebadilishwa}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {Akaunti # unayoifuata imeingizwa} other {Akaunti # unazozifuata zimeingizwa}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {Akaunti # unayoifuata imeingizwa} other {Akaunti # unaz
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# chapisho jipya} other {# machapisho mapya}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {mtu #} other {watu #}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# iliyopachikwa} other {+# zilizopachikwa}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Chanzo # kimeongezwa} other {Vyanzo # vimeongezwa}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Ongeza mwonekano"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Vyanzo {0} vimeongezwa hadi sasa; vingine vinafuata"
 
@@ -476,11 +485,17 @@ msgstr "Milisho yote"
 msgid "All marked as read"
 msgstr "Vyote vimewekwa alama kuwa vimesomwa"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Ruhusu"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "Ruhusu mtu yeyote kutafuta {entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "Ruhusu mtu yeyote kutafuta mlisho"
 
@@ -1072,6 +1087,10 @@ msgstr "Maelezo ya muktadha na undani."
 msgid "Continue"
 msgstr "Endelea"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "Endelea kwenye {server}"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "Endelea na mjadala huu"
@@ -1454,6 +1473,8 @@ msgstr "Pakua"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "Upakuaji umeshindwa"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Imeshindwa kuongeza jibu. Tafadhali jaribu tena."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Imeshindwa kuongeza chanzo"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "Imeshindwa kuingiza akaunti unazofuata"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "Imeshindwa kupakia"
 
@@ -1818,6 +1841,7 @@ msgstr "Imeshindwa kubatilisha ufikiaji wa RSS"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "Imeshindwa kuhifadhi"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Vimeingizwa {0} hadi sasa; vingine vinafuata"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Inaingiza akaunti {0} unazofuata; {1} zimeongezwa hadi sasa"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Inaleta data..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "Kurekodi sauti hakutumiki kwenye kivinjari hiki"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Piga kura"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Inasubiri ruhusa"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Inasubiri ruhusa: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

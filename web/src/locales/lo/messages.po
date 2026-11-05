@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# ສຳເນົາ} other {# ສຳເນົາ}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {ປ່ຽນແປງ # ໄຟລ໌} other {ປ່ຽນແປງ # ໄຟລ໌}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {ນຳເຂົ້າແລ້ວ # ບັນຊີທີ່ຕິດຕາມ} other {ນຳເຂົ້າແລ້ວ # ບັນຊີທີ່ຕິດຕາມ}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {ນຳເຂົ້າແລ້ວ # ບັນຊີທ�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, other {# ໂພສໃໝ່}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# ຄົນ} other {# ຄົນ}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, other {+# ຊັ້ນຍ່ອຍ}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {ເພີ່ມແລ້ວ # ແຫຼ່ງ} other {ເພີ່ມແລ້ວ # ແຫຼ່ງ}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "ເພີ່ມມຸມມອງ"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "ເພີ່ມແລ້ວ {0} ແຫຼ່ງ; ສ່ວນທີ່ເຫຼືອຈະຕາມມາ"
 
@@ -476,11 +485,17 @@ msgstr "ຟີດທັງໝົດ"
 msgid "All marked as read"
 msgstr "ໝາຍວ່າອ່ານແລ້ວທັງໝົດ"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "ອະນຸຍາດ"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "ອະນຸຍາດໃຫ້ທຸກຄົນຄົ້ນຫາ {entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "ອະນຸຍາດໃຫ້ໃຜກໍຕາມຊອກຫາຟີດ"
 
@@ -1072,6 +1087,10 @@ msgstr "ຂໍ້ມູນຕາມບໍລິບົດ ແລະ ລາຍລ�
 msgid "Continue"
 msgstr "ຕໍ່"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "ສືບຕໍ່ຢູ່ {server}"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "ເບິ່ງກະທູ້ນີ້ຕໍ່"
@@ -1454,6 +1473,8 @@ msgstr "ດາວໂຫຼດ"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "ດາວໂຫຼດບໍ່ສຳເລັດ"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "ເພີ່ມຄຳຕອບລົ້ມເຫຼວ. ກະລຸນາລອງໃໝ່."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "ເພີ່ມແຫຼ່ງລົ້ມເຫຼວ"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "ນຳເຂົ້າບັນຊີທີ່ຕິດຕາມລົ້ມເຫຼວ"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "ໂຫຼດລົ້ມເຫຼວ"
 
@@ -1818,6 +1841,7 @@ msgstr "ຖອນການເຂົ້າເຖິງ RSS ບໍ່ສຳເລ�
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "ບັນທຶກລົ້ມເຫຼວ"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "ນຳເຂົ້າແລ້ວ {0}; ສ່ວນທີ່ເຫຼືອຈະຕາມມາ"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "ກຳລັງນຳເຂົ້າ {0} ບັນຊີທີ່ຕິດຕາມ; ເພີ່ມແລ້ວ {1}"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "ກຳລັງນຳເຂົ້າຂໍ້ມູນ..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "ຕົວທ່ອງເວັບນີ້ບໍ່ຮອງຮັບກ
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "ລົງຄະແນນ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "ກຳລັງລໍຖ້າສິດ"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "ກຳລັງລໍຖ້າສິດ: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

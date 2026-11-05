@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# สำเนา} other {# สำเนา}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {เปลี่ยนแปลง # ไฟล์} other {เปลี่ยนแปลง # ไฟล์}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {นำเข้าบัญชีที่ติดตาม # รายการแล้ว} other {นำเข้าบัญชีที่ติดตาม # รายการแล้ว}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {นำเข้าบัญชีที่ติดต�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, other {# โพสต์ใหม่}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# คน} other {# คน}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, other {+# ที่ซ้อนอยู่}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {เพิ่ม # แหล่งที่มาแล้ว} other {เพิ่ม # แหล่งที่มาแล้ว}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "เพิ่มมุมมอง"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "เพิ่มแล้ว {0} แหล่งที่มา ส่วนที่เหลือจะตามมา"
 
@@ -476,11 +485,17 @@ msgstr "ฟีดทั้งหมด"
 msgid "All marked as read"
 msgstr "ทำเครื่องหมายว่าอ่านทั้งหมดแล้ว"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "อนุญาต"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "อนุญาตให้ทุกคนค้นหา{entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "อนุญาตให้ทุกคนค้นหาฟีด"
 
@@ -1072,6 +1087,10 @@ msgstr "ข้อมูลบริบทและรายละเอียด
 msgid "Continue"
 msgstr "ดำเนินการต่อ"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "ดำเนินการต่อที่ {server}"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "ดูเธรดนี้ต่อ"
@@ -1454,6 +1473,8 @@ msgstr "ดาวน์โหลด"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "ดาวน์โหลดไม่สำเร็จ"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "ไม่สามารถเพิ่มการตอบกลับได้ กรุณาลองอีกครั้ง"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "ไม่สามารถเพิ่มแหล่งที่มาได้"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "นำเข้าบัญชีที่ติดตามไม่สำเร็จ"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "ไม่สามารถโหลดได้"
 
@@ -1818,6 +1841,7 @@ msgstr "ไม่สามารถเพิกถอนการเข้าถ
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "ไม่สามารถบันทึกได้"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "นำเข้าแล้ว {0} รายการ ส่วนที่เหลือจะตามมา"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "กำลังนำเข้าบัญชีที่ติดตาม {0} รายการ เพิ่มแล้ว {1} รายการ"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "กำลังนำเข้าข้อมูล..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "เบราว์เซอร์นี้ไม่รองรับก
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "ลงคะแนน"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "กำลังรอสิทธิ์"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "กำลังรอสิทธิ์: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

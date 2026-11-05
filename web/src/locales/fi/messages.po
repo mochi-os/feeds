@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# kopio} other {# kopiota}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# tiedosto muutettu} other {# tiedostoa muutettu}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {# seurattu tuotu} other {# seurattua tuotu}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {# seurattu tuotu} other {# seurattua tuotu}}"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# uusi julkaisu} other {# uutta julkaisua}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# henkilö} other {# henkilöä}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# sisäkkäinen} other {+# sisäkkäistä}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Lisättiin # lähde} other {Lisättiin # lähdettä}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Lisää näkymä"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Lähteitä lisätty tähän mennessä: {0}; loput seuraavat"
 
@@ -476,11 +485,17 @@ msgstr "Kaikki syötteet"
 msgid "All marked as read"
 msgstr "Kaikki merkitty luetuiksi"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Salli"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "Salli kaikkien etsiä {entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "Salli kenen tahansa hakea syötettä"
 
@@ -1072,6 +1087,10 @@ msgstr "Asiayhteyteen liittyvät tiedot ja yksityiskohdat."
 msgid "Continue"
 msgstr "Jatka"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "Jatka palvelimella {server}"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "Jatka tätä ketjua"
@@ -1454,6 +1473,8 @@ msgstr "Lataa"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "Lataus epäonnistui"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Vastauksen lisääminen epäonnistui. Yritä uudelleen."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Lähteen lisääminen epäonnistui"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "Seurattujen tuonti epäonnistui"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "Lataus epäonnistui"
 
@@ -1818,6 +1841,7 @@ msgstr "RSS-käyttöoikeuden mitätöinti epäonnistui"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "Tallennus epäonnistui"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Tuotu tähän mennessä: {0}; loput seuraavat"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Tuodaan {0} seurattua; {1} lisätty tähän mennessä"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Tuodaan tietoja..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "Äänitallennusta ei tueta tässä selaimessa"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Äänestä"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Odottaa käyttöoikeutta"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Odottaa käyttöoikeutta: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

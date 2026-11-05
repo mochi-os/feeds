@@ -25,6 +25,11 @@ const state = vi.hoisted(() => ({
   setGenerator: vi.fn(),
   success: vi.fn(),
   error: vi.fn(),
+  info: vi.fn(),
+  allowWaiting: vi.fn(),
+  request: vi.fn(),
+  getBackups: vi.fn(),
+  downloadBackup: vi.fn(),
 }))
 
 vi.mock('@/api/feeds', () => ({
@@ -33,15 +38,23 @@ vi.mock('@/api/feeds', () => ({
     setPublish: state.setPublish,
     forgetCopies: state.forgetCopies,
     importAccount: state.importAccount,
+    allowWaiting: state.allowWaiting,
     setGenerator: state.setGenerator,
-    getBackups: vi.fn().mockResolvedValue({ files: [] }),
-    backupFileUrl: () => '',
+    getBackups: state.getBackups,
+    downloadBackup: state.downloadBackup,
   },
 }))
 
 vi.mock('@mochi/web', async (original) => ({
   ...(await original<typeof import('@mochi/web')>()),
-  toast: { success: state.success, error: state.error },
+  toast: {
+    success: state.success,
+    error: state.error,
+    info: state.info,
+    loading: () => 'progress',
+  },
+  isInShell: () => true,
+  shellRequestPermission: state.request,
 }))
 
 const accounts = [
@@ -95,8 +108,20 @@ describe('Publishing section', () => {
     state.forgetCopies.mockReset()
     state.importAccount.mockReset()
     state.setGenerator.mockReset()
+    state.getBackups.mockReset().mockResolvedValue({ files: [] })
     state.success.mockReset()
     state.error.mockReset()
+  })
+
+  it('says why a private feed publishes nowhere, with nothing to retry', async () => {
+    state.getPublish.mockRejectedValue(
+      new Error('Only a public feed publishes to other networks')
+    )
+    show('private')
+    expect(
+      await screen.findByText('Only a public feed publishes to other networks')
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Try again' })).toBeNull()
   })
 
   it('lists the accounts with a switch each, on for those the feed publishes to', async () => {
@@ -211,23 +236,140 @@ describe('Publishing section', () => {
     await waitFor(() =>
       expect(state.importAccount).toHaveBeenCalledWith('feed-1', 'm1', 'follows')
     )
-    expect(state.success).toHaveBeenCalledWith('Added 4 sources')
+    expect(state.success).toHaveBeenCalledWith('Added 4 sources', {
+      id: 'progress',
+    })
   })
 
-  it('shows nothing on a private feed', async () => {
-    show('private')
-    await act(async () => {})
-    expect(screen.queryByText('Publish to')).toBeNull()
-    expect(state.getPublish).toHaveBeenCalled()
+  // A person whose server the app may not read is not added by the import
+  // itself: the user is asked for the server there and then, and allowing it
+  // adds them. One toast says what came of both.
+  const refused = {
+    response: {
+      data: {
+        error: 'permission_required',
+        app: 'feeds',
+        permission: 'url:wasabi.example',
+        restricted: false,
+      },
+    },
+  }
+  const importWaiting = async () => {
+    state.importAccount.mockResolvedValue({
+      imported: 1,
+      more: false,
+      waiting: [{ server: 'wasabi.example', count: 2 }],
+    })
+    state.allowWaiting
+      .mockReset()
+      .mockRejectedValueOnce(refused)
+      .mockResolvedValue({ imported: 2, more: false })
+    state.info.mockReset()
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('@alice@mastodon.social')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[0]
+    )
+    await user.click(
+      await screen.findByRole('menuitem', { name: 'Import follows as sources' })
+    )
+  }
+
+  it('asks for each server the import left people waiting on, and adds them', async () => {
+    state.request.mockReset().mockResolvedValue('granted')
+    await importWaiting()
+    await waitFor(() =>
+      expect(state.success).toHaveBeenCalledWith('Added 3 sources', {
+        id: 'progress',
+      })
+    )
+    expect(state.request).toHaveBeenCalledWith('url:wasabi.example')
+    expect(state.allowWaiting).toHaveBeenCalledWith('feed-1', 'wasabi.example')
+    expect(state.info).not.toHaveBeenCalled()
+  })
+
+  it('names beneath what was added the servers the user does not allow', async () => {
+    state.request.mockReset().mockResolvedValue('denied')
+    await importWaiting()
+    await waitFor(() =>
+      expect(state.success).toHaveBeenCalledWith('Added 1 source', {
+        id: 'progress',
+        description: 'Waiting for permission: wasabi.example',
+      })
+    )
+    expect(state.allowWaiting).toHaveBeenCalledTimes(1)
+  })
+
+  // Each file of an account's Backups downloads when clicked; one the shell
+  // could not save says so.
+  const openBackups = async () => {
+    state.getBackups
+      .mockReset()
+      .mockResolvedValue({ files: ['posts-2026-11.jsonl'] })
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('@alice@mastodon.social')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[0]
+    )
+    await user.click(await screen.findByRole('menuitem', { name: 'Backups' }))
+    await user.click(
+      await screen.findByRole('button', { name: 'posts-2026-11.jsonl' })
+    )
+  }
+
+  it('downloads a backup file when it is clicked', async () => {
+    state.downloadBackup.mockReset().mockResolvedValue(true)
+    await openBackups()
+    await waitFor(() =>
+      expect(state.downloadBackup).toHaveBeenCalledWith(
+        'feed-1',
+        'm1',
+        'posts-2026-11.jsonl'
+      )
+    )
+    expect(state.error).not.toHaveBeenCalled()
+  })
+
+  it('says so when a backup file could not be saved', async () => {
+    state.downloadBackup.mockReset().mockResolvedValue(false)
+    await openBackups()
+    await waitFor(() =>
+      expect(state.error).toHaveBeenCalledWith('Download failed')
+    )
+  })
+
+  it('says why the last backup kept no repository', async () => {
+    state.getBackups.mockReset().mockResolvedValue({
+      files: ['posts-2026-11.jsonl'],
+      repository:
+        'The repository could not be saved: bsky.example answered 400: RepoNotFound',
+    })
+    const user = userEvent.setup()
+    show()
+    await screen.findByText('@alice@mastodon.social')
+    await user.click(
+      screen.getAllByRole('button', { name: 'Account actions' })[0]
+    )
+    await user.click(await screen.findByRole('menuitem', { name: 'Backups' }))
+    expect(
+      await screen.findByText(
+        'The repository could not be saved: bsky.example answered 400: RepoNotFound'
+      )
+    ).toBeTruthy()
+    expect(
+      screen.getByRole('button', { name: 'posts-2026-11.jsonl' })
+    ).toBeTruthy()
   })
 })
 
 describe('usePublishOffered', () => {
-  const offered = (privacy: string, owner: boolean) => {
+  const offered = (owner: boolean) => {
     const client = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     })
-    return renderHook(() => usePublishOffered('feed-1', privacy, owner), {
+    return renderHook(() => usePublishOffered('feed-1', owner), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={client}>{children}</QueryClientProvider>
       ),
@@ -240,7 +382,7 @@ describe('usePublishOffered', () => {
 
   it("offers the tab for an owner's public feed with an account, once that is known", async () => {
     state.getPublish.mockResolvedValue({ accounts, publish: [], copies: {} })
-    const result = offered('public', true)
+    const result = offered(true)
     expect(result.current).toBeUndefined()
     await waitFor(() => expect(result.current).toBe(true))
   })
@@ -251,19 +393,27 @@ describe('usePublishOffered', () => {
       publish: [],
       copies: {},
     })
-    const result = offered('public', true)
+    const result = offered(true)
     await waitFor(() => expect(result.current).toBe(false))
   })
 
   it('offers the tab where the answer failed, so the error shows', async () => {
     state.getPublish.mockRejectedValue(new Error('no'))
-    const result = offered('public', true)
+    const result = offered(true)
     await waitFor(() => expect(result.current).toBe(true))
   })
 
-  it('offers no tab, and asks nothing, for a private feed or a subscriber', () => {
-    expect(offered('private', true).current).toBe(false)
-    expect(offered('public', false).current).toBe(false)
+  // A private feed's tab says why it publishes nowhere, rather than vanish.
+  it("offers the tab for an owner's private feed, whose answer says why", async () => {
+    state.getPublish.mockRejectedValue(
+      new Error('Only a public feed publishes to other networks')
+    )
+    const result = offered(true)
+    await waitFor(() => expect(result.current).toBe(true))
+  })
+
+  it('offers no tab, and asks nothing, for a subscriber', () => {
+    expect(offered(false).current).toBe(false)
     expect(state.getPublish).not.toHaveBeenCalled()
   })
 })

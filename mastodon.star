@@ -330,7 +330,7 @@ def function_mastodon_create(context, account, home, text="", reply="", media=No
 			post_id, feed_id = post["id"], post["feed"]
 		if not text.strip():
 			return {"error": mochi.app.label("errors.invalid_body")}
-		result, failure = comment_create(feed_id, post_id, parent, identity["id"], identity["name"], text, "", account, None, save)
+		result, failure = comment_create(feed_id, post_id, parent, identity["id"], identity["name"], text, "", account, None, save, writer=account)
 		if failure:
 			return mastodon_failure(failure)
 		comment = mastodon_comment_of(result["id"], identity["id"])
@@ -855,7 +855,14 @@ def bluesky_post_written(acc, home, action, uri, record, media, user_id, name):
 		if reply:
 			comment = mochi.db.row("select * from comments where id=?", reply["comment"])
 			if comment:
+				# The record is already changed: the reply is set aside while
+				# the comment is edited, so the edit is not written to it again.
+				kept = mochi.db.row("select * from replies where comment=? and account=?", comment["id"], acc["id"])
+				mochi.db.execute("delete from replies where comment=? and account=?", comment["id"], acc["id"])
 				comment_edit(comment["feed"], comment["id"], comment["post"], user_id, text)
+				if kept:
+					mochi.db.execute("insert or replace into replies (comment, account, address, network, remote, url, created, parent) values (?, ?, ?, ?, ?, ?, ?, ?)",
+						kept["comment"], kept["account"], kept["address"], kept["network"], kept["remote"], kept["url"], kept["created"], kept["parent"])
 			return {}
 		post = mochi.db.row("select * from posts where id=?", copy["post"])
 		if not post:
@@ -874,11 +881,16 @@ def bluesky_post_written(acc, home, action, uri, record, media, user_id, name):
 	if type(record.get("reply")) == "dict" and type(record["reply"].get("parent")) == "dict":
 		parent = str(record["reply"]["parent"].get("uri", "") or "")
 	held = bluesky_held(parent)
-	if held:
-		# A reply to a post a feed holds is a comment on it, the record its
-		# reply on the network, so the comment is not published there again.
-		made = [{"account": acc["id"], "address": acc.get("identifier", ""), "network": "bluesky", "remote": uri, "url": ""}]
-		result, failure = comment_create(held["feed"], held["id"], "", user_id, name, text, "", "", None, mastodon_media_save(media), made)
+	answered = None
+	if parent and not held:
+		answered = fediverse_target(acc["id"], parent)[1]
+	if held or answered:
+		# A reply to a post a feed holds, or to a comment on one, is a comment
+		# on it, the record its reply on the network, so the comment is not
+		# published there again.
+		made = [{"account": acc["id"], "address": acc.get("identifier", ""), "network": "bluesky", "remote": uri, "url": "", "parent": parent}]
+		feed_id, post_id, parent_id = (held["feed"], held["id"], "") if held else (answered["feed"], answered["post"], answered["id"])
+		result, failure = comment_create(feed_id, post_id, parent_id, user_id, name, text, "", "", None, mastodon_media_save(media), made)
 		if failure:
 			return mastodon_failure(failure)
 		return {"comment": result["id"]}

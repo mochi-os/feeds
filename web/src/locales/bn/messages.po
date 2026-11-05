@@ -70,7 +70,7 @@ msgstr "{0, plural, one {#টি কপি} other {#টি কপি}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {#টি ফাইল পরিবর্তিত} other {#টি ফাইল পরিবর্তিত}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {#টি ফলো ইমপোর্ট করা হয়েছে} other {#টি ফলো ইমপোর্ট করা হয়েছে}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {#টি ফলো ইমপোর্ট করা হ�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# নতুন পোস্ট} other {# নতুন পোস্ট}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# জন} other {# জন}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# নেস্টেড} other {+# নেস্টেড}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {#টি উৎস যোগ করা হয়েছে} other {#টি উৎস যোগ করা হয়েছে}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "ভিউ যোগ করুন"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "এখন পর্যন্ত {0}টি উৎস যোগ করা হয়েছে; বাকিগুলো আসছে"
 
@@ -476,11 +485,17 @@ msgstr "সব ফিড"
 msgid "All marked as read"
 msgstr "সব পড়া হিসেবে চিহ্নিত করা হয়েছে"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "অনুমতি দিন"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "যে কাউকে {entityLabel} খোঁজার অনুমতি দিন"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "যেকোনো ব্যক্তিকে ফিড অনুসন্ধানের অনুমতি দিন"
 
@@ -1072,6 +1087,10 @@ msgstr "প্রাসঙ্গিক তথ্য এবং বিবরণ।
 msgid "Continue"
 msgstr "চালিয়ে যান"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "{server}-এ চালিয়ে যান"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "এই থ্রেডটি চালিয়ে যান"
@@ -1454,6 +1473,8 @@ msgstr "ডাউনলোড করুন"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "ডাউনলোড ব্যর্থ হয়েছে"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "উত্তর যোগ করতে ব্যর্থ। আবার চেষ্টা করুন।"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "উৎস যোগ করতে ব্যর্থ"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "ফলো করা অ্যাকাউন্টগুলো ইমপোর্ট করতে ব্যর্থ"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "লোড করতে ব্যর্থ"
 
@@ -1818,6 +1841,7 @@ msgstr "RSS অ্যাক্সেস প্রত্যাহার করা
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "সংরক্ষণ করতে ব্যর্থ"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "এখন পর্যন্ত {0}টি ইমপোর্ট করা হয়েছে; বাকিগুলো আসছে"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "{0}টি ফলো ইমপোর্ট করা হচ্ছে; এ পর্যন্ত {1}টি যোগ হয়েছে"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "ডেটা ইম্পোর্ট হচ্ছে..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "এই ব্রাউজারে ভয়েস রেকর্ডি
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "ভোট দিন"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "অনুমতির জন্য অপেক্ষা করা হচ্ছে"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "অনুমতির জন্য অপেক্ষা করা হচ্ছে: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# kopî} other {# kopî}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# pel hat guhertin} other {# pel hatin guhertin}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {# şopandin hate îthalkirin} other {# şopandin hatin îthalkirin}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {# şopandin hate îthalkirin} other {# şopandin hatin 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# şandiyê nû} other {# şandiyên nû}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# kes} other {# kes}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# di nav de} other {+# di nav de}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# çavkanî hat zêdekirin} other {# çavkanî hatin zêdekirin}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Dîtin zêde bike"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Heta niha {0} çavkanî hatin zêdekirin; yên mayî dê paşê werin"
 
@@ -476,11 +485,17 @@ msgstr "Hemû feed"
 msgid "All marked as read"
 msgstr "Hemû wek xwendî hatin nîşankirin"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Destûr bide"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "Destûrê bide her kesî ku li {entityLabel} bigere"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "Destûr bide her kesî ku li feed bigere"
 
@@ -1072,6 +1087,10 @@ msgstr "Agahî û hûragahiyên kontekstê."
 msgid "Continue"
 msgstr "Berdewam bike"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "Li ser {server} berdewam bike"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "Vê axaftinê berdewam bike"
@@ -1454,6 +1473,8 @@ msgstr "Daxe"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "Daxistin têk çû"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Zêdekirina bersivê neserkeftî bû. Ji kerema xwe dîsa biceribîne."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Zêdekirina çavkaniyê neserkeftî bû"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "Şopandin nehatin îthalkirin"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "Barkirin neserkeftî bû"
 
@@ -1818,6 +1841,7 @@ msgstr "Vekişandina gihîştina RSS bi ser neket"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "Tomarkirin neserkeftî bû"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Heta niha {0} hatin îthalkirin; yên mayî dê paşê werin"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Şopandin têne îthalkirin: {0}; heta niha hatin zêdekirin: {1}"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Dane tên împortkirin..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "Tomarkirina dengî di vê gerokê de nayê destekkirin"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Deng bide"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Li benda destûrê"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Li benda destûrê: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

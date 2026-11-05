@@ -8,6 +8,7 @@
 // the copies already there, keeping them by default. Each account's history
 // can be imported into the feed, and its archive downloaded.
 import { useState } from 'react'
+import { allowServers } from '@/lib/waiting'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { plural } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -26,20 +27,20 @@ import {
   naturalCompare,
   providerName,
   toast,
+  useFormat,
 } from '@mochi/web'
 import { Archive, Download, MoreHorizontal, Rss, X } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import type { PublishAccount } from '@/types/feeds'
 
-// Whether a feed's Publish to tab is offered: an owner's public feed with an
-// account to publish to, or whose answer failed and shows why. Undefined while
-// it is asked.
+// Whether a feed's Publish to tab is offered: an owner's feed with an account
+// to publish to, or whose answer failed and shows why - a private feed's says
+// that only a public feed publishes. Undefined while it is asked.
 export function usePublishOffered(
   feedId: string,
-  privacy: string,
   owner: boolean
 ): boolean | undefined {
-  const enabled = owner && !!feedId && privacy === 'public'
+  const enabled = owner && !!feedId
   const { data, isLoading, error } = useQuery({
     queryKey: ['feeds', 'publish', feedId],
     queryFn: () => feedsApi.getPublish(feedId),
@@ -59,6 +60,7 @@ export function PublishingSection({
   privacy: string
 }) {
   const { t } = useLingui()
+  const { formatList } = useFormat()
   const queryClient = useQueryClient()
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['feeds', 'publish', feedId],
@@ -76,7 +78,7 @@ export function PublishingSection({
   )
   const publish = data?.publish ?? []
 
-  if (privacy !== 'public' || (!isLoading && !error && accounts.length === 0)) {
+  if (!isLoading && !error && accounts.length === 0) {
     return null
   }
 
@@ -135,17 +137,37 @@ export function PublishingSection({
     kind: 'posts' | 'bookmarks' | 'follows'
   ) => {
     setBusy(account.id)
+    // One toast from the start, which becomes the result: the asking and
+    // adding that follow an import of follows can take a while.
+    const progress = toast.loading(t`Importing data...`)
     try {
       const answer = await feedsApi.importAccount(feedId, account.id, kind)
       if (kind === 'follows') {
-        toast.success(
-          answer.more
-            ? t`Added ${answer.imported} sources so far; the rest follow`
-            : plural(answer.imported, {
-                one: 'Added # source',
-                other: 'Added # sources',
-              })
+        // People on a server the app may not read yet: the user is asked for
+        // each server now, and those allowed are added. The ones declined
+        // wait in Sources, named beneath what was added.
+        const allowed = await allowServers(
+          feedId,
+          (answer.waiting ?? []).map((w) => w.server)
         )
+        const result = {
+          added: answer.imported + allowed.added,
+          more: answer.more || allowed.more,
+        }
+        const added = result.more
+          ? t`Added ${result.added} sources so far; the rest follow`
+          : plural(result.added, {
+              one: 'Added # source',
+              other: 'Added # sources',
+            })
+        if (allowed.waiting.length > 0) {
+          toast.success(added, {
+            id: progress,
+            description: t`Waiting for permission: ${formatList(allowed.waiting)}`,
+          })
+        } else {
+          toast.success(added, { id: progress })
+        }
         await queryClient.invalidateQueries({
           queryKey: ['feeds', 'sources', feedId],
         })
@@ -154,11 +176,12 @@ export function PublishingSection({
       toast.success(
         answer.more
           ? t`Imported ${answer.imported} so far; the rest follow`
-          : t`Imported ${answer.imported}`
+          : t`Imported ${answer.imported}`,
+        { id: progress }
       )
       await queryClient.invalidateQueries({ queryKey: ['posts', feedId] })
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Could not import`))
+      toast.error(getErrorMessage(err, t`Could not import`), { id: progress })
     } finally {
       setBusy(null)
     }
@@ -166,7 +189,13 @@ export function PublishingSection({
 
   return (
     <Section title={t`Publish to`}>
-      {error ? (
+      {error && privacy !== 'public' ? (
+        // Not a failure: the server's answer for a private feed says only a
+        // public one publishes, which a retry would not change.
+        <p className='text-muted-foreground text-sm'>
+          {getErrorMessage(error, t`Failed to load`)}
+        </p>
+      ) : error ? (
         <GeneralError error={error} minimal mode='inline' reset={refetch} />
       ) : isLoading ? (
         <ListSkeleton variant='simple' height='h-9' count={2} />
@@ -303,6 +332,19 @@ function BackupsDialog({
     queryFn: () => feedsApi.getBackups(feedId, account.id),
   })
   const files = data?.files ?? []
+  const [saving, setSaving] = useState<string | null>(null)
+  const save = async (name: string) => {
+    setSaving(name)
+    try {
+      if (!(await feedsApi.downloadBackup(feedId, account.id, name))) {
+        toast.error(t`Download failed`)
+      }
+    } catch (err) {
+      toast.error(getErrorMessage(err, t`Download failed`))
+    } finally {
+      setSaving(null)
+    }
+  }
   return (
     <ConfirmDialog
       open
@@ -311,22 +353,30 @@ function BackupsDialog({
       desc={
         isLoading ? (
           <ListSkeleton variant='simple' height='h-6' count={2} />
-        ) : files.length === 0 ? (
-          <Trans>No backup has been made yet. One is made each day.</Trans>
         ) : (
-          <ul className='space-y-1'>
-            {files.map((name) => (
-              <li key={name}>
-                <a
-                  className='text-primary underline underline-offset-4'
-                  href={feedsApi.backupFileUrl(feedId, account.id, name)}
-                  download={name}
-                >
-                  {name}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className='space-y-2'>
+            {files.length === 0 ? (
+              <Trans>No backup has been made yet. One is made each day.</Trans>
+            ) : (
+              <ul className='space-y-1'>
+                {files.map((name) => (
+                  <li key={name}>
+                    <button
+                      type='button'
+                      className='text-primary underline underline-offset-4 disabled:opacity-50'
+                      disabled={saving !== null}
+                      onClick={() => void save(name)}
+                    >
+                      {name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {data?.repository && (
+              <p className='text-destructive text-sm'>{data.repository}</p>
+            )}
+          </div>
         )
       }
       confirmText={t`Close`}

@@ -5,7 +5,7 @@
 import { QueryClient, type InfiniteData } from '@tanstack/react-query'
 import type { FeedPost } from '@/types'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { applyFrame } from './patch'
+import { applyFrame, changePost } from './patch'
 
 const { view } = vi.hoisted(() => ({ view: vi.fn() }))
 
@@ -159,5 +159,34 @@ describe('a frame that is not about one post', () => {
     expect(
       applyFrame(client, { type: 'post/create', feed: 'f1', post: 'new' })
     ).toBe(false)
+  })
+})
+
+// An action's answer changes the post where it is cached: the lists, and the
+// post's own page, which reloading the lists leaves as it was.
+describe('changePost', () => {
+  const PAGE = ['feeds', 'single-post', 'f1', 'p1']
+
+  it('changes the post in the lists and on its own page, and nothing else', () => {
+    const client = holding(post('p1'), post('p2'))
+    client.setQueryData(PAGE, { post: post('p1'), permissions: {} })
+    client.setQueryData(['feeds', 'single-post', 'f1', 'p2'], {
+      post: post('p2'),
+    })
+    changePost(client, 'p1', { copies: [], pinned: 5 })
+    expect(listed(client).map((item) => item.pinned)).toEqual([5, undefined])
+    expect(listed(client)[0].copies).toEqual([])
+    expect(client.getQueryData<{ post: FeedPost }>(PAGE)?.post.pinned).toBe(5)
+    expect(
+      client.getQueryData<{ post: FeedPost }>([
+        'feeds',
+        'single-post',
+        'f1',
+        'p2',
+      ])?.post.pinned
+    ).toBeUndefined()
+    expect(
+      client.getQueryData<{ permissions: object }>(PAGE)?.permissions
+    ).toEqual({})
   })
 })

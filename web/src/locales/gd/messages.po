@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# lethbhreac} two {# lethbhreac} few {# lethbhric} othe
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# fhaidhle air atharrachadh} two {# fhaidhle air atharrachadh} few {# faidhlichean air atharrachadh} other {# faidhle air atharrachadh}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {Chaidh # chunntas ion-phortadh} two {Chaidh # chunntas ion-phortadh} few {Chaidh # cunntasan ion-phortadh} other {Chaidh # cunntas ion-phortadh}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {Chaidh # chunntas ion-phortadh} two {Chaidh # chunntas 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# phost ùr} two {# phost ùr} few {# postaichean ùra} other {# post ùr}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# neach} two {# neach} few {# daoine} other {# duine}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# neadaichte} two {+# neadaichte} few {+# neadaichte} other {+# neadaichte}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Chaidh # tùs a chur ris} two {Chaidh # thùs a chur ris} few {Chaidh # tùsan a chur ris} other {Chaidh # tùs a chur ris}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Cuir sealladh ris"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Tùsan air an cur ris gu ruige seo: {0}; thig an còrr an ceann greis"
 
@@ -476,11 +485,17 @@ msgstr "Na h-inbhirean uile"
 msgid "All marked as read"
 msgstr "Comharraichte mar leughte gu lèir"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Ceadaich"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "Ceadaich do dhuine sam bith {entityLabel} a lorg"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "Ceadaich do dhuine sam bith inbhir a lorg"
 
@@ -1072,6 +1087,10 @@ msgstr "Fiosrachadh agus mion-fhiosrachadh co-theacsail."
 msgid "Continue"
 msgstr "Lean air adhart"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "Lean air adhart air {server}"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "Lean air adhart leis an t-snàithlean seo"
@@ -1454,6 +1473,8 @@ msgstr "Luchdaich a-nuas"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "Dh’fhàillig an luchdadh a-nuas"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Cha b' urrainn freagairt a chur ris. Feuch ris a-rithist."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Cha b' urrainn tùs a chur ris"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "Dh'fhàillig ion-phortadh nan cunntasan a leanas tu"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "Cha b' urrainn luchdadh"
 
@@ -1818,6 +1841,7 @@ msgstr "Cha b' urrainn inntrigeadh RSS a chùl-ghairm"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "Cha b' urrainn sàbhaladh"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Air an ion-phortadh gu ruige seo: {0}; thig an còrr an ceann greis"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Ag ion-phortadh nan cunntasan a leanas tu: {0}; air an cur ris gu ruige seo: {1}"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Ag ion-phortadh an dàta..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "Chan eil taic ri clàradh gutha sa bhrabhsair seo"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Bhòt"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "A' feitheamh ri cead"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "A' feitheamh ri cead: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

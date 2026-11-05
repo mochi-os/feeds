@@ -11,6 +11,7 @@ import {
 import type { FeedPost } from '@/types'
 import { optimistic } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
+import { changePost } from '@/lib/patch'
 import { undoChain, type UndoStep } from '@/lib/undo-chain'
 
 type Lists = InfiniteData<{ posts: FeedPost[] }>
@@ -113,9 +114,11 @@ export function usePinPost() {
       const before = steps.get(variables)?.refused()
       if (before) setPinned(queryClient, variables.post.id, before.value)
     },
-    // The list re-reads the feed's posts once the server has them.
-    onSuccess: (_data, variables) => {
+    // The pin the server set goes on the post wherever it is shown, its own
+    // page included, and the list re-reads the feed's posts for the order.
+    onSuccess: (data, variables) => {
       steps.get(variables)?.accepted()
+      changePost(queryClient, variables.post.id, { pinned: data.pinned })
       return queryClient.invalidateQueries({
         queryKey: ['posts', variables.post.feedId],
       })

@@ -346,8 +346,9 @@ idle_resync_age = 7 * 86400
 
 # request_resync pulls a fresh schema dump from the owner when an incoming event
 # references data we lack; subscribers only, throttled to once per 60 seconds
-# per feed.
-def request_resync(feed_id):
+# per feed. name, when given, asks as a subscriber of that name, which the
+# owner registers before it reads the schema.
+def request_resync(feed_id, name=None):
     """Returns True iff a fresh schema was actually fetched and applied."""
     row = mochi.db.row("select server, synced from feeds where id=?", feed_id)
     if not row:
@@ -362,19 +363,76 @@ def request_resync(feed_id):
         return False
     mochi.db.execute("update feeds set synced=? where id=?", now, feed_id)
     peer = mochi.remote.peer(row["server"])
-    schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
+    schema = mochi.remote.request(feed_id, "feeds", "schema", {"register": {"name": name}} if name else {}, peer)
     if not schema_arrived(schema):
         return False
     insert_feed_schema(feed_id, schema)
+    feed_completed(feed_id)
     mochi.broadcast.touch(feed_id)
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         websocket_write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
     return True
 
-# maybe_resubscribe re-subscribes an idle remote feed (idle_resync_age). The
-# owner's event_subscribe is idempotent and pushes catch-up; touch() stamps the
-# timer so a dead owner is poked once per window.
+# fill_waits: the seconds before each pull of a subscription still filling
+# (schedule_fill): the first past the 60 in which request_resync lets no second
+# pull start, each after four times the last. Past the last, a view of the feed
+# starts them again (maybe_fill), so a subscription nobody looks at wakes
+# nothing.
+fill_waits = [61, 244, 976, 3904, 15616]
+
+# fill_pending(feed_id) -> bool: whether a pull of the subscription is
+# scheduled.
+def fill_pending(feed_id):
+	for scheduled in mochi.schedule.list():
+		if scheduled.event == "schedule_fill" and scheduled.data.get("feed") == feed_id:
+			return True
+	return False
+
+# fill_schedule(feed_id, attempt, name, delay) schedules a subscription's pull
+# after fill_waits[attempt], or after delay when one is given, unless one is
+# pending or the waits have run out; the pull that follows waits the next wait
+# in turn. name, when given, asks as a subscriber.
+def fill_schedule(feed_id, attempt=0, name=None, delay=None):
+	if attempt >= len(fill_waits) or fill_pending(feed_id):
+		return
+	data = {"feed": feed_id, "attempt": attempt if delay != None else attempt + 1}
+	if name:
+		data["name"] = name
+	mochi.schedule.after("schedule_fill", data, fill_waits[attempt] if delay == None else delay)
+
+# schedule_fill(e): a subscription still filling pulls the schema, and asks
+# again later until it is whole.
+def schedule_fill(e):
+	if e.source != "schedule":
+		return
+	feed_id = e.data.get("feed", "")
+	if not mochi.text.valid(feed_id, "entity"):
+		return
+	attempt = int(number(e.data.get("attempt"), 0))
+	name = e.data.get("name")
+	if type(name) != "string" or not mochi.text.valid(name, "line"):
+		name = None
+	row = mochi.db.row("select populated from feeds where id=?", feed_id)
+	if not row or row["populated"] != 0:
+		return
+	if not request_resync(feed_id, name):
+		fill_schedule(feed_id, attempt, name)
+
+# maybe_fill(a, feed_id): a view of a subscription still filling pulls the
+# schema when no pull is waiting.
+def maybe_fill(a, feed_id):
+	if not a.user:
+		return
+	row = mochi.db.row("select server, populated from feeds where id=?", feed_id)
+	if row and row["server"] and row["populated"] == 0:
+		fill_schedule(feed_id, 0, a.user.identity.name, 0)
+
+# maybe_resubscribe re-subscribes an idle remote feed (idle_resync_age), for an
+# owner that let the subscriber go, and fills the subscription again from the
+# feed's schema, as what was missed is past what the broadcast replays; the
+# pull asks as a subscriber, which registers them again before it is read.
+# touch() stamps the timer so a dead owner is poked once per window.
 def maybe_resubscribe(a, feed_id):
 	user_id = a.user.identity.id if a.user else None
 	if not user_id:
@@ -386,6 +444,8 @@ def maybe_resubscribe(a, feed_id):
 		return
 	registration_send(row["server"], headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(feed_id)
+	mochi.db.execute("update feeds set populated=0 where id=?", feed_id)
+	fill_schedule(feed_id, 0, a.user.identity.name, 0)
 
 # websocket_key is the key every feed's frames also reach, so a page or drawer
 # following all of a user's feeds holds one socket rather than one per feed:
@@ -521,31 +581,6 @@ def comment_anchor(post_id, feed_id, value):
 			return value
 	return ""
 
-# comment_anchor_name resolves an anchored comment's attachment to a display
-# name (its caption when it has one, else the file name), so a client never
-# has to show the raw id. Empty for an unanchored comment or one whose
-# attachment has since gone.
-def comment_anchor_name(comment):
-	anchor = comment.get("attachment", "")
-	if not anchor:
-		return ""
-	att = attachment_get(anchor)
-	if not att:
-		return ""
-	return att.get("caption") or att.get("name", "")
-
-# comment_anchor_caption is the anchored attachment's caption alone - "" when
-# it has none - so a client can show a caption as text but keep a bare file
-# name to a hover: readers care what an image is, rarely what it was called.
-def comment_anchor_caption(comment):
-	anchor = comment.get("attachment", "")
-	if not anchor:
-		return ""
-	att = attachment_get(anchor)
-	if not att:
-		return ""
-	return att.get("caption", "")
-
 # feed_comments builds the whole comment tree for one post. It fetches every
 # comment for the post in a single query and assembles the tree in memory,
 # batching attachments, anchor lookups and reactions across the whole set. It
@@ -635,91 +670,6 @@ def feed_update(user_id, feed_data):
 	# The count is not sent to the subscribers: one sign-up then cost one event
 	# per subscriber, quadratic in a number anyone can grow, and no page shows
 	# a subscriber the count.
-
-# Send recent posts to a new subscriber
-# Batches database queries to avoid N+1 pattern
-def send_recent_posts(user_id, feed_data, subscriber_id):
-	feed_id = feed_data["id"]
-	feed_posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 100", feed_id)
-	if not feed_posts:
-		return
-
-	# Collect all post IDs for batch queries
-	post_ids = [p["id"] for p in feed_posts]
-	marks = ", ".join(["?" for _ in post_ids])
-
-	# Only the comments and reactions on the posts sent, not the whole feed's.
-	all_comments = mochi.db.rows("select * from comments where feed=? and post in (" + marks + ") order by created", *([feed_id] + post_ids))
-	all_reactions = mochi.db.rows("select * from reactions where feed=? and post in (" + marks + ")", *([feed_id] + post_ids))
-
-	# Index comments by post
-	comments_by_post = {}
-	for c in all_comments:
-		c["attachment_name"] = comment_anchor_name(c)
-		c["attachment_caption"] = comment_anchor_caption(c)
-		pid = c.get("post", "")
-		if pid not in comments_by_post:
-			comments_by_post[pid] = []
-		comments_by_post[pid].append(c)
-
-	# Index reactions by post and by comment
-	post_reactions = {}
-	comment_reactions = {}
-	for r in all_reactions:
-		pid = r.get("post", "")
-		cid = r.get("comment", "")
-		if cid:
-			if cid not in comment_reactions:
-				comment_reactions[cid] = []
-			comment_reactions[cid].append(r)
-		else:
-			if pid not in post_reactions:
-				post_reactions[pid] = []
-			post_reactions[pid].append(r)
-
-	# Batch fetch all tags for posts in this feed
-	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (" + marks + ")", *post_ids) or []
-	tags_by_post = {}
-	for t in all_tags:
-		pid = t.get("object", "")
-		if pid not in tags_by_post:
-			tags_by_post[pid] = []
-		tags_by_post[pid].append(t)
-
-	# Send posts with their comments, reactions, and tags
-	for post in feed_posts:
-		post_id = post["id"]
-		post["sync"] = True
-		post["attachments"] = attachment_list(post_id, feed_id)
-		post["copies"] = copies_present(post_id)
-		# Parse data from JSON string so receiver gets a dict (not a double-encoded string)
-		if post.get("data") and type(post["data"]) == type(""):
-			post["data"] = json.decode(post["data"], None) or {}
-		# Include tags inline with the post so subscriber gets them atomically
-		post_tags = tags_by_post.get(post_id, [])
-		if post_tags:
-			post["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "manual")} for t in post_tags]
-		mochi.message.send(headers(feed_id, subscriber_id, "post/create"), post)
-
-		# Send comments for this post
-		for c in comments_by_post.get(post_id, []):
-			c["sync"] = True
-			c["attachments"] = attachment_list(c["id"], feed_id)
-			mochi.message.send(headers(feed_id, subscriber_id, "comment/create"), c)
-
-			# Send reactions for this comment
-			for r in comment_reactions.get(c["id"], []):
-				mochi.message.send(
-					headers(feed_id, subscriber_id, "comment/react"),
-					{"feed": feed_id, "post": post_id, "comment": c["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
-				)
-
-		# Send post-level reactions
-		for r in post_reactions.get(post_id, []):
-			mochi.message.send(
-				headers(feed_id, subscriber_id, "post/react"),
-				{"feed": feed_id, "post": post_id, "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
-			)
 
 # Does the current user own this feed entity?
 # Source of truth is core/users.db.entities — the private key bearer is the owner.
@@ -2205,12 +2155,30 @@ def database_upgrade(version):
 		# a comment.
 		if any([c["name"] == "post" for c in mochi.db.table("likes")]):
 			mochi.db.execute("alter table likes rename column post to object")
+	if version == 21:
+		# A comment's reply on another network keeps the id there of what it
+		# answers.
+		replies_schema_create()
+	if version == 22:
+		# The people an import could not add yet wait on their server.
+		waiting_schema_create()
+	if version == 23:
+		# A subscriber pulls a feed's history from its schema; the owner no
+		# longer pushes it, so it no longer marks whom it was sent to.
+		if any([c["name"] == "joined" for c in mochi.db.table("subscribers")]):
+			mochi.db.execute("alter table subscribers drop column joined")
 
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
 # reaction as post/comment/subscriber.
 def withheld_schema_create():
 	mochi.db.execute("create table if not exists withheld ( feed text not null, object text not null, primary key ( feed, object ) )")
+
+# waiting_schema_create lays the table of the people a follows import could
+# not add yet, since their web feed is on a server the app may not read: kept
+# by feed and the person's address, with the server they wait on.
+def waiting_schema_create():
+	mochi.db.execute("create table if not exists waiting ( feed text not null, server text not null, network text not null, identifier text not null, name text not null default '', created integer not null, primary key ( feed, identifier ) )")
 
 # posts_index_create lays the indexes a feed's unread count and a feed's page of
 # posts read: each was a search of the feed's posts and a sort of all of them.
@@ -2247,7 +2215,7 @@ def database_create():
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
 
-	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', joined integer not null default 0, primary key ( feed, id ) )")
+	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
 	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, boosts integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0, novelty integer not null default 100, credibility integer not null default 100, story text not null default '' )")
@@ -2315,6 +2283,7 @@ def database_create():
 	publish_schema_create()
 	features_schema_create()
 	bluesky_schema_create()
+	waiting_schema_create()
 	mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
 
 	# Attachments now live in this database, owned by the shared library.
@@ -2667,8 +2636,10 @@ def action_view(a):
 		if not check_access(a, feed_data["id"], "view"):
 			a.error.label(403, "errors.feed_is_private")
 			return
-		# Re-establish with the owner if this subscription has gone idle.
+		# Re-establish with the owner if this subscription has gone idle, and
+		# fill one still filling.
 		maybe_resubscribe(a, feed_data["id"])
+		maybe_fill(a, feed_data["id"])
 
 	post_id = a.input("post")
 
@@ -3090,8 +3061,9 @@ def view_remote(a, user_id, feed_id, server):
 	if sort:
 		params["sort"] = sort
 
-	# If no peer, mochi.remote.request will use directory lookup
-	response = mochi.remote.request(feed_id, "feeds", "view", params, peer)
+	# If no peer, mochi.remote.request will use directory lookup. The page is
+	# asked for in parts, each bounded.
+	response = view_gather(feed_id, params, peer)
 	if response.get("error"):
 		remote_error(a, response, 500)
 		return
@@ -4357,8 +4329,9 @@ def action_subscribe(a): # feeds_subscribe
 			peer = mochi.remote.peer(server)
 
 	fp = mochi.entity.fingerprint(feed_id) or ""
-	# populated=0: posts arrive asynchronously from the owner after subscribe;
-	# event_sync_complete flips it to 1 when the owner's terminal signal lands.
+	# populated=0 until a schema arrives and is stored (feed_completed), here or
+	# by the pull the owner's answer to the subscribe starts when this one did
+	# not (event_sync_complete).
 	# Upsert only the sync columns; a re-subscribe must preserve the user's own
 	# banner, sort, read, ai_* and synced columns (replace-into wiped them).
 	mochi.db.execute("insert into feeds ( id, name, subscribers, updated, server, fingerprint, populated ) values ( ?, ?, 1, ?, ?, ?, 0 ) on conflict(id) do update set name=excluded.name, updated=excluded.updated, server=excluded.server, fingerprint=excluded.fingerprint, populated=0",
@@ -4370,20 +4343,25 @@ def action_subscribe(a): # feeds_subscribe
 
 	# The schema, asked for as a subscriber: the owner registers this user
 	# before reading it, so nothing changes between the two unseen. The feed
-	# is held already, so a post the owner broadcasts meanwhile lands.
+	# is held already, so a post the owner broadcasts meanwhile lands. The
+	# stamp holds off a resync an event starts before this reply is stored:
+	# its completion would end the withholding of what the owner removes
+	# meanwhile, and this older reply would then bring it back.
+	mochi.db.execute("update feeds set synced=? where id=?", mochi.time.now(), feed_id)
 	if peer:
 		schema = mochi.remote.request(feed_id, "feeds", "schema", {"register": {"name": a.user.identity.name}}, peer)
 	if schema_arrived(schema):
 		insert_feed_schema(feed_id, schema)
+		feed_completed(feed_id)
+	else:
+		mochi.db.execute("update feeds set synced=0 where id=?", feed_id)
 
 	mochi.log.debug("subscribe: sending P2P message from=%s to=%s", user_id, feed_id)
 	# Register with the owner. For a private feed reached by a bootstrap peer,
 	# send directly to that peer - the feed isn't resolvable via the directory,
 	# and this inbound registration is what teaches the owner our location so
 	# fan-out flows back (#209).
-	# synced tells the owner whether the schema arrived: if not, it replays
-	# the feed's newest posts though asking for the schema registered us.
-	registration = {"name": a.user.identity.name, "synced": schema_arrived(schema)}
+	registration = {"name": a.user.identity.name}
 	if peer:
 		send_result = mochi.message.send.peer(peer, headers(user_id, feed_id, "subscribe"), registration)
 	else:
@@ -4547,6 +4525,41 @@ def action_rename(a):
 
 	return {"data": {"success": True}}
 
+def action_privacy(a):
+	"""Make an owner's feed public or private after it is made: its listing in
+	the directory, the access feed_create gives a public feed (anyone views,
+	anyone signed in comments), and the subscribers' copies. Only a public
+	feed publishes to other networks, so a feed made private is changed here
+	rather than made again."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	user_id = a.user.identity.id
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	if not is_feed_owner(user_id, feed):
+		a.error.label(403, "errors.not_feed_owner")
+		return
+	privacy = a.input("privacy", "")
+	if privacy not in ["public", "private"]:
+		a.error.label(400, "errors.invalid_privacy")
+		return
+	feed_id = feed["id"]
+	mochi.entity.update(feed_id, privacy=privacy)
+	mochi.db.execute("update feeds set privacy=? where id=?", privacy, feed_id)
+	resource = "feed/" + feed_id
+	if privacy == "public":
+		mochi.access.allow("*", resource, "view", user_id)
+		mochi.access.allow("+", resource, "comment", user_id)
+	else:
+		mochi.access.revoke("*", resource, "view")
+		mochi.access.revoke("+", resource, "comment")
+	if owned(feed_id):
+		broadcast_event(feed_id, "update", {"privacy": privacy})
+	return {"data": {"privacy": privacy}}
+
 # Get banner text (owner only, for settings editor)
 def action_banner_get(a):
 	if not a.user:
@@ -4613,8 +4626,9 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name, comment=""):
 # changed 2026-10-30). save(comment) keeps the comment's attachments;
 # account is the one to answer from first where the user has several on a
 # network; made is the replies already published, as a Bluesky app writes
-# one. Answers ({id, feed, post}, None) or (None, failure).
-def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor_input, account, input_id, save, made=None):
+# one; writer is the account an app wrote the comment as, which answers on
+# its network. Answers ({id, feed, post}, None) or (None, failure).
+def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor_input, account, input_id, save, made=None, writer=""):
 	# Get local feed data if available
 	feed = None
 	if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
@@ -4655,7 +4669,7 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 		attachments = save(uid)
 		# The replies from the commenter's own accounts, wherever the post or
 		# the comment answered is on another network.
-		copies = reply_publish(post_id, parent_id, uid, body, account, made)
+		copies = reply_publish(post_id, parent_id, uid, body, account, made, writer)
 
 		set_post_updated(post_id)
 		set_feed_updated(feed_id)
@@ -4718,7 +4732,7 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 	submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": user_name, "attachment": anchor_input}
 	if attachments:
 		submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
-	copies = reply_publish(post_id, parent_id, uid, body, account, made)
+	copies = reply_publish(post_id, parent_id, uid, body, account, made, writer)
 	if copies:
 		submit_data["copies"] = copies
 
@@ -5026,12 +5040,17 @@ def action_post_image(a):
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 	return a.json({"image": rss.get("image", "")})
 
-def link_reachable(link):
-	"""Whether the app holds the grant to fetch from a link's host."""
+def link_server(link):
+	"""A link's host, as a url: grant names it, or '' for a link without one."""
 	parts = link.split("/")
 	if len(parts) < 3 or not parts[2]:
-		return False
-	return mochi.permission.check("url:" + parts[2].split("@")[-1].split(":")[0].lower())
+		return ""
+	return parts[2].split("@")[-1].split(":")[0].lower()
+
+def link_reachable(link):
+	"""Whether the app holds the grant to fetch from a link's host."""
+	server = link_server(link)
+	return bool(server) and mochi.permission.check("url:" + server)
 
 # post_react sets or takes back the user's reaction to a post: on a feed
 # they own, here and for the subscribers; on one they follow, sent to its
@@ -6517,7 +6536,7 @@ def schema_list(schema, name):
 
 # withhold notes a row the owner removed while this subscriber is still taking
 # the feed's schema, so that the schema, read before the removal, does not
-# bring it back. Kept until the subscription completes (event_sync_complete).
+# bring it back. Kept until the subscription completes (feed_completed).
 def withhold(feed_data, object):
 	if feed_data.get("populated") == 0:
 		mochi.db.execute("insert or ignore into withheld (feed, object) values (?, ?)", feed_data["id"], object)
@@ -6651,7 +6670,7 @@ def event_subscribe(e): # feeds_subscribe_event
 		return
 
 	name = e.content("name")
-	if not mochi.text.valid(name, "line"):
+	if type(name) != "string" or not mochi.text.valid(name, "line"):
 		return
 
 	# Private feeds only accept subscribers who already hold view access via an
@@ -6661,31 +6680,18 @@ def event_subscribe(e): # feeds_subscribe_event
 	if not check_event_access(requester, feed_data["id"], "view"):
 		return
 
-	newly = subscriber_register(user_id, feed_data, requester, name)
+	subscriber_register(user_id, feed_data, requester, name)
 
-	# The feed's history goes to a subscription once: its first subscribe
-	# message claims it (joined), so neither a redelivery nor a repeat sends
-	# it again. A subscriber that took the schema was registered by asking for
-	# it, before it was read, so it holds what came before and the broadcast
-	# brings what came after: it is sent nothing. A new one that did not take
-	# it is sent the newest posts, and so is one whose schema failed, which
-	# says so, though asking for it registered it.
-	claimed = mochi.db.execute("update subscribers set joined=? where feed=? and id=? and joined=0", mochi.time.now(), feed_data["id"], requester) > 0
-	if claimed and (newly or e.content("synced") == False):
-		send_recent_posts(user_id, feed_data, requester)
-
-	# Terminal signal: tell the new subscriber the initial bulk content is fully
-	# sent, so it can flip its feed out of the loading state. Sent here (not in
-	# send_recent_posts, which returns early for an empty feed) so it always
-	# fires, even when the feed has no posts.
+	# The subscriber pulls the feed's history itself, from the schema; nothing
+	# is pushed post by post. This answer tells them the subscription is held,
+	# and one whose own pull of the schema never arrived pulls it then
+	# (event_sync_complete).
 	mochi.message.send(headers(feed_data["id"], requester, "sync/complete"), {"feed": feed_data["id"]})
 
-# subscriber_register records requester as a subscriber of the feed, and
-# answers whether they were not one before.
+# subscriber_register records requester as a subscriber of the feed.
 def subscriber_register(user_id, feed_data, requester, name):
-	# Only a genuinely new subscription replays the feed's history and re-announces
-	# the roster; a peer re-sending subscribe must not make the owner re-emit the
-	# whole feed each call (#319).
+	# Only a genuinely new subscription re-announces the roster; a peer
+	# re-sending subscribe must not make the owner re-emit it each call (#319).
 	newly = not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_data["id"], requester)
 
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], requester, name)
@@ -6702,20 +6708,39 @@ def subscriber_register(user_id, feed_data, requester, name):
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		websocket_write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
-	return newly
 
 def event_sync_complete(e): # feeds_sync_complete_event
-	# A subscribed feed's owner has finished pushing the initial posts/comments.
-	# Mark the local copy populated and tell the browser to refresh so the feed
-	# leaves its loading state. from = the feed entity (see send headers above).
+	# The owner answers a subscribe, holding the subscription; from = the feed
+	# entity (see send headers above). A subscription whose own pull of the
+	# schema never arrived - the owner was unreachable when it was made, or
+	# refused it - pulls it now, the owner plainly reachable; feed_completed
+	# then marks it whole, and a pull that fails or is held off is asked again
+	# (schedule_fill). An owner from before pulls were the rule pushes its
+	# history first, which the pull finds held. One reached through no peer and
+	# no server learns the peer the answer came by, so the pull, and every
+	# later resync, can reach it.
 	feed_id = e.header("from")
 	if not feed_id:
 		return
-	mochi.db.execute("update feeds set populated=1 where id=?", feed_id)
+	row = mochi.db.row("select server, populated from feeds where id=?", feed_id)
+	if not row or row["populated"] != 0:
+		return
+	peer = e.header("peer")
+	if not row["server"] and mochi.text.valid(peer, "peer"):
+		mochi.db.execute("update feeds set server=? where id=? and server=''", "p2p/" + peer, feed_id)
+	if not request_resync(feed_id):
+		fill_schedule(feed_id)
+
+# feed_completed(feed_id): a schema arrived and is stored, so a subscription
+# still filling is whole: what was withheld meanwhile goes, and the page
+# leaves its loading state.
+def feed_completed(feed_id):
+	filled = mochi.db.execute("update feeds set populated=1 where id=? and populated=0", feed_id) > 0
 	mochi.db.execute("delete from withheld where feed=?", feed_id)
-	fp = mochi.entity.fingerprint(feed_id)
-	if fp:
-		websocket_write(fp, {"type": "feed/update", "feed": feed_id})
+	if filled:
+		fp = mochi.entity.fingerprint(feed_id)
+		if fp:
+			websocket_write(fp, {"type": "feed/update", "feed": feed_id})
 
 
 def event_unsubscribe(e): # feeds_unsubscribe_event
@@ -6995,6 +7020,13 @@ def event_update(e): # feeds_update_event
 			mochi.db.execute("update feeds set name=?, updated=? where id=?", name, mochi.time.now(), feed_id)
 		return
 
+	# Handle privacy update: the feed made public or private by its owner.
+	privacy = e.content("privacy")
+	if privacy != None:
+		if privacy in ["public", "private"]:
+			mochi.db.execute("update feeds set privacy=?, updated=? where id=?", privacy, mochi.time.now(), feed_id)
+		return
+
 	# Handle banner update, capped to the HTTP path's 10000 (#314).
 	banner = e.content("banner")
 	if banner != None:
@@ -7012,6 +7044,267 @@ def event_update(e): # feeds_update_event
 		return
 
 	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", int(subscribers), mochi.time.now(), feed_id)
+
+# VIEW PARTS
+#
+# Core decodes at most 10,000 elements in one array and 100 MB on one stream,
+# each read within 30 seconds, so a page of a busy feed - every reaction and
+# comment of up to 100 posts - cannot travel as one reply. A view request
+# carrying `part` (a cursor) is answered in parts: the first holds the posts
+# without their reactions and comments, and each after it at most VIEW_ROWS
+# reactions and comments of those posts, about VIEW_BYTES bytes, in key order,
+# with `next` naming the cursor of the part after it. The last part carries no
+# `next`. A request without `part` gets the whole page, as owners before parts
+# answered every one, and a requester takes a reply without the `part` echo as
+# whole.
+VIEW_ROWS = 1000
+VIEW_BYTES = 8388608
+# The most parts a requester follows: core allows an app 600 remote calls a
+# minute to one target.
+VIEW_PARTS = 500
+# The bytes one attachment row is counted as.
+VIEW_ATTACHMENT = 1024
+# The most bytes a cursor key holds. A row whose key is longer could not be
+# resumed after, so the owner never pages one.
+VIEW_KEY = 256
+# The seconds a requester spends gathering a page's parts, well under the time
+# limit of the action it runs in, and the most bytes it holds across them: what
+# one whole reply could carry before parts. Past either it refuses the page.
+VIEW_TIME = 60
+VIEW_GATHERED = 104857600
+VIEW_KEYS = {"posts": [], "reactions": ["post", "comment", "subscriber"], "comments": ["id"]}
+VIEW_LISTS = ["reactions", "comments"]
+
+# view_cursor(value) -> bool: whether value is a part cursor: the list the part
+# starts in, and the key of the last row already sent from it (empty at the
+# start of the list).
+def view_cursor(value):
+	if type(value) != "dict" or len(value) != 2:
+		return False
+	name = value.get("list")
+	if type(name) != "string" or name not in VIEW_KEYS:
+		return False
+	after = value.get("after")
+	if type(after) not in ["list", "tuple"]:
+		return False
+	if after and len(after) != len(VIEW_KEYS[name]):
+		return False
+	for key in after:
+		if type(key) != "string" or len(key) > VIEW_KEY:
+			return False
+	return True
+
+# view_compare(keys, values, last) -> (condition, args): rows whose key sorts
+# after values, or, with last, at or before them.
+def view_compare(keys, values, last=False):
+	clauses = []
+	args = []
+	for index in range(len(keys)):
+		terms = []
+		for earlier in range(index):
+			terms.append(keys[earlier] + "=?")
+			args.append(values[earlier])
+		final = index == len(keys) - 1
+		terms.append(keys[index] + ("<=?" if last and final else ("<?" if last else ">?")))
+		args.append(values[index])
+		clauses.append("(" + " and ".join(terms) + ")")
+	return "(" + " or ".join(clauses) + ")", args
+
+# view_list(source, size, keys, scope, after, budget) -> (rows, key): one
+# list's share of a part, and the key to resume it from, or None when the list
+# is done. The part's first row always fits, so a row larger than the byte
+# budget travels alone; the resume key is the last row sent, not the last row
+# sized, so a row written between the two queries is never stepped over, and
+# the list is done only when every row sized was sent. A row whose key a
+# cursor cannot carry is never paged.
+def view_list(source, size, keys, scope, after, budget):
+	if budget["rows"] <= 0:
+		return [], list(after)
+	beyond, beyond_args = ("1=1", []) if not after else view_compare(keys, after)
+	fits = " and ".join(["length(cast(" + k + " as blob))<=?" for k in keys])
+	fits_args = [VIEW_KEY] * len(keys)
+	order = ", ".join(keys)
+	sizes = mochi.db.rows("select " + order + ", 64 + " + size + " as size from " + source + " and " + beyond + " and " + fits + " order by " + order + " limit ?", *(scope + beyond_args + fits_args + [budget["rows"] + 1])) or []
+	count = 0
+	for row in sizes:
+		if budget["rows"] <= 0:
+			break
+		if budget["taken"] > 0 and row["size"] > budget["bytes"]:
+			break
+		budget["rows"] -= 1
+		budget["bytes"] -= row["size"]
+		budget["taken"] += 1
+		count += 1
+	rows = []
+	if count:
+		upto, upto_args = view_compare(keys, [sizes[count - 1][k] for k in keys], True)
+		rows = list(mochi.db.rows("select * from " + source + " and " + beyond + " and " + upto + " and " + fits + " order by " + order + " limit ?", *(scope + beyond_args + upto_args + fits_args + [count])) or [])
+	if count >= len(sizes) and len(rows) >= count:
+		return rows, None
+	if rows:
+		return rows, [str(rows[-1][k]) for k in keys]
+	if count:
+		return rows, [str(sizes[count - 1][k]) for k in keys]
+	return rows, list(after)
+
+# view_items(e, feed_id, part): a part after the first, holding the reactions
+# and comments of the posts the first part carried, which the requester names.
+# Comments travel flat and formatted as feed_comments formats them for a remote
+# viewer; the requester hangs the reactions on them and builds the tree.
+def view_items(e, feed_id, part):
+	named = e.content("posts")
+	if type(named) not in ["list", "tuple"] or len(named) > 101:
+		e.stream.write({"error": "errors.invalid_data", "code": 400})
+		return
+	ids = [i for i in named if type(i) == "string" and i]
+	held = []
+	if ids:
+		held = [r["id"] for r in mochi.db.rows("select id from posts where feed=? and id in (" + ",".join(["?" for _ in ids]) + ")", feed_id, *ids) or []]
+	reply = {"reactions": [], "comments": [], "part": part}
+	if not held:
+		e.stream.write(reply)
+		return
+	marks = ",".join(["?" for _ in held])
+	scope = [feed_id] + held
+	sources = {
+		"reactions": ("reactions where feed=? and post in (" + marks + ") and reaction!=''", "length(cast(name as blob))"),
+		"comments": ("comments where feed=? and post in (" + marks + ")", "length(cast(body as blob)) + length(cast(name as blob))"),
+	}
+	budget = {"rows": VIEW_ROWS, "bytes": VIEW_BYTES, "taken": 0}
+	after = list(part["after"])
+	next = None
+	for name in VIEW_LISTS[VIEW_LISTS.index(part["list"]):]:
+		rows, last = view_list(sources[name][0], sources[name][1], VIEW_KEYS[name], scope, after, budget)
+		reply[name] = rows
+		if last != None:
+			next = {"list": name, "after": last}
+			break
+		after = []
+
+	# Each comment's attachments ride inside it, charged to the bytes left; a
+	# comment whose attachments overrun them waits for the next part.
+	comments = reply["comments"]
+	attached = attachment_list_many([c["id"] for c in comments], feed_id) if comments else {}
+	anchors = attachment_get_many([c.get("attachment", "") for c in comments]) if comments else {}
+	kept = []
+	for c in comments:
+		attachments = (attached.get(c["id"]) or [])[:attachment_object_maximum]
+		cost = VIEW_ATTACHMENT * len(attachments)
+		if kept and cost > budget["bytes"]:
+			next = {"list": "comments", "after": [kept[-1]["id"]]}
+			break
+		budget["bytes"] -= cost
+		c["feed_fingerprint"] = mochi.entity.fingerprint(c["feed"])
+		if c.get("format", "text") == "markdown":
+			c["body_markdown"] = mochi.text.markdown(c["body"])
+		c["user"] = ""
+		c["attachments"] = attachments
+		anchor = anchors.get(c.get("attachment", "")) if c.get("attachment", "") else None
+		c["attachment_name"] = (anchor.get("caption") or anchor.get("name", "")) if anchor else ""
+		c["attachment_caption"] = anchor.get("caption", "") if anchor else ""
+		c["my_reaction"] = ""
+		kept.append(c)
+	reply["comments"] = kept
+	if next:
+		reply["next"] = next
+	e.stream.write(reply)
+
+# view_gather(feed_id, params, peer) -> the owner's answer to a view request,
+# asked for in parts: each post given its reactions and comment tree, as a
+# whole page carries them. An owner that predates parts answers whole; a page
+# whose parts stopped short, ran past VIEW_TIME or held more than
+# VIEW_GATHERED bytes is an error, never a short page.
+def view_gather(feed_id, params, peer):
+	started = mochi.time.now()
+	first = mochi.remote.request(feed_id, "feeds", "view", dict(params, part={"list": "posts", "after": []}), peer)
+	if type(first) != "dict":
+		return {"error": "errors.remote", "code": 502}
+	if first.get("error") or first.get("part") == None:
+		return first
+	failed = {"error": "errors.remote", "code": 502}
+	posts = [p for p in (first.get("posts") or []) if type(p) == "dict" and type(p.get("id")) == "string"]
+	ids = [p["id"] for p in posts]
+	reactions = []
+	comments = []
+	part = first.get("next")
+	held = len(str(first))
+	for _ in range(VIEW_PARTS):
+		if part == None:
+			break
+		if not view_cursor(part) or mochi.time.now() - started >= VIEW_TIME:
+			return failed
+		reply = mochi.remote.request(feed_id, "feeds", "view", dict(params, part=part, posts=ids), peer)
+		if type(reply) != "dict" or reply.get("error") or reply.get("part") == None:
+			return failed
+		if type(reply.get("reactions")) not in ["list", "tuple"] or type(reply.get("comments")) not in ["list", "tuple"]:
+			return failed
+		if len(reply["reactions"]) + len(reply["comments"]) > VIEW_ROWS:
+			return failed
+		held += len(str(reply))
+		if held > VIEW_GATHERED:
+			return failed
+		reactions.extend(reply["reactions"])
+		comments.extend(reply["comments"])
+		part = reply.get("next")
+	if part != None:
+		return failed
+
+	# Keyed on strings alone: a row naming its post or comment with another type
+	# hangs on nothing rather than raising on an unhashable key.
+	marks = {}
+	for r in reactions:
+		if type(r) == "dict" and type(r.get("post")) == "string" and type(r.get("comment") or "") == "string":
+			marks.setdefault((r["post"], r.get("comment") or ""), []).append(r)
+	threads = {}
+	for c in comments:
+		if type(c) == "dict" and type(c.get("id")) == "string" and type(c.get("post")) == "string":
+			c["reactions"] = marks.get((c["post"], c["id"]), [])
+			threads.setdefault(c["post"], []).append(c)
+	for p in posts:
+		p["reactions"] = marks.get((p["id"], ""), [])
+		p["comments"] = view_tree(threads.get(p["id"], []))
+	first["posts"] = posts
+	first.pop("part", None)
+	first.pop("next", None)
+	return first
+
+# view_tree(comments) -> a post's comment tree from its comments gathered flat:
+# newest first among siblings, as feed_comments orders them. Each id is placed
+# once and the walk has a depth cap: the rows are the owner's word, and `parent`
+# is not a foreign key, so a hostile chain can point anywhere. Sorting and
+# grouping read only values of the type they compare, so a row of another shape
+# cannot raise.
+def view_tree(comments):
+	children = {}
+	seen = {}
+	for c in sorted(comments, key=lambda c: view_number(c.get("created")), reverse=True):
+		parent = c.get("parent")
+		if type(parent) != "string":
+			parent = ""
+		if c["id"] in seen or parent == c["id"]:
+			continue
+		seen[c["id"]] = True
+		children.setdefault(parent, []).append(c)
+	placed = {}
+
+	def branch(parent_id, depth):
+		if depth > 100:
+			return []
+		out = []
+		for c in children.get(parent_id, []):
+			if c["id"] in placed:
+				continue
+			placed[c["id"]] = True
+			c["children"] = branch(c["id"], depth + 1)
+			out.append(c)
+		return out
+
+	return branch("", 0)
+
+# view_number(value) -> value when it is a number, else 0: an owner's field a
+# requester sorts on.
+def view_number(value):
+	return value if type(value) in ["int", "float"] else 0
 
 # Handle view request from non-subscriber (stream-based request/response)
 def event_view(e):
@@ -7035,6 +7328,17 @@ def event_view(e):
 	# NOTE: We do NOT auto-subscribe viewers. Permissions are determined solely by
 	# check_event_access which respects ACLs like "+" (Authenticated users).
 	# Users must explicitly subscribe to receive updates.
+
+	# A part of the page. The gate above runs for every part, so a peer that
+	# loses view access stops at its next part.
+	part = e.content("part")
+	if part != None:
+		if not view_cursor(part):
+			e.stream.write({"error": "errors.invalid_data", "code": 400})
+			return
+		if part["list"] != "posts":
+			view_items(e, feed_id, part)
+			return
 
 	# Read optional query parameters from P2P request. Stream events carry
 	# the payload via e.content() - e.data exists only on schedule events.
@@ -7075,12 +7379,17 @@ def event_view(e):
 		else:
 			post_data["data"] = {}
 		post_data["my_reaction"] = ""
-		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", post["id"])
-		# None, not e.user: on a stream event e.user is the recipient (this feed's
-		# owner), and feed_comments treats its argument as the viewer - stamping
-		# comment["user"], my_reaction and the reaction filter with it. A remote
-		# viewer has no local reaction state.
-		post_data["comments"] = feed_comments(None, post_data, None, 0)
+		if part != None:
+			# The parts after this one carry them.
+			post_data["reactions"] = []
+			post_data["comments"] = []
+		else:
+			post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", post["id"])
+			# None, not e.user: on a stream event e.user is the recipient (this
+			# feed's owner), and feed_comments treats its argument as the viewer
+			# - stamping comment["user"], my_reaction and the reaction filter with
+			# it. A remote viewer has no local reaction state.
+			post_data["comments"] = feed_comments(None, post_data, None, 0)
 		# Raw tags only: a remote viewer's interests live on their own host, so
 		# enriching here would colour their tags by this owner's interests.
 		# action_view enriches for local viewers.
@@ -7113,7 +7422,7 @@ def event_view(e):
 	banner_html = mochi.text.markdown(banner) if banner else ""
 
 	subscribers = mochi.db.row("select subscribers from feeds where id=?", feed_id)
-	e.stream.write({
+	reply = {
 		"name": feed_name,
 		"fingerprint": feed_fingerprint,
 		"privacy": feed_privacy,
@@ -7124,7 +7433,12 @@ def event_view(e):
 		"permissions": permissions,
 		"hasMore": has_more,
 		"nextCursor": next_cursor,
-	})
+	}
+	if part != None:
+		reply["part"] = part
+		if formatted_posts:
+			reply["next"] = {"list": "reactions", "after": []}
+	e.stream.write(reply)
 
 # Handle attachment view request (stream-based request/response)
 def event_attachment_fetch(e):
@@ -7375,7 +7689,7 @@ def action_sources_list(a):
 	for source in sources:
 		if source["type"] == "person/posts" and source.get("account"):
 			source["state"] = source_state(source)
-	return {"data": {"sources": sources}}
+	return {"data": {"sources": sources, "waiting": waiting_servers(feed["id"])}}
 
 # Edit a source (owner only)
 def action_sources_edit(a):
@@ -7639,20 +7953,24 @@ def sources_add_feed(a, feed, source_feed_id, name):
 
 	# Create feed entry if it doesn't exist locally (source subscriptions tracked in sources table)
 	fp = mochi.entity.fingerprint(resolved_id) or ""
-	# populated=0: a source feed's posts arrive asynchronously from the owner;
-	# event_sync_complete flips it to 1 when the owner's terminal signal lands.
+	# populated=0 until a schema arrives and is stored, as in action_subscribe.
 	mochi.db.execute("insert or ignore into feeds (id, name, subscribers, updated, server, fingerprint, populated) values (?, ?, 0, ?, ?, ?, 0)",
 		resolved_id, feed_name, mochi.time.now(), server or "", fp)
 
-	# The schema, asked for as a subscriber, as action_subscribe asks for it
+	# The schema, asked for as a subscriber, and held from a resync until its
+	# reply is stored, as action_subscribe asks for it
+	mochi.db.execute("update feeds set synced=? where id=?", mochi.time.now(), resolved_id)
 	if peer:
 		schema = mochi.remote.request(resolved_id, "feeds", "schema", {"register": {"name": a.user.identity.name}}, peer)
 	if schema_arrived(schema):
 		insert_feed_schema(resolved_id, schema)
+		feed_completed(resolved_id)
+	else:
+		mochi.db.execute("update feeds set synced=0 where id=?", resolved_id)
 
 	# Send P2P subscribe message
 	user_id = a.user.identity.id
-	registration_send(server or "", headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name, "synced": schema_arrived(schema)})
+	registration_send(server or "", headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(resolved_id)
 
 	# Create source record
@@ -9091,6 +9409,9 @@ ACCOUNT_JOBS_INTERVAL = 300
 BLUESKY_LIKES_WINDOW = 30 * 86400
 BLUESKY_LIKERS_PAGES = 10
 BACKUP_INTERVAL = 86400
+# The most a linked Bluesky account's repository may take of the user's
+# storage; the busiest accounts' run to around a hundred megabytes.
+REPOSITORY_MAXIMUM = 1 << 30
 
 # === The accounts ===
 
@@ -9303,7 +9624,9 @@ def publish_media(acc, attachments, limits):
 			omitted = True
 			continue
 		description = text_cut(att.get("description") or att.get("caption") or "", limits["description"])
-		upload = mochi.account.upload(acc["id"], data, mochi.file.type(att["name"]), name=att.get("name", "file"), description=description)
+		# Typed by the bytes: an image over the limit goes as its preview, and
+		# a WebP's preview is a JPEG.
+		upload = mochi.account.upload(acc["id"], data, attachment_sniff(data) or mochi.file.type(att["name"]), name=att.get("name", "file"), description=description)
 		if not upload or not upload.get("id"):
 			omitted = True
 			continue
@@ -9311,14 +9634,16 @@ def publish_media(acc, attachments, limits):
 	return (uploads, omitted)
 
 def mastodon_limits(acc):
+	"""The account's server's limits, as whole numbers: the stored ones come
+	back from JSON as decimals, which a byte count or a cut cannot take."""
 	limits = acc.get("limits") or {}
 	return {
-		"characters": number(limits.get("characters")) or MASTODON_CHARACTERS,
-		"images": number(limits.get("attachments")) or MASTODON_ATTACHMENTS,
+		"characters": int(number(limits.get("characters")) or MASTODON_CHARACTERS),
+		"images": int(number(limits.get("attachments")) or MASTODON_ATTACHMENTS),
 		"video": 1,
-		"image_bytes": number(limits.get("image")) or MASTODON_IMAGE_BYTES,
-		"video_bytes": number(limits.get("video")) or MASTODON_VIDEO_BYTES,
-		"description": number(limits.get("description")) or MASTODON_DESCRIPTION,
+		"image_bytes": int(number(limits.get("image")) or MASTODON_IMAGE_BYTES),
+		"video_bytes": int(number(limits.get("video")) or MASTODON_VIDEO_BYTES),
+		"description": int(number(limits.get("description")) or MASTODON_DESCRIPTION),
 	}
 
 BLUESKY_LIMITS = {"characters": BLUESKY_CHARACTERS, "images": BLUESKY_IMAGES, "video": 1, "image_bytes": BLUESKY_IMAGE_BYTES, "video_bytes": BLUESKY_VIDEO_BYTES, "description": BLUESKY_DESCRIPTION}
@@ -9627,9 +9952,13 @@ def publish_feed(a):
 	return feed
 
 def action_publish_list(a):
-	"""The accounts the feed may publish to and those it does."""
+	"""The accounts the feed may publish to and those it does. A private feed
+	publishes nowhere, and is answered why, for Publish to to say."""
 	feed = publish_feed(a)
 	if not feed:
+		return
+	if feed.get("privacy", "public") != "public":
+		a.error.label(403, "errors.feed_not_public")
 		return
 	a.json({"accounts": [account_present(acc) for acc in publish_accounts()], "publish": publish_list(feed["id"]), "copies": publish_counts(feed["id"]), "generators": publish_generators(feed["id"])})
 
@@ -9909,7 +10238,11 @@ def ingest_account_items(feed, source, acc, items, user_id, deadline):
 			continue
 		if item["created"] and item["created"] <= since:
 			continue
-		if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source["id"], item["guid"]):
+		# Seen by any of the feed's sources, not only this one: a home
+		# timeline carries the account's own statuses, and two timelines can
+		# both follow one person. An item's guid is its network's own id for
+		# it, so the same guid is the same post.
+		if mochi.db.exists("select 1 from source_posts sp join posts p on p.id=sp.post where sp.guid=? and p.feed=?", item["guid"], feed["id"]):
 			continue
 		if published_has(feed["id"], item["remotes"]):
 			continue
@@ -10046,7 +10379,10 @@ def action_import(a):
 		a.error.label(400, "errors.invalid_import")
 		return
 	count, more = import_step(feed, acc, kind, "", a.user.identity.id)
-	a.json({"imported": count, "more": more})
+	answer = {"imported": count, "more": more}
+	if kind == "follows":
+		answer["waiting"] = waiting_servers(feed["id"])
+	a.json(answer)
 
 IMPORT_KINDS = ["posts", "bookmarks", "follows"]
 
@@ -10134,6 +10470,10 @@ def schedule_import(e):
 		import_file_step(e.data.get("import", ""), user_id)
 		return
 	feed = mochi.db.row("select * from feeds where id=?", e.data.get("feed", ""))
+	if kind == "waiting":
+		if feed:
+			waiting_step(feed, e.data.get("server", ""), user_id)
+		return
 	acc = publish_account(e.data.get("account", ""))
 	if not feed or not acc or kind not in IMPORT_KINDS:
 		return
@@ -10281,13 +10621,54 @@ def backup_account(acc):
 		mochi.file.write(name, data)
 	if newest:
 		account_cursor_set(acc["id"], "backup/posts", newest)
-	if acc["type"] == "bluesky" and acc.get("server"):
-		did = (mochi.account.get(acc["id"]) or {}).get("did", "")
-		if did:
-			answer = mochi.account.media(acc["id"], "https://" + acc["server"] + "/xrpc/com.atproto.sync.getRepo?did=" + did)
-			if answer and answer.get("status") == 200 and answer.get("data"):
-				mochi.file.write(directory + "/repository.car", answer["data"])
+	if acc["type"] == "bluesky" and not acc.get("hosted"):
+		backup_repository(acc, directory)
 	account_cursor_set(acc["id"], "backup", "")
+
+def backup_repository(acc, directory):
+	"""A linked Bluesky account's repository as its server exports it, beside
+	its posts; a hosted account's is this server's own. Why the last attempt
+	kept none is kept for Backups to say."""
+	server = acc.get("server", "")
+	did = (mochi.account.get(acc["id"]) or {}).get("did", "")
+	failure = None
+	if not server or not did:
+		failure = {"reason": "identifier"}
+	elif hasattr(mochi.account, "download"):
+		# Streamed to the file: a busy account's repository runs to tens of
+		# megabytes, past what media holds in memory.
+		answer = mochi.account.download(acc["id"], "https://" + server + "/xrpc/com.atproto.sync.getRepo?did=" + did, directory + "/repository.car", maximum=REPOSITORY_MAXIMUM)
+		if not answer.get("status"):
+			failure = {"reason": "fetch", "server": server, "detail": str(answer.get("error", ""))[:200]}
+		elif answer.get("status") != 200 or answer.get("error"):
+			failure = {"reason": "answer", "server": server, "status": answer.get("status"), "detail": str(answer.get("error", ""))[:200]}
+	else:
+		# A core before download: media, up to ten megabytes.
+		answer = mochi.account.media(acc["id"], "https://" + server + "/xrpc/com.atproto.sync.getRepo?did=" + did)
+		if not answer:
+			failure = {"reason": "fetch", "server": server}
+		elif answer.get("status") != 200 or not answer.get("data"):
+			failure = {"reason": "answer", "server": server, "status": answer.get("status") or 0, "detail": str(answer.get("data") or "")[:200]}
+		else:
+			mochi.file.write(directory + "/repository.car", answer["data"])
+	if failure:
+		mochi.log.info("feeds: the backup of %s kept no repository: %s", acc["id"], json.encode(failure))
+	account_cursor_set(acc["id"], "backup/repository", json.encode(failure) if failure else "")
+
+def backup_repository_failure(account):
+	"""Why the last backup of a linked Bluesky account kept no repository, in
+	the user's language, or "" when it kept one or none has run."""
+	cursor, _ = account_cursor(account, "backup/repository")
+	if not cursor:
+		return ""
+	failure = json.decode(cursor)
+	if failure.get("reason") == "fetch" and failure.get("detail"):
+		return mochi.app.label("backups.repository_error", server=failure.get("server", ""), detail=failure.get("detail", ""))
+	if failure.get("reason") == "fetch":
+		return mochi.app.label("backups.repository_fetch", server=failure.get("server", ""))
+	if failure.get("reason") == "answer":
+		return mochi.app.label("backups.repository_answer", server=failure.get("server", ""), status=str(int(failure.get("status") or 0)), detail=failure.get("detail", ""))
+	return mochi.app.label("backups.repository_identifier")
 
 def action_backups(a):
 	"""The archive files of an account the feed publishes to."""
@@ -10298,7 +10679,13 @@ def action_backups(a):
 	if not acc:
 		a.error.label(404, "errors.account_not_linked")
 		return
-	a.json({"files": sorted([str(entry) for entry in mochi.file.list("backups/" + acc["id"]) or []])})
+	# An account none has been made for yet has no directory, which listing
+	# refuses.
+	directory = "backups/" + acc["id"]
+	answer = {"files": sorted([str(entry) for entry in mochi.file.list(directory) or []]) if mochi.file.exists(directory) else []}
+	if acc["type"] == "bluesky" and not acc.get("hosted"):
+		answer["repository"] = backup_repository_failure(acc["id"])
+	a.json(answer)
 
 def action_backup_file(a):
 	"""One archive file, for the owner to download."""
@@ -10603,13 +10990,16 @@ FEDIVERSE_REACTIONS = {"👍": "like", "👎": "dislike", "❤️": "love", "❤
 def replies_schema_create():
 	"""The copies a comment was published as (decision 31): the comment, the
 	account it went out through (empty for a copy another server made), the
-	address, the network, the id there and its page."""
-	mochi.db.execute("create table if not exists replies ( comment text not null, account text not null default '', address text not null, network text not null, remote text not null, url text not null default '', created integer not null, primary key ( comment, address ) )")
+	address, the network, the id there and its page, and the id there of
+	what it answers, so an edit answers the same place again."""
+	mochi.db.execute("create table if not exists replies ( comment text not null, account text not null default '', address text not null, network text not null, remote text not null, url text not null default '', created integer not null, parent text not null default '', primary key ( comment, address ) )")
 	mochi.db.execute("create index if not exists replies_remote on replies( remote )")
+	if not any([c["name"] == "parent" for c in mochi.db.table("replies")]):
+		mochi.db.execute("alter table replies add column parent text not null default ''")
 
 def replies_record(comment_id, account_id, entry):
-	mochi.db.execute("insert or replace into replies ( comment, account, address, network, remote, url, created ) values ( ?, ?, ?, ?, ?, ?, ? )",
-		comment_id, account_id, entry["address"], entry["network"], entry["remote"], entry.get("url", ""), mochi.time.now())
+	mochi.db.execute("insert or replace into replies ( comment, account, address, network, remote, url, created, parent ) values ( ?, ?, ?, ?, ?, ?, ?, ? )",
+		comment_id, account_id, entry["address"], entry["network"], entry["remote"], entry.get("url", ""), mochi.time.now(), entry.get("parent", ""))
 
 def replies_store(comment_id, copies):
 	"""Keep the copies a comment event carries, and answer them as the event
@@ -10703,14 +11093,17 @@ def reply_network(network):
 	fediverse and linked Mastodon accounts are both on the fediverse."""
 	return "bluesky" if network == "bluesky" else "fediverse"
 
-def reply_plan(post_id, parent_id, preferred=""):
+def reply_plan(post_id, parent_id, preferred="", writer="", answered=""):
 	"""The replies a comment goes out as: one from each of the commenter's
 	own accounts that holds a place the comment answers - the account the
 	post came through or went out from, or the comment it answers came
 	through - and for a place no account of theirs holds, one from their
 	account on that network, the one named first, else their first there.
-	A network with no account of theirs is not answered on. Answers
-	[(account, place)], an account at most once."""
+	A network with no account of theirs is not answered on. A comment an
+	app wrote as one of the accounts, the writer, is that account's on its
+	network: it answers the place its reply answered, given by its id there,
+	else the place there it holds, else the first there, whichever account
+	holds it. Answers [(account, place)], an account at most once."""
 	places = reply_places(post_id, parent_id)
 	if not places:
 		return []
@@ -10721,6 +11114,13 @@ def reply_plan(post_id, parent_id, preferred=""):
 		network = reply_network(acc["type"])
 		if network not in defaults or acc["id"] == preferred:
 			defaults[network] = acc
+	target = answered
+	if writer in mine and not target:
+		network = reply_network(mine[writer]["type"])
+		there = [p for p in places if reply_network(p["network"]) == network]
+		held = [p for p in there if p["account"] == writer]
+		if held or there:
+			target = (held or there)[0]["remote"]
 	plan = []
 	used = {}
 	for place in places:
@@ -10728,6 +11128,8 @@ def reply_plan(post_id, parent_id, preferred=""):
 		acc = mine.get(place["account"])
 		if not acc or reply_network(acc["type"]) != network:
 			acc = defaults.get(network)
+		if target and place["remote"] == target and writer in mine and reply_network(mine[writer]["type"]) == network:
+			acc = mine[writer]
 		if not acc or acc["id"] in used:
 			continue
 		used[acc["id"]] = True
@@ -10830,27 +11232,40 @@ def reply_object(acc, comment_id, place, body):
 	return None
 
 def reply_made(acc, comment, body):
-	"""The reply a comment went out as from an account, made again as the plan
-	has it: for an edit, and for the network to fetch it by its id."""
+	"""The reply a comment went out as from an account, made again where it
+	answers: for an edit, and for the network to fetch it by its id. None
+	where that place is gone. A reply kept before replies kept what they
+	answer is placed as the plan has it."""
+	row = mochi.db.row("select parent from replies where comment=? and account=?", comment["id"], acc["id"])
+	answered = str(row["parent"] or "") if row else ""
+	if answered:
+		for place in reply_places(comment["post"], comment.get("parent", "") or ""):
+			if place["remote"] == answered:
+				return reply_object(acc, comment["id"], place, body)
+		return None
 	for chosen, place in reply_plan(comment["post"], comment.get("parent", "") or "", acc["id"]):
 		if chosen["id"] == acc["id"]:
 			return reply_object(acc, comment["id"], place, body)
 	return None
 
-def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None):
+def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None, writer=""):
 	"""Publish a comment wherever the post, or the comment it answers, is on
 	another network (decision 31, as changed 2026-10-30): a reply from each
 	account the plan names, the account named first where the plan leaves
-	the choice; a reply the commenter already made there, as a Bluesky app
-	writes one, is recorded and not made again. Answers the copies, for the
+	the choice, and the writer, the account an app wrote the comment as,
+	answering on its network. A reply the commenter already made there, as a
+	Bluesky app writes one, is recorded and not made again, its account the
+	writer of the place it answers (its parent). Answers the copies, for the
 	comment's event."""
 	entries = []
 	done = {}
+	answered = ""
 	for entry in made or []:
 		replies_record(comment_id, entry["account"], entry)
 		done[entry["account"]] = True
+		writer, answered = entry["account"], entry.get("parent", "")
 		entries.append({"address": entry["address"], "network": entry["network"], "remote": entry["remote"], "url": entry.get("url", "")})
-	for acc, place in reply_plan(post_id, parent_id, preferred):
+	for acc, place in reply_plan(post_id, parent_id, preferred, writer, answered):
 		if acc["id"] in done:
 			continue
 		object = reply_object(acc, comment_id, place, body)
@@ -10862,7 +11277,7 @@ def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None)
 			mochi.log.warn("Feeds could not publish comment %s from %s", comment_id, acc.get("identifier", acc["id"]))
 			continue
 		entry = {"address": acc.get("identifier", ""), "network": acc["type"], "remote": str(result["id"]), "url": str(result.get("url", "") or "")}
-		replies_record(comment_id, acc["id"], entry)
+		replies_record(comment_id, acc["id"], dict(entry, parent=place["remote"]))
 		entries.append(entry)
 	return entries
 
@@ -11556,10 +11971,11 @@ def person_feeds(found):
 	urls.append(base + "/users/" + name + ".atom")
 	return urls
 
-def person_feed(found):
-	"""The first web feed of a person's or community's that answers, with its
-	document, or (None, None)."""
-	for url in person_feeds(found):
+def person_feed(found, urls=None):
+	"""The first web feed of a person's or community's that answers, of urls
+	or else of every form their server may use, with its document, or (None,
+	None)."""
+	for url in (person_feeds(found) if urls == None else urls):
 		result = mochi.rss.fetch(url, {})
 		status = result.get("status", 0)
 		if status >= 200 and status < 300 and (result.get("items") or result.get("title")):
@@ -11747,6 +12163,8 @@ def sanitize_quote(quote):
 		"network": str(quote.get("network", "") or ""),
 		"url": url,
 		"id": str(quote.get("id", "") or "")[:2048],
+		# A Bluesky post's content id, which a quote of it there names.
+		"cid": str(quote.get("cid", "") or "")[:200],
 		"text": text_cut(text, QUOTE_TEXT),
 		"image": image,
 		"created": number(quote.get("created", 0)),
@@ -11828,11 +12246,69 @@ def follow_source(feed, follow, user_id, acc=None):
 			return False
 		source, _ = person_follow_create(feed, found, acc, follow["name"] or found["name"], user_id)
 		return bool(source)
-	url, result = person_feed(found)
-	if not url or mochi.db.exists("select 1 from sources where feed=? and url=?", feed_id, url):
+	# Only the servers the app may read are asked. A person whose web feed
+	# could only be on one it may not waits for the user to allow it, rather
+	# than the refusal ending the import.
+	urls = person_feeds(found)
+	allowed = [u for u in urls if link_reachable(u)]
+	url, result = person_feed(found, allowed)
+	if not url:
+		refused = [u for u in urls if u not in allowed]
+		if refused:
+			waiting_add(feed_id, link_server(refused[0]), follow, found)
+		return False
+	mochi.db.execute("delete from waiting where feed=? and identifier=?", feed_id, follow["identifier"])
+	if mochi.db.exists("select 1 from sources where feed=? and url=?", feed_id, url):
 		return False
 	rss_source_create(feed_id, url, follow["name"] or found["name"], result, user_id)
 	return True
+
+def waiting_add(feed_id, server, follow, found):
+	"""A person an import could not add yet: their web feed is on a server the
+	app may not read until the user allows it."""
+	mochi.db.execute("insert into waiting (feed, server, network, identifier, name, created) values (?, ?, ?, ?, ?, ?) on conflict (feed, identifier) do update set server=excluded.server",
+		feed_id, server, follow["network"], follow["identifier"], follow["name"] or found["name"], mochi.time.now())
+
+def waiting_servers(feed_id):
+	"""The servers people of a feed's imports wait on, each with how many."""
+	return [{"server": row["server"], "count": row["count"]} for row in mochi.db.rows("select server, count(*) as count from waiting where feed=? group by server order by min(created)", feed_id)]
+
+def waiting_step(feed, server, user_id):
+	"""A step of adding the people who waited on a server, once the app may
+	read it: each tried again until the step's budget is spent, the next step
+	booked for the rest. Answers (count, more)."""
+	if not server or not mochi.permission.check("url:" + server):
+		return (0, False)
+	deadline = mochi.time.now() + FOLLOWS_BUDGET
+	count = 0
+	for row in mochi.db.rows("select * from waiting where feed=? and server=? order by created", feed["id"], server):
+		if mochi.time.now() >= deadline:
+			mochi.schedule.after("schedule_import", {"feed": feed["id"], "kind": "waiting", "server": server}, 2)
+			return (count, True)
+		mochi.db.execute("delete from waiting where feed=? and identifier=?", feed["id"], row["identifier"])
+		if follow_source(feed, {"network": row["network"], "identifier": row["identifier"], "name": row["name"]}, user_id):
+			count += 1
+	return (count, False)
+
+def action_sources_allow(a):
+	"""Add the people of a feed's imports who waited on a server, once the
+	user has let the app read it: the first within this request's budget,
+	the rest in scheduled steps. Answers how many were added so far, whether
+	more follow, and the servers still waited on. Without the grant it is
+	refused with the permission named, so the client asks the user for it
+	and tries again, as adding a source does."""
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	feed = get_feed(a)
+	if not feed or not is_feed_owner(a.user.identity.id, feed):
+		a.error.label(403, "errors.access_denied")
+		return
+	server = a.input("server", "")
+	if server:
+		mochi.permission.require("url:" + server)
+	count, more = waiting_step(feed, server, a.user.identity.id)
+	return {"data": {"imported": count, "more": more, "waiting": waiting_servers(feed["id"])}}
 
 def import_follows_step(feed, acc, cursor, user_id):
 	"""A step of a follows import: the follows of one page from where the last
@@ -12829,7 +13305,7 @@ def action_sources_import(a):
 	import_id = mochi.uid()
 	mochi.db.execute("insert into imports (id, feed, account, addresses, position, created) values (?, ?, ?, ?, 0, ?)", import_id, feed["id"], acc["id"] if acc else "", json.encode(addresses), mochi.time.now())
 	count, more = import_file_step(import_id, a.user.identity.id)
-	return {"data": {"imported": count, "more": more, "total": len(addresses)}}
+	return {"data": {"imported": count, "more": more, "total": len(addresses), "waiting": waiting_servers(feed["id"])}}
 
 def import_file_step(import_id, user_id):
 	"""A step of a follow list import: the addresses from where the last step

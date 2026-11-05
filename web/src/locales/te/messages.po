@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# కాపీ} other {# కాపీలు}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# ఫైల్ మార్చబడింది} other {# ఫైల్‌లు మార్చబడ్డాయి}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {అనుసరిస్తున్న # ఖాతా దిగుమతి చేయబడింది} other {అనుసరిస్తున్న # ఖాతాలు దిగుమతి చేయబడ్డాయి}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {అనుసరిస్తున్న # ఖాతా 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# కొత్త పోస్ట్} other {# కొత్త పోస్ట్‌లు}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# వ్యక్తి} other {# వ్యక్తులు}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# లోపలిది} other {+# లోపలివి}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# మూలం జోడించబడింది} other {# మూలాలు జోడించబడ్డాయి}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "వీక్షణను జోడించండి"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "ఇప్పటివరకు {0} మూలాలు జోడించబడ్డాయి; మిగిలినవి తర్వాత వస్తాయి"
 
@@ -476,11 +485,17 @@ msgstr "అన్ని ఫీడ్‌లు"
 msgid "All marked as read"
 msgstr "అన్నీ చదివినట్లుగా గుర్తించబడ్డాయి"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "అనుమతించండి"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "{entityLabel} కోసం వెతకడానికి ఎవరినైనా అనుమతించు"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "ఎవరికైనా ఫీడ్‌ను శోధించడానికి అనుమతించండి"
 
@@ -1072,6 +1087,10 @@ msgstr "సందర్భోచిత సమాచారం మరియు వ
 msgid "Continue"
 msgstr "కొనసాగించండి"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "{server}లో కొనసాగించండి"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "ఈ థ్రెడ్‌ను కొనసాగించండి"
@@ -1454,6 +1473,8 @@ msgstr "డౌన్‌లోడ్ చేయండి"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "డౌన్‌లోడ్ విఫలమైంది"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "ప్రత్యుత్తరాన్ని జోడించడంలో విఫలమైంది. దయచేసి మళ్లీ ప్రయత్నించండి."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "మూలాన్ని జోడించడంలో విఫలమైంది"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "అనుసరిస్తున్న ఖాతాలను దిగుమతి చేయడం విఫలమైంది"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "లోడ్ చేయడంలో విఫలమైంది"
 
@@ -1818,6 +1841,7 @@ msgstr "RSS యాక్సెస్ ఉపసంహరించడంలో వ
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "సేవ్ చేయడంలో విఫలమైంది"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "ఇప్పటివరకు {0} దిగుమతి చేయబడ్డాయి; మిగిలినవి తర్వాత వస్తాయి"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "అనుసరిస్తున్న {0} ఖాతాలను దిగుమతి చేస్తోంది; ఇప్పటివరకు {1} జోడించబడ్డాయి"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "డేటా దిగుమతి అవుతోంది..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "ఈ బ్రౌజర్‌లో వాయిస్ రికార్
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "ఓటు వేయండి"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "అనుమతి కోసం వేచి ఉంది"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "అనుమతి కోసం వేచి ఉంది: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

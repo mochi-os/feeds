@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# kopija} two {# kopiji} few {# kopije} other {# kopij}
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# datoteka spremenjena} two {# datoteki spremenjeni} few {# datoteke spremenjene} other {# datotek spremenjenih}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {Uvožen # spremljani račun} two {Uvožena # spremljana računa} few {Uvoženi # spremljani računi} other {Uvoženih # spremljanih računov}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {Uvožen # spremljani račun} two {Uvožena # spremljana
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nova objava} two {# novi objavi} few {# nove objave} other {# novih objav}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# oseba} two {# osebi} few {# osebe} other {# oseb}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ugnezdena} two {+# ugnezdeni} few {+# ugnezdene} other {+# ugnezdenih}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {Dodan # vir} two {Dodana # vira} few {Dodani # viri} other {Dodanih # virov}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Dodaj pogled"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Doslej dodani viri: {0}; ostali bodo sledili"
 
@@ -476,11 +485,17 @@ msgstr "Vsi kanali"
 msgid "All marked as read"
 msgstr "Vse označeno kot prebrano"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Dovoli"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "Dovoli vsem, da poiščejo {entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "Dovoli vsem iskanje kanala"
 
@@ -1072,6 +1087,10 @@ msgstr "Kontekstualne informacije in podrobnosti."
 msgid "Continue"
 msgstr "Nadaljuj"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "Nadaljuj na {server}"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "Nadaljuj to nit"
@@ -1454,6 +1473,8 @@ msgstr "Prenesi"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "Prenos ni uspel"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Neuspešno dodajanje odgovora. Poskusite znova."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Neuspešno dodajanje vira"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "Uvoz spremljanih računov ni uspel"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "Nalaganje ni uspelo"
 
@@ -1818,6 +1841,7 @@ msgstr "Odvzem dostopa RSS ni uspel"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "Shranjevanje ni uspelo"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Doslej uvoženo: {0}; ostalo bo sledilo"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "Uvažanje spremljanih računov: {0}; doslej dodanih: {1}"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Uvažanje podatkov..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "Snemanje glasu v tem brskalniku ni podprto"
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Glasuj"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Čakanje na dovoljenje"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Čakanje na dovoljenje: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

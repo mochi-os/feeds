@@ -46,6 +46,7 @@ const endpoints = {
     posts: (feedId: string) => `${feedId}/-/posts`,
     delete: (feedId: string) => `${feedId}/-/delete`,
     rename: (feedId: string) => `${feedId}/-/rename`,
+    privacy: (feedId: string) => `${feedId}/-/privacy`,
     bannerGet: (feedId: string) => `${feedId}/-/banner/get`,
     bannerSet: (feedId: string) => `${feedId}/-/banner/set`,
 
@@ -146,6 +147,7 @@ const endpoints = {
     sourcesPoll: (feedId: string) => `${feedId}/-/sources/poll`,
     sourcesFollow: (feedId: string) => `${feedId}/-/sources/follow`,
     sourcesImport: (feedId: string) => `${feedId}/-/sources/import`,
+    sourcesAllow: (feedId: string) => `${feedId}/-/sources/allow`,
     // Keyword filters on a feed
     filters: (feedId: string) => `${feedId}/-/filters`,
     filtersAdd: (feedId: string) => `${feedId}/-/filters/add`,

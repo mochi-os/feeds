@@ -13,6 +13,7 @@ import type { FeedPost } from '@/types'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import {
+  act,
   render,
   screen,
   fireEvent,
@@ -22,6 +23,7 @@ import {
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { feedsApi } from '@/api/feeds'
+import { changePost } from '@/lib/patch'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { FeedPosts } from './feed-posts'
 
@@ -61,10 +63,23 @@ vi.mock('@/api/feeds', () => ({
         hosted: true,
       },
     ]),
-    boostPost: vi.fn().mockResolvedValue({ copies: [] }),
+    boostPost: vi.fn().mockResolvedValue({
+      copies: [
+        {
+          address: 'me.example.com',
+          network: 'bluesky',
+          remote: 'at://did:plc:me/app.bsky.feed.repost/1',
+          url: '',
+        },
+      ],
+    }),
     pinPost: vi.fn().mockResolvedValue({ pinned: 1 }),
+    moderateComment: vi.fn(),
   },
 }))
+
+// What an action answered changes the post where it is cached.
+vi.mock('@/lib/patch', () => ({ changePost: vi.fn() }))
 
 // The card's children each pull their own API/store graph; the behaviour
 // under test lives on the card itself, so they render as nothing. The thread
@@ -75,6 +90,11 @@ vi.mock('./comment-thread', () => ({
     avatars?: ReadonlyMap<string, string>
     onReplyDraftChange: (value: string) => void
     onSubmitReply: (commentId: string) => void | Promise<void>
+    onModerate?: (
+      commentId: string,
+      action: 'block' | 'mute' | 'report',
+      reason?: string
+    ) => void | Promise<void | boolean>
   }) => (
     <div>
       <span data-testid='avatar-source'>
@@ -91,6 +111,18 @@ vi.mock('./comment-thread', () => ({
         onClick={() => void props.onSubmitReply(props.comment.id)}
       >
         Send reply
+      </button>
+      <button
+        type='button'
+        onClick={() =>
+          void Promise.resolve(
+            props.onModerate?.(props.comment.id, 'report', 'Spam')
+          ).then((done) => {
+            document.body.dataset.moderated = String(done)
+          })
+        }
+      >
+        Report
       </button>
     </div>
   ),
@@ -188,6 +220,49 @@ describe('FeedPosts card navigation', () => {
     vi.clearAllMocks()
   })
 
+  // A moderation the server refuses answers false, for the dialog that asked
+  // to stay open with the reason typed into it.
+  it.each([
+    ['refused', 'false'],
+    ['taken', 'true'],
+  ])('a report %s answers %s', async (outcome, answer) => {
+    delete document.body.dataset.moderated
+    vi.mocked(feedsApi.moderateComment).mockImplementation(() =>
+      outcome === 'refused'
+        ? Promise.reject(new Error('The report could not be delivered'))
+        : Promise.resolve({} as never)
+    )
+    renderPosts([
+      {
+        ...post(),
+        comments: [
+          {
+            id: 'c1',
+            subscriberId: 'https://remote.example/u/bob',
+            author: 'Bob',
+            created: 1,
+            body: 'Nice',
+            format: 'html',
+            reactions: createReactionCounts(),
+            userReaction: null,
+            replies: [],
+          },
+        ],
+      },
+    ])
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Report' }))
+    })
+    await waitFor(() => expect(document.body.dataset.moderated).toBe(answer))
+    expect(feedsApi.moderateComment).toHaveBeenCalledWith(
+      'feed-1',
+      'post-1',
+      'c1',
+      'report',
+      'Spam'
+    )
+  })
+
   it('navigates to the post when the card is clicked', () => {
     renderPosts()
 
@@ -252,9 +327,13 @@ describe('FeedPosts card navigation', () => {
     await user.click(
       within(card('post-2')).getByRole('button', { name: 'More options' })
     )
-    await user.click(await screen.findByText('Edit post'))
+    // A prevented click leaves the menu open behind the question in a
+    // browser (the test DOM closes it anyway), so the click is checked.
+    const item = await screen.findByRole('menuitem', { name: 'Edit post' })
+    expect(fireEvent.click(item)).toBe(true)
 
     expect(screen.getByText('Discard draft?')).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
     // Still the first post's editor, still holding what was typed.
     expect(screen.getByDisplayValue('Edited but not saved')).toBeInTheDocument()
     expect(screen.queryByDisplayValue('Second post')).not.toBeInTheDocument()
@@ -481,6 +560,11 @@ describe('FeedPosts boosting a post from another network', () => {
       true
     )
     expect(screen.queryByText('Boost from @me@example.com')).toBeNull()
+    // The copies the boost left change the post wherever it is shown, its
+    // own page included, so its menu then offers to take the boost back.
+    expect(changePost).toHaveBeenCalledWith(expect.anything(), 'post-1', {
+      copies: [expect.objectContaining({ network: 'bluesky' })],
+    })
   })
 
   it('boosts a post from the fediverse from the hosted fediverse account', async () => {
@@ -515,6 +599,27 @@ describe('FeedPosts boosting a post from another network', () => {
   })
 })
 
+// Delete asks first: the menu closes as the question opens, rather than
+// staying open behind it.
+describe('FeedPosts deleting a post', () => {
+  it('closes the menu when the confirmation opens', async () => {
+    const user = userEvent.setup()
+    renderPosts()
+    await user.click(
+      within(card()).getByRole('button', { name: 'More options' })
+    )
+    // A prevented click skips the select that closes a Radix menu. The test
+    // DOM closes it anyway when the dialog takes focus, a browser does not,
+    // so the click itself is what is checked.
+    const item = await screen.findByRole('menuitem', { name: 'Delete post' })
+    expect(fireEvent.click(item)).toBe(true)
+    expect(
+      await screen.findByText(/Are you sure you want to delete this post/)
+    ).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+  })
+})
+
 // Pinning is done where the menu was opened: the menu closes on it, as on
 // every item that does its work in place.
 describe('FeedPosts pinning a post', () => {
@@ -526,6 +631,9 @@ describe('FeedPosts pinning a post', () => {
     )
     await user.click(await screen.findByText('Pin post'))
     expect(feedsApi.pinPost).toHaveBeenCalledWith('feed-1', 'post-1', true)
+    expect(changePost).toHaveBeenCalledWith(expect.anything(), 'post-1', {
+      pinned: 1,
+    })
     await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
   })
 })

@@ -64,7 +64,7 @@ export function PostPoll({
     try {
       const answer = await feedsApi.votePoll(feedId, postId, chosen)
       onVoted?.(
-        (answer as { poll?: PostPollData }).poll ?? poll,
+        answer.poll ?? poll,
         answer.voted ?? chosen
       )
     } catch (error) {

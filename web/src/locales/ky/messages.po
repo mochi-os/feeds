@@ -70,7 +70,7 @@ msgstr "{0, plural, one {# көчүрмө} other {# көчүрмө}}"
 msgid "{0, plural, one {# file changed} other {# files changed}}"
 msgstr "{0, plural, one {# файл өзгөртүлдү} other {# файл өзгөртүлдү}}"
 
-#. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {# follow imported} other {# follows imported}}"
 msgstr "{0, plural, one {# жазылуу импорттолду} other {# жазылуу импорттолду}}"
@@ -80,6 +80,11 @@ msgstr "{0, plural, one {# жазылуу импорттолду} other {# жа�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# жаңы жазуу} other {# жаңы жазуу}}"
+
+#. placeholder {0}: w.count
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# адам} other {# адам}}"
 
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
@@ -101,7 +106,9 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ичине салынган} other {+# ичине салынган}}"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0, plural, one {Added # source} other {Added # sources}}"
 msgstr "{0, plural, one {# булак кошулду} other {# булак кошулду}}"
 
@@ -418,7 +425,9 @@ msgid "Add view"
 msgstr "Көрүнүш кошуу"
 
 #. placeholder {0}: answer.imported
+#. placeholder {0}: result.added
 #: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Added {0} sources so far; the rest follow"
 msgstr "Азырынча {0} булак кошулду; калганы кийин кошулат"
 
@@ -476,11 +485,17 @@ msgstr "Бардык түрмөктөр"
 msgid "All marked as read"
 msgstr "Баары окулган деп белгиленди"
 
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Allow"
+msgstr "Уруксат берүү"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Allow anyone to search for {entityLabel}"
 msgstr "Бардыгы {entityLabel} издей алсын"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Allow anyone to search for feed"
 msgstr "Түрмөктү издөөгө ар кимге уруксат берүү"
 
@@ -1072,6 +1087,10 @@ msgstr "Контексттик маалымат жана деталдар."
 msgid "Continue"
 msgstr "Улантуу"
 
+#: src/features/feeds/components/follow-button.tsx
+msgid "Continue on {server}"
+msgstr "{server} серверинде улантуу"
+
 #: ../../../lib/web/src/components/comment-thread-context.tsx
 msgid "Continue this thread"
 msgstr "Бул талкууну улантуу"
@@ -1454,6 +1473,8 @@ msgstr "Жүктөп алуу"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
+#: src/features/feeds/components/publishing-section.tsx
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Download failed"
 msgstr "Жүктөп алуу ишке ашкан жок"
 
@@ -1600,6 +1621,7 @@ msgid "Failed to add reply. Please try again."
 msgstr "Жооп кошуу ишке ашкан жок. Кайра аракет кылыңыз."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to add source"
 msgstr "Булак кошуу ишке ашкан жок"
 
@@ -1690,6 +1712,7 @@ msgid "Failed to import follows"
 msgstr "Жазылууларды импорттоо ишке ашкан жок"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
+#: src/features/feeds/components/publishing-section.tsx
 msgid "Failed to load"
 msgstr "Жүктөө ишке ашкан жок"
 
@@ -1818,6 +1841,7 @@ msgstr "RSS мүмкүнчүлүгүн кайтарып алуу ишке ашк
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to save"
 msgstr "Сактоо ишке ашкан жок"
 
@@ -2172,10 +2196,15 @@ msgid "Imported {0} so far; the rest follow"
 msgstr "Азырынча {0} импорттолду; калганы кийин"
 
 #. placeholder {0}: answer.total
-#. placeholder {1}: answer.imported
+#. placeholder {1}: result.added
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Importing {0} follows; {1} added so far"
 msgstr "{0} жазылуу импорттолууда; азырынча {1} кошулду"
+
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Importing data..."
+msgstr "Маалыматтар импорттолууда..."
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -4151,6 +4180,16 @@ msgstr "Үн жазуу бул браузерде колдоого алынба�
 #: src/features/feeds/components/post-poll.tsx
 msgid "Vote"
 msgstr "Добуш берүү"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission"
+msgstr "Уруксат күтүлүүдө"
+
+#. placeholder {0}: formatList(allowed.waiting)
+#: src/features/feeds/components/publishing-section.tsx
+#: src/routes/_authenticated/$feedId_.sources.tsx
+msgid "Waiting for permission: {0}"
+msgstr "Уруксат күтүлүүдө: {0}"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx

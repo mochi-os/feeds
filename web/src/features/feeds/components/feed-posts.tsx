@@ -97,6 +97,7 @@ import {
   X,
 } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
+import { changePost } from '@/lib/patch'
 import { authorAssets } from '../author-assets'
 import {
   buildFeedPostEditDraft,
@@ -282,7 +283,7 @@ export type PostCommentsListProps = {
     commentId: string,
     action: 'block' | 'mute' | 'report',
     reason?: string
-  ) => void | Promise<void>
+  ) => void | Promise<void | boolean>
   onSearchPeople: (query: string) => Promise<MentionUser[]>
   currentUserId?: string
   canReact: boolean
@@ -365,14 +366,14 @@ export function PostCommentsList({
       )
     : undefined
   const [suppressBatchReveal, setSuppressBatchReveal] = useState(false)
-  const [commentsListRef] = useListAutoAnimate<HTMLDivElement>({
-    disabled: suppressBatchReveal,
-  })
-
   const source = filter ? post.comments.filter(filter) : post.comments
   const visibleComments = isExpanded
     ? source
     : source.slice(0, INITIAL_COMMENT_COUNT)
+  const [commentsListRef] = useListAutoAnimate<HTMLDivElement>({
+    disabled: suppressBatchReveal,
+    count: focused ? 1 : visibleComments.length,
+  })
   const remaining = source.length - INITIAL_COMMENT_COUNT
 
   useLayoutEffect(() => {
@@ -497,6 +498,7 @@ export function FeedPosts({
   const { formatTimestamp } = useFormat()
   const [listRef] = useListAutoAnimate<HTMLDivElement>({
     disabled: isFetchingNextPage,
+    count: posts.length,
   })
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
@@ -644,14 +646,20 @@ export function FeedPosts({
       if (!account) return
       const boosted = isBoosted(post)
       try {
-        await feedsApi.boostPost(post.feedId, post.id, account.id, !boosted)
+        const { copies } = await feedsApi.boostPost(
+          post.feedId,
+          post.id,
+          account.id,
+          !boosted
+        )
+        changePost(queryClient, post.id, { copies })
         await reloadPosts(post.feedId)
         toast.success(boosted ? t`Boost taken back` : t`Boosted`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not boost`))
       }
     },
-    [boostAccountFor, isBoosted, reloadPosts]
+    [boostAccountFor, isBoosted, queryClient, reloadPosts]
   )
   // A post behind a content warning shows its warning until the reader asks
   // for the rest.
@@ -681,8 +689,10 @@ export function FeedPosts({
               ? t`Muted`
               : t`Reported`
         )
+        return true
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not do that`))
+        return false
       }
     },
     []
@@ -1991,7 +2001,7 @@ export function FeedPosts({
                                     <>
                                       <DropdownMenuItem
                                         onClick={(e) => {
-                                          e.preventDefault()
+                                          // Prevented, the menu stays open.
                                           e.stopPropagation()
                                           handleStartEdit(post)
                                         }}
@@ -2046,7 +2056,8 @@ export function FeedPosts({
                                         )}
                                       <DropdownMenuItem
                                         onClick={(e) => {
-                                          e.preventDefault()
+                                          // Prevented, the menu stays open
+                                          // behind the confirmation.
                                           e.stopPropagation()
                                           setDeletingPost({
                                             id: post.id,
