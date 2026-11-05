@@ -84,6 +84,7 @@ export function FeedsListPage({
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
+  const adjustUnread = useFeedsStore((state) => state.adjustUnread)
   const defaultSort = useFeedsStore((state) => state.defaultSort)
   const setDefaultSort = useFeedsStore((state) => state.setDefaultSort)
   const sort: SortType = (
@@ -474,26 +475,45 @@ export function FeedsListPage({
   )
 
   const handleMarkAllRead = useCallback(async () => {
+    // Badges and posts show read on the click. A refusal puts back only what
+    // this marked, so posts loaded meanwhile are left as they are, and adds
+    // the counts back rather than setting them, so new posts still count.
+    const now = Date.now()
+    const counts = subscribedFeeds.map(
+      (feed) => [feed.id, feed.unreadPosts] as const
+    )
+    const marked = new Set<string>()
+    for (const feed of subscribedFeeds) setUnread(feed.id, 0)
+    setPostsByFeed((current) => {
+      const updated: typeof current = {}
+      for (const key of Object.keys(current)) {
+        updated[key] = current[key].map((p) => {
+          if (p.read) return p
+          marked.add(p.id)
+          return { ...p, read: now }
+        })
+      }
+      return updated
+    })
     try {
-      const now = Date.now()
       // One class-level request marks every subscribed/owned feed read, instead
       // of a per-feed fan-out (#176).
       await feedsApi.readAllAggregate()
-      for (const feed of subscribedFeeds) setUnread(feed.id, 0)
-      setPostsByFeed((current) => {
-        const updated: typeof current = {}
-        for (const key of Object.keys(current)) {
-          updated[key] = current[key].map((p) =>
-            p.read ? p : { ...p, read: now }
-          )
-        }
-        return updated
-      })
       toast.success(t`All marked as read`)
     } catch (error) {
+      for (const [id, count] of counts) adjustUnread(id, count)
+      setPostsByFeed((current) => {
+        const restored: typeof current = {}
+        for (const key of Object.keys(current)) {
+          restored[key] = current[key].map((p) =>
+            marked.has(p.id) && p.read === now ? { ...p, read: 0 } : p
+          )
+        }
+        return restored
+      })
       toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
-  }, [subscribedFeeds, setUnread, setPostsByFeed, t])
+  }, [subscribedFeeds, setUnread, adjustUnread, setPostsByFeed, t])
 
   useEffect(() => {
     void refreshFeedsFromApi()

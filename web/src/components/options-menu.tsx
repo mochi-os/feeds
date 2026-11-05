@@ -11,6 +11,7 @@ import {
   DropdownMenuSubTrigger,
   OptionsMenu as SharedOptionsMenu,
   handleServerError,
+  optimistic,
 } from '@mochi/web'
 import { Bell } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
@@ -69,12 +70,27 @@ function NotificationsMenu({ feedId }: { feedId: string }) {
   const { t } = useLingui()
   const queryClient = useQueryClient()
   const { data } = useNotifications(feedId)
+  // The tick moves on the click and goes back if the server refuses; the
+  // server's answer replaces it either way.
+  const patch = optimistic(queryClient, (enabled: boolean) => [
+    {
+      filters: { queryKey: ['feeds', 'notifications', feedId], exact: true },
+      update: (old: { data: { post: boolean } }) => ({
+        ...old,
+        data: { ...old.data, post: enabled },
+      }),
+    },
+  ])
   const setNotification = useMutation({
     mutationFn: (enabled: boolean) =>
       feedsApi.setNotification(feedId, 'post', enabled),
+    onMutate: patch.onMutate,
     onSuccess: (response) =>
       queryClient.setQueryData(['feeds', 'notifications', feedId], response),
-    onError: handleServerError,
+    onError: (error, _enabled, context) => {
+      patch.rollback(context)
+      handleServerError(error)
+    },
   })
   const settings = data?.data
 
