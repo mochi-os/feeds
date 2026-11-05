@@ -4,16 +4,18 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-const { post, get, save } = vi.hoisted(() => ({
+const { post, get, save, warning } = vi.hoisted(() => ({
   post: vi.fn(),
   get: vi.fn(),
   save: vi.fn(),
+  warning: vi.fn(),
 }))
 
 vi.mock('@mochi/web', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@mochi/web')>()),
   createAppClient: () => ({ get, post, delete: vi.fn() }),
   shellSaveBlob: save,
+  toast: { warning },
 }))
 
 import { feedsApi } from './feeds'
@@ -183,5 +185,34 @@ describe('answers from inside the envelope', () => {
     const people = [{ contact: 'c', name: 'Zoe', handle: '@zoe@there.example', network: 'fediverse' }]
     get.mockResolvedValue({ data: { people } })
     expect(await feedsApi.people()).toEqual({ people })
+  })
+})
+
+// A copy on another network that went without a file says so once the post
+// is made or edited, a line each as the server words it.
+describe('feedsApi unsent', () => {
+  beforeEach(() => {
+    post.mockReset()
+    warning.mockReset()
+  })
+
+  it('warns of each file a new post went without', async () => {
+    post.mockResolvedValue({ data: { id: 'p', unsent: ['First', 'Second'] } })
+    await feedsApi.createPost({ feed: 'f', body: 'b' })
+    expect(warning.mock.calls).toEqual([['First'], ['Second']])
+  })
+
+  it('warns of each file an edit went without', async () => {
+    post.mockResolvedValue({ data: { success: true, unsent: ['Third'] } })
+    await feedsApi.editPost({ feed: 'f', post: 'p', body: 'b' })
+    expect(warning.mock.calls).toEqual([['Third']])
+  })
+
+  it('says nothing where every copy went whole', async () => {
+    post.mockResolvedValue({ data: { id: 'p', unsent: [] } })
+    await feedsApi.createPost({ feed: 'f', body: 'b' })
+    post.mockResolvedValue({ data: { id: 'p' } })
+    await feedsApi.createPost({ feed: 'f', body: 'b' })
+    expect(warning).not.toHaveBeenCalled()
   })
 })

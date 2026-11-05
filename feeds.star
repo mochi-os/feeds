@@ -3788,7 +3788,7 @@ def filters_sql(prefix, feed_column):
 # feed's accounts or those named, sends it to the subscribers and copies it
 # into the feeds that take this one as a source. Answers (post id,
 # attachments, None), or (None, None, failure).
-def post_create(feed, user_id, user_name, body, data, features, accounts, save, format="markdown"):
+def post_create(feed, user_id, user_name, body, data, features, accounts, save, format="markdown", unsent=None):
 	feed_id = feed["id"]
 	post_uid = mochi.uid()
 	if mochi.db.exists("select id from posts where id=?", post_uid):
@@ -3814,7 +3814,7 @@ def post_create(feed, user_id, user_name, body, data, features, accounts, save, 
 	# Copies on the accounts the feed publishes to, or those the writer chose
 	# for this post; subscribers learn of them with the post (decision 31).
 	post = mochi.db.row("select * from posts where id=?", post_uid)
-	copies = publish_post(feed, post_uid, body, format, attachments, accounts, None, post)
+	copies = publish_post(feed, post_uid, body, format, attachments, accounts, None, post, unsent)
 	webmention_send(feed, post_uid, [body], post)
 
 	# Send post to subscribers with attachment metadata piggybacked
@@ -3930,7 +3930,9 @@ def action_post_create(a):
         data = dict(data) if data else {}
         data["quote"] = quote
 
-    post_uid, attachments, failure = post_create(feed, user_id, a.user.identity.name, body, data, features, accounts, lambda post: attachment_save(a, post, captions=captions))
+    # What a copy on another network went without, for the client to say.
+    unsent = []
+    post_uid, attachments, failure = post_create(feed, user_id, a.user.identity.name, body, data, features, accounts, lambda post: attachment_save(a, post, captions=captions), unsent=unsent)
     if failure:
         fail(a, failure)
         return
@@ -3938,7 +3940,8 @@ def action_post_create(a):
         "data": {
             "id": post_uid,
             "feed": feed_visible(feed, is_feed_owner(user_id, feed)),
-            "attachments": attachments
+            "attachments": attachments,
+            "unsent": unsent
         }
     }
 
@@ -4020,7 +4023,7 @@ def action_read_all_class(a):
 # feed) changing its attachments, published again and sent to the
 # subscribers; in a feed of someone else's, asked of its owner. A poll stays
 # as it was made, with its votes. Answers (result, None) or (None, failure).
-def post_edit(feed_id, post_id, user_id, body, data, features, change):
+def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=None):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
 		return None, (404, "errors.feed_not_found")
@@ -4061,7 +4064,7 @@ def post_edit(feed_id, post_id, user_id, body, data, features, change):
 		if data:
 			edit_event["data"] = data
 		edit_event["attachments"] = attachment_list(post_id, info["id"])
-		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post)
+		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post, unsent)
 		webmention_send(info, post_id, [before["body"] if before else "", body], post)
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 
@@ -4185,10 +4188,14 @@ def action_post_edit(a):
 				attachment_update(att["id"], captions[att["id"]], att.get("description", ""))
 		return None
 
-	result, failure = post_edit(feed_id, post_id, user_id, body, data, features, change)
+	# What a copy on another network went without, for the client to say.
+	unsent = []
+	result, failure = post_edit(feed_id, post_id, user_id, body, data, features, change, unsent)
 	if failure:
 		fail(a, failure)
 		return
+	result = dict(result)
+	result["unsent"] = unsent
 	return {"data": result}
 
 # attachments_keep keeps a post's attachments in the order given, its own
@@ -9603,10 +9610,12 @@ def attachment_bytes(att, maximum):
 				return data
 	return None
 
-def publish_media(acc, attachments, limits):
+def publish_media(acc, attachments, limits, unsent=None):
 	"""Upload the attachments that fit a network's count, size and type, in
 	the post's order, the kind of the first eligible one deciding where the
-	network takes one kind per post. Answers (uploads, omitted)."""
+	network takes one kind per post. An attachment whose upload fails goes
+	into unsent, said for the user (unsent_text), as the copy goes out
+	without it. Answers (uploads, omitted)."""
 	eligible = [att for att in attachments if attachment_kind(att)]
 	omitted = len(eligible) < len(attachments)
 	if not eligible:
@@ -9629,9 +9638,21 @@ def publish_media(acc, attachments, limits):
 		upload = mochi.account.upload(acc["id"], data, attachment_sniff(data) or mochi.file.type(att["name"]), name=att.get("name", "file"), description=description)
 		if not upload or not upload.get("id"):
 			omitted = True
+			if unsent != None:
+				unsent.append(unsent_text(acc, att, upload))
 			continue
 		uploads.append({"upload": upload, "kind": kind, "description": description})
 	return (uploads, omitted)
+
+def unsent_text(acc, att, upload):
+	"""What a copy on an account went without, in the user's language: the
+	file whose upload failed, and why where core says (mochi.account.upload)."""
+	failed = upload.get("error") if upload and type(upload.get("error")) == "dict" else {}
+	account = acc.get("identifier", "") or acc.get("label", "") or acc.get("type", "")
+	name = att.get("name", "") or "file"
+	if failed.get("message"):
+		return mochi.app.label("publish.unsent_because", account=account, name=name, reason=str(failed["message"]))
+	return mochi.app.label("publish.unsent", account=account, name=name)
 
 def mastodon_limits(acc):
 	"""The account's server's limits, as whole numbers: the stored ones come
@@ -9675,7 +9696,7 @@ def bluesky_facets(text):
 			facets.append({"index": index, "features": [{"$type": "app.bsky.richtext.facet#tag", "tag": word[1:]}]})
 	return facets
 
-def publish_object(acc, text, link, attachments, source, features=None, quote=None):
+def publish_object(acc, text, link, attachments, source, features=None, quote=None, unsent=None):
 	"""The object a post becomes on an account's network, in that network's
 	own form (mochi.account.object.create), with the text cut and the
 	attachments that fit; on Mastodon its visibility, content warning,
@@ -9684,7 +9705,7 @@ def publish_object(acc, text, link, attachments, source, features=None, quote=No
 	quotes as an embedded record (phase 19)."""
 	features = features or post_features({})
 	limits = mastodon_limits(acc) if acc["type"] == "mastodon" else BLUESKY_LIMITS
-	uploads, omitted = publish_media(acc, attachments, limits)
+	uploads, omitted = publish_media(acc, attachments, limits, unsent)
 	if source:
 		text = sourced_text(source, text)
 		link = source.get("link", "") or link
@@ -9754,7 +9775,7 @@ def publish_announce(acc, source):
 def mastodon_copy(status):
 	return {"id": str(status.get("id", "")), "url": str(status.get("url", "") or status.get("uri", ""))}
 
-def publish_post(feed, post_id, body, format, attachments, accounts=None, source=None, post=None):
+def publish_post(feed, post_id, body, format, attachments, accounts=None, source=None, post=None, unsent=None):
 	"""Publish a post to the accounts given, else the feed's list; a public
 	feed only (decision 27). A sourced post, a web feed's item or another
 	Mochi feed's post (source: remote, name, link, network, transformed,
@@ -9794,7 +9815,7 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 		if hosted_fediverse(acc):
 			object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source, features)
 		else:
-			object = publish_object(acc, text, link, attachments, source, features, quote)
+			object = publish_object(acc, text, link, attachments, source, features, quote, unsent)
 		# A sourced post may wait for the relay's budget on a hosted Bluesky
 		# account (decision 30).
 		result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"], sourced=bool(source))
@@ -9808,7 +9829,7 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 		published_record(feed_id, source.get("remote", ""))
 	return copies
 
-def publish_update(feed, post_id, body, format, attachments, post=None):
+def publish_update(feed, post_id, body, format, attachments, post=None, unsent=None):
 	"""A new version of a post reaches each copy (decision 25), copies on
 	accounts since removed from the list included."""
 	rows = mochi.db.rows("select account, remote from copies where post=? and account!=''", post_id)
@@ -9824,7 +9845,7 @@ def publish_update(feed, post_id, body, format, attachments, post=None):
 		if hosted_fediverse(acc):
 			object = fediverse_note(acc, feed, post_id, body, format, link, attachments, None, features)
 		else:
-			object = publish_object(acc, text, link, attachments, None, features)
+			object = publish_object(acc, text, link, attachments, None, features, unsent=unsent)
 		result = mochi.account.object.update(acc["id"], row["remote"], object)
 		if not result:
 			mochi.log.warn("Feeds could not update the copy of post %s on %s", post_id, acc.get("identifier", acc["id"]))

@@ -218,6 +218,7 @@ export interface CreatePostResponse {
     id: string
     post?: string
     attachments: Attachment[]
+    unsent?: string[] // what a copy on another network went without, in the user's language
   }
 }
 
@@ -247,6 +248,7 @@ export interface EditPostResponse {
     feed: Feed
     id: string
     edited: number
+    unsent?: string[] // what a copy on another network went without, in the user's language
   }
 }
 

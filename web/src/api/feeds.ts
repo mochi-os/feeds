@@ -49,11 +49,20 @@ import {
   createAppClient,
   getAppPath,
   shellSaveBlob,
+  toast,
   type PostPoll,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 
 const client = createAppClient({ appName: 'feeds' })
+
+// What a post's copies on other networks went without, a line each, worded
+// by the server in the user's language. The post is made either way.
+function sayUnsent(unsent?: string[]) {
+  for (const line of unsent ?? []) {
+    toast.warning(line)
+  }
+}
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>
@@ -526,7 +535,12 @@ const createPost = async (
     onUploadProgress: onProgress,
   })
 
-  return toDataResponse<CreatePostResponse['data']>(response, 'create post')
+  const created = toDataResponse<CreatePostResponse['data']>(
+    response,
+    'create post'
+  )
+  sayUnsent(created.data?.unsent)
+  return created
 }
 
 const reactToPost = async (
@@ -591,7 +605,9 @@ const editPost = async (
     onUploadProgress: onProgress,
   })
 
-  return toDataResponse<EditPostResponse['data']>(response, 'edit post')
+  const edited = toDataResponse<EditPostResponse['data']>(response, 'edit post')
+  sayUnsent(edited.data?.unsent)
+  return edited
 }
 
 const deletePost = async (
