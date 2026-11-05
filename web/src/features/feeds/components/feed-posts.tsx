@@ -22,7 +22,6 @@ import type {
   PublishAccount,
   ReactionId,
 } from '@/types'
-import { usePinPost } from '@/hooks/use-pin-post'
 import { t } from '@lingui/core/macro'
 import { Plural, Trans } from '@lingui/react/macro'
 import {
@@ -98,6 +97,7 @@ import {
 } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import { changePost } from '@/lib/patch'
+import { usePinPost } from '@/hooks/use-pin-post'
 import { authorAssets } from '../author-assets'
 import {
   buildFeedPostEditDraft,
