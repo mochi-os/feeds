@@ -19,7 +19,7 @@
 // feed list keeps its posts in React state as well as the caches, so this
 // works on a post wherever it is held.
 import type { FeedComment, FeedPost, ReactionId } from '@/types'
-import { undoChain } from '@/lib/undo-chain'
+import { undoChain } from '@mochi/web'
 import { applyReaction, updateCommentTree } from './utils'
 
 type Shown = Pick<FeedComment, 'reactions' | 'userReaction'>
