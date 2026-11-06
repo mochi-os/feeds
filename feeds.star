@@ -3053,7 +3053,38 @@ def action_view(a):
 
 	return result
 
-# Helper: Fetch posts from remote feed via P2P
+# A remote feed's attachment rows carry url / thumbnail_url / preview_url built
+# for its own routes, and the clients fetch a url they are given before one
+# they build: on the phone that request carries the session and the token of
+# whatever app the path names. So every attachments list in a remote answer
+# loses them, and the client builds the address from the id and this app's own
+# route. That address is only as safe as the id in it, so an attachment whose
+# id is not one, and a comment's anchor naming no attachment id, go too.
+def strip_remote_urls(value):
+	# A remote answer's arrays arrive as tuples (immutable), so this rebuilds
+	# rather than mutating in place.
+	kind = type(value)
+	if kind == "dict":
+		result = {}
+		for key in value:
+			item = value[key]
+			if key == "attachments" and type(item) in ("list", "tuple"):
+				cleaned = []
+				for attachment in item:
+					# Anything but a row with an id is no attachment.
+					if type(attachment) != "dict" or not attachment_identifier(attachment.get("id")):
+						continue
+					cleaned.append({field: attachment[field] for field in attachment if field not in ("url", "thumbnail_url", "preview_url")})
+				result[key] = cleaned
+			elif key == "attachment" and type(item) == "string":
+				result[key] = item if attachment_identifier(item) else ""
+			else:
+				result[key] = strip_remote_urls(item)
+		return result
+	if kind in ("list", "tuple"):
+		return [strip_remote_urls(item) for item in value]
+	return value
+
 # Helper: Fetch posts from remote feed via P2P
 def view_remote(a, user_id, feed_id, server):
 	if not user_id:
@@ -3105,7 +3136,7 @@ def view_remote(a, user_id, feed_id, server):
 	feed_fingerprint = remote_feed.get("fingerprint", mochi.entity.fingerprint(feed_id))
 	feed_privacy = remote_feed.get("privacy", "public")
 	remote_permissions = remote_data.get("permissions")
-	posts = remote_data.get("posts", [])
+	posts = strip_remote_urls(remote_data.get("posts", []))
 
 
 	return {
@@ -3509,10 +3540,15 @@ def sanitize_post_data(data):
     out = data
     rss = data.get("rss")
     if rss and type(rss) == "dict":
+        # The image too: a path would be taken by a client for one of its own
+        # addresses, and fetched with the session.
         link = rss.get("link", "")
-        if link != safe_link(link):
+        image = rss.get("image", "")
+        if link != safe_link(link) or (image and image != safe_link(image)):
             new_rss = dict(rss)
             new_rss["link"] = safe_link(link)
+            if image:
+                new_rss["image"] = safe_link(image)
             out = dict(out)
             out["rss"] = new_rss
     if data.get("quote") != None:
@@ -5080,7 +5116,8 @@ def action_post_image(a):
 	# The stored image is the feed's <media:thumbnail>, often tiny; fetch the
 	# article's og:image once and keep it if better. After an attempt the stored
 	# image is final, except a post with no image retries daily.
-	cached = rss.get("image", "")
+	# Only a web address: one stored before images were checked may be a path.
+	cached = safe_link(rss.get("image", ""))
 	checked = rss.get("image_checked", 0)
 	if checked and (cached or checked > mochi.time.now() - 86400):
 		return a.json({"image": cached})
@@ -5103,13 +5140,13 @@ def action_post_image(a):
 		mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 		return a.json({"image": cached})
 
-	image = mochi.url.preview(link)
+	image = safe_link(mochi.url.preview(link))
 	if image:
 		rss["image"] = image
 	rss["image_checked"] = mochi.time.now()
 	data["rss"] = rss
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
-	return a.json({"image": rss.get("image", "")})
+	return a.json({"image": safe_link(rss.get("image", ""))})
 
 def link_server(link):
 	"""A link's host, as a url: grant names it, or '' for a link without one."""
@@ -8601,7 +8638,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 			link = t_link or link
 
 		# Store structured RSS data for rich rendering (og:image fetched lazily)
-		image = item.get("image", "")
+		image = safe_link(item.get("image", ""))
 		rss_data = {"title": title, "link": link, "html": description_html}
 		if image:
 			rss_data["image"] = image
@@ -10717,8 +10754,8 @@ def sourced_post(feed, source, acc, item, user_id):
 	if not body:
 		return False
 	data = {"rss": {"title": "", "link": link, "html": "" if transformed else item["html"], "source": author}}
-	if item["image"]:
-		data["rss"]["image"] = item["image"]
+	if safe_link(item["image"]):
+		data["rss"]["image"] = safe_link(item["image"])
 	if item["boosted"]:
 		data["rss"]["shared"] = item["boosted"]
 	# A post from the fediverse carries its author, who boosted it, its media,
@@ -10869,8 +10906,8 @@ def import_post(feed, item):
 	if not body:
 		return None
 	data = {"rss": {"title": "", "link": item["link"], "html": item["html"], "source": item["author"]}}
-	if item["image"]:
-		data["rss"]["image"] = item["image"]
+	if safe_link(item["image"]):
+		data["rss"]["image"] = safe_link(item["image"])
 	created = item["created"] or mochi.time.now()
 	post_id = mochi.uid()
 	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, read) values (?, ?, ?, ?, 'text', ?, ?, ?, ?)",
