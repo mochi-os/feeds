@@ -13753,6 +13753,18 @@ def import_file_step(import_id, user_id):
 
 # === People the user knows ===
 
+def known_feeds(person):
+	"""The web feeds a contact's fediverse account may be followed as, the
+	same addresses following them tries: from the address the lookup gave,
+	else the handle as written, and the profile page where it is known."""
+	if person.get("network") != "fediverse":
+		return []
+	address = str(person.get("address", "") or person.get("handle", "") or "")
+	parts = address.lstrip("@").split("@")
+	if len(parts) != 2 or not parts[0] or "." not in parts[1] or "/" in address:
+		return []
+	return person_feeds({"host": parts[1].lower(), "username": parts[0], "url": str(person.get("page", "") or "")})
+
 def action_people(a):
 	"""The user's contacts with a handle on another network, for the search
 	page to offer as people to follow: each with whether a feed follows them
@@ -13767,8 +13779,12 @@ def action_people(a):
 			continue
 		identifier = str(person.get("id", "") or "")
 		followed = bool(identifier) and mochi.db.exists("select 1 from sources where type='person/posts' and url=?", identifier)
-		if not followed and person.get("handle"):
-			followed = mochi.db.exists("select 1 from sources where type='rss' and name=?", str(person.get("name", "")))
+		# A person followed with no account of the user's on their network is
+		# a web feed, known by its address: the feed's title is the account's
+		# name, which need not be the contact's, and another feed may share it.
+		urls = known_feeds(person)
+		if not followed and urls:
+			followed = mochi.db.exists("select 1 from sources where type='rss' and url in (" + ",".join(["?"] * len(urls)) + ")", *urls)
 		entry = dict(person)
 		entry["followed"] = followed
 		out.append(entry)
