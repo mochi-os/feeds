@@ -347,8 +347,10 @@ idle_resync_age = 7 * 86400
 # request_resync pulls a fresh schema dump from the owner when an incoming event
 # references data we lack; subscribers only, throttled to once per 60 seconds
 # per feed. name, when given, asks for the first part as a subscriber of that
-# name, which the owner registers before it reads the part.
-def request_resync(feed_id, name=None):
+# name, which the owner registers before it reads the part. One that cannot
+# start now is put off rather than dropped, unless defer is False: a
+# subscription still filling asks again by itself (schedule_fill).
+def request_resync(feed_id, name=None, defer=True):
     """Returns True iff every part of a fresh schema was fetched and applied
     within this call. A pull that runs out of time is continued by
     schedule_schema; one that fails waits for the next resync."""
@@ -361,7 +363,14 @@ def request_resync(feed_id, name=None):
     if not row["server"]:
         return False
     now = mochi.time.now()
-    if row["synced"] and now - row["synced"] < 60:
+    # A pull under way, its continuation pending, finishes first: one started
+    # beside it would take the feed again from the start. One within the last
+    # minute stands. What asked for this one - a gap, an event naming what is
+    # not held - may need what they read before it, so it runs after them.
+    pending = fill_pending(feed_id, "schedule_schema")
+    if pending or (row["synced"] and now - row["synced"] < 60):
+        if defer:
+            resync_defer(feed_id, 61 if pending else 61 - (now - row["synced"]))
         return False
     mochi.db.execute("update feeds set synced=? where id=?", now, feed_id)
     peer = mochi.remote.peer(row["server"])
@@ -373,6 +382,22 @@ def request_resync(feed_id, name=None):
     schema_completed(feed_id)
     return True
 
+# resync_defer(feed_id, wait) puts off a resync request_resync could not start
+# for wait seconds, once a feed however often it is asked for meanwhile.
+def resync_defer(feed_id, wait):
+	if not fill_pending(feed_id, "schedule_resync"):
+		mochi.schedule.after("schedule_resync", {"feed": feed_id}, wait)
+
+# schedule_resync(e): a resync put off (resync_defer), put off again while a
+# pull still runs.
+def schedule_resync(e):
+	if e.source != "schedule":
+		return
+	feed_id = e.data.get("feed", "")
+	if not mochi.text.valid(feed_id, "entity"):
+		return
+	request_resync(feed_id)
+
 # fill_waits: the seconds before each pull of a subscription still filling
 # (schedule_fill): the first past the 60 in which request_resync lets no second
 # pull start, each after four times the last. Past the last, a view of the feed
@@ -381,8 +406,8 @@ def request_resync(feed_id, name=None):
 fill_waits = [61, 244, 976, 3904, 15616]
 
 # fill_pending(feed_id, event) -> bool: whether a scheduled event of the
-# subscription is pending: a pull (schedule_fill), or the continuation of one
-# (schedule_schema).
+# subscription is pending: a pull (schedule_fill), the continuation of one
+# (schedule_schema), or a resync put off (schedule_resync).
 def fill_pending(feed_id, event):
 	for scheduled in mochi.schedule.list():
 		if scheduled.event == event and scheduled.data.get("feed") == feed_id:
@@ -403,7 +428,7 @@ def fill_schedule(feed_id, attempt=0, name=None, delay=None):
 
 # schedule_fill(e): a subscription still filling pulls the schema, and asks
 # again later until it is whole. A pull already under way - a continuation, or
-# a part retried - is left to finish first.
+# a part retried - is left to finish first (request_resync).
 def schedule_fill(e):
 	if e.source != "schedule":
 		return
@@ -417,8 +442,7 @@ def schedule_fill(e):
 	row = mochi.db.row("select populated from feeds where id=?", feed_id)
 	if not row or row["populated"] != 0:
 		return
-	if not fill_pending(feed_id, "schedule_schema"):
-		request_resync(feed_id, name)
+	request_resync(feed_id, name, False)
 	row = mochi.db.row("select populated from feeds where id=?", feed_id)
 	if row and row["populated"] == 0:
 		fill_schedule(feed_id, attempt, name)
@@ -7106,7 +7130,7 @@ def event_sync_complete(e): # feeds_sync_complete_event
 	peer = e.header("peer")
 	if not row["server"] and mochi.text.valid(peer, "peer"):
 		mochi.db.execute("update feeds set server=? where id=? and server=''", "p2p/" + peer, feed_id)
-	if not request_resync(feed_id):
+	if not request_resync(feed_id, None, False):
 		fill_schedule(feed_id)
 
 # feed_completed(feed_id): every part of a schema arrived and is stored, so a
