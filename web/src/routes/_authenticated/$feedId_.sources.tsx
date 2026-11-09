@@ -289,8 +289,8 @@ function FeedSourcesPage() {
 
 // Example addresses, shown as placeholders.
 const TAG_EXAMPLE = '#tag@server.example'
-const PERSON_EXAMPLE = '@name@server.example, name.bsky.social, https://...'
-const BLUESKY_FEED_EXAMPLE = 'https://bsky.app/profile/name.bsky.social/feed/...'
+const PERSON_EXAMPLE = '@name@server.example, name.bsky.social, https://'
+const BLUESKY_FEED_EXAMPLE = 'https://bsky.app/profile/name.bsky.social/feed/'
 
 function credibilityHue(credibility: number): number {
   return (credibility / 100) * 120

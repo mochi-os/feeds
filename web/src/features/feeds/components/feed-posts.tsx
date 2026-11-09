@@ -2114,7 +2114,7 @@ export function FeedPosts({
                         feedsApi.searchMembers(post.feedId, q)
                       }
                       progress={commentProgress}
-                      placeholder={t`Leave a comment...`}
+                      placeholder={t`Leave a comment`}
                       textareaClassName='rounded-[8px] text-sm'
                       autoFocus
                     />

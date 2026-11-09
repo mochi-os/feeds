@@ -66,7 +66,7 @@ export function InlineFeedSearch({
       onSubscribe={handleSubscribe}
       icon={Rss}
       iconClassName='bg-orange-500/10 text-orange-600'
-      placeholder={t`Search for feeds...`}
+      placeholder={t`Search for feeds`}
       emptyMessage={t`No feeds found`}
       searchErrorMessage={t`Failed to search feeds`}
       subscribeLabel={t`Subscribe`}
