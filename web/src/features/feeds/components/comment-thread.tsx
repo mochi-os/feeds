@@ -356,7 +356,10 @@ export function CommentThread({
           </p>
         )}
 
-        <CommentAttachments attachments={comment.attachments} />
+        <CommentAttachments
+          attachments={comment.attachments}
+          feedId={feedId}
+        />
 
         {(() => {
           const hasReactions = !!(

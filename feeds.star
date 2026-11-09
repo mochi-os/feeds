@@ -346,10 +346,14 @@ idle_resync_age = 7 * 86400
 
 # request_resync pulls a fresh schema dump from the owner when an incoming event
 # references data we lack; subscribers only, throttled to once per 60 seconds
-# per feed. name, when given, asks as a subscriber of that name, which the
-# owner registers before it reads the schema.
-def request_resync(feed_id, name=None):
-    """Returns True iff a fresh schema was actually fetched and applied."""
+# per feed. name, when given, asks for the first part as a subscriber of that
+# name, which the owner registers before it reads the part. One that cannot
+# start now is put off rather than dropped, unless defer is False: a
+# subscription still filling asks again by itself (schedule_fill).
+def request_resync(feed_id, name=None, defer=True):
+    """Returns True iff every part of a fresh schema was fetched and applied
+    within this call. A pull that runs out of time is continued by
+    schedule_schema; one that fails waits for the next resync."""
     row = mochi.db.row("select server, synced from feeds where id=?", feed_id)
     if not row:
         return False
@@ -359,20 +363,40 @@ def request_resync(feed_id, name=None):
     if not row["server"]:
         return False
     now = mochi.time.now()
-    if row["synced"] and now - row["synced"] < 60:
+    # A pull under way, its continuation pending, finishes first: one started
+    # beside it would take the feed again from the start. One within the last
+    # minute stands. What asked for this one - a gap, an event naming what is
+    # not held - may need what they read before it, so it runs after them.
+    pending = fill_pending(feed_id, "schedule_schema")
+    if pending or (row["synced"] and now - row["synced"] < 60):
+        if defer:
+            resync_defer(feed_id, 61 if pending else 61 - (now - row["synced"]))
         return False
     mochi.db.execute("update feeds set synced=? where id=?", now, feed_id)
     peer = mochi.remote.peer(row["server"])
-    schema = mochi.remote.request(feed_id, "feeds", "schema", {"register": {"name": name}} if name else {}, peer)
+    schema = schema_fetch(feed_id, peer, SCHEMA_START, name)
     if not schema_arrived(schema):
         return False
-    insert_feed_schema(feed_id, schema)
-    feed_completed(feed_id)
-    mochi.broadcast.touch(feed_id)
-    fingerprint = mochi.entity.fingerprint(feed_id)
-    if fingerprint:
-        websocket_write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
+    if not insert_feed_schema(feed_id, schema, peer, now, 0, None, pull_subscribed(feed_id)):
+        return False
+    schema_completed(feed_id)
     return True
+
+# resync_defer(feed_id, wait) puts off a resync request_resync could not start
+# for wait seconds, once a feed however often it is asked for meanwhile.
+def resync_defer(feed_id, wait):
+	if not fill_pending(feed_id, "schedule_resync"):
+		mochi.schedule.after("schedule_resync", {"feed": feed_id}, wait)
+
+# schedule_resync(e): a resync put off (resync_defer), put off again while a
+# pull still runs.
+def schedule_resync(e):
+	if e.source != "schedule":
+		return
+	feed_id = e.data.get("feed", "")
+	if not mochi.text.valid(feed_id, "entity"):
+		return
+	request_resync(feed_id)
 
 # fill_waits: the seconds before each pull of a subscription still filling
 # (schedule_fill): the first past the 60 in which request_resync lets no second
@@ -381,11 +405,12 @@ def request_resync(feed_id, name=None):
 # nothing.
 fill_waits = [61, 244, 976, 3904, 15616]
 
-# fill_pending(feed_id) -> bool: whether a pull of the subscription is
-# scheduled.
-def fill_pending(feed_id):
+# fill_pending(feed_id, event) -> bool: whether a scheduled event of the
+# subscription is pending: a pull (schedule_fill), the continuation of one
+# (schedule_schema), or a resync put off (schedule_resync).
+def fill_pending(feed_id, event):
 	for scheduled in mochi.schedule.list():
-		if scheduled.event == "schedule_fill" and scheduled.data.get("feed") == feed_id:
+		if scheduled.event == event and scheduled.data.get("feed") == feed_id:
 			return True
 	return False
 
@@ -394,7 +419,7 @@ def fill_pending(feed_id):
 # pending or the waits have run out; the pull that follows waits the next wait
 # in turn. name, when given, asks as a subscriber.
 def fill_schedule(feed_id, attempt=0, name=None, delay=None):
-	if attempt >= len(fill_waits) or fill_pending(feed_id):
+	if attempt >= len(fill_waits) or fill_pending(feed_id, "schedule_fill"):
 		return
 	data = {"feed": feed_id, "attempt": attempt if delay != None else attempt + 1}
 	if name:
@@ -402,7 +427,8 @@ def fill_schedule(feed_id, attempt=0, name=None, delay=None):
 	mochi.schedule.after("schedule_fill", data, fill_waits[attempt] if delay == None else delay)
 
 # schedule_fill(e): a subscription still filling pulls the schema, and asks
-# again later until it is whole.
+# again later until it is whole. A pull already under way - a continuation, or
+# a part retried - is left to finish first (request_resync).
 def schedule_fill(e):
 	if e.source != "schedule":
 		return
@@ -416,7 +442,9 @@ def schedule_fill(e):
 	row = mochi.db.row("select populated from feeds where id=?", feed_id)
 	if not row or row["populated"] != 0:
 		return
-	if not request_resync(feed_id, name):
+	request_resync(feed_id, name, False)
+	row = mochi.db.row("select populated from feeds where id=?", feed_id)
+	if row and row["populated"] == 0:
 		fill_schedule(feed_id, attempt, name)
 
 # maybe_fill(a, feed_id): a view of a subscription still filling pulls the
@@ -3025,7 +3053,38 @@ def action_view(a):
 
 	return result
 
-# Helper: Fetch posts from remote feed via P2P
+# A remote feed's attachment rows carry url / thumbnail_url / preview_url built
+# for its own routes, and the clients fetch a url they are given before one
+# they build: on the phone that request carries the session and the token of
+# whatever app the path names. So every attachments list in a remote answer
+# loses them, and the client builds the address from the id and this app's own
+# route. That address is only as safe as the id in it, so an attachment whose
+# id is not one, and a comment's anchor naming no attachment id, go too.
+def strip_remote_urls(value):
+	# A remote answer's arrays arrive as tuples (immutable), so this rebuilds
+	# rather than mutating in place.
+	kind = type(value)
+	if kind == "dict":
+		result = {}
+		for key in value:
+			item = value[key]
+			if key == "attachments" and type(item) in ("list", "tuple"):
+				cleaned = []
+				for attachment in item:
+					# Anything but a row with an id is no attachment.
+					if type(attachment) != "dict" or not attachment_identifier(attachment.get("id")):
+						continue
+					cleaned.append({field: attachment[field] for field in attachment if field not in ("url", "thumbnail_url", "preview_url")})
+				result[key] = cleaned
+			elif key == "attachment" and type(item) == "string":
+				result[key] = item if attachment_identifier(item) else ""
+			else:
+				result[key] = strip_remote_urls(item)
+		return result
+	if kind in ("list", "tuple"):
+		return [strip_remote_urls(item) for item in value]
+	return value
+
 # Helper: Fetch posts from remote feed via P2P
 def view_remote(a, user_id, feed_id, server):
 	if not user_id:
@@ -3077,7 +3136,7 @@ def view_remote(a, user_id, feed_id, server):
 	feed_fingerprint = remote_feed.get("fingerprint", mochi.entity.fingerprint(feed_id))
 	feed_privacy = remote_feed.get("privacy", "public")
 	remote_permissions = remote_data.get("permissions")
-	posts = remote_data.get("posts", [])
+	posts = strip_remote_urls(remote_data.get("posts", []))
 
 
 	return {
@@ -3481,10 +3540,15 @@ def sanitize_post_data(data):
     out = data
     rss = data.get("rss")
     if rss and type(rss) == "dict":
+        # The image too: a path would be taken by a client for one of its own
+        # addresses, and fetched with the session.
         link = rss.get("link", "")
-        if link != safe_link(link):
+        image = rss.get("image", "")
+        if link != safe_link(link) or (image and image != safe_link(image)):
             new_rss = dict(rss)
             new_rss["link"] = safe_link(link)
+            if image:
+                new_rss["image"] = safe_link(image)
             out = dict(out)
             out["rss"] = new_rss
     if data.get("quote") != None:
@@ -3788,7 +3852,7 @@ def filters_sql(prefix, feed_column):
 # feed's accounts or those named, sends it to the subscribers and copies it
 # into the feeds that take this one as a source. Answers (post id,
 # attachments, None), or (None, None, failure).
-def post_create(feed, user_id, user_name, body, data, features, accounts, save, format="markdown"):
+def post_create(feed, user_id, user_name, body, data, features, accounts, save, format="markdown", unsent=None):
 	feed_id = feed["id"]
 	post_uid = mochi.uid()
 	if mochi.db.exists("select id from posts where id=?", post_uid):
@@ -3814,7 +3878,7 @@ def post_create(feed, user_id, user_name, body, data, features, accounts, save, 
 	# Copies on the accounts the feed publishes to, or those the writer chose
 	# for this post; subscribers learn of them with the post (decision 31).
 	post = mochi.db.row("select * from posts where id=?", post_uid)
-	copies = publish_post(feed, post_uid, body, format, attachments, accounts, None, post)
+	copies = publish_post(feed, post_uid, body, format, attachments, accounts, None, post, unsent)
 	webmention_send(feed, post_uid, [body], post)
 
 	# Send post to subscribers with attachment metadata piggybacked
@@ -3930,7 +3994,9 @@ def action_post_create(a):
         data = dict(data) if data else {}
         data["quote"] = quote
 
-    post_uid, attachments, failure = post_create(feed, user_id, a.user.identity.name, body, data, features, accounts, lambda post: attachment_save(a, post, captions=captions))
+    # What a copy on another network went without, for the client to say.
+    unsent = []
+    post_uid, attachments, failure = post_create(feed, user_id, a.user.identity.name, body, data, features, accounts, lambda post: attachment_save(a, post, captions=captions), unsent=unsent)
     if failure:
         fail(a, failure)
         return
@@ -3938,7 +4004,8 @@ def action_post_create(a):
         "data": {
             "id": post_uid,
             "feed": feed_visible(feed, is_feed_owner(user_id, feed)),
-            "attachments": attachments
+            "attachments": attachments,
+            "unsent": unsent
         }
     }
 
@@ -4020,7 +4087,7 @@ def action_read_all_class(a):
 # feed) changing its attachments, published again and sent to the
 # subscribers; in a feed of someone else's, asked of its owner. A poll stays
 # as it was made, with its votes. Answers (result, None) or (None, failure).
-def post_edit(feed_id, post_id, user_id, body, data, features, change):
+def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=None):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
 		return None, (404, "errors.feed_not_found")
@@ -4061,7 +4128,7 @@ def post_edit(feed_id, post_id, user_id, body, data, features, change):
 		if data:
 			edit_event["data"] = data
 		edit_event["attachments"] = attachment_list(post_id, info["id"])
-		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post)
+		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post, unsent)
 		webmention_send(info, post_id, [before["body"] if before else "", body], post)
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 
@@ -4185,10 +4252,14 @@ def action_post_edit(a):
 				attachment_update(att["id"], captions[att["id"]], att.get("description", ""))
 		return None
 
-	result, failure = post_edit(feed_id, post_id, user_id, body, data, features, change)
+	# What a copy on another network went without, for the client to say.
+	unsent = []
+	result, failure = post_edit(feed_id, post_id, user_id, body, data, features, change, unsent)
 	if failure:
 		fail(a, failure)
 		return
+	result = dict(result)
+	result["unsent"] = unsent
 	return {"data": result}
 
 # attachments_keep keeps a post's attachments in the order given, its own
@@ -4342,17 +4413,19 @@ def action_subscribe(a): # feeds_subscribe
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
 	# The schema, asked for as a subscriber: the owner registers this user
-	# before reading it, so nothing changes between the two unseen. The feed
-	# is held already, so a post the owner broadcasts meanwhile lands. The
-	# stamp holds off a resync an event starts before this reply is stored:
-	# its completion would end the withholding of what the owner removes
-	# meanwhile, and this older reply would then bring it back.
+	# before reading its first part, so nothing changes between the two
+	# unseen. The feed is held already, so a post the owner broadcasts
+	# meanwhile lands. The stamp holds off a resync an event starts before the
+	# pull is stored: its completion would end the withholding of what the
+	# owner removes meanwhile, and this older pull would then bring it back.
+	# Only the first part is taken here, so the subscribe answers its client
+	# in time; a continuation takes the rest and completes the subscription.
 	mochi.db.execute("update feeds set synced=? where id=?", mochi.time.now(), feed_id)
 	if peer:
-		schema = mochi.remote.request(feed_id, "feeds", "schema", {"register": {"name": a.user.identity.name}}, peer)
+		schema = schema_fetch(feed_id, peer, SCHEMA_START, a.user.identity.name)
 	if schema_arrived(schema):
-		insert_feed_schema(feed_id, schema)
-		feed_completed(feed_id)
+		if insert_feed_schema(feed_id, schema, peer, None, 0, 0, True):
+			feed_completed(feed_id)
 	else:
 		mochi.db.execute("update feeds set synced=0 where id=?", feed_id)
 
@@ -4397,32 +4470,66 @@ def action_unsubscribe(a): # feeds_unsubscribe
 		a.error.label(400, "errors.you_own_feed")
 		return
 
+	# The subscription goes first: a pull it began stops at its next part
+	# (schema_held).
 	mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
 	registration_send(feed_data["server"], headers(user_id, feed_id, "unsubscribe"), {})
 
-	# Only delete feed data if no sources still reference this feed
+	# Only delete feed data if no sources still reference this feed. A feed
+	# kept for a source still loses the subscription's pending pulls, which
+	# would otherwise run for a subscription made again before they come due.
 	if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
-		# tags, post_scores, source_posts and saved key on the POST, not the
-		# feed, so deleting the posts alone stranded them: rows that can never
-		# be reached again and are never swept, growing with every
-		# unsubscribe. Collect the ids before the posts go.
-		orphan_ids = [row["id"] for row in mochi.db.rows("select id from posts where feed=?", feed_id) or []]
-		if orphan_ids:
-			places = ", ".join(["?" for _ in orphan_ids])
-			mochi.db.execute("delete from tags where object in (" + places + ")", *orphan_ids)
-			mochi.db.execute("delete from post_scores where post in (" + places + ")", *orphan_ids)
-			mochi.db.execute("delete from source_posts where post in (" + places + ")", *orphan_ids)
-			mochi.db.execute("delete from saved where post in (" + places + ")", *orphan_ids)
-		mochi.db.execute("delete from reactions where feed=?", feed_id)
-		mochi.db.execute("delete from comments where feed=?", feed_id)
-		mochi.db.execute("delete from posts where feed=?", feed_id)
-		mochi.db.execute("delete from follows where feed=?", feed_id)
-		mochi.db.execute("delete from notifications where feed=?", feed_id)
-		mochi.db.execute("delete from subscribers where feed=?", feed_id)
-		rss_tokens_revoke(feed_id)
-		mochi.db.execute("delete from feeds where id=?", feed_id)
+		feed_drop(feed_id)
+	else:
+		pull_cancel(feed_id, True)
 
 	return {"data": {"success": True}}
+
+# feed_drop(feed_id) deletes a feed held here from another server, and every
+# row of it. Its pending pulls are cancelled, and a pull under way stops at its
+# next part once the feeds row is gone (schema_held). The rows go in one
+# transaction: a part a pull imports beside the drop then lands wholly before
+# it, and goes with the rest, or wholly after, where a post, comment or
+# reaction needs a feed or post that is gone and is not written (schema_import).
+# Interleaved, a post landing between the posts' delete and the feed's made
+# the feed's fail on its foreign key. tags, post_scores, source_posts and saved
+# key on the post, not the feed, so they go by the feed's posts, as do the
+# attachments a part stored after the clearing before the transaction.
+def feed_drop(feed_id):
+	pull_cancel(feed_id)
+	# The library sweep only removes files with no row, so the rows must go
+	# here or every image the feed carried stays on disk forever.
+	for row in mochi.db.rows("select id from posts where feed=? union select id from comments where feed=?", feed_id, feed_id) or []:
+		attachment_clear(row["id"])
+	rss_tokens_revoke(feed_id)
+	handle = mochi.db.transaction()
+	handle.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
+	handle.execute("delete from post_scores where post in (select id from posts where feed=?)", feed_id)
+	handle.execute("delete from source_posts where post in (select id from posts where feed=?)", feed_id)
+	handle.execute("delete from saved where post in (select id from posts where feed=?)", feed_id)
+	handle.execute("delete from attachments where entity!='' and (object in (select id from posts where feed=?) or object in (select id from comments where feed=?))", feed_id, feed_id)
+	handle.execute("delete from reactions where feed=?", feed_id)
+	handle.execute("delete from comments where feed=?", feed_id)
+	handle.execute("delete from posts where feed=?", feed_id)
+	handle.execute("delete from follows where feed=?", feed_id)
+	handle.execute("delete from notifications where feed=?", feed_id)
+	handle.execute("delete from subscribers where feed=?", feed_id)
+	handle.execute("delete from withheld where feed=?", feed_id)
+	handle.execute("delete from feeds where id=?", feed_id)
+	handle.commit()
+
+# pull_cancel(feed_id, subscription) cancels the pending pulls of a feed held
+# from another server: every one, or with subscription only the subscription's
+# own - the continuations of a pull it began, and the fills that would register
+# it with the owner again.
+def pull_cancel(feed_id, subscription=False):
+	for scheduled in mochi.schedule.list():
+		if scheduled.data.get("feed") != feed_id:
+			continue
+		if scheduled.event == "schedule_schema" and (not subscription or scheduled.data.get("subscribed") == True):
+			scheduled.cancel()
+		elif scheduled.event == "schedule_fill" and (not subscription or scheduled.data.get("name")):
+			scheduled.cancel()
 
 # Revoke a feed's RSS access tokens (the core tokens, not just the rss rows) so a
 # removed feed's ?token= URL stops authenticating. No-op when the feed has no RSS
@@ -5009,7 +5116,8 @@ def action_post_image(a):
 	# The stored image is the feed's <media:thumbnail>, often tiny; fetch the
 	# article's og:image once and keep it if better. After an attempt the stored
 	# image is final, except a post with no image retries daily.
-	cached = rss.get("image", "")
+	# Only a web address: one stored before images were checked may be a path.
+	cached = safe_link(rss.get("image", ""))
 	checked = rss.get("image_checked", 0)
 	if checked and (cached or checked > mochi.time.now() - 86400):
 		return a.json({"image": cached})
@@ -5032,13 +5140,13 @@ def action_post_image(a):
 		mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 		return a.json({"image": cached})
 
-	image = mochi.url.preview(link)
+	image = safe_link(mochi.url.preview(link))
 	if image:
 		rss["image"] = image
 	rss["image_checked"] = mochi.time.now()
 	data["rss"] = rss
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
-	return a.json({"image": rss.get("image", "")})
+	return a.json({"image": safe_link(rss.get("image", ""))})
 
 def link_server(link):
 	"""A link's host, as a url: grant names it, or '' for a link without one."""
@@ -6438,21 +6546,35 @@ def event_schema(e):
 		e.stream.write({"error": "errors.access_denied"})
 		return
 
-	# A subscriber asking for the schema names itself (register), and is
-	# registered before the schema is read: every change after the read then
-	# reaches it by broadcast, and none falls between the read and a later
-	# registration.
+	# A request carrying `part` (a cursor) asks for one part of the schema
+	# (schema_part). The gate above runs for every part, so a peer that loses
+	# view access stops at its next part.
+	part = e.content("part")
+	if part != None and not part_cursor(part, SCHEMA_SPECS):
+		e.stream.write({"error": "errors.invalid_data"})
+		return
+
+	# A subscriber asking for the schema, or for its first part, names itself
+	# (register), and is registered before it is read: every change after the
+	# read then reaches it by broadcast, and none falls between the read and a
+	# later registration.
 	requester = e.header("from")
 	subscribed = False
 	register = e.content("register")
-	if type(register) == "dict" and type(register.get("name")) == "string" and mochi.text.valid(register["name"], "line"):
+	first = part == None or (part["list"] == SCHEMA_START["list"] and not part["after"])
+	if first and type(register) == "dict" and type(register.get("name")) == "string" and mochi.text.valid(register["name"], "line"):
 		feed_data = feed_by_id(e.user.identity.id, feed_id)
 		if feed_data:
 			subscriber_register(e.user.identity.id, feed_data, requester, register["name"])
 			subscribed = True
 	if not subscribed:
 		subscribed = mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, requester)
-	# A followers-only post is for subscribers, as the feed's pages keep it.
+	if part != None:
+		schema_part(e, feed_id, part, subscribed)
+		return
+
+	# The whole schema, for a requester from before parts. A followers-only
+	# post is for subscribers, as the feed's pages keep it.
 	hidden = "" if subscribed else " and visibility!='followers'"
 
 	# The schema is everything a post event would carry for the feed's newest
@@ -6508,6 +6630,63 @@ def event_schema(e):
 		"reactions": reactions,
 	})
 
+# schema_part(e, feed_id, part, subscribed) answers one bounded part of the
+# schema from the cursor part on: the window's posts, then their comments
+# oldest first, then their reactions, each row carrying what nests in it. The
+# part echoes its cursor, which tells the requester it is held to PART_ROWS.
+# A requester that is not a subscriber is sent no followers-only post, nor
+# anything on one.
+def schema_part(e, feed_id, part, subscribed):
+	specs = SCHEMA_SPECS if subscribed else SCHEMA_VISIBLE
+	budget = part_budget()
+	lists, next = part_take(specs, SCHEMA_ORDER, {"posts": [feed_id, feed_id], "comments": [feed_id, feed_id], "reactions": [feed_id, feed_id]}, part, budget)
+	for name in ["posts", "comments"]:
+		rows = lists[name]
+		lists[name] = part_attach(name, rows, feed_id, budget)
+		if len(lists[name]) < len(rows):
+			# Trimmed for what nests in them: what follows waits too.
+			last = lists[name][-1]
+			next = {"list": name, "after": [str(last[k]) for k in specs[name]["keys"]]}
+			if name == "posts":
+				lists["comments"] = []
+			lists["reactions"] = []
+			break
+	reply = {"part": part}
+	reply.update(lists)
+	if next:
+		reply["next"] = next
+	e.stream.write(reply)
+
+# part_attach(name, rows, feed_id, budget) nests in each row of a part what
+# travels inside it - a post's tags, attachments and copies on other networks,
+# a comment's attachments - charged to the bytes left, and answers the rows
+# that fit: a row whose nested rows overrun them waits for the next part.
+# Attachments are metadata only; files still fetch on demand from the owner.
+def part_attach(name, rows, feed_id, budget):
+	if not rows:
+		return rows
+	ids = [row["id"] for row in rows]
+	attachments = attachment_list_many(ids, feed_id)
+	tags = {}
+	copies = {}
+	if name == "posts":
+		marks = ",".join(["?" for _ in ids])
+		for t in mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (" + marks + ")", *ids) or []:
+			tags.setdefault(t["object"], []).append({"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "manual")})
+		copies = copies_by_posts(ids)
+	kept = []
+	for row in rows:
+		nested = {"attachments": (attachments.get(row["id"]) or [])[:attachment_object_maximum], "tags": tags.get(row["id"], []), "copies": copies.get(row["id"], [])}
+		cost = PART_ATTACHMENT * (len(nested["attachments"]) + len(nested["tags"]) + len(nested["copies"]))
+		if kept and cost > budget["bytes"]:
+			break
+		budget["bytes"] -= cost
+		for key in ["attachments", "tags", "copies"]:
+			if nested[key]:
+				row[key] = nested[key]
+		kept.append(row)
+	return kept
+
 # True if post_id is held locally under THIS feed. The owner's dump can name a
 # post the subscriber lacks - outside the dump window, or dropped - or one that
 # collides with another local feed's post; comments, reactions and tags key on
@@ -6544,16 +6723,166 @@ def withhold(feed_data, object):
 def reaction_key(post, comment, subscriber):
 	return post + "/" + comment + "/" + subscriber
 
-# Insert feed schema data into local database
-def insert_feed_schema(feed_id, schema):
+# schema_fetch(feed_id, peer, part, name) -> one part of the owner's schema,
+# asked for as a subscriber of that name when one is given, which the owner
+# registers before it reads the part. An owner that predates parts ignores
+# `part` and answers the whole schema, which carries no `next` and so is
+# complete on its own.
+def schema_fetch(feed_id, peer, part, name=None):
+	content = {"part": part}
+	if name:
+		content["register"] = {"name": name}
+	return mochi.remote.request(feed_id, "feeds", "schema", content, peer)
+
+# insert_feed_schema(feed_id, schema, peer, started, parts, budget) imports
+# schema, a part of the owner's schema already received, then pulls and
+# imports the parts after it until budget seconds (PART_TIME when not given)
+# have passed since started; parts counts the parts the pull took before this
+# one. True when the last part arrived: only then may the caller complete the
+# subscription (feed_completed). A pull that runs out of time is continued by
+# schedule_schema, and one whose part goes unanswered is tried again a few
+# times; one that breaks a bound leaves the parts before it in place for the
+# next resync, which imports idempotently. A subscribe passes a budget of 0, so
+# it answers its client after the first part and a continuation takes the rest.
+#
+# subscribed says the pull was begun under the subscription (pull_subscribed),
+# which its continuations carry: such a pull stops once the subscription is
+# gone, even where the feed is kept for a source, and any pull stops once the
+# feed is dropped (schema_held), checked before each part is imported and after.
+def insert_feed_schema(feed_id, schema, peer=None, started=None, parts=0, budget=None, subscribed=False):
+	if started == None:
+		started = mochi.time.now()
+	if budget == None:
+		budget = PART_TIME
+	for _ in range(PART_PARTS):
+		if parts >= PART_PARTS:
+			break
+		parts += 1
+		if not schema_arrived(schema):
+			return False
+		if schema.get("part") != None and not part_bounded(schema, SCHEMA_ORDER):
+			return False
+		if not schema_held(feed_id, subscribed):
+			return False
+		inserted = schema_import(feed_id, schema)
+		# Checked again once the part is imported, so also before every fetch
+		# the loop makes: a drop that ran while the part was imported left what
+		# the part stored after it on posts and comments the drop removed.
+		if not schema_held(feed_id, subscribed):
+			schema_stray(inserted)
+			return False
+		next = schema.get("next")
+		if next == None:
+			return True
+		if not part_cursor(next, SCHEMA_SPECS):
+			return False
+		if mochi.time.now() - started >= budget:
+			schema_resume(feed_id, "stopped", next, parts, 0, subscribed)
+			return False
+		mochi.db.execute("update feeds set synced=? where id=?", mochi.time.now(), feed_id)
+		schema = schema_fetch(feed_id, peer, next)
+		if not schema_arrived(schema):
+			schema_resume(feed_id, schema_outcome(schema), next, parts, 0, subscribed)
+			return False
+	return False
+
+# pull_subscribed(feed_id) -> whether a pull of the feed beginning now begins
+# under the subscription: this user subscribes to it, rather than holding it
+# only for a source.
+def pull_subscribed(feed_id):
+	return mochi.db.exists("select 1 from subscribers where feed=?", feed_id)
+
+# schema_held(feed_id, subscribed) -> whether a pull of the feed may go on: the
+# feed is still held here from another server, and for a pull begun under the
+# subscription, the subscription is still held.
+def schema_held(feed_id, subscribed):
+	if subscribed:
+		return mochi.db.exists("select 1 from feeds f join subscribers s on s.feed=f.id where f.id=? and f.server!=''", feed_id)
+	return mochi.db.exists("select 1 from feeds where id=? and server!=''", feed_id)
+
+# schema_stray(inserted) removes what a part stored, after a drop beside it,
+# on a post or comment the drop removed: tags, copies and attachments carry no
+# foreign key, so nothing else stops one outliving its post.
+def schema_stray(inserted):
+	for start in range(0, len(inserted), PART_ROWS):
+		batch = inserted[start:start + PART_ROWS]
+		marks = ", ".join(["?" for _ in batch])
+		mochi.db.execute("delete from tags where object in (" + marks + ") and object not in (select id from posts)", batch)
+		mochi.db.execute("delete from copies where account='' and post in (" + marks + ") and post not in (select id from posts)", batch)
+		mochi.db.execute("delete from attachments where entity!='' and object in (" + marks + ") and object not in (select id from posts) and object not in (select id from comments)", batch)
+
+# schema_outcome(reply) -> "unanswered" when a part could not be fetched at all,
+# "failed" when the owner answered with a refusal.
+def schema_outcome(reply):
+	return "unanswered" if type(reply) != "dict" or reply.get("transport") else "failed"
+
+# schema_resume(feed_id, outcome, cursor, parts, attempt, subscribed) leaves
+# the rest of a pull that stopped short to a continuation: at once when its
+# time ran out, and after a pause when a part went unanswered, PART_RETRIES
+# times in a row at most. A pull the owner refused waits for the next resync.
+def schema_resume(feed_id, outcome, cursor, parts, attempt=0, subscribed=False):
+	data = {"feed": feed_id, "cursor": cursor, "parts": parts, "subscribed": subscribed}
+	if outcome == "stopped":
+		data["attempt"] = 0
+		mochi.schedule.after("schedule_schema", data, 0)
+	elif outcome == "unanswered" and attempt < PART_RETRIES:
+		data["attempt"] = attempt + 1
+		mochi.schedule.after("schedule_schema", data, 60 * (attempt + 1) * (attempt + 1))
+
+# schedule_schema(e): a continuation of a pull schema_resume left, taking the
+# parts from its cursor on, within its own time. The subscription is complete
+# once the last part is stored. One whose feed was dropped, or whose
+# subscription it was begun under ended, does nothing (schema_held); a drop or
+# an unsubscribe also cancels the ones pending (pull_cancel), since the
+# subscription may be made again before they come due.
+def schedule_schema(e):
+	if e.source != "schedule":
+		return
+	feed_id = e.data.get("feed", "")
+	cursor = e.data.get("cursor")
+	if not mochi.text.valid(feed_id, "entity") or not part_cursor(cursor, SCHEMA_SPECS):
+		return
+	subscribed = e.data.get("subscribed") == True
+	if not schema_held(feed_id, subscribed):
+		return
+	row = mochi.db.row("select server from feeds where id=?", feed_id)
+	if not row or not row["server"]:
+		return
+	parts = int(number(e.data.get("parts"), 0))
+	attempt = int(number(e.data.get("attempt"), 0))
+	started = mochi.time.now()
+	mochi.db.execute("update feeds set synced=? where id=?", started, feed_id)
+	peer = mochi.remote.peer(row["server"])
+	schema = schema_fetch(feed_id, peer, cursor)
+	if not schema_arrived(schema):
+		schema_resume(feed_id, schema_outcome(schema), cursor, parts, attempt, subscribed)
+		return
+	if insert_feed_schema(feed_id, schema, peer, started, parts, None, subscribed):
+		schema_completed(feed_id)
+
+# schema_completed(feed_id): a pull reached the last part, so the subscription
+# is whole (feed_completed), its idle timer starts again, and an open page
+# reloads it.
+def schema_completed(feed_id):
+	feed_completed(feed_id)
+	mochi.broadcast.touch(feed_id)
+	fingerprint = mochi.entity.fingerprint(feed_id)
+	if fingerprint:
+		websocket_write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
+
+# schema_import(feed_id, schema) stores one part of the owner's schema, or a
+# whole schema from an owner that predates parts.
+def schema_import(feed_id, schema):
 	"""Store what a feed's schema holds that this subscriber does not. What it
 	holds already stays as it is: events can reach it while the schema is on
 	its way, so the schema can be older than them. It fills gaps, and leaves
-	out what the owner removed meanwhile (withheld)."""
+	out what the owner removed meanwhile (withheld). Returns the posts and
+	comments it inserted."""
 	withheld = {}
 	for row in mochi.db.rows("select object from withheld where feed=?", feed_id) or []:
 		withheld[row["object"]] = True
 	inserted = {}
+	added = {}
 	for p in schema_list(schema, "posts"):
 		id = p.get("id", "")
 		if type(id) != "string" or withheld.get(id):
@@ -6578,12 +6907,15 @@ def insert_feed_schema(feed_id, schema):
 		mmdd = compute_mmdd(p.get("created", 0))
 		# A colliding id names a post held already, here or in another feed:
 		# only a post this inserts gets the rest.
+		# Written while the feed is held, checked in the insert itself, as each
+		# row below is: a drop beside the pull could remove the feed or post a
+		# row's foreign key needs between a separate check and the write.
 		if not mochi.db.execute(
-			"insert or ignore into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			"insert or ignore into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd, credibility) select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? where exists (select 1 from feeds where id=?)",
 			id, feed_id, p.get("body", ""), safe_post_data(p.get("data", "")),
 			"text" if p.get("format") == "text" else "markdown",
 			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
-			p.get("up", 0), p.get("down", 0), mmdd, credibility
+			p.get("up", 0), p.get("down", 0), mmdd, credibility, feed_id
 		):
 			continue
 		inserted[id] = True
@@ -6602,13 +6934,15 @@ def insert_feed_schema(feed_id, schema):
 					t.get("id", ""), id, t.get("label", ""),
 					t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
 				)
-	# Comments come oldest first, so a reply follows the comment it answers,
-	# and one answering a comment left out is left out with it.
-	skipped = {}
+	# Comments come oldest first, within a part and across a pull's parts, so
+	# a reply follows the comment it answers; one answering a comment not held
+	# here - withheld, or left out itself - is left out with it.
 	for c in schema_list(schema, "comments"):
 		id = c.get("id", "")
-		if type(id) != "string" or withheld.get(id) or skipped.get(c.get("parent", "")):
-			skipped[id] = True
+		if type(id) != "string" or withheld.get(id):
+			continue
+		parent = c.get("parent", "")
+		if type(parent) != "string" or (parent and not held_comment(parent, feed_id)):
 			continue
 		# Only onto a post held under this feed: the dump may name one outside
 		# its window, or one that collides with another feed's post.
@@ -6622,14 +6956,15 @@ def insert_feed_schema(feed_id, schema):
 		if len(remote) > 2000:
 			remote = ""
 		if not mochi.db.execute(
-			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, format, created, edited, attachment, remote, page) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, format, created, edited, attachment, remote, page) select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? where exists (select 1 from posts where id=? and feed=?)",
 			id, feed_id, c.get("post", ""), c.get("parent", ""),
 			c.get("subscriber", ""), c.get("name", ""), c.get("body", ""), format,
 			c.get("created", 0), c.get("edited", 0),
 			comment_anchor(c.get("post", ""), feed_id, c.get("attachment", "")),
-			remote, safe_link(str(c.get("page") or ""))
+			remote, safe_link(str(c.get("page") or "")), c.get("post", ""), feed_id
 		):
 			continue
+		added[id] = True
 		atts = c.get("attachments") or []
 		if atts:
 			attachment_store(atts, feed_id, id)
@@ -6642,9 +6977,10 @@ def insert_feed_schema(feed_id, schema):
 		if withheld.get(reaction_key(str(r.get("post", "")), str(r.get("comment", "")), str(r.get("subscriber", "")))):
 			continue
 		mochi.db.execute(
-			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
+			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) select ?, ?, ?, ?, ?, ? where exists (select 1 from posts where id=? and feed=?)",
 			feed_id, r.get("post", ""), r.get("comment", ""),
-			r.get("subscriber", ""), r.get("name", ""), r.get("reaction", "")
+			r.get("subscriber", ""), r.get("name", ""), r.get("reaction", ""),
+			r.get("post", ""), feed_id
 		)
 	# Tags as an older owner sends them, beside its posts
 	for t in schema_list(schema, "tags"):
@@ -6655,13 +6991,116 @@ def insert_feed_schema(feed_id, schema):
 			t.get("id", ""), t.get("object", ""), t.get("label", ""),
 			t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
 		)
+	return list(inserted) + list(added)
 
 # The schema a new subscriber pulls carries a feed's newest schema_posts posts,
-# schema_comments of their comments and schema_reactions of their reactions,
-# the newest posts' first: each under core's cap of 10,000 elements in an array.
+# their comments and their reactions. The whole schema, for a requester from
+# before parts, carries schema_comments of the comments and schema_reactions of
+# the reactions, the newest posts' first: each under core's cap of 10,000
+# elements in an array.
 schema_posts = 1000
 schema_comments = 8000
 schema_reactions = 9000
+
+# SCHEMA PARTS
+#
+# Core decodes at most 10,000 elements in one array and 100 MB on one stream,
+# each read within 30 seconds, so the schema of a busy feed cannot travel as
+# one reply. A schema request carrying `part` (a cursor) is answered with one
+# bounded part: at most PART_ROWS rows and about PART_BYTES bytes, taken in key
+# order from the posts, then their comments, then their reactions, with `next`
+# naming the cursor of the part after it. The last part carries no `next`. A
+# request without `part` gets the whole schema, as owners before parts
+# answered every one, and a requester takes a reply without the `part` echo as
+# whole.
+PART_ROWS = 1000
+PART_BYTES = 8388608
+# The most parts a pull follows, across its continuations. Core allows an app
+# 600 remote calls a minute to one target.
+PART_PARTS = 500
+# The bytes one row nested in a part's row - an attachment, a tag, a copy on
+# another network - is counted as.
+PART_ATTACHMENT = 1024
+# The seconds a pull runs before it leaves the rest to a continuation, well
+# under the time limit of the event it runs in.
+PART_TIME = 60
+# How many times in a row a continuation whose part went unanswered is tried
+# again before the pull waits for the next resync.
+PART_RETRIES = 3
+
+# The newest schema_posts posts the schema carries, and of them, those a
+# requester who is not a subscriber may read: none for followers only.
+SCHEMA_WINDOW = "select id from posts where feed=? order by created desc limit " + str(schema_posts)
+SCHEMA_SHOWN = "select id from posts where feed=? and visibility!='followers' order by created desc limit " + str(schema_posts)
+
+# schema_specs(window) -> each list a schema pages, over the posts window
+# selects: the columns a part sends, the rows it reads (bound by two scope
+# arguments, the feed twice), the key it is ordered and resumed by, and what a
+# row costs in bytes beyond a fixed allowance. Posts go by id; comments by
+# when they were made, so a reply follows the comment it answers in every part;
+# reactions by what they mark and who made them.
+def schema_specs(window):
+	return {
+		"posts": {"columns": "id, body, data, format, created, updated, edited, up, down, credibility, author, remote, visibility, warning, sensitive, language, pinned", "source": "posts where feed=? and id in (" + window + ")", "keys": ["id"], "size": "length(cast(body as blob)) + length(cast(data as blob)) + length(cast(warning as blob)) + length(cast(author as blob)) + length(cast(remote as blob))"},
+		"comments": {"columns": "id, post, parent, subscriber, name, body, format, created, edited, attachment, remote, page, rowid", "source": "comments where feed=? and post in (" + window + ")", "keys": ["created", "rowid"], "size": "length(cast(body as blob)) + length(cast(name as blob)) + length(cast(remote as blob)) + length(cast(page as blob))"},
+		"reactions": {"columns": "post, comment, subscriber, name, reaction", "source": "reactions where feed=? and post in (" + window + ")", "keys": ["post", "comment", "subscriber"], "size": "length(cast(name as blob)) + length(cast(reaction as blob))"},
+	}
+
+SCHEMA_SPECS = schema_specs(SCHEMA_WINDOW)
+SCHEMA_VISIBLE = schema_specs(SCHEMA_SHOWN)
+SCHEMA_ORDER = ["posts", "comments", "reactions"]
+# The cursor of a schema's first part.
+SCHEMA_START = {"list": "posts", "after": []}
+
+# part_cursor(value, specs) -> bool: whether value is a part cursor: the list
+# the part starts in, and the key of the last row already sent from it (empty
+# at the start of the list).
+def part_cursor(value, specs):
+	if type(value) != "dict" or len(value) != 2:
+		return False
+	name = value.get("list")
+	if type(name) != "string" or name not in specs:
+		return False
+	after = value.get("after")
+	if type(after) not in ["list", "tuple"]:
+		return False
+	if after and len(after) != len(specs[name]["keys"]):
+		return False
+	for key in after:
+		if type(key) != "string" or len(key) > PART_KEY:
+			return False
+	return True
+
+# part_budget() -> what one part may still hold.
+def part_budget():
+	return {"rows": PART_ROWS, "bytes": PART_BYTES, "taken": 0}
+
+# part_take(specs, order, scopes, cursor, budget) -> (lists, next): one bounded
+# part from cursor on, the lists taken in order, and the cursor of the part
+# after it, or None after the last. scopes holds each list's scope arguments.
+def part_take(specs, order, scopes, cursor, budget):
+	lists = {}
+	for name in order:
+		lists[name] = []
+	after = list(cursor["after"])
+	for name in order[order.index(cursor["list"]):]:
+		rows, last = part_list(specs[name], scopes[name], after, budget)
+		lists[name] = rows
+		if last != None:
+			return lists, {"list": name, "after": last}
+		after = []
+	return lists, None
+
+# part_bounded(reply, order) -> whether a part holds no more rows than a part
+# may, across all its lists.
+def part_bounded(reply, order):
+	rows = 0
+	for name in order:
+		value = reply.get(name)
+		if value != None and type(value) not in ["list", "tuple"]:
+			return False
+		rows += len(value or [])
+	return rows <= PART_ROWS
 
 def event_subscribe(e): # feeds_subscribe_event
 	user_id = e.user.identity.id
@@ -6728,16 +7167,20 @@ def event_sync_complete(e): # feeds_sync_complete_event
 	peer = e.header("peer")
 	if not row["server"] and mochi.text.valid(peer, "peer"):
 		mochi.db.execute("update feeds set server=? where id=? and server=''", "p2p/" + peer, feed_id)
-	if not request_resync(feed_id):
+	if not request_resync(feed_id, None, False):
 		fill_schedule(feed_id)
 
-# feed_completed(feed_id): a schema arrived and is stored, so a subscription
-# still filling is whole: what was withheld meanwhile goes, and the page
-# leaves its loading state.
+# feed_completed(feed_id): every part of a schema arrived and is stored, so a
+# subscription still filling is whole: what was withheld meanwhile goes, an
+# aggregating feed added while it filled (sources_add_feed) copies in the rest
+# of its history, and the page leaves its loading state.
 def feed_completed(feed_id):
 	filled = mochi.db.execute("update feeds set populated=1 where id=? and populated=0", feed_id) > 0
 	mochi.db.execute("delete from withheld where feed=?", feed_id)
 	if filled:
+		for source in mochi.db.rows("select id, feed from sources where type='feed/posts' and url=? and fetched=0", feed_id) or []:
+			ingest_feed_posts(source["id"], source["feed"], feed_id)
+			mochi.db.execute("update sources set fetched=? where id=?", mochi.time.now(), source["id"])
 		fp = mochi.entity.fingerprint(feed_id)
 		if fp:
 			websocket_write(fp, {"type": "feed/update", "feed": feed_id})
@@ -6980,19 +7423,7 @@ def event_deleted(e):
 		return
 
 	# Delete local subscription data for this feed
-	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
-	mochi.db.execute("delete from reactions where feed=?", feed_id)
-	# The library sweep only removes files with no row, so the rows must go
-	# here or every image the feed carried stays on disk forever.
-	for row in mochi.db.rows("select id from posts where feed=? union select id from comments where feed=?", feed_id, feed_id) or []:
-		attachment_clear(row["id"])
-	mochi.db.execute("delete from comments where feed=?", feed_id)
-	mochi.db.execute("delete from posts where feed=?", feed_id)
-	mochi.db.execute("delete from follows where feed=?", feed_id)
-	mochi.db.execute("delete from notifications where feed=?", feed_id)
-	mochi.db.execute("delete from subscribers where feed=?", feed_id)
-	rss_tokens_revoke(feed_id)
-	mochi.db.execute("delete from feeds where id=?", feed_id)
+	feed_drop(feed_id)
 	# The same teardown serves a removal (subscriber_drop sends it with a
 	# reason), so a subscriber on an older release still purges. The reason is
 	# the owner's word and decides only what the page and the notification say.
@@ -7064,13 +7495,11 @@ VIEW_BYTES = 8388608
 VIEW_PARTS = 500
 # The bytes one attachment row is counted as.
 VIEW_ATTACHMENT = 1024
-# The most bytes a cursor key holds. A row whose key is longer could not be
-# resumed after, so the owner never pages one.
-VIEW_KEY = 256
-# The seconds a requester spends gathering a page's parts, well under the time
-# limit of the action it runs in, and the most bytes it holds across them: what
-# one whole reply could carry before parts. Past either it refuses the page.
-VIEW_TIME = 60
+# The seconds a requester spends gathering a page's parts, well under the 30 a
+# client waits on the action it runs in, and the most bytes it holds across
+# them: what one whole reply could carry before parts. Past either it refuses
+# the page.
+VIEW_TIME = 20
 VIEW_GATHERED = 104857600
 VIEW_KEYS = {"posts": [], "reactions": ["post", "comment", "subscriber"], "comments": ["id"]}
 VIEW_LISTS = ["reactions", "comments"]
@@ -7090,13 +7519,18 @@ def view_cursor(value):
 	if after and len(after) != len(VIEW_KEYS[name]):
 		return False
 	for key in after:
-		if type(key) != "string" or len(key) > VIEW_KEY:
+		if type(key) != "string" or len(key) > PART_KEY:
 			return False
 	return True
 
-# view_compare(keys, values, last) -> (condition, args): rows whose key sorts
+# The most bytes a cursor key holds, in a view's parts and a schema's alike. A
+# row whose key is longer could not be resumed after, so the owner never pages
+# one.
+PART_KEY = 256
+
+# part_compare(keys, values, last) -> (condition, args): rows whose key sorts
 # after values, or, with last, at or before them.
-def view_compare(keys, values, last=False):
+def part_compare(keys, values, last=False):
 	clauses = []
 	args = []
 	for index in range(len(keys)):
@@ -7110,19 +7544,24 @@ def view_compare(keys, values, last=False):
 		clauses.append("(" + " and ".join(terms) + ")")
 	return "(" + " or ".join(clauses) + ")", args
 
-# view_list(source, size, keys, scope, after, budget) -> (rows, key): one
-# list's share of a part, and the key to resume it from, or None when the list
-# is done. The part's first row always fits, so a row larger than the byte
-# budget travels alone; the resume key is the last row sent, not the last row
-# sized, so a row written between the two queries is never stepped over, and
-# the list is done only when every row sized was sent. A row whose key a
-# cursor cannot carry is never paged.
-def view_list(source, size, keys, scope, after, budget):
+# part_list(spec, scope, after, budget) -> (rows, key): one list's share of a
+# part, a view's or a schema's, and the key to resume it from, or None when the
+# list is done. spec names the columns a part sends, the rows it reads (bound
+# by the scope arguments), the key it is ordered and resumed by, and what a row
+# costs in bytes beyond a fixed allowance. The part's first row always fits, so
+# a row larger than the byte budget travels alone; the resume key is the last
+# row sent, not the last row sized, so a row written between the two queries
+# is never stepped over, and the list is done only when every row sized was
+# sent. A row whose key a cursor cannot carry is never paged.
+def part_list(spec, scope, after, budget):
 	if budget["rows"] <= 0:
 		return [], list(after)
-	beyond, beyond_args = ("1=1", []) if not after else view_compare(keys, after)
+	keys = spec["keys"]
+	source = spec["source"]
+	size = spec["size"]
+	beyond, beyond_args = ("1=1", []) if not after else part_compare(keys, after)
 	fits = " and ".join(["length(cast(" + k + " as blob))<=?" for k in keys])
-	fits_args = [VIEW_KEY] * len(keys)
+	fits_args = [PART_KEY] * len(keys)
 	order = ", ".join(keys)
 	sizes = mochi.db.rows("select " + order + ", 64 + " + size + " as size from " + source + " and " + beyond + " and " + fits + " order by " + order + " limit ?", *(scope + beyond_args + fits_args + [budget["rows"] + 1])) or []
 	count = 0
@@ -7137,8 +7576,8 @@ def view_list(source, size, keys, scope, after, budget):
 		count += 1
 	rows = []
 	if count:
-		upto, upto_args = view_compare(keys, [sizes[count - 1][k] for k in keys], True)
-		rows = list(mochi.db.rows("select * from " + source + " and " + beyond + " and " + upto + " and " + fits + " order by " + order + " limit ?", *(scope + beyond_args + upto_args + fits_args + [count])) or [])
+		upto, upto_args = part_compare(keys, [sizes[count - 1][k] for k in keys], True)
+		rows = list(mochi.db.rows("select " + spec["columns"] + " from " + source + " and " + beyond + " and " + upto + " and " + fits + " order by " + order + " limit ?", *(scope + beyond_args + upto_args + fits_args + [count])) or [])
 	if count >= len(sizes) and len(rows) >= count:
 		return rows, None
 	if rows:
@@ -7166,15 +7605,15 @@ def view_items(e, feed_id, part):
 		return
 	marks = ",".join(["?" for _ in held])
 	scope = [feed_id] + held
-	sources = {
-		"reactions": ("reactions where feed=? and post in (" + marks + ") and reaction!=''", "length(cast(name as blob))"),
-		"comments": ("comments where feed=? and post in (" + marks + ")", "length(cast(body as blob)) + length(cast(name as blob))"),
+	specs = {
+		"reactions": {"columns": "*", "source": "reactions where feed=? and post in (" + marks + ") and reaction!=''", "keys": VIEW_KEYS["reactions"], "size": "length(cast(name as blob))"},
+		"comments": {"columns": "*", "source": "comments where feed=? and post in (" + marks + ")", "keys": VIEW_KEYS["comments"], "size": "length(cast(body as blob)) + length(cast(name as blob))"},
 	}
 	budget = {"rows": VIEW_ROWS, "bytes": VIEW_BYTES, "taken": 0}
 	after = list(part["after"])
 	next = None
 	for name in VIEW_LISTS[VIEW_LISTS.index(part["list"]):]:
-		rows, last = view_list(sources[name][0], sources[name][1], VIEW_KEYS[name], scope, after, budget)
+		rows, last = part_list(specs[name], scope, after, budget)
 		reply[name] = rows
 		if last != None:
 			next = {"list": name, "after": last}
@@ -7957,14 +8396,16 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	mochi.db.execute("insert or ignore into feeds (id, name, subscribers, updated, server, fingerprint, populated) values (?, ?, 0, ?, ?, ?, 0)",
 		resolved_id, feed_name, mochi.time.now(), server or "", fp)
 
-	# The schema, asked for as a subscriber, and held from a resync until its
-	# reply is stored, as action_subscribe asks for it
+	# The schema, asked for as a subscriber, held from a resync until its pull
+	# is stored, and taken a first part here, as action_subscribe asks for it.
+	# The posts its continuation brings are copied in when it completes
+	# (feed_completed).
 	mochi.db.execute("update feeds set synced=? where id=?", mochi.time.now(), resolved_id)
 	if peer:
-		schema = mochi.remote.request(resolved_id, "feeds", "schema", {"register": {"name": a.user.identity.name}}, peer)
+		schema = schema_fetch(resolved_id, peer, SCHEMA_START, a.user.identity.name)
 	if schema_arrived(schema):
-		insert_feed_schema(resolved_id, schema)
-		feed_completed(resolved_id)
+		if insert_feed_schema(resolved_id, schema, peer, None, 0, 0, pull_subscribed(resolved_id)):
+			feed_completed(resolved_id)
 	else:
 		mochi.db.execute("update feeds set synced=0 where id=?", resolved_id)
 
@@ -7973,11 +8414,14 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	registration_send(server or "", headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(resolved_id)
 
-	# Create source record
+	# Create source record. One whose feed is still filling is not yet
+	# fetched: the rest of the feed's history is copied in once its pull
+	# completes (feed_completed).
 	source_id = mochi.uid()
 	now = mochi.time.now()
+	filling = mochi.db.exists("select 1 from feeds where id=? and populated=0", resolved_id)
 	mochi.db.execute("insert into sources (id, feed, type, url, name, fetched) values (?, ?, 'feed/posts', ?, ?, ?)",
-		source_id, feed_id, resolved_id, feed_name, now)
+		source_id, feed_id, resolved_id, feed_name, 0 if filling else now)
 
 	# Copy existing posts from source feed into aggregating feed
 	count = ingest_feed_posts(source_id, feed_id, resolved_id)
@@ -8088,18 +8532,14 @@ def source_remove(feed, source, user_id, delete_posts, unfollow=True):
 	# For feed/posts type, clean up feed data if no longer needed
 	if source["type"] == "feed/posts":
 		source_feed_id = source["url"]
-		# Only delete feed data if no other sources reference it and no user is subscribed
+		# Only delete feed data if no other sources reference it and no user is
+		# subscribed, and never a feed of this user's own that was the source
 		has_other_source = mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", source_feed_id)
 		has_subscriber = mochi.db.exists("select 1 from subscribers where feed=?", source_feed_id)
-		if not has_other_source and not has_subscriber:
+		if not has_other_source and not has_subscriber and not owned(source_feed_id):
 			source_feed = mochi.db.row("select server from feeds where id=?", source_feed_id)
 			registration_send(source_feed["server"] if source_feed else "", headers(user_id, source_feed_id, "unsubscribe"), {})
-			mochi.db.execute("delete from reactions where feed=?", source_feed_id)
-			mochi.db.execute("delete from comments where feed=?", source_feed_id)
-			mochi.db.execute("delete from posts where feed=?", source_feed_id)
-			mochi.db.execute("delete from follows where feed=?", source_feed_id)
-			rss_tokens_revoke(source_feed_id)
-			mochi.db.execute("delete from feeds where id=?", source_feed_id)
+			feed_drop(source_feed_id)
 
 	# Cancel scheduled polls only if no polled sources remain on this feed
 	if not mochi.db.exists("select 1 from sources where feed=? and " + POLLED_SQL, feed_id):
@@ -8198,7 +8638,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 			link = t_link or link
 
 		# Store structured RSS data for rich rendering (og:image fetched lazily)
-		image = item.get("image", "")
+		image = safe_link(item.get("image", ""))
 		rss_data = {"title": title, "link": link, "html": description_html}
 		if image:
 			rss_data["image"] = image
@@ -9603,10 +10043,12 @@ def attachment_bytes(att, maximum):
 				return data
 	return None
 
-def publish_media(acc, attachments, limits):
+def publish_media(acc, attachments, limits, unsent=None):
 	"""Upload the attachments that fit a network's count, size and type, in
 	the post's order, the kind of the first eligible one deciding where the
-	network takes one kind per post. Answers (uploads, omitted)."""
+	network takes one kind per post. An attachment whose upload fails goes
+	into unsent, said for the user (unsent_text), as the copy goes out
+	without it. Answers (uploads, omitted)."""
 	eligible = [att for att in attachments if attachment_kind(att)]
 	omitted = len(eligible) < len(attachments)
 	if not eligible:
@@ -9629,9 +10071,21 @@ def publish_media(acc, attachments, limits):
 		upload = mochi.account.upload(acc["id"], data, attachment_sniff(data) or mochi.file.type(att["name"]), name=att.get("name", "file"), description=description)
 		if not upload or not upload.get("id"):
 			omitted = True
+			if unsent != None:
+				unsent.append(unsent_text(acc, att, upload))
 			continue
 		uploads.append({"upload": upload, "kind": kind, "description": description})
 	return (uploads, omitted)
+
+def unsent_text(acc, att, upload):
+	"""What a copy on an account went without, in the user's language: the
+	file whose upload failed, and why where core says (mochi.account.upload)."""
+	failed = upload.get("error") if upload and type(upload.get("error")) == "dict" else {}
+	account = acc.get("identifier", "") or acc.get("label", "") or acc.get("type", "")
+	name = att.get("name", "") or "file"
+	if failed.get("message"):
+		return mochi.app.label("publish.unsent_because", account=account, name=name, reason=str(failed["message"]))
+	return mochi.app.label("publish.unsent", account=account, name=name)
 
 def mastodon_limits(acc):
 	"""The account's server's limits, as whole numbers: the stored ones come
@@ -9675,7 +10129,7 @@ def bluesky_facets(text):
 			facets.append({"index": index, "features": [{"$type": "app.bsky.richtext.facet#tag", "tag": word[1:]}]})
 	return facets
 
-def publish_object(acc, text, link, attachments, source, features=None, quote=None):
+def publish_object(acc, text, link, attachments, source, features=None, quote=None, unsent=None):
 	"""The object a post becomes on an account's network, in that network's
 	own form (mochi.account.object.create), with the text cut and the
 	attachments that fit; on Mastodon its visibility, content warning,
@@ -9684,7 +10138,7 @@ def publish_object(acc, text, link, attachments, source, features=None, quote=No
 	quotes as an embedded record (phase 19)."""
 	features = features or post_features({})
 	limits = mastodon_limits(acc) if acc["type"] == "mastodon" else BLUESKY_LIMITS
-	uploads, omitted = publish_media(acc, attachments, limits)
+	uploads, omitted = publish_media(acc, attachments, limits, unsent)
 	if source:
 		text = sourced_text(source, text)
 		link = source.get("link", "") or link
@@ -9754,7 +10208,7 @@ def publish_announce(acc, source):
 def mastodon_copy(status):
 	return {"id": str(status.get("id", "")), "url": str(status.get("url", "") or status.get("uri", ""))}
 
-def publish_post(feed, post_id, body, format, attachments, accounts=None, source=None, post=None):
+def publish_post(feed, post_id, body, format, attachments, accounts=None, source=None, post=None, unsent=None):
 	"""Publish a post to the accounts given, else the feed's list; a public
 	feed only (decision 27). A sourced post, a web feed's item or another
 	Mochi feed's post (source: remote, name, link, network, transformed,
@@ -9794,7 +10248,7 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 		if hosted_fediverse(acc):
 			object = fediverse_note(acc, feed, post_id, body, format, link, attachments, source, features)
 		else:
-			object = publish_object(acc, text, link, attachments, source, features, quote)
+			object = publish_object(acc, text, link, attachments, source, features, quote, unsent)
 		# A sourced post may wait for the relay's budget on a hosted Bluesky
 		# account (decision 30).
 		result = mochi.account.object.create(acc["id"], object, key=post_id + "|" + acc["id"], sourced=bool(source))
@@ -9808,7 +10262,7 @@ def publish_post(feed, post_id, body, format, attachments, accounts=None, source
 		published_record(feed_id, source.get("remote", ""))
 	return copies
 
-def publish_update(feed, post_id, body, format, attachments, post=None):
+def publish_update(feed, post_id, body, format, attachments, post=None, unsent=None):
 	"""A new version of a post reaches each copy (decision 25), copies on
 	accounts since removed from the list included."""
 	rows = mochi.db.rows("select account, remote from copies where post=? and account!=''", post_id)
@@ -9824,7 +10278,7 @@ def publish_update(feed, post_id, body, format, attachments, post=None):
 		if hosted_fediverse(acc):
 			object = fediverse_note(acc, feed, post_id, body, format, link, attachments, None, features)
 		else:
-			object = publish_object(acc, text, link, attachments, None, features)
+			object = publish_object(acc, text, link, attachments, None, features, unsent=unsent)
 		result = mochi.account.object.update(acc["id"], row["remote"], object)
 		if not result:
 			mochi.log.warn("Feeds could not update the copy of post %s on %s", post_id, acc.get("identifier", acc["id"]))
@@ -10300,8 +10754,8 @@ def sourced_post(feed, source, acc, item, user_id):
 	if not body:
 		return False
 	data = {"rss": {"title": "", "link": link, "html": "" if transformed else item["html"], "source": author}}
-	if item["image"]:
-		data["rss"]["image"] = item["image"]
+	if safe_link(item["image"]):
+		data["rss"]["image"] = safe_link(item["image"])
 	if item["boosted"]:
 		data["rss"]["shared"] = item["boosted"]
 	# A post from the fediverse carries its author, who boosted it, its media,
@@ -10452,8 +10906,8 @@ def import_post(feed, item):
 	if not body:
 		return None
 	data = {"rss": {"title": "", "link": item["link"], "html": item["html"], "source": item["author"]}}
-	if item["image"]:
-		data["rss"]["image"] = item["image"]
+	if safe_link(item["image"]):
+		data["rss"]["image"] = safe_link(item["image"])
 	created = item["created"] or mochi.time.now()
 	post_id = mochi.uid()
 	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, read) values (?, ?, ?, ?, 'text', ?, ?, ?, ?)",
@@ -10557,7 +11011,7 @@ def notify_account(acc):
 		account_interaction(acc, raw)
 		notification = account_notification(acc, raw)
 		if notification:
-			mochi.service.call("notifications", "send", "account", acc["id"], notification["title"], notification["body"], notification["url"],
+			mochi.service.call("notifications", "send", "account", acc["id"], notification["title"], notification["body"], notification_link(notification["url"]),
 				mochi.app.label("notifications.topic.account"), event="account:" + notification["id"])
 	if newest:
 		account_cursor_set(acc["id"], "notifications", newest)
@@ -11333,8 +11787,30 @@ def account_person(actor):
 
 def account_notify(acc, label, name, body, url, event):
 	"""A notification about the account to the bell, under the accounts topic."""
-	mochi.service.call("notifications", "send", "account", acc["id"], mochi.app.label(label, name=name), body, url,
+	mochi.service.call("notifications", "send", "account", acc["id"], mochi.app.label(label, name=name), body, notification_link(url),
 		mochi.app.label("notifications.topic.account"), event="account:" + event)
+
+# The characters a query value carries as they are; every other byte is
+# percent-encoded.
+UNRESERVED = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
+HEX = "0123456789ABCDEF"
+
+def notification_link(url):
+	"""Where a notification about something on another network opens. The bell
+	opens only links within Mochi, so a post or person elsewhere opens in Find,
+	which shows it with Follow. A link within Mochi stays as it is."""
+	if url.startswith("/"):
+		return url
+	if not safe_link(url):
+		return ""
+	value = ""
+	for byte in url.elem_ords():
+		character = chr(byte)
+		if byte < 128 and character in UNRESERVED:
+			value += character
+		else:
+			value += "%" + HEX[byte // 16] + HEX[byte % 16]
+	return "/feeds/find?link=" + value
 
 def fediverse_time(value):
 	"""A time the network gives, or now when it is missing or unreasonable."""
@@ -13336,6 +13812,18 @@ def import_file_step(import_id, user_id):
 
 # === People the user knows ===
 
+def known_feeds(person):
+	"""The web feeds a contact's fediverse account may be followed as, the
+	same addresses following them tries: from the address the lookup gave,
+	else the handle as written, and the profile page where it is known."""
+	if person.get("network") != "fediverse":
+		return []
+	address = str(person.get("address", "") or person.get("handle", "") or "")
+	parts = address.lstrip("@").split("@")
+	if len(parts) != 2 or not parts[0] or "." not in parts[1] or "/" in address:
+		return []
+	return person_feeds({"host": parts[1].lower(), "username": parts[0], "url": str(person.get("page", "") or "")})
+
 def action_people(a):
 	"""The user's contacts with a handle on another network, for the search
 	page to offer as people to follow: each with whether a feed follows them
@@ -13350,8 +13838,12 @@ def action_people(a):
 			continue
 		identifier = str(person.get("id", "") or "")
 		followed = bool(identifier) and mochi.db.exists("select 1 from sources where type='person/posts' and url=?", identifier)
-		if not followed and person.get("handle"):
-			followed = mochi.db.exists("select 1 from sources where type='rss' and name=?", str(person.get("name", "")))
+		# A person followed with no account of the user's on their network is
+		# a web feed, known by its address: the feed's title is the account's
+		# name, which need not be the contact's, and another feed may share it.
+		urls = known_feeds(person)
+		if not followed and urls:
+			followed = mochi.db.exists("select 1 from sources where type='rss' and url in (" + ",".join(["?"] * len(urls)) + ")", *urls)
 		entry = dict(person)
 		entry["followed"] = followed
 		out.append(entry)

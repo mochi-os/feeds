@@ -40,6 +40,7 @@ import {
   type SortType,
   NewItemsAction,
   usePendingItems,
+  usePoll,
   useMergeOnScrollTop,
   GeneralError,
   DropdownMenu,
@@ -253,11 +254,10 @@ export function EntityFeedPage({
 
   // Fallback for the websocket race: if sync/complete's feed/update is missed,
   // poll the loader while the feed is still filling so it never stays stuck.
-  useEffect(() => {
-    if (feed.populated !== 0) return
-    const timer = setInterval(() => void router.invalidate(), 3000)
-    return () => clearInterval(timer)
-  }, [feed.populated, router])
+  // The polls slow down and stop after ten minutes, since a subscription held
+  // here can stay filling for good when its owner is gone; feed/update still
+  // reloads the page when a pull lands later.
+  usePoll(feed.populated === 0, () => void router.invalidate(), feed.id)
 
   // Standardized actions
   const { handlePostReaction } = usePostActions({ setPostsByFeed })
