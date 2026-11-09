@@ -11011,7 +11011,7 @@ def notify_account(acc):
 		account_interaction(acc, raw)
 		notification = account_notification(acc, raw)
 		if notification:
-			mochi.service.call("notifications", "send", "account", acc["id"], notification["title"], notification["body"], notification["url"],
+			mochi.service.call("notifications", "send", "account", acc["id"], notification["title"], notification["body"], notification_link(notification["url"]),
 				mochi.app.label("notifications.topic.account"), event="account:" + notification["id"])
 	if newest:
 		account_cursor_set(acc["id"], "notifications", newest)
@@ -11787,8 +11787,30 @@ def account_person(actor):
 
 def account_notify(acc, label, name, body, url, event):
 	"""A notification about the account to the bell, under the accounts topic."""
-	mochi.service.call("notifications", "send", "account", acc["id"], mochi.app.label(label, name=name), body, url,
+	mochi.service.call("notifications", "send", "account", acc["id"], mochi.app.label(label, name=name), body, notification_link(url),
 		mochi.app.label("notifications.topic.account"), event="account:" + event)
+
+# The characters a query value carries as they are; every other byte is
+# percent-encoded.
+UNRESERVED = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
+HEX = "0123456789ABCDEF"
+
+def notification_link(url):
+	"""Where a notification about something on another network opens. The bell
+	opens only links within Mochi, so a post or person elsewhere opens in Find,
+	which shows it with Follow. A link within Mochi stays as it is."""
+	if url.startswith("/"):
+		return url
+	if not safe_link(url):
+		return ""
+	value = ""
+	for byte in url.elem_ords():
+		character = chr(byte)
+		if byte < 128 and character in UNRESERVED:
+			value += character
+		else:
+			value += "%" + HEX[byte // 16] + HEX[byte % 16]
+	return "/feeds/find?link=" + value
 
 def fediverse_time(value):
 	"""A time the network gives, or now when it is missing or unreasonable."""
