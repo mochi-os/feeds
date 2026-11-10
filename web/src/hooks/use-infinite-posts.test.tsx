@@ -358,6 +358,7 @@ describe('a first page the route loader prefetched', () => {
       posts: [post('early')],
       hasMore: false,
       nextCursor: undefined,
+      cursor: undefined,
       permissions: undefined,
       hasAi: false,
     }),
@@ -398,5 +399,55 @@ describe('a first page the route loader prefetched', () => {
 
     expect(prefetched).toBeUndefined()
     expect(get).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('the page after the first', () => {
+  type Asked = { before?: number; cursor?: string; offset?: number }
+
+  /** The first page, then a second, as a server with or without cursor gives them. */
+  function serve(first: Record<string, unknown>, second: FeedPost[]) {
+    get.mockImplementation(async (_feed: string, asked: Asked) =>
+      asked.before === undefined &&
+      asked.cursor === undefined &&
+      asked.offset === undefined
+        ? { data: { posts: list('a', 'b'), hasMore: true, ...first } }
+        : { data: { posts: second, hasMore: false } }
+    )
+  }
+
+  async function next(sort: string) {
+    const { hook, ids } = mount({ unread: false, sort })
+    await waitFor(() => expect(ids()).toEqual(['a', 'b']))
+    await act(() => hook.result.current.fetchNextPage())
+    await waitFor(() => expect(get).toHaveBeenCalledTimes(2))
+    return { asked: get.mock.calls[1][1] as Asked, ids }
+  }
+
+  it("resumes where the server's cursor says", async () => {
+    serve({ nextCursor: 1790000000, cursor: '1790000000:b' }, list('c'))
+    const { asked } = await next('new')
+    expect(asked.cursor).toBe('1790000000:b')
+    expect(asked.before).toBeUndefined()
+  })
+
+  it('a scored page resumes by its cursor too', async () => {
+    serve({ nextCursor: 2, cursor: '2:1790000000' }, list('c'))
+    const { asked } = await next('top')
+    expect(asked.cursor).toBe('2:1790000000')
+    expect(asked.before).toBeUndefined()
+  })
+
+  it('is asked by before of a server that sends no cursor', async () => {
+    serve({ nextCursor: 1790000000 }, list('c'))
+    const { asked } = await next('new')
+    expect(asked.before).toBe(1790000000)
+    expect(asked.cursor).toBeUndefined()
+  })
+
+  it('shows a post the later page repeats once', async () => {
+    serve({ nextCursor: 2, cursor: '2:1790000000' }, list('b', 'c'))
+    const { ids } = await next('top')
+    await waitFor(() => expect(ids()).toEqual(['a', 'b', 'c']))
   })
 })
