@@ -3,8 +3,8 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 // A comment reaction shows on the click and goes back if the server refuses
-// it, in the feed list and on the post page alike. Only the comment's own
-// reaction fields go back, so anything else that changed on the post while the
+// it, in the feed list and on the post page alike. Only the reader's own
+// reaction goes back, so anything else that changed on the post while the
 // request was out stays.
 //
 // Two quick clicks on one comment send two requests. A refusal must not wipe a
@@ -22,9 +22,10 @@ import type { FeedComment, FeedPost, ReactionId } from '@/types'
 import { undoChain } from '@mochi/web'
 import { applyReaction, updateCommentTree } from './utils'
 
-type Shown = Pick<FeedComment, 'reactions' | 'userReaction'>
+// The reader's own reaction on the comment, or null for none.
+type Mine = ReactionId | null
 
-const chain = undoChain<Shown>()
+const chain = undoChain<Mine>()
 
 export interface CommentReaction {
   /** The post with the reaction applied. Use it on every copy of the post. */
@@ -53,25 +54,39 @@ export function startCommentReaction(
   reaction: ReactionId | ''
 ): CommentReaction {
   const step = chain(commentId)
+  // The reaction this click showed as the reader's own.
+  let guess: Mine | undefined
   return {
     apply: (post) =>
       patchComment(post, commentId, (comment) => {
-        step.remember({
-          reactions: comment.reactions,
-          userReaction: comment.userReaction,
-        })
-        return {
+        step.remember(comment.userReaction ?? null)
+        const next = {
           ...comment,
           ...applyReaction(comment.reactions, comment.userReaction, reaction),
         }
+        guess ??= next.userReaction
+        return next
       }),
     accepted: step.accepted,
+    // The reader's reaction goes back to what it was, moved on the counts each
+    // copy shows now rather than putting back old counts: another reader's
+    // reaction that came in meanwhile, from the websocket or a reload, stays,
+    // and a copy fetched at another time keeps its own counts. A copy that no
+    // longer shows this click's reaction as the reader's own was replaced by
+    // the server's data since, and is left as it is.
     refused: () => {
       const before = step.refused()
       if (!before) return null
-      const shown = before.value
+      const mine = before.value
       return (post) =>
-        patchComment(post, commentId, (comment) => ({ ...comment, ...shown }))
+        patchComment(post, commentId, (comment) => {
+          const current = comment.userReaction ?? null
+          if (current !== guess || current === mine) return comment
+          return {
+            ...comment,
+            ...applyReaction(comment.reactions, current, mine ?? ''),
+          }
+        })
     },
   }
 }

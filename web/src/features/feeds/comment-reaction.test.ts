@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import type { FeedComment } from '@/types'
+import type { FeedComment, ReactionId } from '@/types'
 import { describe, expect, it } from 'vitest'
 import { startCommentReaction } from './comment-reaction'
 import { createReactionCounts } from './constants'
 
-function post(likes = 1, userReaction: 'like' | null = null, body = 'Hi') {
+function post(likes = 1, userReaction: ReactionId | null = null, body = 'Hi') {
   const reply: FeedComment = {
     id: 'c2',
     subscriberId: 's',
@@ -61,9 +61,46 @@ describe('startCommentReaction', () => {
     expect(first.refused()).toBeNull()
 
     // The later click now puts back what showed before both.
-    const back = second.refused()!(post(5, 'like'))
+    const back = second.refused()!(shown)
     expect(reply(back).userReaction).toBeNull()
     expect(reply(back).reactions.like).toBe(1)
+  })
+
+  it("keeps another reader's reaction that came in meanwhile", () => {
+    const change = startCommentReaction('c2', 'like')
+    change.apply(post())
+    // The websocket brought in another reader's like while the click was out.
+    const back = change.refused()!(post(3, 'like'))
+    expect(reply(back).userReaction).toBeNull()
+    expect(reply(back).reactions.like).toBe(2)
+  })
+
+  it("leaves a copy the server's data has replaced since", () => {
+    const change = startCommentReaction('c2', 'like')
+    change.apply(post())
+    // A reload: the server never took the like, and another reader liked.
+    const back = change.refused()!(post(2))
+    expect(reply(back).userReaction).toBeNull()
+    expect(reply(back).reactions.like).toBe(2)
+  })
+
+  it('leaves another reaction the reader set elsewhere meanwhile', () => {
+    const change = startCommentReaction('c2', 'like')
+    change.apply(post())
+    // A reload shows the reader's love, set from another device.
+    const back = change.refused()!(post(1, 'love'))
+    expect(reply(back).userReaction).toBe('love')
+  })
+
+  it('puts back each copy on its own counts', () => {
+    const change = startCommentReaction('c2', 'like')
+    // The list state and a list fetched at another time hold other counts.
+    const first = change.apply(post(1))
+    const second = change.apply(post(4))
+    const undo = change.refused()!
+    expect(reply(undo(first)).reactions.like).toBe(1)
+    expect(reply(undo(second)).reactions.like).toBe(4)
+    expect(reply(undo(second)).userReaction).toBeNull()
   })
 
   it('undoes nothing for an earlier click once a later one is taken', () => {
