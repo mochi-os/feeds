@@ -60,6 +60,14 @@ export function PostAttachments({
           )
         )
       }
+      getMediumUrl={(att) =>
+        authenticatedUrl(
+          normalizeEntityUrl(
+            att.preview_url?.replace(/\/preview$/, '/medium') ??
+              `${appPath}/${feedId}/-/attachments/${att.id}/medium`
+          )
+        )
+      }
       inline={inline}
       mediaCap={mediaCap}
       showCaptions
