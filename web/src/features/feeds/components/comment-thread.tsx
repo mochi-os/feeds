@@ -520,7 +520,7 @@ export function CommentThread({
             onFilesChange={handleReplyFilesChange}
             onSearchPeople={onSearchPeople}
             progress={progress}
-            placeholder={t`Reply to ${comment.author}...`}
+            placeholder={t`Reply to ${comment.author}`}
             autoFocus
           />
         </div>

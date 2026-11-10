@@ -94,7 +94,7 @@ export function AttachmentComments({
           }}
           onSearchPeople={thread.onSearchPeople}
           progress={thread.progress}
-          placeholder={t`Comment on this image…`}
+          placeholder={t`Comment on this image`}
         />
       )}
     </div>

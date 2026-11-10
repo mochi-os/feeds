@@ -396,7 +396,7 @@ export function NewPostDialog({
                       id='legacy-post-feed'
                       className='w-full justify-between'
                     >
-                      <SelectValue placeholder={t`Choose a feed`} />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {[...feeds]
