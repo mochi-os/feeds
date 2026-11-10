@@ -34,6 +34,7 @@ import { mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { useFeedWebsocket, type FeedGoneReason } from '@/hooks/useFeedWebsocket'
+import { startCommentReaction } from '@/features/feeds/comment-reaction'
 import { FeedGone } from '@/features/feeds/components/feed-gone'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import {
@@ -294,21 +295,39 @@ function SinglePostPage() {
     [refreshPost, uploadComment, t, attachmentError]
   )
 
+  // The reaction shows at once, then the post is fetched again on success as
+  // before, which replaces the guess with the server's counts.
   const handleCommentReaction = useCallback(
     async (
       postFeedId: string,
       pId: string,
       commentId: string,
-      reaction: string
+      reaction: ReactionId | ''
     ) => {
+      const change = startCommentReaction(commentId, reaction)
+      const write = (
+        patch: <T extends Pick<FeedPost, 'comments'>>(post: T) => T
+      ) => {
+        setPost((current) => (current ? patch(current) : current))
+        queryClient.setQueryData(
+          ['feeds', 'single-post', feedId, postId],
+          (data: typeof postData | undefined) =>
+            data?.post ? { ...data, post: patch(data.post) } : data
+        )
+      }
+      write(change.apply)
       try {
         await feedsApi.reactToComment(postFeedId, pId, commentId, reaction)
-        await refreshPost()
       } catch (error) {
+        const undo = change.refused()
+        if (undo) write(undo)
         toast.error(getErrorMessage(error, t`Failed to update reaction`))
+        return
       }
+      change.accepted()
+      await refreshPost()
     },
-    [refreshPost, t]
+    [feedId, postId, queryClient, refreshPost, t]
   )
 
   const { progress: editProgress, upload: uploadEdit } = useUploadProgress()

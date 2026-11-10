@@ -97,6 +97,7 @@ import {
 } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import { changePost } from '@/lib/patch'
+import { usePinPost } from '@/hooks/use-pin-post'
 import { authorAssets } from '../author-assets'
 import {
   buildFeedPostEditDraft,
@@ -603,22 +604,18 @@ export function FeedPosts({
       queryClient.invalidateQueries({ queryKey: ['posts', feedId] }),
     [queryClient]
   )
+  // Shows on the click; the hook re-reads the list before this resolves.
+  const { mutateAsync: pin } = usePinPost()
   const pinPost = useCallback(
     async (post: FeedPost) => {
       try {
-        const { pinned } = await feedsApi.pinPost(
-          post.feedId,
-          post.id,
-          !post.pinned
-        )
-        changePost(queryClient, post.id, { pinned })
-        await reloadPosts(post.feedId)
+        await pin({ post, pinned: !post.pinned })
         toast.success(post.pinned ? t`Post unpinned` : t`Post pinned`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Could not change the pin`))
       }
     },
-    [queryClient, reloadPosts]
+    [pin]
   )
   // A post is boosted from the user's first hosted account on its own
   // network: Bluesky for one whose id there is an at:// URI, else the

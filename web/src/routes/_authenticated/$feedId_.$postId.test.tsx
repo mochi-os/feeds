@@ -12,12 +12,15 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createReactionCounts } from '@/features/feeds/constants'
 
-const { view, createComment } = vi.hoisted(() => ({
+const { view, createComment, reactToComment } = vi.hoisted(() => ({
   view: vi.fn(),
   createComment: vi.fn().mockResolvedValue({ data: {} }),
+  reactToComment: vi.fn(),
 }))
 
-vi.mock('@/api/feeds', () => ({ feedsApi: { view, createComment } }))
+vi.mock('@/api/feeds', () => ({
+  feedsApi: { view, createComment, reactToComment },
+}))
 vi.mock('@/api/adapters', () => ({
   mapPosts: (posts?: unknown[]) => posts ?? [],
 }))
@@ -47,10 +50,21 @@ vi.mock('@mochi/web', async (importOriginal) => {
 // the list did when it offered a choice of one.
 vi.mock('@/features/feeds/components/feed-posts', () => ({
   FeedPosts: (props: {
+    posts: Array<{ comments: Array<{ reactions: { like: number } }> }>
     onAddComment: (...args: unknown[]) => Promise<void>
     onReplyToComment: (...args: unknown[]) => Promise<void>
+    onCommentReaction: (...args: unknown[]) => Promise<void>
   }) => (
     <div>
+      <button
+        type='button'
+        onClick={() =>
+          void props.onCommentReaction('feed-1', 'post-1', 'comment-1', 'like')
+        }
+      >
+        Like
+      </button>
+      <span>likes {props.posts[0]?.comments[0]?.reactions.like ?? '-'}</span>
       <button
         type='button'
         onClick={() =>
@@ -148,5 +162,68 @@ describe('The single post page answering a post', () => {
       )
     )
     expect(createComment.mock.calls[0][0]).not.toHaveProperty('account')
+  })
+})
+
+describe('The single post page reacting to a comment', () => {
+  beforeEach(() => {
+    i18n.load('en', {})
+    i18n.activate('en')
+    view.mockClear()
+    view.mockResolvedValue({
+      data: {
+        feed: { name: 'Feed' },
+        posts: [
+          {
+            id: 'post-1',
+            feedId: 'feed-1',
+            author: 'Feed',
+            role: 'owner',
+            created: 0,
+            body: 'Hello',
+            reactions: createReactionCounts(),
+            comments: [
+              {
+                id: 'comment-1',
+                subscriberId: 's',
+                author: 'A',
+                created: 0,
+                body: 'Hi',
+                reactions: createReactionCounts({ like: 1 }),
+                userReaction: null,
+              },
+            ],
+          },
+        ],
+      },
+    })
+  })
+
+  it('shows the reaction before the server answers', async () => {
+    let refuse: (error: unknown) => void = () => {}
+    reactToComment.mockImplementation(
+      () =>
+        new Promise((_resolve, reject) => {
+          refuse = reject
+        })
+    )
+    show()
+    expect(await screen.findByText('likes 1')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Like' }))
+    expect(await screen.findByText('likes 2')).toBeInTheDocument()
+
+    refuse(new Error('refused'))
+    expect(await screen.findByText('likes 1')).toBeInTheDocument()
+    // A refusal fetches nothing more, as before.
+    expect(view).toHaveBeenCalledTimes(1)
+  })
+
+  it('fetches the post again once the server takes it, as before', async () => {
+    reactToComment.mockResolvedValue({ data: {} })
+    show()
+    await screen.findByText('likes 1')
+    fireEvent.click(screen.getByRole('button', { name: 'Like' }))
+    await waitFor(() => expect(view).toHaveBeenCalledTimes(2))
   })
 })
