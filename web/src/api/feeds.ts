@@ -3,7 +3,6 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 /* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
-import type { AxiosProgressEvent } from 'axios'
 import type {
   CreateCommentRequest,
   CreateCommentResponse,
@@ -30,7 +29,6 @@ import type {
   ViewFeedResponse,
   Source,
 } from '@/types'
-import type { PostCopy, PostFeatures } from '@/types/posts'
 import type {
   BackupsResponse,
   Filter,
@@ -44,6 +42,7 @@ import type {
   SourceState,
   WaitingServer,
 } from '@/types/feeds'
+import type { PostCopy, PostFeatures } from '@/types/posts'
 import {
   requestHelpers,
   createAppClient,
@@ -51,6 +50,7 @@ import {
   shellSaveBlob,
   toast,
   type PostPoll,
+  type TransferProgress,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 
@@ -495,7 +495,7 @@ const people = async (): Promise<{ people: Person[] }> => {
 
 const createPost = async (
   payload: CreatePostRequest,
-  onProgress?: (event: AxiosProgressEvent) => void
+  onProgress?: (event: TransferProgress) => void
 ): Promise<CreatePostResponse> => {
   const formData = new FormData()
   formData.append('feed', payload.feed)
@@ -562,7 +562,7 @@ const reactToPost = async (
 
 const editPost = async (
   payload: EditPostRequest,
-  onProgress?: (event: AxiosProgressEvent) => void
+  onProgress?: (event: TransferProgress) => void
 ): Promise<EditPostResponse> => {
   const formData = new FormData()
   formData.append('feed', payload.feed)
@@ -627,7 +627,7 @@ const deletePost = async (
 
 const createComment = async (
   payload: CreateCommentRequest,
-  onProgress?: (event: AxiosProgressEvent) => void
+  onProgress?: (event: TransferProgress) => void
 ): Promise<CreateCommentResponse> => {
   // Spec requires multipart/form-data
   const formData = new FormData()
