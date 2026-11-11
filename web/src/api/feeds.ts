@@ -148,6 +148,7 @@ const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
 interface GetFeedParams {
   limit?: number
   before?: number
+  cursor?: string // Where the page resumes, as the server's last page gave it
   offset?: number // For relevance-sorted pagination
   server?: string // For remote feeds not stored locally
   sort?: string
@@ -167,6 +168,7 @@ const getFeed = async (
     params: omitUndefined({
       limit: params?.limit?.toString(),
       before: params?.before?.toString(),
+      cursor: params?.cursor,
       offset: params?.offset?.toString(),
       server: params?.server,
       sort: params?.sort,
@@ -191,6 +193,7 @@ const getAllFeeds = async (
     params: omitUndefined({
       limit: params?.limit?.toString(),
       before: params?.before?.toString(),
+      cursor: params?.cursor,
       offset: params?.offset?.toString(),
       sort: params?.sort,
       unread: params?.unread,

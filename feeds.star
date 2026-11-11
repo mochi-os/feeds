@@ -868,15 +868,71 @@ def update_post_scores(post_id):
 VALID_SORTS = ["", "new", "hot", "top", "interests", "ai", "relevant"]
 
 # Helper: Get post sort order based on sort type
-def get_post_order(sort):
+# Every order ends on the id, so posts sharing a second keep one order from
+# page to page. now is the moment a scored list began.
+def get_post_order(sort, prefix="", now=None):
+	if now == None:
+		now = mochi.time.now()
+	last = prefix + "created desc, " + prefix + "id desc"
 	if sort == "top":
-		return "(up - down) desc, created desc"
+		return "(" + prefix + "up - " + prefix + "down) desc, " + last
 	if sort == "hot":
 		# score / (age_in_hours + 2)
 		# Use max(..., 1) to prevent divide by zero if created time is in the future due to clock skew
-		return "((up - down) + 1) / max(((" + str(mochi.time.now()) + " - created) / 3600) + 2, 1) desc, created desc"
+		return "((" + prefix + "up - " + prefix + "down) + 1) / max(((" + str(now) + " - " + prefix + "created) / 3600) + 2, 1) desc, " + last
 	# Default is "new" (also used as fallback for ai/interests/relevant which do post-query sorting)
-	return "created desc"
+	return last
+
+# A list of posts in a time order resumes after the last post it showed, by its
+# time and id, since many posts share a second; resuming at the second alone
+# skipped the rest of it. A scored order resumes at a position, its scores and
+# unread set reckoned as they stood when the list began: the last post's time
+# is no place in a list sorted by score. Relevance sorts page by offset.
+def page_scored(sort):
+	return sort in ("top", "hot")
+
+# page_cursor(cursor, before, scored) -> where a list of posts resumes: None for
+# its first page, {created, id} for a time order or {position, started} for a
+# scored one, or False for a cursor of another shape. A client that predates
+# the cursor sends the page's nextCursor as before: a time, or for a scored
+# order a position.
+def page_cursor(cursor, before, scored):
+	if cursor:
+		first, _, second = str(cursor).partition(":")
+		if not mochi.text.valid(first, "integer"):
+			return False
+		if scored:
+			if not mochi.text.valid(second, "integer"):
+				return False
+			return {"position": max(int(first), 0), "started": int(second)}
+		if not mochi.text.valid(second, "constant"):
+			return False
+		return {"created": int(first), "id": second}
+	if not before or not mochi.text.valid(str(before), "integer"):
+		return None
+	if scored:
+		return {"position": max(int(before), 0), "started": 0}
+	return {"created": int(before), "id": ""}
+
+# page_where(cursor, prefix) -> the condition and its arguments that resume a
+# newest-first list after the post its cursor names. The bound on created alone
+# keeps the walk on the created index: written as one "or", it read every row
+# past the cursor (37 ms against 0.07 ms at 200,000 posts).
+def page_where(cursor, prefix=""):
+	if not cursor or "created" not in cursor:
+		return "", []
+	if cursor["id"]:
+		return " and " + prefix + "created<=? and (" + prefix + "created<? or " + prefix + "id<?)", [cursor["created"], cursor["created"], cursor["id"]]
+	return " and " + prefix + "created<?", [cursor["created"]]
+
+# page_next(posts, scored, position, started, limit) -> the nextCursor and
+# cursor of the page after this one.
+def page_next(posts, scored, position, started, limit):
+	if scored:
+		after = position + limit
+		return after, str(after) + ":" + str(started)
+	last = posts[-1]
+	return last["created"], str(last["created"]) + ":" + last["id"]
 
 def comment_reaction_set(comment_data, subscriber_id, name, reaction):
 	if reaction:
@@ -2575,6 +2631,9 @@ def action_attachment_thumbnail(a):
 def action_attachment_preview(a):
 	serve_attachment(a, "preview")
 
+def action_attachment_medium(a):
+	serve_attachment(a, "medium")
+
 def serve_attachment(a, variant):
 	feed_id = a.input("feed")
 	attachment = a.input("id")
@@ -2673,7 +2732,6 @@ def action_view(a):
 
 	# Pagination parameters
 	limit_str = a.input("limit")
-	before_str = a.input("before")
 	offset_str = a.input("offset")
 	sort = a.input("sort") or "new"
 	tags = a.inputs("tag")
@@ -2681,23 +2739,32 @@ def action_view(a):
 	limit = 20
 	if limit_str and mochi.text.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
-	before = None
-	if before_str and decimal(before_str):
-		before = int(before_str)
 	offset = 0
 	if offset_str and decimal(offset_str):
 		offset = int(offset_str)
-
-	# Get posts order
-	order_by = get_post_order(sort)
 	relevance_sort = sort in ("relevant", "ai", "interests") and user_id
 
-	# Build unread filter snippets
+	# Where this page resumes, and the order it resumes in.
+	scored = page_scored(sort)
+	cursor = page_cursor(a.input("cursor"), a.input("before"), scored)
+	if cursor == False:
+		a.error.label(400, "errors.invalid_data")
+		return
+	position = cursor["position"] if scored and cursor else 0
+	started = cursor["started"] if scored and cursor and cursor["started"] > 0 else mochi.time.now()
+	page_filter, page_args = page_where(cursor)
+	page_filter_p, _ = page_where(cursor, "p.")
+	order_by = get_post_order(sort, "", started)
+	order_p = get_post_order(sort, "p.", started)
+
+	# Build unread filter snippets. A later page of a scored list keeps the
+	# posts read since it began: they count toward its position.
 	unread_filter = ""
 	unread_filter_p = ""
 	if unread:
-		unread_filter = " and read = 0 and created > coalesce((select f2.read from feeds f2 where f2.id=feed), 0)"
-		unread_filter_p = " and p.read = 0 and p.created > coalesce((select read from feeds f2 where f2.id = p.feed), 0)"
+		since = scored and cursor
+		unread_filter = " and (read = 0" + (" or read>=" + str(started) if since else "") + ") and created > coalesce((select f2.read from feeds f2 where f2.id=feed), 0)"
+		unread_filter_p = " and (p.read = 0" + (" or p.read>=" + str(started) if since else "") + ") and p.created > coalesce((select read from feeds f2 where f2.id = p.feed), 0)"
 
 	# What the viewer may see (phase 17): a followers-only post for the owner
 	# and the subscribers, and nothing a keyword filter of theirs hides. The
@@ -2757,18 +2824,11 @@ def action_view(a):
 		if len(valid_tags) == 0:
 			posts = []
 		else:
-			p_order = order_by.replace("created", "p.created")
 			placeholders = ", ".join(["?" for t in valid_tags])
 			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
-			if before:
-				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + unread_filter_p + hidden_filter_p + " and p.created<? order by " + p_order + " limit ?", feed_data["id"], valid_tags, before, limit + 1)
-			else:
-				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + unread_filter_p + hidden_filter_p + " order by " + p_order + " limit ?", feed_data["id"], valid_tags, limit + 1)
+			posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", feed_data["id"], valid_tags, page_args, limit + 1, position)
 	elif feed_data:
-		if before:
-			posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + hidden_filter + " and created<? order by " + order_by + " limit ?", feed_data["id"], before, limit + 1)
-		else:
-			posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + hidden_filter + " order by " + order_by + " limit ?", feed_data["id"], limit + 1)
+		posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + hidden_filter + page_filter + " order by " + order_by + " limit ? offset ?", feed_data["id"], page_args, limit + 1, position)
 	else:
 		# All subscribed feeds without relevance sort
 		if len(tags) > 0:
@@ -2780,13 +2840,9 @@ def action_view(a):
 			if len(valid_tags) == 0:
 				posts = []
 			else:
-				p_order = order_by.replace("created", "p.created")
 				placeholders = ", ".join(["?" for t in valid_tags])
 				tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
-				if before:
-					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + hidden_filter_p + " and p.created<? order by " + p_order + " limit ?", user_id, valid_tags, before, limit + 1)
-				else:
-					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + hidden_filter_p + " order by " + p_order + " limit ?", user_id, valid_tags, limit + 1)
+				posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", user_id, valid_tags, page_args, limit + 1, position)
 		# The subscription as a filter, not a join: a join starts from the
 		# subscriber rows and sorts every post of every subscribed feed to
 		# return a page. Newest first and unfiltered, + keeps the feed indexes
@@ -2795,24 +2851,23 @@ def action_view(a):
 		# feed indexes, which find a feed's unread posts or its whole set
 		# directly.
 		else:
-			walk = "+" if order_by == "created desc" and not unread_filter_p else ""
-			if before:
-				posts = mochi.db.rows("select p.* from posts p where " + walk + "p.feed in (select feed from subscribers where id=?)" + unread_filter_p + hidden_filter_p + " and p.created<? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
-			else:
-				posts = mochi.db.rows("select p.* from posts p where " + walk + "p.feed in (select feed from subscribers where id=?)" + unread_filter_p + hidden_filter_p + " order by " + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
+			walk = "+" if not scored and not unread_filter_p else ""
+			posts = mochi.db.rows("select p.* from posts p where " + walk + "p.feed in (select feed from subscribers where id=?)" + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", user_id, page_args, limit + 1, position)
 
 	# Check if there are more posts
 	has_more = len(posts) > limit
 	if has_more:
 		posts = posts[:limit]
 
-	# Compute next cursor/offset
+	# Compute next cursor/offset. nextCursor is what a client that predates
+	# cursor sends back as before; cursor is the page's exact place.
 	next_cursor = None
+	page = None
 	if has_more:
 		if relevance_sort:
 			next_cursor = offset + limit
 		elif len(posts) > 0:
-			next_cursor = posts[-1]["created"]
+			next_cursor, page = page_next(posts, scored, position, started, limit)
 
 	# For relevance sorts, compute match info and apply AI rerank if needed.
 	# Also check if pre-computed scores are stale (interests changed since last scoring).
@@ -3042,6 +3097,7 @@ def action_view(a):
 			"user": user_id,
 			"hasMore": has_more,
 			"nextCursor": next_cursor,
+			"cursor": page,
 			"permissions": permissions,
 			"hasAi": has_ai,
 		}
@@ -3116,6 +3172,11 @@ def view_remote(a, user_id, feed_id, server):
 	before_str = a.input("before")
 	if before_str:
 		params["before"] = before_str
+	# The owner's own cursor, from its last page: an owner that predates it
+	# sends none, and the client then pages by before.
+	cursor = a.input("cursor")
+	if cursor:
+		params["cursor"] = cursor
 	sort = a.input("sort")
 	if sort:
 		params["sort"] = sort
@@ -3157,6 +3218,7 @@ def view_remote(a, user_id, feed_id, server):
 			"user": user_id,
 			"hasMore": remote_data.get("hasMore", len(posts) > 20),
 			"nextCursor": remote_data.get("nextCursor"),
+			"cursor": remote_data.get("cursor") if type(remote_data.get("cursor")) == "string" else None,
 			"permissions": remote_permissions
 		}
 	}
@@ -7786,18 +7848,18 @@ def event_view(e):
 	limit_str = e.content("limit", "")
 	if limit_str and mochi.text.valid(str(limit_str), "natural"):
 		limit = min(int(limit_str), 100)
-	before_str = e.content("before", "")
-	before = None
-	if before_str and decimal(str(before_str)):
-		before = int(before_str)
+	# Newest first whatever the sort, resuming after the post the cursor names.
+	cursor = page_cursor(e.content("cursor", ""), e.content("before", ""), False)
+	if cursor == False:
+		e.stream.write({"error": "errors.invalid_data", "code": 400})
+		return
+	page_filter, page_args = page_where(cursor)
 
 	# Get posts for this feed
 	if post_id:
 		posts = mochi.db.rows("select * from posts where id=? and feed=?", post_id, feed_id)
-	elif before:
-		posts = mochi.db.rows("select * from posts where feed=? and created<? order by created desc limit ?", feed_id, before, limit + 1)
 	else:
-		posts = mochi.db.rows("select * from posts where feed=? order by created desc limit ?", feed_id, limit + 1)
+		posts = mochi.db.rows("select * from posts where feed=?" + page_filter + " order by created desc, id desc limit ?", feed_id, page_args, limit + 1)
 
 	has_more = not post_id and len(posts) > limit
 	if has_more:
@@ -7852,8 +7914,9 @@ def event_view(e):
 	}
 
 	next_cursor = None
+	page = None
 	if has_more and len(formatted_posts) > 0:
-		next_cursor = formatted_posts[-1]["created"]
+		next_cursor, page = page_next(formatted_posts, False, 0, 0, limit)
 
 	# Get banner for remote viewers
 	feed_row = mochi.db.row("select banner from feeds where id=?", feed_id)
@@ -7872,6 +7935,7 @@ def event_view(e):
 		"permissions": permissions,
 		"hasMore": has_more,
 		"nextCursor": next_cursor,
+		"cursor": page,
 	}
 	if part != None:
 		reply["part"] = part
@@ -10453,15 +10517,19 @@ def function_atproto_skeleton(context, account, feed, cursor, limit):
 	"""The posts of a feed published as a Bluesky custom feed, newest first,
 	as the records Bluesky knows them by: a post from Bluesky by its own
 	record, one of the feed's own by its copy through the account (phase 19).
-	The cursor is the created time of the last post answered."""
+	The cursor is the created time and id of the last post answered; a bare
+	time is one this app gave before the id was added."""
 	row = mochi.db.row("select feed from generators where account=? and uri=?", account, feed)
 	if not row:
 		return {"posts": []}
-	before = number(cursor) if cursor else 0
+	text = str(cursor) if cursor else ""
+	place = page_cursor(text, "", False) if ":" in text else page_cursor("", text, False)
+	if place == False:
+		return {"posts": []}
+	page_filter, page_args = page_where(place, "p.")
 	limit = min(max(number(limit) or 50, 1), 100)
-	sql = "select p.id, p.data, p.created, c.remote as copy from posts p left join copies c on c.post=p.id and c.account=? where p.feed=? and p.visibility!='followers'" + (" and p.created<?" if before else "") + " order by p.created desc limit ?"
-	args = [account, row["feed"]] + ([before] if before else []) + [limit]
-	rows = mochi.db.rows(sql, *args)
+	sql = "select p.id, p.data, p.created, c.remote as copy from posts p left join copies c on c.post=p.id and c.account=? where p.feed=? and p.visibility!='followers'" + page_filter + " order by p.created desc, p.id desc limit ?"
+	rows = mochi.db.rows(sql, account, row["feed"], page_args, limit)
 	posts = []
 	for p in rows:
 		record = post_record(p)
@@ -10471,7 +10539,7 @@ def function_atproto_skeleton(context, account, feed, cursor, limit):
 			posts.append(uri)
 	out = {"posts": posts}
 	if len(rows) == limit:
-		out["cursor"] = str(rows[-1]["created"])
+		out["cursor"] = page_next(rows, False, 0, 0, limit)[1]
 	return out
 
 def publish_counts(feed_id):

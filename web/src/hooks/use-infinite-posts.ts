@@ -58,11 +58,24 @@ export type InfinitePostsPage = {
   posts: FeedPost[]
   hasMore: boolean
   nextCursor: number | undefined
+  /** Where the next page resumes, from a server that sends it. */
+  cursor: string | undefined
   permissions: FeedPermissions | undefined
   hasAi: boolean
 }
 
-type PostsData = InfiniteData<InfinitePostsPage, number | undefined>
+/**
+ * Where a page of the list resumes: the server's cursor, or from one that
+ * predates it, its nextCursor - a time, or for a relevance sort an offset.
+ */
+export type PostsPageParam = string | number | undefined
+
+type PostsData = InfiniteData<InfinitePostsPage, PostsPageParam>
+
+/** The page after this one, or none. */
+export function nextPage(page: InfinitePostsPage): PostsPageParam {
+  return page.hasMore ? (page.cursor ?? page.nextCursor) : undefined
+}
 
 type PostsKey = [
   string,
@@ -112,18 +125,20 @@ export async function fetchPostsPage(
     tag,
     unread,
   }: PostsList,
-  pageParam: number | undefined,
+  pageParam: PostsPageParam,
   local = false
 ): Promise<InfinitePostsPage> {
   if (!aggregate && !feedId) throw new Error('Feed ID required')
 
   const isRelevanceSort =
     sort === 'interests' || sort === 'ai' || sort === 'relevant'
+  const position = typeof pageParam === 'number' ? pageParam : undefined
 
   const cursor = {
     limit,
-    before: isRelevanceSort ? undefined : pageParam,
-    offset: isRelevanceSort ? pageParam : undefined,
+    cursor: typeof pageParam === 'string' ? pageParam : undefined,
+    before: isRelevanceSort ? undefined : position,
+    offset: isRelevanceSort ? position : undefined,
     sort,
     unread: unread ? '1' : undefined,
   }
@@ -140,6 +155,7 @@ export async function fetchPostsPage(
     posts?: Post[]
     hasMore?: boolean
     nextCursor?: number
+    cursor?: string
     permissions?: FeedPermissions
 
     hasAi?: boolean
@@ -149,6 +165,7 @@ export async function fetchPostsPage(
     posts: mapPosts(data.posts),
     hasMore: data.hasMore ?? false,
     nextCursor: data.nextCursor,
+    cursor: typeof data.cursor === 'string' ? data.cursor : undefined,
     permissions: data.permissions,
 
     hasAi: data.hasAi ?? false,
@@ -208,9 +225,8 @@ export function prefetchPosts(
         }
         return fetchPostsPage(list, pageParam)
       },
-      initialPageParam: undefined as number | undefined,
-      getNextPageParam: (lastPage: InfinitePostsPage) =>
-        lastPage.hasMore ? lastPage.nextCursor : undefined,
+      initialPageParam: undefined as PostsPageParam,
+      getNextPageParam: nextPage,
     })
     .then(() => {
       // Only a list this prefetch answered stands for the page. A failed one
@@ -281,7 +297,7 @@ export function useInfinitePosts({
     Error,
     PostsData,
     PostsKey,
-    number | undefined
+    PostsPageParam
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
   >({
     queryKey: postsKey({
@@ -309,7 +325,7 @@ export function useInfinitePosts({
           const loaded = asked.current
             ? undefined
             : client.getQueryData<
-                InfiniteData<InfinitePostsPage, number | undefined>
+                InfiniteData<InfinitePostsPage, PostsPageParam>
               >(queryKey)
           const kept = keptPosts(
             loaded?.pages.flatMap((page) => page.posts) ?? [],
@@ -327,9 +343,8 @@ export function useInfinitePosts({
 
       return { ...fetched, posts } satisfies InfinitePostsPage
     },
-    initialPageParam: undefined as number | undefined,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasMore ? lastPage.nextCursor : undefined,
+    initialPageParam: undefined as PostsPageParam,
+    getNextPageParam: nextPage,
     enabled: enabled && (aggregate || !!feedId),
     staleTime: 0,
     // Opening or returning to a list shows its posts and permissions as they
@@ -353,9 +368,18 @@ export function useInfinitePosts({
     if (prefetched) spent.add(prefetched)
   }, [prefetched])
 
+  // A post shows once: a scored list pages by position, so a post that moves
+  // up between pages can come again.
   const posts = useMemo(() => {
     if (!query.data?.pages) return []
-    return query.data.pages.flatMap((page) => page.posts)
+    const shown = new Set<string>()
+    return query.data.pages
+      .flatMap((page) => page.posts)
+      .filter((post) => {
+        if (shown.has(post.id)) return false
+        shown.add(post.id)
+        return true
+      })
   }, [query.data?.pages])
 
   const loaded = useRef(posts)

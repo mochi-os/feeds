@@ -119,7 +119,8 @@ export interface ViewFeedResponse {
     owner?: boolean
     user?: string
     hasMore?: boolean
-    nextCursor?: number // Timestamp to use as 'before' for next page
+    nextCursor?: number // What a client without cursor sends as 'before'
+    cursor?: string // Where the next page resumes
     permissions?: FeedPermissions
     tiles?: MapTiles
   }
