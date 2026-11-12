@@ -56,6 +56,7 @@ import {
   findCommentTextInTree,
   countCommentTree,
   absoluteRouteUrl,
+  CommentShareButton,
   CommentThreadBack,
   CommentThreadProvider,
   findCommentInTree,
@@ -1047,6 +1048,7 @@ export function FeedPosts({
   })
 
   const navigate = useNavigate()
+  const router = useRouter()
 
   // Only one post is edited at a time, so this guard lives up here too and
   // reads whichever post that is. An edit guards a change to a post that
@@ -1923,6 +1925,21 @@ export function FeedPosts({
                                     <TooltipContent>{t`Comment`}</TooltipContent>
                                   </Tooltip>
                                 )}
+
+                              {/* After Comment, where each comment has its own Share. */}
+                              <CommentShareButton
+                                getUrl={() =>
+                                  absoluteRouteUrl(router, {
+                                    to: '/$feedId/$postId',
+                                    params: {
+                                      feedId:
+                                        post.feedFingerprint ?? post.feedId,
+                                      postId: post.id,
+                                    },
+                                  })
+                                }
+                                className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 inline-flex size-7 items-center justify-center rounded-full transition-colors [&>svg]:size-4'
+                              />
                             </ActionPillActions>
                           </ActionPill>
                           {isLoggedIn && (
