@@ -8126,8 +8126,8 @@ def opengraph_feed(params):
 				webmention_page(og, feed, post)
 				# Use first 200 chars of post body as description
 				body = post["body"]
-				if len(body) > 200:
-					body = body[:197] + "..."
+				if text_codepoints(body) > 200:
+					body = text_cut(body, 197) + "..."
 				og["description"] = body
 				og["title"] = mochi.app.label("opengraph.post.title", name=feed["name"])
 
@@ -9315,7 +9315,7 @@ def notify_comment(feed_id, me, comment):
 		kind = "comment/thread"
 	else:
 		return
-	excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
+	excerpt = text_cut(comment["body"], 50) + "..." if text_codepoints(comment["body"]) > 50 else comment["body"]
 	send_notification(feed_id, kind,
 		mochi.app.label("notifications.title.new_comment"),
 		mochi.app.label("notifications.body.commented", name=comment["name"], excerpt=excerpt),
@@ -9546,8 +9546,8 @@ def rss_all_document(user_id, mode, origin, topic="", hub=""):
 		item_fp = mochi.entity.fingerprint(item_id) if mochi.text.valid(item_id, "entity") else item_id
 		feed_name = feed_names.get(feed_id, mochi.app.label("feed.name.fallback"))
 		body = row["body"]
-		if len(body) > 500:
-			body = body[:500] + "..."
+		if text_codepoints(body) > 500:
+			body = text_cut(body, 500) + "..."
 
 		if row["type"] == "comment":
 			title = feed_name + ": " + mochi.app.label("rss.item.comment_by", author=row["author"])
@@ -9644,18 +9644,16 @@ def rss_document(feed_data, mode, origin, topic="", hub=""):
 		item_id = row["id"]
 		item_fp = mochi.entity.fingerprint(item_id) if mochi.text.valid(item_id, "entity") else item_id
 		body = row["body"]
-		if len(body) > 500:
-			body = body[:500] + "..."
-
-		if row["type"] == "comment":
-			title = mochi.app.label("rss.item.comment_by", author=row["author"])
-		else:
-			title = feed_name
+		if text_codepoints(body) > 500:
+			body = text_cut(body, 500) + "..."
 
 		link = origin + "/feeds/" + fingerprint + "/" + item_fp
 
+		# A post has no title of its own, and the feed's name on every item
+		# would be all a reader lists; a comment is titled by its author.
 		out.append('<item>\n')
-		out.append('<title>' + escape_xml(title) + '</title>\n')
+		if row["type"] == "comment":
+			out.append('<title>' + escape_xml(mochi.app.label("rss.item.comment_by", author=row["author"])) + '</title>\n')
 		out.append('<link>' + escape_xml(link) + '</link>\n')
 		out.append('<description>' + escape_xml(body) + '</description>\n')
 		out.append('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
