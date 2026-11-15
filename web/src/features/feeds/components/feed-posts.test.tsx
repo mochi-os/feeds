@@ -75,6 +75,7 @@ vi.mock('@/api/feeds', () => ({
     }),
     pinPost: vi.fn().mockResolvedValue({ pinned: 1 }),
     moderateComment: vi.fn(),
+    getPostImage: vi.fn().mockResolvedValue(''),
   },
 }))
 
@@ -671,5 +672,115 @@ describe('FeedPosts commenter avatars', () => {
       '/feed-1/-/post-1/post-1-comment-1/asset',
       '/feed-1/-/post-1/post-1-comment-0/asset',
     ])
+  })
+})
+
+// A timeline of articles from other servers fetches each one's image as it
+// nears the screen, not every image on the page at load; and a post's map is
+// built, and its tiles asked for, only once its box nears the screen. The
+// test setup's observer never reports an intersection, so a lazy map stays an
+// empty box here.
+describe('FeedPosts remote images and maps', () => {
+  const place = {
+    name: 'Tallinn',
+    lat: 59.437,
+    lon: 24.7536,
+    category: 'place',
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it("loads an article's stored image lazily", () => {
+    renderPosts([
+      {
+        ...post(),
+        data: {
+          rss: {
+            title: 'An article',
+            link: 'https://lemmy.example/post/1',
+            html: '',
+            image: 'https://lemmy.example/pictrs/image/one.jpeg',
+          },
+        },
+      },
+    ])
+    const image = document.querySelector<HTMLImageElement>(
+      'img[src="https://lemmy.example/pictrs/image/one.jpeg"]'
+    )
+    expect(image).not.toBeNull()
+    expect(image!.getAttribute('loading')).toBe('lazy')
+    expect(image!.getAttribute('decoding')).toBe('async')
+  })
+
+  it('loads the image looked up for an article that stored none lazily', async () => {
+    vi.mocked(feedsApi.getPostImage).mockResolvedValue(
+      'https://lemmy.example/pictrs/image/two.jpeg'
+    )
+    renderPosts([
+      {
+        ...post(),
+        data: {
+          rss: {
+            title: 'An article',
+            link: 'https://lemmy.example/post/2',
+            html: '',
+          },
+        },
+      },
+    ])
+    await waitFor(() =>
+      expect(
+        document.querySelector(
+          'img[src="https://lemmy.example/pictrs/image/two.jpeg"]'
+        )
+      ).not.toBeNull()
+    )
+    const image = document.querySelector<HTMLImageElement>(
+      'img[src="https://lemmy.example/pictrs/image/two.jpeg"]'
+    )!
+    expect(image.getAttribute('loading')).toBe('lazy')
+    expect(image.getAttribute('decoding')).toBe('async')
+  })
+
+  it('builds no check-in or travel map below the fold', () => {
+    renderPosts([
+      { ...post('post-1'), data: { checkin: place } },
+      {
+        ...post('post-2', 'Second post'),
+        data: { travelling: { origin: place, destination: place } },
+      },
+    ])
+    const boxes = document.querySelectorAll<HTMLElement>(
+      '[data-post-id] .isolate'
+    )
+    // Two boxes standing at the map's size, neither one a map yet. The row
+    // sizes a tile to its content and a map has none, so the height is what
+    // gives the box a size at all: without it the thumbnail was drawn 0x0.
+    expect(boxes).toHaveLength(2)
+    for (const box of boxes) {
+      expect(box.style.aspectRatio).toBe('16/9')
+      expect(box.classList.contains('h-[140px]')).toBe(true)
+      expect(box.classList.contains('leaflet-container')).toBe(false)
+    }
+  })
+
+  it('builds no map in the edit form until it nears the screen', async () => {
+    renderPosts([
+      {
+        ...post(),
+        data: {
+          checkin: place,
+          travelling: { origin: place, destination: place },
+        },
+      },
+    ])
+    await openEdit()
+    const boxes = document.querySelectorAll<HTMLElement>('.isolate')
+    expect(boxes.length).toBeGreaterThanOrEqual(2)
+    for (const box of boxes) {
+      expect(box.classList.contains('leaflet-container')).toBe(false)
+    }
   })
 })
