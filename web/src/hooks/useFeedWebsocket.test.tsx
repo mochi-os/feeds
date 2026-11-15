@@ -8,15 +8,15 @@ import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { useFeedWebsocket } from './useFeedWebsocket'
 
-const { subscribe, refresh, applyFrame } = vi.hoisted(() => ({
+const { subscribe, refresh, applyFrame, auth } = vi.hoisted(() => ({
   subscribe: vi.fn(),
   refresh: vi.fn(),
   applyFrame: vi.fn(),
+  auth: { isInitialized: true, isAuthenticated: true, token: 'token' },
 }))
 
 vi.mock('@mochi/web', () => ({
-  useAuthStore: (selector: (state: unknown) => unknown) =>
-    selector({ isInitialized: true, token: 'token' }),
+  useAuthStore: (selector: (state: unknown) => unknown) => selector(auth),
   entityWebsocketManager: { subscribe },
 }))
 vi.mock('@/stores/feeds-store', () => ({
@@ -59,6 +59,33 @@ function mount(onGone: (reason: 'removed' | 'deleted') => void) {
 beforeEach(() => {
   vi.clearAllMocks()
   subscribe.mockReturnValue(() => {})
+  Object.assign(auth, { isAuthenticated: true, token: 'token' })
+})
+
+// Core refuses a socket with no signed-in user, and a refused one is retried
+// for as long as the page is open: about 120 refusals an hour for each
+// anonymous reader of a public feed.
+describe('useFeedWebsocket for a reader who is not signed in', () => {
+  function anonymous() {
+    Object.assign(auth, { isAuthenticated: false, token: '' })
+    const client = new QueryClient()
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    )
+    return renderHook(() => useFeedWebsocket('fp1'), { wrapper })
+  }
+
+  it('opens no socket', () => {
+    anonymous()
+    expect(subscribe).not.toHaveBeenCalled()
+  })
+
+  it('opens it once the reader signs in', () => {
+    const { rerender } = anonymous()
+    Object.assign(auth, { isAuthenticated: true, token: 'token' })
+    rerender()
+    expect(subscribe).toHaveBeenCalledWith('fp1', expect.any(Function))
+  })
 })
 
 describe('useFeedWebsocket gone events', () => {
