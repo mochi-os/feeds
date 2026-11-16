@@ -8,15 +8,15 @@ import { renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { feedsKey, useFeedsWebsocket } from './useFeedsWebsocket'
 
-const { subscribe, applyFrame, adjustUnread } = vi.hoisted(() => ({
+const { subscribe, applyFrame, adjustUnread, auth } = vi.hoisted(() => ({
   subscribe: vi.fn(),
   applyFrame: vi.fn(),
   adjustUnread: vi.fn(),
+  auth: { isInitialized: true, isAuthenticated: true, token: 'token' },
 }))
 
 vi.mock('@mochi/web', () => ({
-  useAuthStore: (selector: (state: unknown) => unknown) =>
-    selector({ isInitialized: true, token: 'token' }),
+  useAuthStore: (selector: (state: unknown) => unknown) => selector(auth),
   entityWebsocketManager: { subscribe },
 }))
 vi.mock('@/stores/feeds-store', () => ({
@@ -49,6 +49,35 @@ function listen() {
 beforeEach(() => {
   vi.clearAllMocks()
   subscribe.mockReturnValue(() => {})
+  Object.assign(auth, { isAuthenticated: true, token: 'token' })
+})
+
+// Core refuses a socket with no signed-in user, and a refused one is retried
+// for as long as the page is open.
+describe('useFeedsWebsocket for a reader who is not signed in', () => {
+  function anonymous() {
+    Object.assign(auth, { isAuthenticated: false, token: '' })
+    const client = new QueryClient()
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    )
+    return renderHook(
+      () => useFeedsWebsocket([{ id: 'feed-1', fingerprint: 'fp1' }]),
+      { wrapper }
+    )
+  }
+
+  it('opens no socket', () => {
+    anonymous()
+    expect(subscribe).not.toHaveBeenCalled()
+  })
+
+  it('opens it once the reader signs in', () => {
+    const { rerender } = anonymous()
+    Object.assign(auth, { isAuthenticated: true, token: 'token' })
+    rerender()
+    expect(subscribe).toHaveBeenCalledWith(feedsKey, expect.any(Function))
+  })
 })
 
 describe('useFeedsWebsocket sockets', () => {

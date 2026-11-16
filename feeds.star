@@ -8126,8 +8126,8 @@ def opengraph_feed(params):
 				webmention_page(og, feed, post)
 				# Use first 200 chars of post body as description
 				body = post["body"]
-				if len(body) > 200:
-					body = body[:197] + "..."
+				if text_codepoints(body) > 200:
+					body = text_cut(body, 197) + "..."
 				og["description"] = body
 				og["title"] = mochi.app.label("opengraph.post.title", name=feed["name"])
 
@@ -8613,6 +8613,24 @@ def source_remove(feed, source, user_id, delete_posts, unfollow=True):
 				se.cancel()
 
 
+# rss_listed reports whether a source already holds an item listed again
+# under another fragment of its guid: a post whose guid is the same before "#"
+# (or is that part alone, as guids were stored before fragments were kept),
+# whose item had the same link, and the same title or the same description.
+# BBC News lists an article again with its description, and sometimes a new
+# title; a changelog's entries share the page's link but not their words.
+def rss_listed(source_id, page, link, title, html):
+	rows = mochi.db.rows("select p.data from source_posts sp join posts p on p.id=sp.post where sp.source=? and (sp.guid=? or (sp.guid>=? and sp.guid<?))", source_id, page, page + "#", page + "$")
+	for row in rows:
+		data = json.decode(row["data"] or "{}", None)
+		rss = data.get("rss") if type(data) == "dict" else None
+		if type(rss) != "dict":
+			continue
+		item = rss.get("origin") if type(rss.get("origin")) == "dict" else rss
+		if item.get("link") == link and ((title and item.get("title") == title) or item.get("html") == html):
+			return True
+	return False
+
 # Ingest RSS items into posts and source_posts tables
 # Store the new items of one fetch as posts. Returns (new posts, complete);
 # complete is False when the deadline passed with items still unread.
@@ -8642,20 +8660,23 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 		if not guid:
 			continue
 
-		# Strip URL fragment (e.g. BBC appends #3, #4 to same article)
-		if "#" in guid:
-			guid = guid[:guid.index("#")]
-
-		# Skip duplicates (within this batch and in the database)
+		# Skip duplicates, within this batch and in the database. An item is
+		# known by its whole guid, and is also the same item as one whose
+		# guid differs only after "#" when its link and words are the same
+		# (rss_listed): BBC News lists one article under "#1" and "#8", while
+		# a page of notes gives each note its own fragment.
 		if guid in seen_guids:
 			continue
 		seen_guids[guid] = True
 		if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source_id, guid):
 			continue
-
-		# Format post body - strip HTML from description
 		title = strip_title(item.get("title", ""))
 		description_html = item.get("description", "")
+		origin = {"link": safe_link(item.get("link", "")), "title": title, "html": description_html}
+		if origin["link"] and rss_listed(source_id, guid.split("#")[0], origin["link"], title, description_html):
+			continue
+
+		# Format post body - strip HTML from description
 		description = strip_html(description_html)
 		# RSS <link> is third-party; keep only http(s) so it never renders as a
 		# javascript: href downstream.
@@ -8704,6 +8725,10 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 		# Store structured RSS data for rich rendering (og:image fetched lazily)
 		image = safe_link(item.get("image", ""))
 		rss_data = {"title": title, "link": link, "html": description_html}
+		# The item as the feed gave it, kept where a transform changed it,
+		# for rss_listed to know the item when it is listed again.
+		if transformed:
+			rss_data["origin"] = origin
 		if image:
 			rss_data["image"] = image
 		if source_row and source_row["name"]:
@@ -9290,7 +9315,7 @@ def notify_comment(feed_id, me, comment):
 		kind = "comment/thread"
 	else:
 		return
-	excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
+	excerpt = text_cut(comment["body"], 50) + "..." if text_codepoints(comment["body"]) > 50 else comment["body"]
 	send_notification(feed_id, kind,
 		mochi.app.label("notifications.title.new_comment"),
 		mochi.app.label("notifications.body.commented", name=comment["name"], excerpt=excerpt),
@@ -9521,8 +9546,8 @@ def rss_all_document(user_id, mode, origin, topic="", hub=""):
 		item_fp = mochi.entity.fingerprint(item_id) if mochi.text.valid(item_id, "entity") else item_id
 		feed_name = feed_names.get(feed_id, mochi.app.label("feed.name.fallback"))
 		body = row["body"]
-		if len(body) > 500:
-			body = body[:500] + "..."
+		if text_codepoints(body) > 500:
+			body = text_cut(body, 500) + "..."
 
 		if row["type"] == "comment":
 			title = feed_name + ": " + mochi.app.label("rss.item.comment_by", author=row["author"])
@@ -9619,18 +9644,16 @@ def rss_document(feed_data, mode, origin, topic="", hub=""):
 		item_id = row["id"]
 		item_fp = mochi.entity.fingerprint(item_id) if mochi.text.valid(item_id, "entity") else item_id
 		body = row["body"]
-		if len(body) > 500:
-			body = body[:500] + "..."
-
-		if row["type"] == "comment":
-			title = mochi.app.label("rss.item.comment_by", author=row["author"])
-		else:
-			title = feed_name
+		if text_codepoints(body) > 500:
+			body = text_cut(body, 500) + "..."
 
 		link = origin + "/feeds/" + fingerprint + "/" + item_fp
 
+		# A post has no title of its own, and the feed's name on every item
+		# would be all a reader lists; a comment is titled by its author.
 		out.append('<item>\n')
-		out.append('<title>' + escape_xml(title) + '</title>\n')
+		if row["type"] == "comment":
+			out.append('<title>' + escape_xml(mochi.app.label("rss.item.comment_by", author=row["author"])) + '</title>\n')
 		out.append('<link>' + escape_xml(link) + '</link>\n')
 		out.append('<description>' + escape_xml(body) + '</description>\n')
 		out.append('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
