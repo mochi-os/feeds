@@ -402,8 +402,10 @@ def schedule_resync(e):
 # (schedule_fill): the first past the 60 in which request_resync lets no second
 # pull start, each after four times the last. Past the last, a view of the feed
 # starts them again (maybe_fill), so a subscription nobody looks at wakes
-# nothing.
+# nothing; All feeds starts them again at most once each fill_rest, as it
+# views every feed and a feed whose owner is gone never fills.
 fill_waits = [61, 244, 976, 3904, 15616]
+fill_rest = 86400
 
 # fill_pending(feed_id, event) -> bool: whether a scheduled event of the
 # subscription is pending: a pull (schedule_fill), the continuation of one
@@ -447,14 +449,19 @@ def schedule_fill(e):
 	if row and row["populated"] == 0:
 		fill_schedule(feed_id, attempt, name)
 
-# maybe_fill(a, feed_id): a view of a subscription still filling pulls the
-# schema when no pull is waiting.
-def maybe_fill(a, feed_id):
+# maybe_fill(a, feed_id, rest): a view of a subscription still filling pulls
+# the schema when no pull is waiting; given rest, only when no view with a rest
+# started one within it (filled).
+def maybe_fill(a, feed_id, rest=0):
 	if not a.user:
 		return
 	row = mochi.db.row("select server, populated from feeds where id=?", feed_id)
-	if row and row["server"] and row["populated"] == 0:
-		fill_schedule(feed_id, 0, a.user.identity.name, 0)
+	if not row or not row["server"] or row["populated"] != 0 or fill_pending(feed_id, "schedule_fill"):
+		return
+	now = mochi.time.now()
+	if rest and mochi.db.execute("update feeds set filled=? where id=? and filled<=?", now, feed_id, now - rest) == 0:
+		return
+	fill_schedule(feed_id, 0, a.user.identity.name, 0)
 
 # maybe_resubscribe re-subscribes an idle remote feed (idle_resync_age), for an
 # owner that let the subscriber go, and fills the subscription again from the
@@ -475,14 +482,22 @@ def maybe_resubscribe(a, feed_id):
 	mochi.db.execute("update feeds set populated=0 where id=?", feed_id)
 	fill_schedule(feed_id, 0, a.user.identity.name, 0)
 
+# upkeep_wait: the seconds between two upkeeps of All feeds for one user. Its
+# first page is fetched again on every change a socket brings, and the upkeep
+# reads every feed.
+upkeep_wait = 300
+
 # aggregate_upkeep(a, user_id): what opening one feed does for it, done for
-# every feed All feeds lists: each subscription gone quiet is taken up with its
-# owner again and each one still filling is filled, and each owned feed's
-# memory for today is made.
+# every feed All feeds lists, at most once each upkeep_wait: each subscription
+# gone quiet is taken up with its owner again and each one still filling is
+# filled, and each owned feed's memory for today is made.
 def aggregate_upkeep(a, user_id):
+	now = mochi.time.now()
+	if mochi.db.execute("update settings set upkeep=? where id=1 and upkeep<=?", now, now - upkeep_wait) == 0:
+		return
 	for row in mochi.db.rows("select id from feeds where server!='' and id in (select feed from subscribers where id=?)", user_id) or []:
 		maybe_resubscribe(a, row["id"])
-		maybe_fill(a, row["id"])
+		maybe_fill(a, row["id"], fill_rest)
 	memories_check_owned()
 
 # websocket_key is the key every feed's frames also reach, so a page or drawer
@@ -967,15 +982,30 @@ def registration_send(server, headers, content):
 		mochi.message.send(headers, content)
 
 # Validate and clean a tag label
+# validate_tag(label) -> string: a label a user or a feed's import may give a
+# post, cleaned: up to 50 letters and digits of any script, spaces, hyphens and
+# slashes. Read by code point; elems() yields bytes, and a byte of a letter
+# outside ASCII is no letter.
 def validate_tag(label):
 	if not label:
 		return None
 	label = label.strip().lower()
-	if not label or len(label) > 50:
+	if not label or len(list(label.codepoints())) > 50:
 		return None
-	for ch in label.elems():
+	for ch in label.codepoints():
 		if not (ch.isalpha() or ch.isdigit() or ch == " " or ch == "-" or ch == "/"):
 			return None
+	return label
+
+# filter_tag(label) -> string: a label posts are filtered by, cleaned as the
+# labels posts carry are kept. A post's AI tags are any label the model names
+# ("u.s. senate"), so the filter takes any label, not only one a user may give.
+def filter_tag(label):
+	if type(label) != "string":
+		return None
+	label = label.strip().lower()
+	if not label or len(label) > 200:
+		return None
 	return label
 
 # Check if a user can tag a post in a feed
@@ -1944,12 +1974,23 @@ def compute_match_info(posts):
 	return interests
 
 
+# ai_rank_wait: the seconds between two asks of one feed's AI ranking. The
+# schedule row of an ask is gone once it runs, and an ask that fails stores no
+# scores, so without the wait every view during or after one asks again.
+ai_rank_wait = 900
+
+# ai_rank_claim(feed_id) -> bool: whether this view may ask for the feed's AI
+# ranking now, stamping the ask if so; concurrent views claim it once.
+def ai_rank_claim(feed_id):
+	now = mochi.time.now()
+	return mochi.db.execute("update feeds set ranked=? where id=? and ranked<=?", now, feed_id, now - ai_rank_wait) > 0
+
 # AI re-ranking: re-score the top candidates with the LLM.
 # ai_rerank(posts) -> list: the posts ordered by the score each one's feed's AI
 # ranking gave it, so one feed and All feeds alike. A post its feed has not
-# scored yet has its feed scored in the background, once at a time, and only
-# when the post is among the ones a batch scores; asked of any other, every
-# view would send the feed's posts to the AI again.
+# scored yet has its feed scored in the background, at most once each
+# ai_rank_wait, and only when the post is among the ones a batch scores; asked
+# of any other, every view would send the feed's posts to the AI again.
 def ai_rerank(posts):
 	if not posts:
 		return posts
@@ -1981,9 +2022,9 @@ def ai_rerank(posts):
 		for row in mochi.db.rows("select post, score from score_cache where feed=? and post in (" + places + ")", feed_id, *ids) or []:
 			cached[row["post"]] = row["score"]
 		unscored = [i for i in ids if i not in cached]
-		if unscored and not fill_pending(feed_id, "schedule_ai_rerank"):
+		if unscored:
 			recent = {r["id"]: True for r in mochi.db.rows("select id from posts where feed=? order by created desc limit 50", feed_id) or []}
-			if [i for i in unscored if i in recent]:
+			if [i for i in unscored if i in recent] and ai_rank_claim(feed_id):
 				mochi.schedule.after("schedule_ai_rerank", {"feed": feed_id}, 0)
 
 	if not ranked:
@@ -2280,6 +2321,25 @@ def database_upgrade(version):
 		if any([c["name"] == "joined" for c in mochi.db.table("subscribers")]):
 			mochi.db.execute("alter table subscribers drop column joined")
 
+	if version == 24:
+		# What All feeds does on opening is bounded by stamps: ranked, when a
+		# feed's AI ranking was last asked for; notified, when the feed last
+		# raised a notification not yet cleared; filled, when All feeds last
+		# started a run-out fill again; and the user's upkeep, when All feeds
+		# last did it. A feed held before the stamp may have notifications
+		# unread, so the first All feeds clears them.
+		columns = [c["name"] for c in mochi.db.table("feeds")]
+		if "ranked" not in columns:
+			mochi.db.execute("alter table feeds add column ranked integer not null default 0")
+		if "notified" not in columns:
+			mochi.db.execute("alter table feeds add column notified integer not null default 0")
+			mochi.db.execute("update feeds set notified=1")
+		if "filled" not in columns:
+			mochi.db.execute("alter table feeds add column filled integer not null default 0")
+		if not any([c["name"] == "upkeep" for c in mochi.db.table("settings")]):
+			mochi.db.execute("alter table settings add column upkeep integer not null default 0")
+		mochi.db.execute("insert or ignore into settings ( id, sort ) values ( 1, '' )")
+
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
 # reaction as post/comment/subscriber.
@@ -2322,7 +2382,7 @@ def features_schema_create():
 	mochi.db.execute("create table if not exists imports ( id text not null primary key, feed text not null, account text not null default '', addresses text not null, position integer not null default 0, created integer not null )")
 
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1, ranked integer not null default 0, notified integer not null default 0, filled integer not null default 0 )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -2388,7 +2448,7 @@ def database_create():
 
 	mochi.db.execute("create table if not exists poll_locks ( feed text not null primary key, token text not null, expires integer not null default 0 )")
 
-	mochi.db.execute("create table if not exists settings ( id integer primary key check ( id = 1 ), sort text not null default '' )")
+	mochi.db.execute("create table if not exists settings ( id integer primary key check ( id = 1 ), sort text not null default '', upkeep integer not null default 0 )")
 	mochi.db.execute("insert or ignore into settings ( id, sort ) values ( 1, '' )")
 
 	mochi.db.execute("create table if not exists saved ( id text not null primary key, user text not null, post text not null, data text not null default '', created integer not null, unique ( user, post ) )")
@@ -2840,8 +2900,13 @@ def action_view(a):
 	score_expr = "coalesce(ps.score, 0) * (p.novelty / 100.0) * (24.0 / ((" + str(now_ts) + " - p.created) / 3600.0 + 24.0))"
 
 	# The tags a list is filtered by: a post carries every one of them. Asked
-	# for with none valid, the list is empty.
-	valid_tags = [vt for vt in [validate_tag(t) for t in tags] if vt]
+	# for with none valid, the list is empty. Each is counted once, as a post
+	# carries a label once.
+	valid_tags = []
+	for t in tags:
+		vt = filter_tag(t)
+		if vt and vt not in valid_tags:
+			valid_tags.append(vt)
 	tag_filter = ""
 	if valid_tags:
 		tag_filter = " and (select count(*) from tags t where t.object = p.id and lower(t.label) in (" + ", ".join(["?" for _ in valid_tags]) + ")) = " + str(len(valid_tags))
@@ -3208,6 +3273,9 @@ def view_remote(a, user_id, feed_id, server):
 	sort = a.input("sort")
 	if sort:
 		params["sort"] = sort
+	tag = filter_tag(a.input("tag"))
+	if tag:
+		params["tag"] = tag
 
 	# If no peer, mochi.remote.request will use directory lookup. The page is
 	# asked for in parts, each bounded.
@@ -7886,10 +7954,14 @@ def event_view(e):
 		e.stream.write({"error": "errors.invalid_data", "code": 400})
 		return
 	page_filter, page_args = page_where(cursor)
+	# Only the posts carrying this tag, when the viewer filters by one.
+	tag = filter_tag(e.content("tag", ""))
 
 	# Get posts for this feed
 	if post_id:
 		posts = mochi.db.rows("select * from posts where id=? and feed=?", post_id, feed_id)
+	elif tag:
+		posts = mochi.db.rows("select * from posts where feed=? and exists (select 1 from tags t where t.object=posts.id and lower(t.label)=?)" + page_filter + " order by created desc, id desc limit ?", feed_id, tag, page_args, limit + 1)
 	else:
 		posts = mochi.db.rows("select * from posts where feed=?" + page_filter + " order by created desc, id desc limit ?", feed_id, page_args, limit + 1)
 
@@ -9233,7 +9305,10 @@ def schedule_sources_watchdog(e):
 	ensure_polls()
 	copies_withdraw_start()
 
+# send_notification tells the user of something in a feed, and stamps the feed
+# (notified) so opening All feeds clears it among the feeds told of since.
 def send_notification(feed, type, title, body, item, url):
+	mochi.db.execute("update feeds set notified=? where id=?", mochi.time.now(), feed)
 	mochi.service.call("notifications", "send",
 		type, feed, title, body, url, mochi.app.label("notifications.topic." + type.replace("/", ".")),
 		event=type + ":" + item)
@@ -9387,16 +9462,22 @@ def action_notifications_clear(a):
 		if not is_feed_owner(user_id, feed) and not is_user_subscribed(user_id, feed["id"]):
 			a.error.label(403, "errors.access_denied")
 			return
+		mochi.db.execute("update feeds set notified=0 where id=?", feed["id"])
 		mochi.service.call("notifications", "clear/object", feed["id"])
 	return {"data": {"success": True}}
 
 def action_notifications_clear_class(a):
-	"""Clear notifications for every feed All feeds lists, as it is opened."""
+	"""Clear notifications for every feed All feeds lists, as it is opened:
+	those told of since they were last cleared, as each clear tells every open
+	bell and phone. The stamp is taken before the clear, so a notification
+	arriving between the two is cleared too and stamps the feed again."""
 	if not a.user:
 		a.error.label(401, "errors.auth_required")
 		return
-	for fid in listed_feeds(a.user.identity.id):
-		mochi.service.call("notifications", "clear/object", fid)
+	listed = {fid: True for fid in listed_feeds(a.user.identity.id)}
+	for row in mochi.db.rows("select id from feeds where notified>0") or []:
+		if row["id"] in listed and mochi.db.execute("update feeds set notified=0 where id=? and notified>0", row["id"]) > 0:
+			mochi.service.call("notifications", "clear/object", row["id"])
 	return {"data": {"success": True}}
 
 def action_sort_set_default(a):
