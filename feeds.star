@@ -475,6 +475,16 @@ def maybe_resubscribe(a, feed_id):
 	mochi.db.execute("update feeds set populated=0 where id=?", feed_id)
 	fill_schedule(feed_id, 0, a.user.identity.name, 0)
 
+# aggregate_upkeep(a, user_id): what opening one feed does for it, done for
+# every feed All feeds lists: each subscription gone quiet is taken up with its
+# owner again and each one still filling is filled, and each owned feed's
+# memory for today is made.
+def aggregate_upkeep(a, user_id):
+	for row in mochi.db.rows("select id from feeds where server!='' and id in (select feed from subscribers where id=?)", user_id) or []:
+		maybe_resubscribe(a, row["id"])
+		maybe_fill(a, row["id"])
+	memories_check_owned()
+
 # websocket_key is the key every feed's frames also reach, so a page or drawer
 # following all of a user's feeds holds one socket rather than one per feed:
 # core caps a user's sockets, across all their apps and devices, at 32.
@@ -1935,35 +1945,53 @@ def compute_match_info(posts):
 
 
 # AI re-ranking: re-score the top candidates with the LLM.
-def ai_rerank(feed_data, posts):
+# ai_rerank(posts) -> list: the posts ordered by the score each one's feed's AI
+# ranking gave it, so one feed and All feeds alike. A post its feed has not
+# scored yet has its feed scored in the background, once at a time, and only
+# when the post is among the ones a batch scores; asked of any other, every
+# view would send the feed's posts to the AI again.
+def ai_rerank(posts):
 	if not posts:
-		return posts
-	account = resolve_ai_account(feed_data.get("ai_account", 0))
-	if not account:
 		return posts
 
 	# Only re-rank top 50 candidates
 	candidates = posts[:50]
 	rest = posts[50:]
 
-	# Check cache — use cached scores if all candidates have been scored before
-	placeholders = ", ".join(["?" for _ in candidates])
-	cache_rows = mochi.db.rows(
-		"select post, score, computed from score_cache where feed=? and post in (" + placeholders + ")",
-		feed_data["id"], *[p["id"] for p in candidates]
-	) or []
-	cached = {}
-	for row in cache_rows:
-		cached[row["post"]] = row["score"]
+	by_feed = {}
+	for p in candidates:
+		by_feed.setdefault(p["feed"], []).append(p["id"])
 
-	# Apply cached scores where available
+	cached = {}
+	ranked = False
+	default = None
+	for feed_id, ids in by_feed.items():
+		feed = mochi.db.row("select ai_account from feeds where id=?", feed_id)
+		if not feed:
+			continue
+		account = str(feed["ai_account"]) if feed["ai_account"] else ""
+		if not account:
+			if default == None:
+				default = resolve_ai_account(0)
+			account = default
+		if not account:
+			continue
+		ranked = True
+		places = ", ".join(["?" for _ in ids])
+		for row in mochi.db.rows("select post, score from score_cache where feed=? and post in (" + places + ")", feed_id, *ids) or []:
+			cached[row["post"]] = row["score"]
+		unscored = [i for i in ids if i not in cached]
+		if unscored and not fill_pending(feed_id, "schedule_ai_rerank"):
+			recent = {r["id"]: True for r in mochi.db.rows("select id from posts where feed=? order by created desc limit 50", feed_id) or []}
+			if [i for i in unscored if i in recent]:
+				mochi.schedule.after("schedule_ai_rerank", {"feed": feed_id}, 0)
+
+	if not ranked:
+		return posts
+
 	for p in candidates:
 		if p["id"] in cached:
 			p["_score"] = cached[p["id"]]
-
-	if len(cached) < len(candidates):
-		# Some posts have never been scored — schedule background AI rerank
-		mochi.schedule.after("schedule_ai_rerank", {"feed": feed_data["id"]}, 0)
 
 	candidates = sorted(candidates, key=lambda p: (-p.get("_score", 0), -p["created"]))
 	return candidates + rest
@@ -2374,9 +2402,29 @@ def database_create():
 	attachment_schema_create()
 
 
+# compute_mmdd(timestamp) -> string: the month and day a post's mmdd column
+# holds ("0218"), in UTC.
 def compute_mmdd(timestamp):
 	row = mochi.db.row("select strftime('%m%d', ?, 'unixepoch') as mmdd", timestamp)
 	return row["mmdd"] if row else ""
+
+# local_date(timestamp) -> string: the date in the user's own time zone
+# ("2026-02-18"), the day memories are counted in.
+def local_date(timestamp):
+	return mochi.time.local(timestamp, "date")
+
+# memory_days(today) -> list: every UTC month and day a post made on today's
+# local month and day can hold in its mmdd column. A time zone is less than a
+# day from UTC, so they are the day itself and the days either side of it; 29
+# February lies between 28 February and 1 March only in a leap year, so it is
+# added beside either of them whatever this year is.
+def memory_days(today):
+	row = mochi.db.row("select strftime('%m%d', ?, '-1 day') as yesterday, strftime('%m%d', ?, '+1 day') as tomorrow", today, today)
+	mmdd = today[5:7] + today[8:10]
+	days = [row["yesterday"], mmdd, row["tomorrow"]]
+	if mmdd in ("0228", "0301") and "0229" not in days:
+		days.append("0229")
+	return days
 
 # Milestone years for memories: 1, 2, then multiples of 5
 MILESTONE_YEARS = [1, 2, 5, 10, 15, 20, 25, 30]
@@ -2434,39 +2482,57 @@ def pick_memory_post(posts, feed_id):
 			best_has_att = p_has_att
 	return best
 
-# Check and generate a memory post for a feed
+# memories_due(source) -> bool: the Memories source has not been checked yet
+# on the user's today.
+def memories_due(source):
+	return source["fetched"] == 0 or local_date(source["fetched"]) != local_date(mochi.time.now())
+
+# memories_check(feed_id): today's memory for the feed, when it has a Memories
+# source not yet checked today.
+def memories_check(feed_id):
+	source = mochi.db.row("select id, feed, fetched from sources where feed=? and type='feed/memories'", feed_id)
+	if source and memories_due(source):
+		check_memories(feed_id, source["id"])
+
+# memories_check_owned(): memories_check for every feed the user owns, as All
+# feeds is opened.
+def memories_check_owned():
+	owned = owned_set()
+	for source in mochi.db.rows("select id, feed, fetched from sources where type='feed/memories'") or []:
+		if source["feed"] in owned and memories_due(source):
+			check_memories(source["feed"], source["id"])
+
+# Check and generate a memory post for a feed: a post of its own from an
+# earlier year on the user's local month and day.
 def check_memories(feed_id, source_id):
 	now = mochi.time.now()
-	today_mmdd = compute_mmdd(now)
-	if not today_mmdd:
+
+	# The check is recorded whether or not a memory comes of it, so the feed is
+	# not read again until the user's tomorrow.
+	mochi.db.execute("update sources set fetched=? where id=?", now, source_id)
+
+	today = local_date(now)
+	if len(today) != 10:
 		return
+	current_year = int(today[:4])
+	today_mmdd = today[5:7] + today[8:10]
 
-	# Get the current year
-	year_row = mochi.db.row("select cast(strftime('%Y', ?, 'unixepoch') as integer) as y", now)
-	current_year = year_row["y"] if year_row else 0
-	if current_year == 0:
-		return
-
-	# Find candidate posts: same mmdd, in this feed, not from a source, not from today
-	today_start_row = mochi.db.row("select cast(strftime('%s', date(?, 'unixepoch')) as integer) as ts", now)
-	today_start = today_start_row["ts"] if today_start_row else now
-
-	candidates = mochi.db.rows("""
-		select p.* from posts p
-		where p.feed=? and p.mmdd=? and p.created < ?
-		and not exists (select 1 from source_posts sp where sp.post=p.id)
-		order by p.created
-	""", feed_id, today_mmdd, today_start)
+	# Candidates are read by their stored UTC day and kept by their local one.
+	days = memory_days(today)
+	places = ", ".join(["?" for _ in days])
+	candidates = mochi.db.rows("select p.* from posts p where p.feed=? and p.mmdd in (" + places + ") and not exists (select 1 from source_posts sp where sp.post=p.id) order by p.created", feed_id, *days)
 
 	if not candidates:
 		return
 
-	# Group by year
+	# Group by the year of the user's local date, before this one
 	years = {}
 	for p in candidates:
-		y_row = mochi.db.row("select cast(strftime('%Y', ?, 'unixepoch') as integer) as y", p["created"])
-		y = y_row["y"] if y_row else 0
-		if y > 0 and y != current_year:
+		date = local_date(p["created"])
+		if len(date) != 10 or date[5:7] + date[8:10] != today_mmdd:
+			continue
+		y = int(date[:4])
+		if y > 0 and y < current_year:
 			if y not in years:
 				years[y] = []
 			years[y].append(p)
@@ -2495,7 +2561,7 @@ def check_memories(feed_id, source_id):
 
 	memory_id = mochi.uid()
 	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'markdown', ?, ?, ?)",
-		memory_id, feed_id, post["body"], data, now, now, today_mmdd)
+		memory_id, feed_id, post["body"], data, now, now, compute_mmdd(now))
 	mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?) on conflict do nothing",
 		source_id, memory_id, dedup_guid)
 	winner = mochi.db.row("select post from source_posts where source=? and guid=?", source_id, dedup_guid)
@@ -2504,9 +2570,6 @@ def check_memories(feed_id, source_id):
 		mochi.db.execute("delete from posts where id=?", memory_id)
 		mochi.db.execute("delete from follows where post=?", memory_id)
 		return
-
-	# Update source fetched timestamp
-	mochi.db.execute("update sources set fetched=? where id=?", now, source_id)
 
 	set_feed_updated(feed_id)
 	broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": memory_id})
@@ -2576,16 +2639,9 @@ def action_info_entity(a):
         ensure_feed_poll(feed_entity_id)
         ensure_sources_watchdog()
 
-
-    # Check memories source — generate a memory post if not yet checked today
+    # Today's memory, when the feed has a Memories source not yet checked today
     if is_owner and user_id:
-        mem_source = mochi.db.row("select * from sources where feed=? and type='feed/memories'", feed_entity_id)
-        if mem_source:
-            now = mochi.time.now()
-            today_row = mochi.db.row("select date(?, 'unixepoch') as d", now)
-            fetched_row = mochi.db.row("select date(?, 'unixepoch') as d", mem_source["fetched"]) if mem_source["fetched"] > 0 else None
-            if not fetched_row or today_row["d"] != fetched_row["d"]:
-                check_memories(feed_entity_id, mem_source["id"])
+        memories_check(feed_entity_id)
 
     # Determine permissions for current user
     can_manage = check_access(a, feed_entity_id, "manage") if a.user else False
@@ -2750,6 +2806,12 @@ def action_view(a):
 	if cursor == False:
 		a.error.label(400, "errors.invalid_data")
 		return
+
+	# The first page of All feeds does for every feed it lists what opening
+	# that feed does, so a reader who only reads All feeds misses nothing.
+	if not feed_data and user_id and not post_id and not cursor and offset == 0:
+		aggregate_upkeep(a, user_id)
+
 	position = cursor["position"] if scored and cursor else 0
 	started = cursor["started"] if scored and cursor and cursor["started"] > 0 else mochi.time.now()
 	page_filter, page_args = page_where(cursor)
@@ -2777,6 +2839,13 @@ def action_view(a):
 	now_ts = mochi.time.now()
 	score_expr = "coalesce(ps.score, 0) * (p.novelty / 100.0) * (24.0 / ((" + str(now_ts) + " - p.created) / 3600.0 + 24.0))"
 
+	# The tags a list is filtered by: a post carries every one of them. Asked
+	# for with none valid, the list is empty.
+	valid_tags = [vt for vt in [validate_tag(t) for t in tags] if vt]
+	tag_filter = ""
+	if valid_tags:
+		tag_filter = " and (select count(*) from tags t where t.object = p.id and lower(t.label) in (" + ", ".join(["?" for _ in valid_tags]) + ")) = " + str(len(valid_tags))
+
 	if post_id:
 		# Verify post belongs to an accessible feed
 		post_feed = mochi.db.row("select feed, visibility from posts where id=?", post_id)
@@ -2789,70 +2858,37 @@ def action_view(a):
 				a.error.label(403, "errors.not_allowed_view_post")
 				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
-	elif relevance_sort and feed_data and len(tags) > 0:
-		# Relevance sort with tag filter
-		valid_tags = []
-		for t in tags:
-			vt = validate_tag(t)
-			if vt:
-				valid_tags.append(vt)
-		if len(valid_tags) == 0:
-			posts = []
-		else:
-			placeholders = ", ".join(["?" for t in valid_tags])
-			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
-			posts = mochi.db.rows(
-				"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ? and " + tag_filter + unread_filter_p + hidden_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
-				user_id, feed_data["id"], valid_tags, limit + 1, offset)
+	elif len(tags) > 0 and not tag_filter:
+		# Tags asked for, none of them valid
+		posts = []
 	elif relevance_sort and feed_data:
-		# Relevance sort for a single feed
+		# Relevance sort for a single feed, tagged or not
 		posts = mochi.db.rows(
-			"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ?" + unread_filter_p + hidden_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
-			user_id, feed_data["id"], limit + 1, offset)
+			"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ?" + tag_filter + unread_filter_p + hidden_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
+			user_id, feed_data["id"], valid_tags, limit + 1, offset)
 	elif relevance_sort and not feed_data:
-		# Relevance sort across all subscribed feeds
+		# Relevance sort across all subscribed feeds, tagged or not
 		posts = mochi.db.rows(
-			"select p.*, " + score_expr + " as effective_score from posts p inner join subscribers s on p.feed = s.feed left join post_scores ps on p.id = ps.post and ps.viewer = ? where s.id = ?" + unread_filter_p + hidden_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
-			user_id, user_id, limit + 1, offset)
-	elif feed_data and len(tags) > 0:
+			"select p.*, " + score_expr + " as effective_score from posts p inner join subscribers s on p.feed = s.feed left join post_scores ps on p.id = ps.post and ps.viewer = ? where s.id = ?" + tag_filter + unread_filter_p + hidden_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
+			user_id, user_id, valid_tags, limit + 1, offset)
+	elif feed_data and tag_filter:
 		# Tag filter without relevance sort
-		valid_tags = []
-		for t in tags:
-			vt = validate_tag(t)
-			if vt:
-				valid_tags.append(vt)
-		if len(valid_tags) == 0:
-			posts = []
-		else:
-			placeholders = ", ".join(["?" for t in valid_tags])
-			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
-			posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", feed_data["id"], valid_tags, page_args, limit + 1, position)
+		posts = mochi.db.rows("select p.* from posts p where p.feed=?" + tag_filter + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", feed_data["id"], valid_tags, page_args, limit + 1, position)
 	elif feed_data:
 		posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + hidden_filter + page_filter + " order by " + order_by + " limit ? offset ?", feed_data["id"], page_args, limit + 1, position)
+	elif tag_filter:
+		# All subscribed feeds, tagged, without relevance sort
+		posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ?" + tag_filter + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", user_id, valid_tags, page_args, limit + 1, position)
 	else:
-		# All subscribed feeds without relevance sort
-		if len(tags) > 0:
-			valid_tags = []
-			for t in tags:
-				vt = validate_tag(t)
-				if vt:
-					valid_tags.append(vt)
-			if len(valid_tags) == 0:
-				posts = []
-			else:
-				placeholders = ", ".join(["?" for t in valid_tags])
-				tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
-				posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", user_id, valid_tags, page_args, limit + 1, position)
-		# The subscription as a filter, not a join: a join starts from the
-		# subscriber rows and sorts every post of every subscribed feed to
-		# return a page. Newest first and unfiltered, + keeps the feed indexes
-		# out of it, so the query walks posts_created and stops once the page
-		# is full; the unread filter and the score orders are quicker from the
-		# feed indexes, which find a feed's unread posts or its whole set
-		# directly.
-		else:
-			walk = "+" if not scored and not unread_filter_p else ""
-			posts = mochi.db.rows("select p.* from posts p where " + walk + "p.feed in (select feed from subscribers where id=?)" + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", user_id, page_args, limit + 1, position)
+		# All subscribed feeds without relevance sort. The subscription as a
+		# filter, not a join: a join starts from the subscriber rows and sorts
+		# every post of every subscribed feed to return a page. Newest first and
+		# unfiltered, + keeps the feed indexes out of it, so the query walks
+		# posts_created and stops once the page is full; the unread filter and the
+		# score orders are quicker from the feed indexes, which find a feed's
+		# unread posts or its whole set directly.
+		walk = "+" if not scored and not unread_filter_p else ""
+		posts = mochi.db.rows("select p.* from posts p where " + walk + "p.feed in (select feed from subscribers where id=?)" + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", user_id, page_args, limit + 1, position)
 
 	# Check if there are more posts
 	has_more = len(posts) > limit
@@ -2874,9 +2910,8 @@ def action_view(a):
 	matches_info = []
 	if relevance_sort:
 		matches_info = compute_match_info(posts)
-		if sort in ("ai", "relevant") and feed_data:
-			posts = list(posts)
-			posts = ai_rerank(feed_data, posts)
+		if sort in ("ai", "relevant"):
+			posts = ai_rerank(list(posts))
 
 		# Staleness check: rescore displayed posts inline and schedule background refresh for the rest
 		all_interests = mochi.interests.list()
@@ -3041,16 +3076,9 @@ def action_view(a):
 			"manage": can_manage,
 		}
 	
-	# Check memories source — generate a memory post if not yet checked today
+	# Today's memory, when the feed has a Memories source not yet checked today
 	if feed_data and is_owner and user_id:
-		mem_source = mochi.db.row("select * from sources where feed=? and type='feed/memories'", feed_data["id"])
-		if mem_source:
-			now = mochi.time.now()
-			# Compare dates: skip if already checked today
-			today_row = mochi.db.row("select date(?, 'unixepoch') as d", now)
-			fetched_row = mochi.db.row("select date(?, 'unixepoch') as d", mem_source["fetched"]) if mem_source["fetched"] > 0 else None
-			if not fetched_row or today_row["d"] != fetched_row["d"]:
-				check_memories(feed_data["id"], mem_source["id"])
+		memories_check(feed_data["id"])
 
 	# Ensure poll schedule and watchdog exist when owner views their feed
 	if feed_data and is_owner and user_id:
@@ -4128,20 +4156,24 @@ def action_read_all_class(a):
 	if not a.user:
 		a.error.label(401, "errors.not_logged_in")
 		return
-	user_id = a.user.identity.id
 	now = mochi.time.now()
 
-	feed_ids = {}
-	for fid in owned_set():
-		feed_ids[fid] = True
-	for row in mochi.db.rows("select feed from subscribers where id=?", user_id) or []:
-		feed_ids[row["feed"]] = True
-
+	feed_ids = listed_feeds(a.user.identity.id)
 	for fid in feed_ids:
 		mochi.db.execute("update feeds set read=? where id=?", now, fid)
 		mochi.db.execute("update posts set read=? where feed=? and read=0", now, fid)
 
 	return {"data": {"ok": True, "read": now, "feeds": len(feed_ids)}}
+
+# listed_feeds(user_id) -> list: the feeds All feeds spans, those the user owns
+# and those they subscribe to.
+def listed_feeds(user_id):
+	feed_ids = {}
+	for fid in owned_set():
+		feed_ids[fid] = True
+	for row in mochi.db.rows("select feed from subscribers where id=?", user_id) or []:
+		feed_ids[row["feed"]] = True
+	return list(feed_ids.keys())
 
 # Edit a post (owner only)
 # post_edit changes a post: on a feed the user owns, a post they wrote or
@@ -9356,6 +9388,16 @@ def action_notifications_clear(a):
 			a.error.label(403, "errors.access_denied")
 			return
 		mochi.service.call("notifications", "clear/object", feed["id"])
+	return {"data": {"success": True}}
+
+def action_notifications_clear_class(a):
+	"""Clear notifications for every feed All feeds lists, as it is opened."""
+	if not a.user:
+		a.error.label(401, "errors.auth_required")
+		return
+	for fid in listed_feeds(a.user.identity.id):
+		mochi.service.call("notifications", "clear/object", fid)
+	return {"data": {"success": True}}
 
 def action_sort_set_default(a):
 	"""Set the user's default post sort (applied to All feeds and to feeds with no override)."""

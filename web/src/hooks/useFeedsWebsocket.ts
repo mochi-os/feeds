@@ -93,6 +93,14 @@ export function useFeedsWebsocket(
         return
       }
 
+      // The owner removed this user from a feed, or deleted it, and the local
+      // copy is already purged: the sidebar and the page's feeds are fetched
+      // again, and the lists of posts reload below.
+      if (data.type === 'feed/removed' || data.type === 'feed/deleted') {
+        void useFeedsStore.getState().refresh()
+        onUpdateRef.current?.(data.feed)
+      }
+
       // Increment sidebar unread count for new posts
       if (data.type === 'post/create') {
         useFeedsStore.getState().adjustUnread(data.feed, 1)

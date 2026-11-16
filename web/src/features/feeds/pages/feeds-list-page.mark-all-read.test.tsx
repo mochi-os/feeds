@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { FeedPost } from '@/types'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
@@ -20,7 +21,10 @@ const { feeds, posts } = vi.hoisted(() => ({
 }))
 
 vi.mock('@/api/feeds', () => ({
-  feedsApi: { readAllAggregate: vi.fn() },
+  feedsApi: {
+    readAllAggregate: vi.fn(),
+    clearAllNotifications: vi.fn().mockResolvedValue(undefined),
+  },
 }))
 vi.mock('@mochi/web', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@mochi/web')>()
@@ -118,9 +122,11 @@ describe('FeedsListPage Mark all read', () => {
   it('clears at once and puts back the count and posts when refused', async () => {
     const error = vi.spyOn(toast, 'error')
     render(
-      <I18nProvider i18n={i18n}>
-        <FeedsListPage />
-      </I18nProvider>
+      <QueryClientProvider client={new QueryClient()}>
+        <I18nProvider i18n={i18n}>
+          <FeedsListPage />
+        </I18nProvider>
+      </QueryClientProvider>
     )
     expect(await screen.findByText('p1 unread')).toBeInTheDocument()
 

@@ -3,7 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { useCallback } from 'react'
-import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import type { FeedComment, FeedPost, FeedSummary, ReactionId } from '@/types'
 import { useLingui } from '@lingui/react/macro'
 import { toast, useUploadProgress, type Upload } from '@mochi/web'
@@ -11,6 +11,7 @@ import { feedsApi } from '@/api/feeds'
 import { startCommentReaction } from '@/features/feeds/comment-reaction'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { randomId, removeCommentFromTree } from '@/features/feeds/utils'
+import { patchCachedPost } from './posts-cache'
 
 export type UseCommentActionsOptions = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
@@ -25,26 +26,6 @@ export type UseCommentActionsOptions = {
     feedId: string,
     options?: boolean | { forceRefresh?: boolean }
   ) => Promise<void>
-  /** Called when a comment or reply is optimistically added.
-   * Allows callers to mirror the optimistic update into other state (e.g. a React Query cache)
-   * so the optimistic comment isn't wiped when a sync effect overwrites from cached data.
-   */
-  onOptimisticComment?: (
-    feedId: string,
-    postId: string,
-    comment: FeedComment,
-    parentId?: string
-  ) => void
-  /** Called when an optimistic comment or reply has to be taken back because
-   * the request behind it failed. Mirrors {@link onOptimisticComment} so the
-   * same caches drop the comment again.
-   */
-  onRollbackComment?: (
-    feedId: string,
-    postId: string,
-    commentId: string,
-    parentId?: string
-  ) => void
 }
 
 export type UseCommentActionsResult = {
@@ -84,8 +65,6 @@ export function useCommentActions({
   commentDrafts,
   setCommentDrafts,
   loadPostsForFeed,
-  onOptimisticComment,
-  onRollbackComment,
 }: UseCommentActionsOptions): UseCommentActionsResult {
   const { t } = useLingui()
   const queryClient = useQueryClient()
@@ -111,7 +90,10 @@ export function useCommentActions({
         )
         return { ...current, [feedId]: updated }
       })
-      onRollbackComment?.(feedId, postId, commentId, parentId)
+      patchCachedPost(queryClient, postId, (post) => ({
+        ...post,
+        comments: removeCommentFromTree(post.comments, commentId),
+      }))
       // Replies carry their own draft inside the thread, so only a top-level
       // comment restores here — and only when the user has not already typed
       // something new in its place.
@@ -121,7 +103,7 @@ export function useCommentActions({
         )
       }
     },
-    [setPostsByFeed, setCommentDrafts, onRollbackComment]
+    [queryClient, setPostsByFeed, setCommentDrafts]
   )
 
   const handleAddComment = useCallback(
@@ -157,7 +139,13 @@ export function useCommentActions({
         return { ...current, [feedId]: updated }
       })
 
-      onOptimisticComment?.(feedId, postId, comment)
+      // The pages show what the ['posts'] caches hold, so the comment goes
+      // there too, or a refetch before the server has it takes it off screen.
+      patchCachedPost(queryClient, postId, (post) =>
+        post.comments.some((c) => c.id === comment.id)
+          ? post
+          : { ...post, comments: [comment, ...post.comments] }
+      )
 
       setFeeds((current) =>
         current.map((feed) =>
@@ -207,7 +195,7 @@ export function useCommentActions({
       setFeeds,
       setCommentDrafts,
       loadPostsForFeed,
-      onOptimisticComment,
+      queryClient,
       rollbackComment,
       upload,
       t,
@@ -237,6 +225,8 @@ export function useCommentActions({
       const addReplyToComment = (comments: FeedComment[]): FeedComment[] => {
         return comments.map((comment) => {
           if (comment.id === parentCommentId) {
+            if ((comment.replies ?? []).some((r) => r.id === reply.id))
+              return comment
             return { ...comment, replies: [...(comment.replies ?? []), reply] }
           }
           if (comment.replies?.length) {
@@ -256,7 +246,10 @@ export function useCommentActions({
         return { ...current, [feedId]: updated }
       })
 
-      onOptimisticComment?.(feedId, postId, reply, parentCommentId)
+      patchCachedPost(queryClient, postId, (post) => ({
+        ...post,
+        comments: addReplyToComment(post.comments),
+      }))
 
       setFeeds((current) =>
         current.map((feed) =>
@@ -300,7 +293,7 @@ export function useCommentActions({
       setPostsByFeed,
       setFeeds,
       loadPostsForFeed,
-      onOptimisticComment,
+      queryClient,
       rollbackComment,
       upload,
       t,
@@ -329,19 +322,7 @@ export function useCommentActions({
           if (!posts) return current
           return { ...current, [feedId]: posts.map(onPost(patch)) }
         })
-        queryClient.setQueriesData<InfiniteData<{ posts: FeedPost[] }>>(
-          { queryKey: ['posts'] },
-          (data) =>
-            data?.pages
-              ? {
-                  ...data,
-                  pages: data.pages.map((page) => ({
-                    ...page,
-                    posts: page.posts.map(onPost(patch)),
-                  })),
-                }
-              : data
-        )
+        patchCachedPost(queryClient, postId, patch)
       }
       write(change.apply)
 

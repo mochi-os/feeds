@@ -196,6 +196,7 @@ const getAllFeeds = async (
       cursor: params?.cursor,
       offset: params?.offset?.toString(),
       sort: params?.sort,
+      tag: params?.tag,
       unread: params?.unread,
       _t: params?._t?.toString(),
     }),
@@ -1320,6 +1321,11 @@ const clearNotifications = async (feedId: string): Promise<void> => {
   await client.post(endpoints.notifications.feedClear(feedId))
 }
 
+// Every feed All feeds lists, as it is opened.
+const clearAllNotifications = async (): Promise<void> => {
+  await client.post(endpoints.notifications.clear)
+}
+
 // The user's notification switches for a feed they hold.
 type NotificationSettings = { post: boolean }
 
@@ -1463,6 +1469,7 @@ export const feedsApi = {
   setAiPrompt,
   adjustTagInterest,
   clearNotifications,
+  clearAllNotifications,
   getNotifications,
   setNotification,
   followPost,

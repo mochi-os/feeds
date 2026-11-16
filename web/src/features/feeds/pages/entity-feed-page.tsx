@@ -15,7 +15,6 @@ import {
 } from '@/hooks'
 import type {
   Feed,
-  FeedComment,
   FeedPermissions,
   FeedSummary,
   FeedPost,
@@ -61,12 +60,12 @@ import {
   Rss,
   SquarePen,
   UserMinus,
-  X,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { patchCachedPost } from '@/hooks/posts-cache'
 import type { PostsPrefetch } from '@/hooks/use-infinite-posts'
 import { useReadFilter } from '@/hooks/use-read-filter'
 import type { FeedGoneReason } from '@/hooks/useFeedWebsocket'
@@ -75,8 +74,9 @@ import { FeedGone } from '@/features/feeds/components/feed-gone'
 import { FeedBanner } from '../components/feed-banner'
 import { FeedPosts } from '../components/feed-posts'
 import { FollowButton } from '../components/follow-button'
+import { TagFilter } from '../components/tag-filter'
 import { usePostHandlers } from '../hooks'
-import { initialSort, removeCommentFromTree } from '../utils'
+import { initialSort } from '../utils'
 
 interface EntityFeedPageProps {
   feed: Feed
@@ -262,82 +262,6 @@ export function EntityFeedPage({
   // Standardized actions
   const { handlePostReaction } = usePostActions({ setPostsByFeed })
 
-  // Mirror optimistic comments into the infinite query cache so a refetch
-  // (from a websocket event or anything else) won't wipe them before the
-  // server-side comment has propagated back into the refetch response.
-  const addCommentToCache = useCallback(
-    (
-      _feedId: string,
-      postId: string,
-      comment: FeedComment,
-      parentId?: string
-    ) => {
-      queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
-        { queryKey: ['posts', feed.id], exact: false },
-        (data) => {
-          if (!data?.pages) return data
-          return {
-            ...data,
-            pages: data.pages.map((page) => ({
-              ...page,
-              posts: page.posts.map((post) => {
-                if (post.id !== postId) return post
-                if (!parentId) {
-                  if (post.comments.some((c) => c.id === comment.id))
-                    return post
-                  return { ...post, comments: [comment, ...post.comments] }
-                }
-                const insertReply = (comments: FeedComment[]): FeedComment[] =>
-                  comments.map((c) => {
-                    if (c.id === parentId) {
-                      if ((c.replies ?? []).some((r) => r.id === comment.id))
-                        return c
-                      return { ...c, replies: [...(c.replies ?? []), comment] }
-                    }
-                    if (c.replies?.length) {
-                      return { ...c, replies: insertReply(c.replies) }
-                    }
-                    return c
-                  })
-                return { ...post, comments: insertReply(post.comments) }
-              }),
-            })),
-          }
-        }
-      )
-    },
-    [queryClient, feed.id]
-  )
-
-  // Mirror of addCommentToCache: a comment the server refused has to leave the
-  // cache too, or the refetch below it keeps re-seeding a comment that does
-  // not exist.
-  const removeCommentFromCache = useCallback(
-    (_feedId: string, postId: string, commentId: string) => {
-      queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
-        { queryKey: ['posts', feed.id], exact: false },
-        (data) => {
-          if (!data?.pages) return data
-          return {
-            ...data,
-            pages: data.pages.map((page) => ({
-              ...page,
-              posts: page.posts.map((post) =>
-                post.id === postId
-                  ? {
-                      ...post,
-                      comments: removeCommentFromTree(post.comments, commentId),
-                    }
-                  : post
-              ),
-            })),
-          }
-        }
-      )
-    },
-    [queryClient, feed.id]
-  )
-
   const {
     handleAddComment,
     handleReplyToComment,
@@ -353,8 +277,6 @@ export function EntityFeedPage({
     loadPostsForFeed: async (_feedId: string) => {
       await refreshPosts()
     },
-    onOptimisticComment: addCommentToCache,
-    onRollbackComment: removeCommentFromCache,
   })
 
   // Use the shared post handlers hook for edit/delete
@@ -412,35 +334,6 @@ export function EntityFeedPage({
     [handleCommentReaction, markRead, feed.fingerprint, feed.id]
   )
 
-  // Update a post's tags in the infinite query cache directly, so the sync
-  // effect picks up the change instead of clobbering it on the next refetch.
-  const updatePostTagsInCache = useCallback(
-    (
-      postId: string,
-      updateTags: (tags: FeedPost['tags']) => FeedPost['tags']
-    ) => {
-      queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
-        {
-          queryKey: ['posts', feed.id],
-          exact: false,
-        },
-        (data) => {
-          if (!data?.pages) return data
-          return {
-            ...data,
-            pages: data.pages.map((page) => ({
-              ...page,
-              posts: page.posts.map((p) =>
-                p.id === postId ? { ...p, tags: updateTags(p.tags) } : p
-              ),
-            })),
-          }
-        }
-      )
-    },
-    [queryClient, feed.id]
-  )
-
   // Tag management callbacks
   const handleTagAdded = useCallback(
     async (_feedId: string, postId: string, label: string) => {
@@ -450,13 +343,16 @@ export function EntityFeedPage({
           postId,
           label
         )
-        updatePostTagsInCache(postId, (tags) => [...(tags || []), tag])
+        patchCachedPost(queryClient, postId, (post) => ({
+          ...post,
+          tags: [...(post.tags || []), tag],
+        }))
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to add tag`))
         throw error
       }
     },
-    [feed.id, feed.fingerprint, updatePostTagsInCache, t]
+    [feed.id, feed.fingerprint, queryClient, t]
   )
 
   const handleTagFilter = useCallback((label: string) => {
@@ -778,19 +674,10 @@ export function EntityFeedPage({
               ) : (
                 <div className='space-y-6'>
                   {activeTag && (
-                    <div className='flex items-center gap-2'>
-                      <span className='text-muted-foreground text-sm'>
-                        <Trans>Filtered by tag:</Trans>
-                      </span>
-                      <button
-                        type='button'
-                        className='bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-sm font-medium'
-                        onClick={() => setActiveTag(undefined)}
-                      >
-                        {activeTag}
-                        <X className='size-3.5' />
-                      </button>
-                    </div>
+                    <TagFilter
+                      tag={activeTag}
+                      onClear={() => setActiveTag(undefined)}
+                    />
                   )}
                   <FeedPosts
                     posts={currentPosts}

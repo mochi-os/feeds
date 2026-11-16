@@ -143,7 +143,7 @@ export async function fetchPostsPage(
     unread: unread ? '1' : undefined,
   }
   const response = aggregate
-    ? await feedsApi.getAll(cursor)
+    ? await feedsApi.getAll({ ...cursor, tag })
     : await feedsApi.get(feedId as string, {
         ...cursor,
         server,

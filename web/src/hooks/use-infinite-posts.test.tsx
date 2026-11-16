@@ -8,6 +8,7 @@ import type { FeedPost } from '@/types'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
+  fetchPostsPage,
   keptPosts,
   postsKey,
   prefetchPosts,
@@ -15,9 +16,9 @@ import {
   type PostsPrefetch,
 } from './use-infinite-posts'
 
-const { get } = vi.hoisted(() => ({ get: vi.fn() }))
+const { get, getAll } = vi.hoisted(() => ({ get: vi.fn(), getAll: vi.fn() }))
 
-vi.mock('@/api/feeds', () => ({ feedsApi: { get } }))
+vi.mock('@/api/feeds', () => ({ feedsApi: { get, getAll } }))
 // The adapter pulls in the auth store and the translation runtime; the posts
 // here are already in the page's shape.
 vi.mock('@/api/adapters', () => ({
@@ -449,5 +450,34 @@ describe('the page after the first', () => {
     serve({ nextCursor: 2, cursor: '2:1790000000' }, list('b', 'c'))
     const { ids } = await next('top')
     await waitFor(() => expect(ids()).toEqual(['a', 'b', 'c']))
+  })
+})
+
+// All feeds filters by a tag as one feed does, under every sort.
+describe('fetchPostsPage for All feeds', () => {
+  beforeEach(() => {
+    getAll.mockReset()
+    getAll.mockResolvedValue({ data: { posts: [], hasMore: false } })
+  })
+
+  it.each(['interests', 'new'])(
+    'asks for the posts carrying the tag under %s',
+    async (sort) => {
+      await fetchPostsPage(
+        { feedId: null, aggregate: true, sort, tag: 'harbour' },
+        undefined
+      )
+      expect(getAll).toHaveBeenCalledWith(
+        expect.objectContaining({ sort, tag: 'harbour' })
+      )
+    }
+  )
+
+  it('names no tag when none is picked', async () => {
+    await fetchPostsPage(
+      { feedId: null, aggregate: true, sort: 'new' },
+      undefined
+    )
+    expect(getAll.mock.calls[0][0].tag).toBeUndefined()
   })
 })
