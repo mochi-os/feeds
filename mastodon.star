@@ -596,6 +596,10 @@ def function_mastodon_follow(context, account, home, address, on=True):
 	if refusal:
 		return refusal
 	if mochi.db.exists("select 1 from sources where feed=? and type='person/posts' and url=?", feed["id"], address):
+		# The source can outlive the account's follow, which a block takes,
+		# or follow through another account: the account follows again.
+		if not mochi.account.following(account, actor=address) and not mochi.account.follow(account, address):
+			return {"error": mochi.app.label("errors.follow_not_sent")}
 		return {"followed": True}
 	found = lookup_person(address)
 	if not found or found["kind"] == "post" or found["network"] != "fediverse" or not found.get("id"):

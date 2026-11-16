@@ -245,6 +245,8 @@ function LazyRssImage({
         alt={imgAttrs.alt || rssTitle || ''}
         title={imgAttrs.title || undefined}
         className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
+        loading='lazy'
+        decoding='async'
       />
     </a>
   )
@@ -1302,6 +1304,7 @@ export function FeedPosts({
                               lat={editingPost.data.checkin.lat}
                               lon={editingPost.data.checkin.lon}
                               category={editingPost.data.checkin.category}
+                              lazy
                             />
                           </div>
                         )}
@@ -1349,6 +1352,7 @@ export function FeedPosts({
                                 lon: editingPost.data.travelling.origin.lon,
                                 name: editingPost.data.travelling.origin.name,
                               }}
+                              lazy
                             />
                           </div>
                         )}
@@ -1571,6 +1575,10 @@ export function FeedPosts({
                             alt={imgAttrs.alt || post.data.rss.title || ''}
                             title={imgAttrs.title || undefined}
                             className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
+                            // A remote article's image is fetched as it nears
+                            // the screen, not with every other post's on load.
+                            loading='lazy'
+                            decoding='async'
                           />
                         )
                         return href ? (
@@ -1688,7 +1696,10 @@ export function FeedPosts({
                     post.data?.travelling ||
                     (post.attachments && post.attachments.length > 0)) && (
                     <div className='flex flex-wrap items-start gap-2'>
-                      {/* Checkin map thumbnail */}
+                      {/* Checkin map thumbnail. The row sizes each tile to its
+                          content and a map has none, so the height gives the
+                          box its width through the ratio; without it the map
+                          is drawn at no size at all. */}
                       {post.data?.checkin && (
                         <div className='overflow-hidden rounded-[8px] border'>
                           <MapView
@@ -1696,6 +1707,8 @@ export function FeedPosts({
                             lon={post.data.checkin.lon}
                             category={post.data.checkin.category}
                             aspectRatio='16/9'
+                            className='h-[140px]'
+                            lazy
                           />
                         </div>
                       )}
@@ -1712,6 +1725,8 @@ export function FeedPosts({
                               name: post.data.travelling.origin.name,
                             }}
                             aspectRatio='16/9'
+                            className='h-[140px]'
+                            lazy
                           />
                         </div>
                       )}
