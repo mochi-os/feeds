@@ -4019,8 +4019,10 @@ def post_create(feed, user_id, user_name, body, data, features, accounts, save, 
 	now = mochi.time.now()
 	data_value = json.encode(data) if data else ""
 	mmdd = compute_mmdd(now)
-	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, author, read) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-		post_uid, feed_id, body, data_value, format, now, now, mmdd, user_id, now)
+	# Unread for its writer too, like anyone's: a feed shown unread only lists
+	# it until it has been on screen.
+	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, author) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		post_uid, feed_id, body, data_value, format, now, now, mmdd, user_id)
 	if features:
 		clause, values = features_sql(features)
 		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_uid]))
