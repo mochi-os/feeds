@@ -173,15 +173,12 @@ describe('settingsTabs', () => {
     expect(settingsTabs('access', false).active).toBe('access')
   })
 
-  it('keeps a link to Publish to while that is asked', () => {
+  it('draws no tabs while Publish to is asked, keeping a link to it', () => {
     expect(settingsTabs('publish', undefined)).toEqual({
-      tabs: ['general', 'publish', 'access'],
+      tabs: null,
       active: 'publish',
     })
-    expect(settingsTabs(undefined, undefined).tabs).toEqual([
-      'general',
-      'access',
-    ])
+    expect(settingsTabs(undefined, undefined).tabs).toBeNull()
   })
 })
 
