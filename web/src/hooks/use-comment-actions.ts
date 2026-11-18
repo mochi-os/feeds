@@ -118,7 +118,7 @@ export function useCommentActions({
       if (!draft) return
 
       const comment: FeedComment = {
-        id: randomId('comment'),
+        id: randomId(),
         subscriberId: currentUserId ?? '',
         author: currentUserName || t`You`,
         created: Math.floor(Date.now() / 1000),
@@ -211,7 +211,7 @@ export function useCommentActions({
       files?: File[]
     ) => {
       const reply: FeedComment = {
-        id: randomId('reply'),
+        id: randomId(),
         subscriberId: currentUserId ?? '',
         author: currentUserName || t`You`,
         created: Math.floor(Date.now() / 1000),

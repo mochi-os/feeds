@@ -653,7 +653,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 	places = ", ".join(["?" for _ in comment_ids])
 
 	# Attachments on the comments themselves - one query, grouped by comment id.
-	attachments_by_comment = attachment_list_many(comment_ids, post_data["feed"])
+	attachments_by_comment = attachment_list_many(comment_ids, post_data["feed"], kind="comment")
 
 	# The post attachment a comment is anchored to - one query for the whole set.
 	# Both the display name and the caption come from this single row (was two
@@ -2340,6 +2340,15 @@ def database_upgrade(version):
 			mochi.db.execute("alter table settings add column upkeep integer not null default 0")
 		mochi.db.execute("insert or ignore into settings ( id, sort ) values ( 1, '' )")
 
+	if version == 25:
+		# An attachment row's owner is its object and kind: a comment's rows
+		# are kept apart from a post's, whose ids may meet. Every row so far
+		# is an object's, so the comments' rows are marked. An id both a post
+		# and a comment hold came from a peer's choice, as did the comment's
+		# subscriber and any remote row's creator, so its rows stay the post's.
+		attachment_schema_kind()
+		mochi.db.execute("update attachments set kind='comment' where kind='object' and object in (select id from comments) and object not in (select id from posts)")
+
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
 # reaction as post/comment/subscriber.
@@ -2460,6 +2469,7 @@ def database_create():
 
 	# Attachments now live in this database, owned by the shared library.
 	attachment_schema_create()
+	attachment_schema_kind()
 
 
 # compute_mmdd(timestamp) -> string: the month and day a post's mmdd column
@@ -2783,10 +2793,10 @@ def serve_attachment(a, variant):
 	# and the binding both run. Bind the attachment to a post or a comment in
 	# THIS feed, so one feed's attachment can't be fetched through another feed's
 	# route. Access was already checked above; the serve callback passes.
-	def bound(obj):
+	def bound(obj, kind):
+		if kind == "comment":
+			return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
 		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
-			return True
-		if mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed):
 			return True
 		# A post copied in from a feed/posts source keeps its attachments under
 		# the SOURCE post's id, which attachment_list falls back to. Reaching one
@@ -4013,7 +4023,7 @@ def filters_sql(prefix, feed_column):
 def post_create(feed, user_id, user_name, body, data, features, accounts, save, format="markdown", unsent=None):
 	feed_id = feed["id"]
 	post_uid = mochi.uid()
-	if mochi.db.exists("select id from posts where id=?", post_uid):
+	if identifier_held(post_uid):
 		return None, None, (500, "errors.duplicate_id")
 
 	now = mochi.time.now()
@@ -4473,9 +4483,11 @@ def post_delete(feed_id, post_id, user_id):
 		publish_delete(post_id)
 		mochi.db.execute("delete from tags where object=?", post_id)
 		mochi.db.execute("delete from reactions where post=?", post_id)
-		# The comments' replies on the network go with the post (decision 25).
+		# The comments' replies on the network go with the post (decision 25),
+		# and so do their attachments.
 		for c in mochi.db.rows("select id from comments where post=?", post_id):
 			reply_delete(c["id"])
+			attachment_clear(c["id"], kind="comment")
 		mochi.db.execute("delete from comments where post=?", post_id)
 		mochi.db.execute("delete from post_scores where post=?", post_id)
 		attachment_clear(post_id)
@@ -4663,15 +4675,17 @@ def feed_drop(feed_id):
 	pull_cancel(feed_id)
 	# The library sweep only removes files with no row, so the rows must go
 	# here or every image the feed carried stays on disk forever.
-	for row in mochi.db.rows("select id from posts where feed=? union select id from comments where feed=?", feed_id, feed_id) or []:
+	for row in mochi.db.rows("select id from posts where feed=?", feed_id) or []:
 		attachment_clear(row["id"])
+	for row in mochi.db.rows("select id from comments where feed=?", feed_id) or []:
+		attachment_clear(row["id"], kind="comment")
 	rss_tokens_revoke(feed_id)
 	handle = mochi.db.transaction()
 	handle.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
 	handle.execute("delete from post_scores where post in (select id from posts where feed=?)", feed_id)
 	handle.execute("delete from source_posts where post in (select id from posts where feed=?)", feed_id)
 	handle.execute("delete from saved where post in (select id from posts where feed=?)", feed_id)
-	handle.execute("delete from attachments where entity!='' and (object in (select id from posts where feed=?) or object in (select id from comments where feed=?))", feed_id, feed_id)
+	handle.execute("delete from attachments where entity!='' and ((kind='object' and object in (select id from posts where feed=?)) or (kind='comment' and object in (select id from comments where feed=?)))", feed_id, feed_id)
 	handle.execute("delete from reactions where feed=?", feed_id)
 	handle.execute("delete from comments where feed=?", feed_id)
 	handle.execute("delete from posts where feed=?", feed_id)
@@ -4730,12 +4744,14 @@ def action_delete(a):
 	# Its copies on other networks go with it.
 	publish_feed_delete(feed_id)
 
-	# Delete attachments for all posts in this feed
+	# Delete attachments for all posts and comments in this feed
 	posts = mochi.db.rows("select id from posts where feed=?", feed_id)
 	for post in posts:
 		attachments = attachment_list(post["id"], feed_id)
 		for att in attachments:
 			attachment_delete(att["id"])
+	for comment in mochi.db.rows("select id from comments where feed=?", feed_id) or []:
+		attachment_clear(comment["id"], kind="comment")
 
 	# Delete all feed data
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
@@ -4890,6 +4906,14 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name, comment=""):
 				{"post": post_id, "comment": comment, "title": post_excerpt, "excerpt": excerpt, "author": author_name, "url": url}
 			)
 
+# comment_identifier(given) -> the id a comment the user writes takes: the one
+# their client chose, so its optimistic copy stays in step, when it is in the
+# shape this server mints; else a new one.
+def comment_identifier(given):
+	if given and mochi.text.valid(given, "id"):
+		return given
+	return mochi.uid()
+
 # comment_create keeps a comment the user writes on a post: on a feed they
 # own, kept and sent to the subscribers; on one they follow, sent to its
 # owner, with a copy kept where they hold the post. It goes out wherever the
@@ -4927,9 +4951,9 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 		if anchor_input and not anchor:
 			return None, (400, "errors.attachment_not_found")
 
-		uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
-		if mochi.db.exists("select id from comments where id=?", uid):
-			return None, (500, "errors.duplicate_id")
+		uid = comment_identifier(input_id)
+		if identifier_held(uid):
+			return None, (409, "errors.duplicate_id")
 
 		now = mochi.time.now()
 		mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -4975,7 +4999,9 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 		return None, (400, "errors.invalid_post_id")
 
 	# Generate comment ID locally (similar to forums pattern)
-	uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
+	uid = comment_identifier(input_id)
+	if identifier_held(uid):
+		return None, (409, "errors.duplicate_id")
 	now = mochi.time.now()
 
 	# The anchor is forwarded for the OWNER to judge against the post's rows;
@@ -4993,7 +5019,7 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 	attachments = save(uid)
 	held = bool(feed) and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id)
 	if held:
-		mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
+		mochi.db.execute("insert or ignore into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
 			uid, target_feed_id, post_id, parent_id, user_id, user_name, body, now, anchor)
 
 	# Send comment to feed owner with attachment metadata, and with the
@@ -5013,7 +5039,7 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 	# entity with "invalid from header".
 	response = mochi.remote.request(target_feed_id, "feeds", "comment/add", submit_data)
 	if response.get("error"):
-		attachment_clear(uid)
+		attachment_clear(uid, kind="comment")
 		reply_delete(uid)
 		if held:
 			mochi.db.execute("delete from comments where id=? and feed=?", uid, target_feed_id)
@@ -5049,7 +5075,7 @@ def action_comment_create(a):
         a.error.label(400, "errors.invalid_body")
         return
 
-    result, failure = comment_create(feed_id, post_id, parent_id, user_id, a.user.identity.name, body, anchor_input, a.input("account", ""), a.input("id"), lambda comment: attachment_save(a, comment))
+    result, failure = comment_create(feed_id, post_id, parent_id, user_id, a.user.identity.name, body, anchor_input, a.input("account", ""), a.input("id"), lambda comment: attachment_save(a, comment, kind="comment"))
     if failure:
         fail(a, failure)
         return
@@ -5244,7 +5270,7 @@ def delete_comment_tree(comment_id):
 	children = mochi.db.rows("select id from comments where parent=?", comment_id)
 	for child in children:
 		delete_comment_tree(child["id"])
-	attachments = attachment_list(comment_id)
+	attachments = attachment_list(comment_id, kind="comment")
 	for att in attachments:
 		attachment_delete(att["id"])
 	mochi.db.execute("delete from reactions where comment=?", comment_id)
@@ -5861,7 +5887,9 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
-	if mochi.db.exists("select id from comments where id=?", comment["id"]):
+	# A post's id too, in any feed: the comment's attachments and reactions
+	# key on the bare id, which would then be shared.
+	if identifier_held(comment["id"]):
 		mochi.log.info("Feed dropping comment with duplicate ID '%s'", comment["id"])
 		return
 
@@ -5884,13 +5912,17 @@ def event_comment_create(e): # feeds_comment_create_event
 	# in a later batch, in which case the comment stores unanchored and sync does
 	# not re-anchor it.
 	anchor = comment_anchor(comment["post"], feed_id, e.content("attachment"))
-	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, format, created, attachment, remote, page ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], format, comment["created"], anchor, remote, page)
+	# Never over a row written since the check: only the comment this stores
+	# takes the event's attachments and copies.
+	if not mochi.db.execute("insert or ignore into comments ( id, feed, post, parent, subscriber, name, body, format, created, attachment, remote, page ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], format, comment["created"], anchor, remote, page):
+		mochi.log.info("Feed dropping comment with duplicate ID '%s'", comment["id"])
+		return
 	mochi.db.commit.fire("comments", "insert", comment["id"])
 
 	# Store attachment metadata from the event
 	attachments = e.content("attachments") or []
 	if attachments:
-		attachment_store(attachments, e.header("from"), comment["id"])
+		attachment_store(attachments, e.header("from"), comment["id"], kind="comment")
 	replies_store(comment["id"], e.content("copies"))
 
 	set_post_updated(comment["post"], comment["created"])
@@ -6271,9 +6303,15 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.log.info("Feed dropping post with invalid ID '%s'", post["id"])
 		return
 
+	# Only a post with no body yet is written again, and a comment's id would
+	# share its attachments and reactions with the post. Another feed's post
+	# is left alone by the write below, which is held to the sending feed.
 	existing = mochi.db.row("select body from posts where id=?", post["id"])
 	if existing and existing["body"] != "":
 		mochi.log.info("Feed dropping post with duplicate ID '%s'", post["id"])
+		return
+	if mochi.db.exists("select 1 from comments where id=?", post["id"]):
+		mochi.log.info("Feed dropping post whose ID '%s' a comment holds", post["id"])
 		return
 
 	if not mochi.text.valid(post["body"], "text"):
@@ -6314,7 +6352,11 @@ def event_post_create(e): # feeds_post_create_event
 	# A post written as plain text, from a Mastodon app, says so; one that
 	# says nothing is markdown, as the web client writes.
 	format = "text" if e.content("format") == "text" else "markdown"
-	mochi.db.execute("insert into posts ( id, feed, body, data, format, created, updated, mmdd, credibility ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) on conflict(id) do update set body=excluded.body, data=excluded.data, format=excluded.format, created=excluded.created, updated=excluded.updated, mmdd=excluded.mmdd, credibility=excluded.credibility", post["id"], feed_data["id"], post["body"], data_str, format, post["created"], post["created"], mmdd, credibility)
+	# The write is held to the sender's feed: another feed's row is left
+	# alone, and nothing below hangs off it.
+	if not mochi.db.execute("insert into posts ( id, feed, body, data, format, created, updated, mmdd, credibility ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) on conflict(id) do update set body=excluded.body, data=excluded.data, format=excluded.format, created=excluded.created, updated=excluded.updated, mmdd=excluded.mmdd, credibility=excluded.credibility where posts.feed=excluded.feed", post["id"], feed_data["id"], post["body"], data_str, format, post["created"], post["created"], mmdd, credibility):
+		mochi.log.info("Feed dropping post whose ID '%s' another feed holds", post["id"])
+		return
 	if features:
 		clause, values = features_sql(features)
 		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post["id"]]))
@@ -6535,9 +6577,11 @@ def event_post_delete(e):
 
 	mochi.db.execute("delete from tags where object=?", post_id)
 	mochi.db.execute("delete from reactions where post=?", post_id)
-	# The comments' replies on the network go with the post (decision 25).
+	# The comments' replies on the network go with the post (decision 25),
+	# and so do their attachments.
 	for c in mochi.db.rows("select id from comments where post=?", post_id):
 		reply_delete(c["id"])
+		attachment_clear(c["id"], kind="comment")
 	mochi.db.execute("delete from comments where post=?", post_id)
 	mochi.db.execute("delete from post_scores where post=?", post_id)
 	attachment_clear(post_id)
@@ -6767,24 +6811,25 @@ def event_schema(e):
 			tags_by_post[pid] = []
 		tags_by_post[pid].append({"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "manual")})
 
-	# Attachment metadata for every dumped post and comment in one query, grouped
-	# by object id, rather than a query per row. Metadata only — files still fetch
-	# on demand from the owner.
-	attachments_by_object = attachment_list_many([p["id"] for p in posts] + carried, feed_id)
+	# Attachment metadata for every dumped post, and every dumped comment, in
+	# one query each, grouped by object id, rather than a query per row.
+	# Metadata only — files still fetch on demand from the owner.
+	attachments_by_post = attachment_list_many([p["id"] for p in posts], feed_id)
+	attachments_by_comment = attachment_list_many(carried, feed_id, kind="comment")
 	copies = copies_by_posts([p["id"] for p in posts])
 
 	for p in posts:
 		post_tags = tags_by_post.get(p["id"], [])
 		if post_tags:
 			p["tags"] = post_tags
-		atts = attachments_by_object.get(p["id"], [])
+		atts = attachments_by_post.get(p["id"], [])
 		if atts:
 			p["attachments"] = atts
 		if copies.get(p["id"]):
 			p["copies"] = copies[p["id"]]
 
 	for c in comments:
-		atts = attachments_by_object.get(c["id"], [])
+		atts = attachments_by_comment.get(c["id"], [])
 		if atts:
 			c["attachments"] = atts
 
@@ -6830,7 +6875,7 @@ def part_attach(name, rows, feed_id, budget):
 	if not rows:
 		return rows
 	ids = [row["id"] for row in rows]
-	attachments = attachment_list_many(ids, feed_id)
+	attachments = attachment_list_many(ids, feed_id, kind="comment" if name == "comments" else "object")
 	tags = {}
 	copies = {}
 	if name == "posts":
@@ -6865,6 +6910,12 @@ def held_comment(comment_id, feed_id):
 	if not comment_id:
 		return False
 	return mochi.db.exists("select 1 from comments where id=? and feed=?", comment_id, feed_id)
+
+# identifier_held(id) -> whether a post or a comment, in any feed, holds id.
+# Peers name the ids of both, and what hangs off a bare id (tags, reactions,
+# attachments) must never be shared by two rows.
+def identifier_held(id):
+	return mochi.db.exists("select 1 from posts where id=? union all select 1 from comments where id=?", id, id)
 
 def schema_arrived(schema):
 	"""Whether the owner sent a schema, rather than nothing or a refusal."""
@@ -6973,7 +7024,7 @@ def schema_stray(inserted):
 		marks = ", ".join(["?" for _ in batch])
 		mochi.db.execute("delete from tags where object in (" + marks + ") and object not in (select id from posts)", batch)
 		mochi.db.execute("delete from copies where account='' and post in (" + marks + ") and post not in (select id from posts)", batch)
-		mochi.db.execute("delete from attachments where entity!='' and object in (" + marks + ") and object not in (select id from posts) and object not in (select id from comments)", batch)
+		mochi.db.execute("delete from attachments where entity!='' and object in (" + marks + ") and ((kind='object' and object not in (select id from posts)) or (kind='comment' and object not in (select id from comments)))", batch)
 
 # schema_outcome(reply) -> "unanswered" when a part could not be fetched at all,
 # "failed" when the owner answered with a refusal.
@@ -7069,6 +7120,10 @@ def schema_import(feed_id, schema):
 		if type(credibility) != "int" or credibility < 0 or credibility > 100:
 			credibility = 100
 		mmdd = compute_mmdd(p.get("created", 0))
+		# A comment's id would share its attachments and reactions with the
+		# post.
+		if mochi.db.exists("select 1 from comments where id=?", id):
+			continue
 		# A colliding id names a post held already, here or in another feed:
 		# only a post this inserts gets the rest.
 		# Written while the feed is held, checked in the insert itself, as each
@@ -7103,7 +7158,12 @@ def schema_import(feed_id, schema):
 	# here - withheld, or left out itself - is left out with it.
 	for c in schema_list(schema, "comments"):
 		id = c.get("id", "")
-		if type(id) != "string" or withheld.get(id):
+		if type(id) != "string" or not mochi.text.valid(id, "line") or withheld.get(id):
+			continue
+		# A post's id, in any feed, would share its attachments and reactions
+		# with the comment. A comment of another feed is left alone by the
+		# insert below.
+		if mochi.db.exists("select 1 from posts where id=?", id):
 			continue
 		parent = c.get("parent", "")
 		if type(parent) != "string" or (parent and not held_comment(parent, feed_id)):
@@ -7131,7 +7191,7 @@ def schema_import(feed_id, schema):
 		added[id] = True
 		atts = c.get("attachments") or []
 		if atts:
-			attachment_store(atts, feed_id, id)
+			attachment_store(atts, feed_id, id, kind="comment")
 	for r in schema_list(schema, "reactions"):
 		# Only onto a post, and a comment when it names one, held under this feed.
 		if not held_post(r.get("post", ""), feed_id):
@@ -7787,7 +7847,7 @@ def view_items(e, feed_id, part):
 	# Each comment's attachments ride inside it, charged to the bytes left; a
 	# comment whose attachments overrun them waits for the next part.
 	comments = reply["comments"]
-	attached = attachment_list_many([c["id"] for c in comments], feed_id) if comments else {}
+	attached = attachment_list_many([c["id"] for c in comments], feed_id, kind="comment") if comments else {}
 	anchors = attachment_get_many([c.get("attachment", "") for c in comments]) if comments else {}
 	kept = []
 	for c in comments:
@@ -8060,9 +8120,10 @@ def event_attachment_fetch(e):
 	if attachment_identifier(id):
 		row = attachment_row(id)
 		if row:
-			obj = mochi.db.row("select feed from posts where id=?", row["object"])
-			if not obj:
+			if row.get("kind") == "comment":
 				obj = mochi.db.row("select feed from comments where id=?", row["object"])
+			else:
+				obj = mochi.db.row("select feed from posts where id=?", row["object"])
 			if obj:
 				feed = obj["feed"]
 	feed_row = mochi.db.row("select * from feeds where id=?", feed) if feed else None
@@ -8077,10 +8138,10 @@ def event_attachment_fetch(e):
 		# wildcard view grant creation writes, so it passes this same check.
 		return check_event_access(sender, container, "view")
 
-	def bound(obj):
-		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
-			return True
-		return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
+	def bound(obj, kind):
+		if kind == "comment":
+			return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
+		return mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed)
 
 	attachment_respond(e, feed, authorize, member=bound)
 
@@ -8132,10 +8193,15 @@ def event_comment_add(e):
 		e.stream.write({"error": "errors.invalid_name"})
 		return
 
-	# Preserve the caller-generated ID when provided so optimistic UI state stays in sync.
+	# Preserve the caller-generated ID when provided so optimistic UI state
+	# stays in sync. Only in the shape this server mints, and only when no post
+	# or comment has it: the id keys the comment's attachments and reactions.
 	input_id = e.content("id")
-	uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
-	if mochi.db.exists("select id from comments where id=?", uid):
+	if input_id and not mochi.text.valid(input_id, "id"):
+		e.stream.write({"error": "errors.invalid_comment_id"})
+		return
+	uid = input_id or mochi.uid()
+	if identifier_held(uid):
 		e.stream.write({"error": "errors.duplicate_id"})
 		return
 
@@ -8153,7 +8219,7 @@ def event_comment_add(e):
 	# commenter now, while it is online; a pull that fails heals on serve.
 	attachments = e.content("attachments") or []
 	if attachments:
-		attachment_accept(attachments, commenter_id, uid, feed_id)
+		attachment_accept(attachments, commenter_id, uid, feed_id, kind="comment")
 	copies = replies_store(uid, e.content("copies"))
 
 	set_post_updated(post_id)
@@ -8666,6 +8732,8 @@ def source_remove(feed, source, user_id, delete_posts, unfollow=True):
 		mochi.log.debug("sources_remove: found %v posts to delete", len(post_ids))
 		for row in post_ids:
 			attachment_clear(row["post"])
+		for row in mochi.db.rows("select id from comments where post in (select post from source_posts where source=?)", source_id) or []:
+			attachment_clear(row["id"], kind="comment")
 		mochi.db.execute("delete from tags where object in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from reactions where post in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from comments where post in (select post from source_posts where source=?)", source_id)
@@ -10229,7 +10297,7 @@ def sourced_text(source, text):
 
 # === Attachments (decision 24) ===
 
-def attachment_kind(att):
+def attachment_media(att):
 	"""image, video or '' for an attachment the networks do not take."""
 	name = att.get("name", "")
 	if attachment_is_image(name):
@@ -10247,7 +10315,7 @@ def attachment_bytes(att, maximum):
 		data = mochi.file.read(file, maximum)
 		if data != None:
 			return data
-	if attachment_kind(att) == "image":
+	if attachment_media(att) == "image":
 		variant = mochi.image.variant(file, "preview")
 		if variant:
 			data = mochi.cache.read(variant, maximum)
@@ -10261,16 +10329,16 @@ def publish_media(acc, attachments, limits, unsent=None):
 	network takes one kind per post. An attachment whose upload fails goes
 	into unsent, said for the user (unsent_text), as the copy goes out
 	without it. Answers (uploads, omitted)."""
-	eligible = [att for att in attachments if attachment_kind(att)]
+	eligible = [att for att in attachments if attachment_media(att)]
 	omitted = len(eligible) < len(attachments)
 	if not eligible:
 		return ([], omitted)
-	kind = attachment_kind(eligible[0])
+	kind = attachment_media(eligible[0])
 	count = limits["video"] if kind == "video" else limits["images"]
 	maximum = limits["video_bytes"] if kind == "video" else limits["image_bytes"]
 	uploads = []
 	for att in eligible:
-		if attachment_kind(att) != kind or len(uploads) >= count:
+		if attachment_media(att) != kind or len(uploads) >= count:
 			omitted = True
 			continue
 		data = attachment_bytes(att, maximum)
@@ -11462,15 +11530,15 @@ def fediverse_attachments(feed_id, attachments, acc=None):
 	"""The attachments of a post that go in its Note: images and videos within
 	Mastodon's defaults, in the post's order, the kind of the first deciding
 	where one kind goes per post, as publish_media chooses them."""
-	eligible = [att for att in attachments if attachment_kind(att)]
+	eligible = [att for att in attachments if attachment_media(att)]
 	if not eligible:
 		return []
-	kind = attachment_kind(eligible[0])
+	kind = attachment_media(eligible[0])
 	count = FEDIVERSE_LIMITS["video"] if kind == "video" else FEDIVERSE_LIMITS["images"]
 	maximum = FEDIVERSE_LIMITS["video_bytes"] if kind == "video" else FEDIVERSE_LIMITS["image_bytes"]
 	documents = []
 	for att in eligible:
-		if attachment_kind(att) != kind or len(documents) >= count:
+		if attachment_media(att) != kind or len(documents) >= count:
 			continue
 		variant = ""
 		if number(att.get("size", 0)) > maximum:
@@ -13419,6 +13487,7 @@ def sourced_post_delete(post):
 	mochi.db.execute("delete from reactions where post=?", post_id)
 	for c in mochi.db.rows("select id from comments where post=?", post_id):
 		reply_delete(c["id"])
+		attachment_clear(c["id"], kind="comment")
 	mochi.db.execute("delete from comments where post=?", post_id)
 	mochi.db.execute("delete from post_scores where post=?", post_id)
 	mochi.db.execute("delete from votes where post=?", post_id)

@@ -44,7 +44,7 @@ def mastodon_attachment(feed_id, att):
 	if not document:
 		return None
 	preview = document["url"]
-	if attachment_kind(att) == "image":
+	if attachment_media(att) == "image":
 		variant = fediverse_attachment(feed_id, att, "preview")
 		if variant:
 			preview = variant["url"]
@@ -127,7 +127,7 @@ def mastodon_comments(rows, post, user_id):
 	if user_id:
 		mine = {r["comment"]: r["reaction"] for r in mochi.db.rows("select comment, reaction from reactions where reaction!='' and subscriber=? and comment in (" + places + ")", user_id, *ids) or []}
 	replies = {r["parent"]: r["n"] for r in mochi.db.rows("select parent, count(*) as n from comments where parent in (" + places + ") group by parent", *ids) or []}
-	attachments = attachment_list_many(ids, post["feed"])
+	attachments = attachment_list_many(ids, post["feed"], kind="comment")
 	out = []
 	for c in rows:
 		shown = []
@@ -254,14 +254,15 @@ def function_mastodon_comment(context, account, home, id):
 		return None
 	return comment
 
-def mastodon_media_save(media):
-	"""What keeps a new post's or comment's files: each given with its bytes."""
+def mastodon_media_save(media, kind="object"):
+	"""What keeps a new post's or comment's files: each given with its bytes,
+	filed as the kind of thing they are for."""
 	def save(object):
 		saved = []
 		for m in media or []:
 			if type(m) != "dict" or not m.get("data"):
 				continue
-			att = attachment_create(object, str(m.get("name", "") or "file"), m["data"], str(m.get("type", "") or ""), "", text_cut(str(m.get("description", "") or ""), 1500))
+			att = attachment_create(object, str(m.get("name", "") or "file"), m["data"], str(m.get("type", "") or ""), "", text_cut(str(m.get("description", "") or ""), 1500), kind=kind)
 			if att:
 				saved.append(att)
 		return saved
@@ -330,7 +331,7 @@ def function_mastodon_create(context, account, home, text="", reply="", media=No
 			post_id, feed_id = post["id"], post["feed"]
 		if not text.strip():
 			return {"error": mochi.app.label("errors.invalid_body")}
-		result, failure = comment_create(feed_id, post_id, parent, identity["id"], identity["name"], text, "", account, None, save, writer=account)
+		result, failure = comment_create(feed_id, post_id, parent, identity["id"], identity["name"], text, "", account, None, mastodon_media_save(media, "comment"), writer=account)
 		if failure:
 			return mastodon_failure(failure)
 		comment = mastodon_comment_of(result["id"], identity["id"])
@@ -894,7 +895,7 @@ def bluesky_post_written(acc, home, action, uri, record, media, user_id, name):
 		# published there again.
 		made = [{"account": acc["id"], "address": acc.get("identifier", ""), "network": "bluesky", "remote": uri, "url": "", "parent": parent}]
 		feed_id, post_id, parent_id = (held["feed"], held["id"], "") if held else (answered["feed"], answered["post"], answered["id"])
-		result, failure = comment_create(feed_id, post_id, parent_id, user_id, name, text, "", "", None, mastodon_media_save(media), made)
+		result, failure = comment_create(feed_id, post_id, parent_id, user_id, name, text, "", "", None, mastodon_media_save(media, "comment"), made)
 		if failure:
 			return mastodon_failure(failure)
 		return {"comment": result["id"]}

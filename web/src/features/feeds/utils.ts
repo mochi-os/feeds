@@ -239,8 +239,12 @@ export function stripEllipsis(html: string): string {
   }
   return html
 }
-export const randomId = (prefix: string) =>
-  `${prefix}-${Math.random().toString(36).slice(2, 8)}`
+// A new comment's id, which the server keeps as the comment's own: 32 lowercase
+// hex digits, the shape the server checks a client-chosen id against.
+export const randomId = () =>
+  Array.from(crypto.getRandomValues(new Uint8Array(16)), (byte) =>
+    byte.toString(16).padStart(2, '0')
+  ).join('')
 
 export function updateCommentTree(
   comments: FeedComment[],
