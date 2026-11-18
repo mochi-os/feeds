@@ -11240,7 +11240,14 @@ def account_notification(acc, raw):
 		name = str(actor.get("display_name") or actor.get("acct") or "")
 		status = raw.get("status") if type(raw.get("status")) == "dict" else {}
 		url = safe_link(str(status.get("url", "") or actor.get("url", "") or ""))
-		body = text_cut(strip_html(str(status.get("content", "") or "")), 200)
+		# A follow carries no status, and the bell refuses a notification
+		# with no body: the follower's address is the body, as a follow at a
+		# hosted account's inbox has it.
+		acct = str(actor.get("acct", "") or "")
+		if acct and "@" not in acct:
+			host = str(actor.get("url", "") or "").removeprefix("https://").partition("/")[0]
+			acct = acct + "@" + host if host else acct
+		body = text_cut(strip_html(str(status.get("content", "") or "")), 200) or ("@" + acct if acct else "")
 		labels = {"mention": "notifications.account.mention", "status": "notifications.account.posted", "reblog": "notifications.account.shared", "follow": "notifications.account.followed", "favourite": "notifications.account.liked", "update": "notifications.account.edited"}
 		label = labels.get(kind, "")
 		if not label:
@@ -11262,8 +11269,11 @@ def account_notification(acc, raw):
 		url = "https://bsky.app/profile/" + handle
 	else:
 		url = ""
+	# A follow, a like or a repost record has no text, and the bell refuses a
+	# notification with no body: the person's handle is the body instead.
 	record = raw.get("record") if type(raw.get("record")) == "dict" else {}
-	return {"id": uri or str(raw.get("cid", "")), "title": mochi.app.label(label, name=name), "body": text_cut(str(record.get("text", "") or ""), 200), "url": url}
+	body = text_cut(str(record.get("text", "") or ""), 200) or ("@" + handle if handle else "")
+	return {"id": uri or str(raw.get("cid", "")), "title": mochi.app.label(label, name=name), "body": body, "url": url}
 
 def backup_account(acc):
 	"""Add to the account's archive in the user's storage: the posts since the
