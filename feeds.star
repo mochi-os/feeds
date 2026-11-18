@@ -11224,8 +11224,9 @@ def notify_account(acc):
 		# The first run marks where it starts; what came before is history.
 		fresh = []
 	for raw in reversed(fresh):
-		account_interaction(acc, raw)
-		notification = account_notification(acc, raw)
+		# A reply, a like or a share that landed on a feed's post has told the
+		# user there, in Mochi; the account's own notice of it would say it twice.
+		notification = None if account_interaction(acc, raw) else account_notification(acc, raw)
 		if notification:
 			mochi.service.call("notifications", "send", "account", acc["id"], notification["title"], notification["body"], notification_link(notification["url"]),
 				mochi.app.label("notifications.topic.account"), event="account:" + notification["id"])
@@ -12322,7 +12323,8 @@ def fediverse_announced(acc, actor, object, delta):
 
 def account_interaction(acc, raw):
 	"""A reply, a like or a share of a copy published through a linked account,
-	read from the account's notifications, back to the post (decision 9)."""
+	read from the account's notifications, back to the post (decision 9).
+	True when it landed on a feed's post, whose own notification tells of it."""
 	if acc["type"] == "mastodon":
 		kind = str(raw.get("type", "") or "")
 		status = raw.get("status") if type(raw.get("status")) == "dict" else None
@@ -12338,16 +12340,18 @@ def account_interaction(acc, raw):
 			post, parent = linked_answered(acc, str(status.get("in_reply_to_id", "") or ""))
 			remote = str(status.get("uri", "") or status.get("url", "") or "")
 			if post and remote:
-				linked_comment(acc, post, parent, actor, name, page, mochi.text.clean(str(status.get("content", "") or "")), "html", remote, status.get("created_at"))
+				return linked_comment(acc, post, parent, actor, name, page, mochi.text.clean(str(status.get("content", "") or "")), "html", remote, status.get("created_at"))
 		elif kind == "favourite":
 			# Of a post's copy, or of a comment's reply.
 			target_kind, target = fediverse_target(acc["id"], str(status.get("id", "") or ""))
 			if target_kind:
 				reaction_from_network(target_kind, target, actor, name, "like")
+				return True
 		elif kind == "reblog":
 			copy = linked_copy(acc, str(status.get("id", "") or ""))
 			if copy:
 				boost_from_network(acc, copy, actor, 1)
+				return True
 	elif acc["type"] == "bluesky":
 		reason = str(raw.get("reason", "") or "")
 		author = raw.get("author") if type(raw.get("author")) == "dict" else {}
@@ -12363,16 +12367,18 @@ def account_interaction(acc, raw):
 			post, parent = linked_answered(acc, str(answered.get("uri", "") or "") if type(answered) == "dict" else "")
 			remote = str(raw.get("uri", "") or "")
 			if post and remote:
-				linked_comment(acc, post, parent, actor, name, page, str(record.get("text", "") or ""), "text", remote, record.get("createdAt"))
+				return linked_comment(acc, post, parent, actor, name, page, str(record.get("text", "") or ""), "text", remote, record.get("createdAt"))
 		elif reason == "like":
 			# Of a post's copy, or of a comment's reply.
 			target_kind, target = fediverse_target(acc["id"], str(raw.get("reasonSubject", "") or ""))
 			if target_kind:
 				reaction_from_network(target_kind, target, actor, name, "like")
+				return True
 		elif reason == "repost":
 			copy = linked_copy(acc, str(raw.get("reasonSubject", "") or ""))
 			if copy:
 				boost_from_network(acc, copy, actor, 1)
+				return True
 
 def bluesky_likes_check(acc):
 	"""Take back the reactions from Bluesky whose likes are gone: Bluesky's
@@ -12465,14 +12471,16 @@ def linked_answered(acc, remote):
 def linked_comment(acc, post, parent, actor, name, page, body, format, remote, created):
 	"""A reply read from a linked account's notifications as a comment on the
 	post, under the comment it answers where it answers one, once; the feed's
-	deny rules apply, since the account's own network admitted the reply."""
+	deny rules apply, since the account's own network admitted the reply.
+	True when the reply is on the post, now or from before."""
 	if mochi.db.exists("select 1 from comments where remote=?", remote) or mochi.db.exists("select 1 from replies where remote=?", remote):
-		return
+		return True
 	if access_denied(actor, "feed/" + post["feed"], "comment"):
-		return
+		return False
 	if not body.strip() or not mochi.text.valid(body, "text"):
-		return
+		return False
 	comment_from_network(acc, post, parent, actor, name, page, body, format, remote, fediverse_time(created))
+	return True
 
 # === The reply control and the owner's moderation ===
 
