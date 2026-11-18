@@ -457,11 +457,13 @@ export function PrivacyRow({
 }) {
   const { t } = useLingui()
   const queryClient = useQueryClient()
-  const [changing, setChanging] = useState(false)
+  // Where the switch was moved to while its change goes: it moves when
+  // clicked, and goes back if the change is refused.
+  const [moving, setMoving] = useState<boolean | null>(null)
 
   const change = async (on: boolean) => {
     const next: 'public' | 'private' = on ? 'public' : 'private'
-    setChanging(true)
+    setMoving(on)
     try {
       await feedsApi.setPrivacy(feedId, next)
       onChanged(next)
@@ -471,7 +473,7 @@ export function PrivacyRow({
     } catch (e) {
       toast.error(getErrorMessage(e, t`Failed to save`))
     } finally {
-      setChanging(false)
+      setMoving(null)
     }
   }
 
@@ -479,9 +481,9 @@ export function PrivacyRow({
     <FieldRow label={t`Allow anyone to search for feed`} inline>
       <Switch
         aria-label={t`Allow anyone to search for feed`}
-        checked={privacy === 'public'}
+        checked={moving ?? privacy === 'public'}
         onCheckedChange={(on) => void change(on)}
-        loading={changing}
+        loading={moving !== null}
       />
     </FieldRow>
   )
