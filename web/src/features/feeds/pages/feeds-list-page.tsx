@@ -3,6 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   useCommentActions,
   useFeeds,
@@ -52,6 +53,7 @@ import {
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { patchCachedPost } from '@/hooks/posts-cache'
 import type { FeedsAnswer } from '@/hooks/use-feeds'
 import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useReadFilter } from '@/hooks/use-read-filter'
@@ -59,6 +61,7 @@ import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { RecommendedFeeds } from '../components/recommended-feeds'
+import { TagFilter } from '../components/tag-filter'
 import { usePostHandlers } from '../hooks'
 import { inListedOrder, sectionErrorFrom } from '../utils'
 
@@ -77,6 +80,7 @@ export function FeedsListPage({
   const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
+  const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
@@ -146,6 +150,7 @@ export function FeedsListPage({
   } = useInfinitePosts({
     feedId: null,
     aggregate: true,
+    tag: activeTag,
     sort,
     unread: readFilter === 'unread',
     enabled: isLoggedIn,
@@ -180,6 +185,16 @@ export function FeedsListPage({
   useEffect(() => {
     setLastFeed(null)
   }, [])
+
+  // Opening All feeds clears every feed's notifications, as opening one feed
+  // clears its own.
+  useEffect(() => {
+    if (isLoggedIn) {
+      // Best-effort: a failure here (network, 401 during shell init) must not
+      // surface as an unhandled rejection.
+      void feedsApi.clearAllNotifications().catch(() => {})
+    }
+  }, [isLoggedIn])
 
   const subscribedFeeds = useMemo(
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
@@ -453,26 +468,35 @@ export function FeedsListPage({
     [defaultFeedFp, t]
   )
 
+  const queryClient = useQueryClient()
   const handleTagAdded = useCallback(
     async (feedId: string, postId: string, label: string) => {
       try {
         const tag = await feedsApi.addPostTag(feedId, postId, label)
+        const add = (p: FeedPost) => ({ ...p, tags: [...(p.tags || []), tag] })
         setPostsByFeed((current) => {
           const updated: typeof current = {}
           for (const key of Object.keys(current)) {
             updated[key] = current[key].map((p) =>
-              p.id === postId ? { ...p, tags: [...(p.tags || []), tag] } : p
+              p.id === postId ? add(p) : p
             )
           }
           return updated
         })
+        // The buckets are rebuilt from the query cache on the next page or
+        // refetch, so the tag goes there too.
+        patchCachedPost(queryClient, postId, add)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to add tag`))
         throw error
       }
     },
-    [t]
+    [queryClient, t]
   )
+
+  const handleTagFilter = useCallback((label: string) => {
+    setActiveTag((current) => (current === label ? undefined : label))
+  }, [])
 
   const handleMarkAllRead = useCallback(async () => {
     // Badges and posts show read on the click. A refusal puts back only what
@@ -678,6 +702,12 @@ export function FeedsListPage({
                 </div>
               ) : (
                 <>
+                  {activeTag && (
+                    <TagFilter
+                      tag={activeTag}
+                      onClear={() => setActiveTag(undefined)}
+                    />
+                  )}
                   <FeedPosts
                     posts={allPosts}
                     isFetchingNextPage={isFetchingNextPage}
@@ -696,6 +726,7 @@ export function FeedsListPage({
                     onEditComment={handleEditComment}
                     onDeleteComment={handleDeleteComment}
                     onTagAdded={handleTagAdded}
+                    onTagFilter={handleTagFilter}
                     onInterestUp={handleInterestUp}
                     onInterestDown={handleInterestDown}
                     onInterestRemove={handleInterestRemove}

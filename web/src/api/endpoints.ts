@@ -15,6 +15,7 @@ const endpoints = {
   notifications: {
     feed: (feedId: string) => `${feedId}/-/notifications`,
     feedClear: (feedId: string) => `${feedId}/-/notifications/clear`,
+    clear: '-/notifications/clear',
     feedSet: (feedId: string) => `${feedId}/-/notifications/set`,
   },
 

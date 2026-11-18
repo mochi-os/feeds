@@ -162,3 +162,107 @@ describe('a comment reaction in the feed list', () => {
     expect(likes(cached())).toBe(1)
   })
 })
+
+// The pages show what the ['posts'] caches hold and rebuild from them on the
+// next page or refetch, so a comment written there too survives one; All feeds'
+// cache and a single feed's alike.
+describe('a comment in the posts caches', () => {
+  beforeEach(() => {
+    i18n.load('en', {})
+    i18n.activate('en')
+    createComment.mockReset()
+  })
+
+  type Pages = InfiniteData<{ posts: FeedPost[] }>
+  const listPost = {
+    id: 'post-1',
+    feedId: 'feed-1',
+    comments: [{ id: 'comment-1', replies: [] }],
+  } as unknown as FeedPost
+  const keys = [
+    ['posts', '__all__', { aggregate: true }],
+    ['posts', 'feed-1', { aggregate: false }],
+  ]
+
+  function cached() {
+    const client = new QueryClient()
+    for (const key of keys) {
+      client.setQueryData<Pages>(key, {
+        pages: [{ posts: [listPost] }],
+        pageParams: [undefined],
+      })
+    }
+    const { result } = renderHook(
+      () =>
+        useCommentActions({
+          setFeeds: () => {},
+          setPostsByFeed: () => {},
+          currentUserId: 'user-1',
+          currentUserName: 'Me',
+          commentDrafts: {},
+          setCommentDrafts: () => {},
+        }),
+      {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <QueryClientProvider client={client}>
+            <I18nProvider i18n={i18n}>{children}</I18nProvider>
+          </QueryClientProvider>
+        ),
+      }
+    )
+    const posts = () =>
+      keys.map((key) => client.getQueryData<Pages>(key)?.pages[0].posts[0])
+    return { result, posts }
+  }
+
+  it('writes a comment into every cache holding its post, and takes it out when refused', async () => {
+    let refuse: (error: unknown) => void = () => {}
+    createComment.mockImplementation(
+      () =>
+        new Promise((_resolve, reject) => {
+          refuse = reject
+        })
+    )
+    const { result, posts } = cached()
+
+    let sent: Promise<void> = Promise.resolve()
+    act(() => {
+      sent = result.current
+        .handleAddComment('feed-1', 'post-1', 'A comment')
+        .catch(() => {})
+    })
+    for (const post of posts()) {
+      expect(post?.comments.map((c) => c.body ?? c.id)).toEqual([
+        'A comment',
+        'comment-1',
+      ])
+    }
+
+    await act(async () => {
+      refuse(new Error('refused'))
+      await sent
+    })
+    for (const post of posts()) {
+      expect(post?.comments.map((c) => c.id)).toEqual(['comment-1'])
+    }
+  })
+
+  it('writes a reply under its comment in every cache, once', async () => {
+    createComment.mockResolvedValue({ data: {} })
+    const { result, posts } = cached()
+
+    await act(() =>
+      result.current.handleReplyToComment(
+        'feed-1',
+        'post-1',
+        'comment-1',
+        'An answer'
+      )
+    )
+    for (const post of posts()) {
+      expect(post?.comments[0].replies?.map((r) => r.body)).toEqual([
+        'An answer',
+      ])
+    }
+  })
+})

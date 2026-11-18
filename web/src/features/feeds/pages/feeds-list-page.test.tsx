@@ -17,6 +17,7 @@ vi.mock('@/api/feeds', () => ({
   feedsApi: {
     view: vi.fn(),
     getAll: vi.fn(),
+    clearAllNotifications: vi.fn().mockResolvedValue(undefined),
   },
 }))
 

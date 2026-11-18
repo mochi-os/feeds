@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import { toast } from '@mochi/web'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { feedsApi } from '@/api/feeds'
@@ -173,15 +173,12 @@ describe('settingsTabs', () => {
     expect(settingsTabs('access', false).active).toBe('access')
   })
 
-  it('keeps a link to Publish to while that is asked', () => {
+  it('draws no tabs while Publish to is asked, keeping a link to it', () => {
     expect(settingsTabs('publish', undefined)).toEqual({
-      tabs: ['general', 'publish', 'access'],
+      tabs: null,
       active: 'publish',
     })
-    expect(settingsTabs(undefined, undefined).tabs).toEqual([
-      'general',
-      'access',
-    ])
+    expect(settingsTabs(undefined, undefined).tabs).toBeNull()
   })
 })
 
@@ -228,6 +225,24 @@ describe('PrivacyRow', () => {
     )
     await waitFor(() => expect(onChanged).toHaveBeenCalledWith('public'))
     expect(feedsApi.setPrivacy).toHaveBeenCalledWith('f1', 'public')
+  })
+
+  // The switch moves when clicked, not once the server has answered, and
+  // goes back when the change is refused.
+  it('moves at once, and back when the change is refused', async () => {
+    let refuse: (error: Error) => void = () => {}
+    vi.mocked(feedsApi.setPrivacy).mockImplementation(
+      () => new Promise((_, reject) => (refuse = reject))
+    )
+    vi.spyOn(toast, 'error').mockImplementation(() => '')
+    show('private')
+    const toggle = screen.getByRole('switch', {
+      name: 'Allow anyone to search for feed',
+    })
+    fireEvent.click(toggle)
+    expect(toggle).toBeChecked()
+    await act(async () => refuse(new Error('Not feed owner')))
+    await waitFor(() => expect(toggle).not.toBeChecked())
   })
 
   it("shows the server's refusal and changes nothing", async () => {

@@ -8,33 +8,37 @@ import { renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { feedsKey, useFeedsWebsocket } from './useFeedsWebsocket'
 
-const { subscribe, applyFrame, adjustUnread, auth } = vi.hoisted(() => ({
-  subscribe: vi.fn(),
-  applyFrame: vi.fn(),
-  adjustUnread: vi.fn(),
-  auth: { isInitialized: true, isAuthenticated: true, token: 'token' },
-}))
+const { subscribe, applyFrame, adjustUnread, refresh, auth } = vi.hoisted(
+  () => ({
+    subscribe: vi.fn(),
+    applyFrame: vi.fn(),
+    adjustUnread: vi.fn(),
+    refresh: vi.fn(),
+    auth: { isInitialized: true, isAuthenticated: true, token: 'token' },
+  })
+)
 
 vi.mock('@mochi/web', () => ({
   useAuthStore: (selector: (state: unknown) => unknown) => selector(auth),
   entityWebsocketManager: { subscribe },
 }))
 vi.mock('@/stores/feeds-store', () => ({
-  useFeedsStore: { getState: () => ({ adjustUnread }) },
+  useFeedsStore: { getState: () => ({ adjustUnread, refresh }) },
 }))
 vi.mock('@/lib/patch', () => ({ applyFrame }))
 
 type Handler = (event: Record<string, unknown>) => void
 
 /** Mounts the hook over one feed and gives its frame handler, with every reload of the post lists it asks for. */
-function listen() {
+function listen(onUpdate?: (feedId: string) => void) {
   const client = new QueryClient()
   const invalidate = vi.spyOn(client, 'invalidateQueries')
   const wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={client}>{children}</QueryClientProvider>
   )
   renderHook(
-    () => useFeedsWebsocket([{ id: 'feed-1', fingerprint: 'fp1' }], 'me'),
+    () =>
+      useFeedsWebsocket([{ id: 'feed-1', fingerprint: 'fp1' }], 'me', onUpdate),
     { wrapper }
   )
   const handle = subscribe.mock.calls[0][1] as Handler
@@ -174,5 +178,37 @@ describe('useFeedsWebsocket frames on the aggregate key', () => {
     handle({ type: 'socket/reopen' })
 
     expect(reloads()).toBe(1)
+  })
+})
+
+// The owner removed the reader from a feed, or deleted it: the sidebar and the
+// page's feeds are fetched again, as the single-feed page does, and the posts
+// reload without the feed's.
+describe('useFeedsWebsocket frames about a feed gone', () => {
+  it.each(['feed/removed', 'feed/deleted'])(
+    'fetches the feeds again and reloads the posts on %s',
+    (type) => {
+      applyFrame.mockReturnValue(false)
+      const onUpdate = vi.fn()
+      const { handle, reloads } = listen(onUpdate)
+
+      handle({ type: 'feeds/frame', frame: { type, feed: 'feed-1' } })
+
+      expect(refresh).toHaveBeenCalledTimes(1)
+      expect(onUpdate).toHaveBeenCalledWith('feed-1')
+      expect(reloads()).toBe(1)
+    }
+  )
+
+  it('leaves the feeds alone for a frame about a post', () => {
+    applyFrame.mockReturnValue(true)
+    const { handle } = listen()
+
+    handle({
+      type: 'feeds/frame',
+      frame: { type: 'post/edit', feed: 'feed-1', post: 'post-1' },
+    })
+
+    expect(refresh).not.toHaveBeenCalled()
   })
 })

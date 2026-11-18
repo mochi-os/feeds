@@ -98,17 +98,18 @@ interface Tab {
 
 // The owner's tabs, with Publish to before Access where the feed has
 // somewhere to publish, and the tab the address opens: a link to Publish to
-// holds it while that is asked, and opens the settings once it is not so.
+// opens the settings where it is not so. No tabs while that is asked, so the
+// strip is drawn once, with Publish to or without.
 export function settingsTabs(
   tab: TabId | undefined,
   publishable: boolean | undefined
-): { tabs: TabId[]; active: TabId } {
+): { tabs: TabId[] | null; active: TabId } {
   const active =
     tab === 'publish' && publishable === false ? 'general' : (tab ?? 'general')
-  const tabs: TabId[] =
-    publishable || active === 'publish'
-      ? ['general', 'publish', 'access']
-      : ['general', 'access']
+  if (publishable === undefined) return { tabs: null, active }
+  const tabs: TabId[] = publishable
+    ? ['general', 'publish', 'access']
+    : ['general', 'access']
   return { tabs, active }
 }
 
@@ -152,9 +153,10 @@ function FeedSettingsPage() {
   const selectedFeed = localFeed ?? remoteFeed
 
   // Update page title when feed is loaded
-  usePageTitle(
-    selectedFeed?.name ? t`${selectedFeed.name} settings` : t`Settings`
-  )
+  const title = selectedFeed?.name
+    ? t`${selectedFeed.name} settings`
+    : t`Settings`
+  usePageTitle(title)
 
   // Register with sidebar context to keep feed expanded in sidebar
   const { setFeedId } = useSidebarContext()
@@ -318,14 +320,16 @@ function FeedSettingsPage() {
     publish: { label: t`Publish to`, icon: <Share2 className='h-4 w-4' /> },
     access: { label: t`Access`, icon: <Shield className='h-4 w-4' /> },
   }
-  const tabs: Tab[] = shown.tabs.map((id) => ({ id, ...labels[id] }))
+  const tabs: Tab[] = (shown.tabs ?? []).map((id) => ({ id, ...labels[id] }))
 
-  if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
+  if (((isLoadingFeeds || isLoadingRemote) && !selectedFeed) || !shown.tabs) {
     return (
       <>
         <PageHeader
-          title={t`Settings`}
-          icon={<Settings className='size-4 md:size-5' />}
+          title={title}
+          icon={
+            selectedFeed ? undefined : <Settings className='size-4 md:size-5' />
+          }
           back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
         <Main className='space-y-6'>
@@ -380,9 +384,7 @@ function FeedSettingsPage() {
   return (
     <>
       <PageHeader
-        title={
-          selectedFeed.name ? t`${selectedFeed.name} settings` : t`Settings`
-        }
+        title={title}
         back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
       />
       <Main>
@@ -455,11 +457,13 @@ export function PrivacyRow({
 }) {
   const { t } = useLingui()
   const queryClient = useQueryClient()
-  const [changing, setChanging] = useState(false)
+  // Where the switch was moved to while its change goes: it moves when
+  // clicked, and goes back if the change is refused.
+  const [moving, setMoving] = useState<boolean | null>(null)
 
   const change = async (on: boolean) => {
     const next: 'public' | 'private' = on ? 'public' : 'private'
-    setChanging(true)
+    setMoving(on)
     try {
       await feedsApi.setPrivacy(feedId, next)
       onChanged(next)
@@ -469,7 +473,7 @@ export function PrivacyRow({
     } catch (e) {
       toast.error(getErrorMessage(e, t`Failed to save`))
     } finally {
-      setChanging(false)
+      setMoving(null)
     }
   }
 
@@ -477,9 +481,9 @@ export function PrivacyRow({
     <FieldRow label={t`Allow anyone to search for feed`} inline>
       <Switch
         aria-label={t`Allow anyone to search for feed`}
-        checked={privacy === 'public'}
+        checked={moving ?? privacy === 'public'}
         onCheckedChange={(on) => void change(on)}
-        loading={changing}
+        loading={moving !== null}
       />
     </FieldRow>
   )
