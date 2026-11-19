@@ -38,7 +38,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  getAppPath,
   authenticatedUrl,
   useImageObjectUrls,
   normalizeEntityUrl,
@@ -98,6 +97,7 @@ import {
 import { feedsApi } from '@/api/feeds'
 import { changePost } from '@/lib/patch'
 import { usePinPost } from '@/hooks/use-pin-post'
+import { attachmentAddress } from '../attachment-url'
 import { authorAssets } from '../author-assets'
 import {
   buildFeedPostEditDraft,
@@ -867,19 +867,17 @@ export function FeedPosts({
     return editingPost.items.map((item, index) => {
       if (item.kind === 'existing') {
         const att = item.attachment
-        const isImage = att.type?.startsWith('image/')
+        const thumbnail = att.type?.startsWith('image/')
+          ? (att.thumbnail_url ??
+            attachmentAddress(container, att.id, 'thumbnail'))
+          : undefined
         return {
           key: att.id,
           name: att.name,
           size: att.size,
           type: att.type ?? '',
-          previewUrl: isImage
-            ? authenticatedUrl(
-                normalizeEntityUrl(
-                  att.thumbnail_url ??
-                    `${getAppPath()}/${container}/-/attachments/${att.id}/thumbnail`
-                )
-              )
+          previewUrl: thumbnail
+            ? authenticatedUrl(normalizeEntityUrl(thumbnail))
             : null,
           caption: editingPost.captions[att.id],
           // Saved attachments are not part of the save's upload, so they keep

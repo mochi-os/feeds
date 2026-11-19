@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { parseFeedParams } from '@/config/routes'
 import { useFeeds } from '@/hooks'
 import type { Feed, FeedSummary } from '@/types'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -45,6 +46,7 @@ import {
   type AiPromptType,
   DISALLOWED_NAME_CHARS,
   MemberList,
+  tryPath,
 } from '@mochi/web'
 import {
   Ban,
@@ -79,6 +81,7 @@ type SettingsSearch = {
 }
 
 export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
+  params: { parse: parseFeedParams },
   validateSearch: (search: Record<string, unknown>): SettingsSearch => ({
     tab:
       search.tab === 'general' ||
@@ -1139,8 +1142,13 @@ export function SubscribersSection({
 
   const busy = removeSubscriber.isPending || blockSubscriber.isPending
   const name = pending?.name ?? ''
+  // A member whose id cannot be one path segment (one on the fediverse is
+  // named by a URL) has no asset address, and the row shows their initials:
+  // an empty src draws no image and an absent style fetches none.
   const assetUrl = (id: string, asset: 'avatar' | 'style') =>
-    `${getAppPath()}/${endpoints.feeds.memberAsset(feedId, id, asset)}`
+    tryPath(
+      () => `${getAppPath()}/${endpoints.feeds.memberAsset(feedId, id, asset)}`
+    )
 
   return (
     <Section title={t`Subscribers`}>
@@ -1152,7 +1160,7 @@ export function SubscribersSection({
         )}
         ownerId={ownerId}
         avatarUrls={(id) => ({
-          src: assetUrl(id, 'avatar'),
+          src: assetUrl(id, 'avatar') ?? '',
           styleUrl: assetUrl(id, 'style'),
         })}
         onRemove={

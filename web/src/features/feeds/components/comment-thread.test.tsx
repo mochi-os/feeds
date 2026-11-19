@@ -206,4 +206,52 @@ describe('CommentThread avatars', () => {
     show(by('c9', 'Cat'), { avatars: new Map() })
     expect(sources('Cat')).toEqual(['/f1/-/p1/c9/asset/avatar'])
   })
+
+  // The comment's id is the commenter's choice, and the style behind the
+  // avatar is fetched with the reader's token.
+  it('encodes a comment id into its own address', () => {
+    show(by('delete?x=', 'Eve'), { avatars: new Map() })
+    expect(sources('Eve')).toEqual(['/f1/-/p1/delete%3Fx%3D/asset/avatar'])
+  })
+
+  it('draws initials for a comment whose id cannot be one path segment', () => {
+    show(by('../delete?x=', 'Eve'), { avatars: new Map() })
+    expect(screen.queryAllByAltText('Avatar for Eve')).toEqual([])
+    expect(screen.getByText('Body ../delete?x=')).toBeTruthy()
+  })
+})
+
+describe('CommentThread image chip', () => {
+  beforeEach(() => {
+    i18n.load('en', {})
+    i18n.activate('en')
+  })
+
+  const on = (attachment: string): FeedComment => ({
+    ...outsider,
+    id: 'c3',
+    subscriberId: 'Ann',
+    author: 'Ann',
+    page: undefined,
+    format: undefined,
+    body: 'About the image',
+    attachment,
+  })
+  const chip = () =>
+    screen.queryByRole('button', {
+      name: 'View the image this comment is about',
+    })
+
+  it('encodes the attachment id into the thumbnail address', () => {
+    show(on('a?b'))
+    expect(chip()?.querySelector('img')?.getAttribute('src')).toBe(
+      '/f1/-/attachments/a%3Fb/thumbnail'
+    )
+  })
+
+  it('shows no chip for an attachment id that cannot be one path segment', () => {
+    show(on('../delete?x='))
+    expect(chip()).toBeNull()
+    expect(screen.getByText('About the image')).toBeTruthy()
+  })
 })

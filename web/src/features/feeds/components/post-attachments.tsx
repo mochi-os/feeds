@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import type { MutableRefObject, ReactNode } from 'react'
+import { useMemo, type MutableRefObject, type ReactNode } from 'react'
 import type { Attachment } from '@/types'
 import {
   AttachmentGallery,
   authenticatedUrl,
-  getAppPath,
   normalizeEntityUrl,
 } from '@mochi/web'
+import { attachmentAddress, type AttachmentVariant } from '../attachment-url'
 
 type PostAttachmentsProps = {
   attachments: Attachment[]
@@ -32,40 +32,37 @@ export function PostAttachments({
   renderComments,
   openerRef,
 }: PostAttachmentsProps) {
-  const appPath = getAppPath()
+  // An attachment whose id cannot be one path segment is left out: its
+  // addresses would reach another of the app's actions.
+  const shown = useMemo(
+    () =>
+      attachments.filter(
+        (att) => attachmentAddress(feedId, att.id) !== undefined
+      ),
+    [attachments, feedId]
+  )
+  const address = (
+    given: string | undefined,
+    att: { id: string },
+    variant?: AttachmentVariant
+  ) =>
+    authenticatedUrl(
+      normalizeEntityUrl(
+        given ?? attachmentAddress(feedId, att.id, variant) ?? ''
+      )
+    )
 
   return (
     <AttachmentGallery
-      attachments={attachments}
-      getUrl={(att) =>
-        authenticatedUrl(
-          normalizeEntityUrl(
-            att.url ?? `${appPath}/${feedId}/-/attachments/${att.id}`
-          )
-        )
-      }
-      getThumbnailUrl={(att) =>
-        authenticatedUrl(
-          normalizeEntityUrl(
-            att.thumbnail_url ??
-              `${appPath}/${feedId}/-/attachments/${att.id}/thumbnail`
-          )
-        )
-      }
-      getPreviewUrl={(att) =>
-        authenticatedUrl(
-          normalizeEntityUrl(
-            att.preview_url ??
-              `${appPath}/${feedId}/-/attachments/${att.id}/preview`
-          )
-        )
-      }
+      attachments={shown}
+      getUrl={(att) => address(att.url, att)}
+      getThumbnailUrl={(att) => address(att.thumbnail_url, att, 'thumbnail')}
+      getPreviewUrl={(att) => address(att.preview_url, att, 'preview')}
       getMediumUrl={(att) =>
-        authenticatedUrl(
-          normalizeEntityUrl(
-            att.preview_url?.replace(/\/preview$/, '/medium') ??
-              `${appPath}/${feedId}/-/attachments/${att.id}/medium`
-          )
+        address(
+          att.preview_url?.replace(/\/preview$/, '/medium'),
+          att,
+          'medium'
         )
       }
       inline={inline}

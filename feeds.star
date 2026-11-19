@@ -4914,6 +4914,22 @@ def comment_identifier(given):
 		return given
 	return mochi.uid()
 
+# segment_valid(value) -> whether an id another server chose can stand as one
+# segment of a request path: letters, digits, "_" and "-". Every client puts
+# a comment's or post's id into the paths it requests (the commenter's avatar
+# is fetched from <feed>/-/<post>/<comment>/asset), so an id holding "/", "?",
+# "#", "\" or ".." would aim the reader's request at another action. Wider
+# than the uid shape: comment ids older servers minted are six characters.
+SEGMENT_CHARACTERS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-"
+
+def segment_valid(value):
+	if type(value) != "string" or not value or len(value) > 100:
+		return False
+	for character in value.elems():
+		if character not in SEGMENT_CHARACTERS:
+			return False
+	return True
+
 # comment_create keeps a comment the user writes on a post: on a feed they
 # own, kept and sent to the subscribers; on one they follow, sent to its
 # owner, with a copy kept where they hold the post. It goes out wherever the
@@ -5499,10 +5515,10 @@ def comment_react(feed_id, comment_id, user_id, user_name, reaction, account="")
 		# Could not resolve to valid entity ID
 		return None, (404, "errors.feed_not_found")
 
-	# "line", not "text": "text" allows 1MB, which would land in the reactions
-	# table and ride the websocket and P2P send. Not the uid shape either -
-	# existing comment ids predate it.
-	if not mochi.text.valid(comment_id, "line"):
+	# One path segment (segment_valid): the id lands in the reactions table,
+	# rides the websocket and P2P send, and every client puts it in a request
+	# path. Not the uid shape - existing comment ids predate it.
+	if not segment_valid(comment_id):
 		return None, (400, "errors.invalid_comment_id")
 
 	# Get post_id for the comment (needed for WebSocket notification)
@@ -5882,8 +5898,8 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with invalid timestamp")
 		return
 
-	# Bounded, not a 1MB cap - see action_comment_react.
-	if not mochi.text.valid(comment["id"], "line"):
+	# One path segment - see segment_valid.
+	if not segment_valid(comment["id"]):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
@@ -6001,8 +6017,8 @@ def event_comment_edit_submit(e):
 	post_id = e.content("post")
 	body = e.content("body")
 
-	# Bounded, not a 1MB cap - see action_comment_react.
-	if not mochi.text.valid(comment_id, "line"):
+	# One path segment - see segment_valid.
+	if not segment_valid(comment_id):
 		mochi.log.info("Feed dropping comment edit submit with invalid comment ID")
 		return
 	if not mochi.text.valid(body, "text"):
@@ -6054,8 +6070,8 @@ def event_comment_delete_submit(e):
 	comment_id = e.content("comment")
 	post_id = e.content("post")
 
-	# Bounded, not a 1MB cap - see action_comment_react.
-	if not mochi.text.valid(comment_id, "line"):
+	# One path segment - see segment_valid.
+	if not segment_valid(comment_id):
 		mochi.log.info("Feed dropping comment delete submit with invalid comment ID")
 		return
 
@@ -7100,7 +7116,7 @@ def schema_import(feed_id, schema):
 	added = {}
 	for p in schema_list(schema, "posts"):
 		id = p.get("id", "")
-		if type(id) != "string" or withheld.get(id):
+		if not segment_valid(id) or withheld.get(id):
 			continue
 		# The features, author and remote id a post event would carry, each
 		# checked as event_post_create checks it. One that fails is left out
@@ -7158,7 +7174,7 @@ def schema_import(feed_id, schema):
 	# here - withheld, or left out itself - is left out with it.
 	for c in schema_list(schema, "comments"):
 		id = c.get("id", "")
-		if type(id) != "string" or not mochi.text.valid(id, "line") or withheld.get(id):
+		if not segment_valid(id) or withheld.get(id):
 			continue
 		# A post's id, in any feed, would share its attachments and reactions
 		# with the comment. A comment of another feed is left alone by the

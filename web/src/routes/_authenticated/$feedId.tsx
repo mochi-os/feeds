@@ -9,6 +9,7 @@ import {
   useNavigate,
   Link,
 } from '@tanstack/react-router'
+import { parseFeedParams } from '@/config/routes'
 import type { Feed } from '@/types'
 import { t } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -149,6 +150,7 @@ export async function loadFeed(
 }
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
+  params: { parse: parseFeedParams },
   loader: ({ params, context, cause }) =>
     loadFeed(params.feedId, { client: context.queryClient, cause }),
   component: FeedPage,

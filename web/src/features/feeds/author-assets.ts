@@ -3,8 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import type { FeedComment } from '@/types'
-import { addressByAuthor, getAppPath } from '@mochi/web'
-import endpoints from '@/api/endpoints'
+import { addressByAuthor, getAppPath, path, tryPath } from '@mochi/web'
 
 interface PostRow {
   id: string
@@ -13,13 +12,18 @@ interface PostRow {
 }
 
 // Where a commenter's person assets (avatar, style) are served: under one of
-// their comments, whose route resolves the commenter. Append the slot.
+// their comments, whose route resolves the commenter. Append the slot. A
+// comment's id is whatever its author sent, and the style is fetched with the
+// reader's token, so each id goes in as one encoded segment; one that cannot
+// be a segment gives no address, and the commenter shows their initials.
 export const commentAssets = (
   feedId: string,
   postId: string,
   commentId: string
-) =>
-  `${getAppPath()}/${endpoints.feeds.comment.assets(feedId, postId, commentId)}`
+): string | undefined =>
+  tryPath(
+    () => `${getAppPath()}/${path`${feedId}/-/${postId}/${commentId}/asset`}`
+  )
 
 // One asset address per commenter across every post's comments, so the
 // browser and the style query fetch each commenter's avatar once rather than

@@ -15,7 +15,6 @@ import {
   EntityAvatar,
   authenticatedUrl,
   AssetImage,
-  getAppPath,
   normalizeEntityUrl,
   MentionTextarea,
   renderMentions,
@@ -41,6 +40,7 @@ import {
   Trash2,
   VolumeX,
 } from 'lucide-react'
+import { attachmentAddress } from '../attachment-url'
 import { commentAssets } from '../author-assets'
 import { sanitizeHtml } from '../utils'
 import { CommentAttachments } from './comment-attachments'
@@ -213,7 +213,11 @@ export function CommentThread({
   const assets =
     avatars?.get(comment.subscriberId) ??
     commentAssets(feedId, postId, comment.id)
-  const assetUrl = (slot: string) => `${assets}/${slot}`
+  const assetUrl = (slot: string) => assets && `${assets}/${slot}`
+  // The image the comment is about, when its id can be one path segment.
+  const attachmentThumbnail =
+    comment.attachment &&
+    attachmentAddress(feedId, comment.attachment, 'thumbnail')
   const avatar = (
     <EntityAvatar
       src={assetUrl('avatar')}
@@ -272,7 +276,7 @@ export function CommentThread({
           <span className='text-muted-foreground'>
             {formatTimestamp(comment.created)}
           </span>
-          {comment.attachment && (
+          {attachmentThumbnail && (
             <button
               type='button'
               className='text-muted-foreground hover:text-foreground ms-1 inline-flex min-w-0 items-center gap-1 rounded transition-colors'
@@ -284,11 +288,7 @@ export function CommentThread({
               aria-label={t`View the image this comment is about`}
             >
               <AssetImage
-                src={authenticatedUrl(
-                  normalizeEntityUrl(
-                    `${getAppPath()}/${feedId}/-/attachments/${comment.attachment}/thumbnail`
-                  )
-                )}
+                src={authenticatedUrl(normalizeEntityUrl(attachmentThumbnail))}
                 alt=''
                 className='size-5 rounded object-cover text-transparent'
               />
