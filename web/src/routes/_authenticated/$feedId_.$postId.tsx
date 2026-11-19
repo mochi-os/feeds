@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { parsePostParams } from '@/config/routes'
 import type {
   FeedPermissions,
   FeedPost,
@@ -44,6 +45,7 @@ import {
 import { patchPostReaction } from '@/features/feeds/utils'
 
 export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
+  params: { parse: parsePostParams },
   // A comment the post is opened on, alone with its replies.
   validateSearch: (search: Record<string, unknown>): { comment?: string } => ({
     comment: typeof search.comment === 'string' ? search.comment : undefined,

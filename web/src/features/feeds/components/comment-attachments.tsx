@@ -6,9 +6,9 @@ import type { Attachment } from '@/types/posts'
 import {
   AttachmentGallery,
   authenticatedUrl,
-  getAppPath,
   normalizeEntityUrl,
 } from '@mochi/web'
+import { attachmentAddress } from '../attachment-url'
 
 interface CommentAttachmentsProps {
   attachments?: Attachment[]
@@ -19,15 +19,19 @@ export function CommentAttachments({
   attachments,
   feedId,
 }: CommentAttachmentsProps) {
-  if (!attachments || attachments.length === 0) return null
   // A remote feed's answer carries no url: the owner's server built it for its
-  // own routes. The address is then this app's own, from the id, as a post's.
+  // own routes. The address is then this app's own, from the id, as a post's;
+  // an attachment whose id cannot be one path segment is left out.
+  const shown = (attachments ?? []).filter(
+    (att) => attachmentAddress(feedId, att.id) !== undefined
+  )
+  if (shown.length === 0) return null
   const address = (att: { id: string; url?: string }) =>
-    att.url ?? `${getAppPath()}/${feedId}/-/attachments/${att.id}`
+    att.url ?? attachmentAddress(feedId, att.id) ?? ''
 
   return (
     <AttachmentGallery
-      attachments={attachments}
+      attachments={shown}
       // authenticatedUrl, as the post gallery does: inside the sandboxed shell
       // iframe an <img> sends no cookies, so a private container's attachment
       // 401s and the thumbnail silently never appears. Only the post gallery

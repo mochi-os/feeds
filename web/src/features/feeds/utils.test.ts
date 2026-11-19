@@ -6,9 +6,23 @@ import { describe, expect, it } from 'vitest'
 import {
   inListedOrder,
   linkifyText,
+  randomId,
   sanitizeHtml,
   sectionErrorFrom,
 } from './utils'
+
+describe('randomId', () => {
+  it('mints the id shape the server accepts from a client', () => {
+    for (let i = 0; i < 50; i++) {
+      expect(randomId()).toMatch(/^[0-9a-z]{32}$/)
+    }
+  })
+
+  it('does not repeat', () => {
+    const ids = new Set(Array.from({ length: 1000 }, () => randomId()))
+    expect(ids.size).toBe(1000)
+  })
+})
 
 describe('sectionErrorFrom', () => {
   it('surfaces the real error message rather than a hardcoded string', () => {

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { PublishAccount } from '@/types/feeds'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { parseFeedParams } from '@/config/routes'
 import { useFeeds } from '@/hooks'
 import type { Feed, FeedSummary, Source } from '@/types'
 import { plural } from '@lingui/core/macro'
@@ -80,6 +81,7 @@ type SourcesSearch = {
 }
 
 export const Route = createFileRoute('/_authenticated/$feedId_/sources')({
+  params: { parse: parseFeedParams },
   validateSearch: (search: Record<string, unknown>): SourcesSearch => ({
     addUrl: typeof search.addUrl === 'string' ? search.addUrl : undefined,
     addType:
