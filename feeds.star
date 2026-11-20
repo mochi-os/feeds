@@ -4270,80 +4270,97 @@ def listed_feeds(user_id):
 	return list(feed_ids.keys())
 
 # Edit a post (owner only)
-# post_edit changes a post: on a feed the user owns, a post they wrote or
-# one in a feed they manage, its text, data and features, with change(post,
-# feed) changing its attachments, published again and sent to the
-# subscribers; in a feed of someone else's, asked of its owner. A poll stays
-# as it was made, with its votes. Answers (result, None) or (None, failure).
+# post_edit changes a post: on a feed the user owns, as post_revise does; in
+# a feed of someone else's, asked of its owner, whose post/edit/submit checks
+# and applies it the same way and answers. Attachments change only on the
+# owner's own server, where change(post, feed) runs; one asked of the owner
+# leaves them as they are. Answers (result, None) or (None, failure).
 def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=None):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
 		return None, (404, "errors.feed_not_found")
 
 	if owned(info["id"]):
-		# Local feed - edit directly
-		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
-		if not post:
-			return None, (404, "errors.post_not_found")
-
-		if post.get("author") != user_id and not check_access_user(user_id, info["id"], "manage"):
-			return None, (403, "errors.not_allowed_edit_post")
-
-		existing = json.decode(post.get("data", "") or "{}", None) or {}
-		if type(existing) == "dict" and existing.get("poll"):
-			data = dict(data) if data else {}
-			data["poll"] = existing["poll"]
-		elif data and data.get("poll"):
-			data = dict(data)
-			data.pop("poll")
-
-		now = mochi.time.now()
-		data_value = json.encode(data) if data else ""
-		before = mochi.db.row("select body from posts where id=?", post_id)
-		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
-		if features:
-			clause, values = features_sql(features)
-			mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
-		mochi.db.commit.fire("posts", "update", post_id)
-
-		failure = change(post_id, info)
-		if failure:
-			return None, failure
-
-		post = mochi.db.row("select * from posts where id=?", post_id)
-		edit_event = {"post": post_id, "body": body, "edited": now}
-		edit_event.update(post_event_features(post))
-		if data:
-			edit_event["data"] = data
-		edit_event["attachments"] = attachment_list(post_id, info["id"])
-		edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post, unsent)
-		webmention_send(info, post_id, [before["body"] if before else "", body], post)
-		broadcast_event(info["id"], "post/edit", edit_event, user_id)
-
-		# post/edit WebSocket notification is fired by the commit hook on
-		# the update above (see mochi.db.commit.fire / on_db_commit).
-
-		# Re-tag with AI if enabled
-		if info.get("ai_mode", ""):
-			mochi.db.execute("delete from tags where object=? and source='ai'", post_id)
-			mochi.schedule.after("schedule_ai_tag", {"feed": info["id"], "post": post_id}, 0)
-
-		return {"success": True}, None
+		return post_revise(info, post_id, user_id, body, data, features, change, unsent, user_id)
 
 	elif info.get("server"):
-		# Remote feed - send edit to owner
+		# Remote feed - ask its owner, who checks the editor may edit the post
+		# and answers with the edit's result or its refusal.
 		peer = mochi.remote.peer(info["server"])
 		if not peer:
 			return None, (502, "errors.unable_to_connect")
-		payload = {"feed": feed_id, "post": post_id, "body": body}
+		payload = {"post": post_id, "body": body}
 		if data:
 			payload["data"] = data
-		response = mochi.remote.request(feed_id, "feeds", "post/edit", payload, peer)
+		if features:
+			payload.update(features)
+		response = mochi.remote.request(info["id"], "feeds", "post/edit/submit", payload, peer)
 		if response.get("error"):
 			return None, remote_failure(response, 403)
-		return response or {"success": True}, None
+		lines = response.get("unsent")
+		if unsent != None and listlike(lines):
+			unsent.extend([str(line) for line in lines])
+		return {"success": True}, None
 
 	return None, (403, "errors.not_allowed")
+
+# post_revise edits a post of a feed this server holds, info, for editor: a
+# post they wrote or one in a feed they manage. Its text, data and features
+# change, with change(post, feed) changing its attachments, and it is
+# published again and sent to the subscribers, but for exclude. Of the post's
+# data an edit changes the check-in and the travelling pair alone, each taken
+# from data or, absent there, removed; the rest (its article, quote, poll with
+# its votes, media) stays as stored, so a client need not send it back.
+# Answers (result, None) or (None, failure).
+def post_revise(info, post_id, editor, body, data, features, change, unsent, exclude):
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
+	if not post:
+		return None, (404, "errors.post_not_found")
+
+	if post.get("author") != editor and not check_access_user(editor, info["id"], "manage"):
+		return None, (403, "errors.not_allowed_edit_post")
+
+	stored = json.decode(post.get("data", "") or "{}", None)
+	merged = dict(stored) if type(stored) == "dict" else {}
+	for key in ["checkin", "travelling"]:
+		value = data.get(key) if data else None
+		if value:
+			merged[key] = value
+		else:
+			merged.pop(key, None)
+
+	now = mochi.time.now()
+	data_value = json.encode(merged) if merged else ""
+	before = mochi.db.row("select body from posts where id=?", post_id)
+	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
+	if features:
+		clause, values = features_sql(features)
+		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
+	mochi.db.commit.fire("posts", "update", post_id)
+
+	failure = change(post_id, info)
+	if failure:
+		return None, failure
+
+	post = mochi.db.row("select * from posts where id=?", post_id)
+	edit_event = {"post": post_id, "body": body, "edited": now}
+	edit_event.update(post_event_features(post))
+	if merged:
+		edit_event["data"] = merged
+	edit_event["attachments"] = attachment_list(post_id, info["id"])
+	edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post, unsent)
+	webmention_send(info, post_id, [before["body"] if before else "", body], post)
+	broadcast_event(info["id"], "post/edit", edit_event, exclude)
+
+	# post/edit WebSocket notification is fired by the commit hook on
+	# the update above (see mochi.db.commit.fire / on_db_commit).
+
+	# Re-tag with AI if enabled
+	if info.get("ai_mode", ""):
+		mochi.db.execute("delete from tags where object=? and source='ai'", post_id)
+		mochi.schedule.after("schedule_ai_tag", {"feed": info["id"], "post": post_id}, 0)
+
+	return {"success": True}, None
 
 def action_post_edit(a):
 	if not a.user:
@@ -4475,57 +4492,63 @@ def attachments_keep(post_id, feed_id, final_order, new_attachments):
 		attachment_move(att_id, position)
 
 # Delete a post (owner only)
-# post_delete deletes a post the user wrote, or one in a feed they manage:
-# with its comments, reactions, attachments and copies, here and for the
-# subscribers; in a feed of someone else's, asked of its owner. Answers
-# (result, None) or (None, failure).
+# post_delete deletes a post: on a feed the user owns, as post_remove does;
+# in a feed of someone else's, asked of its owner, whose post/delete/submit
+# checks and deletes it the same way and answers. Answers (result, None) or
+# (None, failure).
 def post_delete(feed_id, post_id, user_id):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
 		return None, (404, "errors.feed_not_found")
 
 	if owned(info["id"]):
-		# Local feed - delete directly
-		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
-		if not post:
-			return None, (404, "errors.post_not_found")
-
-		if post.get("author") != user_id and not check_access_user(user_id, info["id"], "manage"):
-			return None, (403, "errors.not_allowed_delete_post")
-
-
-		publish_delete(post_id)
-		mochi.db.execute("delete from tags where object=?", post_id)
-		mochi.db.execute("delete from reactions where post=?", post_id)
-		# The comments' replies on the network go with the post (decision 25),
-		# and so do their attachments.
-		for c in mochi.db.rows("select id from comments where post=?", post_id):
-			reply_delete(c["id"])
-			attachment_clear(c["id"], kind="comment")
-		mochi.db.execute("delete from comments where post=?", post_id)
-		mochi.db.execute("delete from post_scores where post=?", post_id)
-		attachment_clear(post_id)
-		mochi.db.execute("delete from posts where id=?", post_id)
-		mochi.db.execute("delete from follows where post=?", post_id)
-
-		broadcast_event(info["id"], "post/delete", {"post": post_id}, user_id)
-
-		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
-		broadcast_websocket(info["id"], {"type": "post/delete", "feed": info["id"], "post": post_id, "sender": user_id})
-
-		return {"success": True}, None
+		return post_remove(info, post_id, user_id, user_id)
 
 	elif info.get("server"):
-		# Remote feed - send delete to owner
+		# Remote feed - ask its owner, who checks the user may delete the post
+		# and answers with the result or its refusal.
 		peer = mochi.remote.peer(info["server"])
 		if not peer:
 			return None, (502, "errors.unable_to_connect")
-		response = mochi.remote.request(feed_id, "feeds", "post/delete", {"feed": feed_id, "post": post_id}, peer)
+		response = mochi.remote.request(info["id"], "feeds", "post/delete/submit", {"post": post_id}, peer)
 		if response.get("error"):
 			return None, remote_failure(response, 403)
-		return response or {"success": True}, None
+		return {"success": True}, None
 
 	return None, (403, "errors.not_allowed")
+
+# post_remove deletes a post of a feed this server holds, info, for remover:
+# a post they wrote, or one in a feed they manage. Its comments, reactions,
+# attachments and copies go with it, and the delete is sent to the
+# subscribers, but for exclude. Answers (result, None) or (None, failure).
+def post_remove(info, post_id, remover, exclude):
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
+	if not post:
+		return None, (404, "errors.post_not_found")
+
+	if post.get("author") != remover and not check_access_user(remover, info["id"], "manage"):
+		return None, (403, "errors.not_allowed_delete_post")
+
+	publish_delete(post_id)
+	mochi.db.execute("delete from tags where object=?", post_id)
+	mochi.db.execute("delete from reactions where post=?", post_id)
+	# The comments' replies on the network go with the post (decision 25),
+	# and so do their attachments.
+	for c in mochi.db.rows("select id from comments where post=?", post_id):
+		reply_delete(c["id"])
+		attachment_clear(c["id"], kind="comment")
+	mochi.db.execute("delete from comments where post=?", post_id)
+	mochi.db.execute("delete from post_scores where post=?", post_id)
+	attachment_clear(post_id)
+	mochi.db.execute("delete from posts where id=?", post_id)
+	mochi.db.execute("delete from follows where post=?", post_id)
+
+	broadcast_event(info["id"], "post/delete", {"post": post_id}, exclude)
+
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(info["id"], {"type": "post/delete", "feed": info["id"], "post": post_id, "sender": remover})
+
+	return {"success": True}, None
 
 def action_post_delete(a):
 	if not a.user:
@@ -6462,9 +6485,58 @@ def event_post_create(e): # feeds_post_create_event
 			)
 
 
+# Handle a manager's edit of a post, asked of the feed's owner (stream-based
+# request/response): checked and applied here as an edit made on this server
+# is, sent to every subscriber the manager among them, and answered with the
+# result or the refusal's label and status.
+def event_post_edit_submit(e):
+	user_id = e.user.identity.id if e.user and e.user.identity else None
+	feed_data = feed_by_id(user_id, e.header("to"))
+	if not feed_data or not owned(feed_data["id"]):
+		e.stream.write({"error": "errors.feed_not_found", "code": 404})
+		return
+
+	post_id = e.content("post")
+	body = e.content("body")
+	if not mochi.text.valid(post_id, "id"):
+		e.stream.write({"error": "errors.post_not_found", "code": 404})
+		return
+	if not mochi.text.valid(body, "text"):
+		e.stream.write({"error": "errors.invalid_body", "code": 400})
+		return
+
+	# Validated and sanitized as the form's data is, since this is the copy
+	# that goes out to every subscriber.
+	data = e.content("data")
+	if data:
+		if not validate_post_data(data):
+			e.stream.write({"error": "errors.invalid_data", "code": 400})
+			return
+		data = sanitize_post_data(data)
+	features = post_features_event(e)
+	if features == None:
+		e.stream.write({"error": "errors.invalid_data", "code": 400})
+		return
+	# A pin is the owner's, made by its own action, not by an edit.
+	features = {key: features[key] for key in features if key != "pinned"}
+
+	unsent = []
+	result, failure = post_revise(feed_data, post_id, e.header("from"), body, data, features, lambda post_id, info: None, unsent, "")
+	if failure:
+		e.stream.write({"error": failure[1], "code": failure[0]})
+		return
+	e.stream.write({"success": True, "unsent": unsent})
+
 # Handle post edit event from feed owner (subscriber receiving edit)
 def event_post_edit(e):
 	user_id = e.user.identity.id
+	# An edit asked of a feed this server owns, by a server that predates
+	# post/edit/submit, is the owner's to check and answer; it never reads as
+	# a stale subscription to drop.
+	asked = feed_by_id(user_id, e.header("to"))
+	if asked and owned(asked["id"]):
+		event_post_edit_submit(e)
+		return
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
 		mochi.log.info("Feeds dropping post edit for unknown feed %s (stale subscription); unsubscribing", e.header("from"))
@@ -6586,8 +6658,35 @@ def event_post_credibility(e):
 	score_posts_for_viewer(list(post_ids), user_id)
 
 # Handle post delete event from feed owner (subscriber receiving delete)
+# Handle a manager's delete of a post, asked of the feed's owner
+# (stream-based request/response): checked and deleted here as a delete made
+# on this server is, sent to every subscriber the manager among them, and
+# answered with the result or the refusal's label and status.
+def event_post_delete_submit(e):
+	user_id = e.user.identity.id if e.user and e.user.identity else None
+	feed_data = feed_by_id(user_id, e.header("to"))
+	if not feed_data or not owned(feed_data["id"]):
+		e.stream.write({"error": "errors.feed_not_found", "code": 404})
+		return
+	post_id = e.content("post")
+	if not mochi.text.valid(post_id, "id"):
+		e.stream.write({"error": "errors.post_not_found", "code": 404})
+		return
+	result, failure = post_remove(feed_data, post_id, e.header("from"), "")
+	if failure:
+		e.stream.write({"error": failure[1], "code": failure[0]})
+		return
+	e.stream.write({"success": True})
+
 def event_post_delete(e):
 	user_id = e.user.identity.id
+	# A delete asked of a feed this server owns, by a server that predates
+	# post/delete/submit, is the owner's to check and answer; it never reads
+	# as a stale subscription to drop.
+	asked = feed_by_id(user_id, e.header("to"))
+	if asked and owned(asked["id"]):
+		event_post_delete_submit(e)
+		return
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
 		mochi.log.info("Feeds dropping post delete for unknown feed %s (stale subscription); unsubscribing", e.header("from"))
