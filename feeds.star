@@ -10172,6 +10172,17 @@ def publishable(acc):
 		return acc.get("type") in HOSTED_TYPES
 	return acc.get("type") in PUBLISH_TYPES
 
+# The provider an existing account on a network is linked through, where it
+# is not the network's own name.
+LINKED_THROUGH = {"fediverse": "mastodon"}
+
+def networks_offered(names):
+	"""Of the networks named, those the server offers the user an account on:
+	it hosts accounts there, or an existing one there may be linked."""
+	hosted = mochi.account.networks() or []
+	linkable = [p.get("type") for p in (mochi.account.providers() or []) if p.get("link")]
+	return [n for n in names if n in hosted or LINKED_THROUGH.get(n, n) in linkable]
+
 def publish_accounts():
 	"""The user's accounts a feed may publish to or read from."""
 	return [acc for acc in (mochi.account.list() or []) if publishable(acc)]
@@ -10716,15 +10727,17 @@ def publish_feed(a):
 	return feed
 
 def action_publish_list(a):
-	"""The accounts the feed may publish to and those it does. A private feed
-	publishes nowhere, and is answered why, for Publish to to say."""
+	"""The accounts the feed may publish to and those it does, and the networks
+	the server offers an account on, which Publish to shows a way to set up
+	where the user has none. A private feed publishes nowhere, and is answered
+	why, for Publish to to say."""
 	feed = publish_feed(a)
 	if not feed:
 		return
 	if feed.get("privacy", "public") != "public":
 		a.error.label(403, "errors.feed_not_public")
 		return
-	a.json({"accounts": [account_present(acc) for acc in publish_accounts()], "publish": publish_list(feed["id"]), "copies": publish_counts(feed["id"]), "generators": publish_generators(feed["id"])})
+	a.json({"accounts": [account_present(acc) for acc in publish_accounts()], "publish": publish_list(feed["id"]), "copies": publish_counts(feed["id"]), "generators": publish_generators(feed["id"]), "offered": networks_offered(["fediverse", "bluesky"])})
 
 def publish_generators(feed_id):
 	"""The generator record the feed is published as from each hosted Bluesky

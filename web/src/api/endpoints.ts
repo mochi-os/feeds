@@ -43,6 +43,7 @@ const endpoints = {
     recommendations: '-/recommendations',
     probe: '-/probe',
     lookup: '-/lookup',
+    networks: '-/networks',
     subscribe: '-/subscribe',
     unsubscribe: '-/unsubscribe',
 

@@ -4,6 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { describe, expect, it } from 'vitest'
 import {
+  addressExample,
   inListedOrder,
   linkifyText,
   randomId,
@@ -109,5 +110,19 @@ describe('inListedOrder', () => {
     inListedOrder(held, [post('a', 2), post('b', 1)])
 
     expect(ids(held)).toEqual(['b', 'a'])
+  })
+})
+
+describe('addressExample', () => {
+  it("shows the fediverse's form where the server is on it, else Bluesky's", () => {
+    expect(addressExample(['bluesky', 'fediverse'])).toBe(
+      '@name@example.social'
+    )
+    expect(addressExample(['bluesky', 'matrix'])).toBe('name.bsky.social')
+  })
+
+  it('shows none where people cannot be looked up on another network', () => {
+    expect(addressExample(['matrix', 'xmpp'])).toBeNull()
+    expect(addressExample([])).toBeNull()
   })
 })

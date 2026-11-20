@@ -281,6 +281,8 @@ export interface PublishResponse {
   // The Bluesky custom feed the feed is published as from each hosted Bluesky
   // account, by account id.
   generators?: Record<string, string>
+  // The networks the server offers an account on that a feed publishes to.
+  offered?: string[]
 }
 
 export interface PublishSetResponse {

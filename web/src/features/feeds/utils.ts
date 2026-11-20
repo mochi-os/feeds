@@ -7,6 +7,17 @@ import { getErrorMessage, type SortType } from '@mochi/web'
 import DOMPurify from 'dompurify'
 
 /**
+ * An address Find looks someone up on another network by, shown as an example
+ * in its field: the fediverse's form where the server is on it, else
+ * Bluesky's; none where it is on neither.
+ */
+export function addressExample(networks: string[]): string | null {
+  if (networks.includes('fediverse')) return '@name@example.social'
+  if (networks.includes('bluesky')) return 'name.bsky.social'
+  return null
+}
+
+/**
  * The sort a feed's posts open in: the feed's own, else the reader's default,
  * else by interest. Someone not signed in sees the newest first.
  */

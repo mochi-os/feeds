@@ -11,6 +11,7 @@ import { Rss } from 'lucide-react'
 import endpoints from '@/api/endpoints'
 import { feedsApi } from '@/api/feeds'
 import { LookupResult } from '@/features/feeds/components/lookup-result'
+import { addressExample } from '@/features/feeds/utils'
 import { PeopleToFollow } from '@/features/feeds/components/people-to-follow'
 import { useFeedsStore } from '@/stores/feeds-store'
 
@@ -43,6 +44,15 @@ function FindFeedsPage() {
     refetchOnWindowFocus: false,
   })
   const recommendations = recommendationsData?.data?.feeds ?? []
+
+  // The networks people may be looked up on, for the field's example address.
+  const { data: networksData } = useQuery({
+    queryKey: ['feeds', 'networks'],
+    queryFn: () => feedsApi.getNetworks(),
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+  const example = addressExample(networksData?.networks ?? [])
 
   const subscribedFeedIds = useMemo(
     () =>
@@ -97,7 +107,11 @@ function FindFeedsPage() {
       icon={Rss}
       iconClassName='bg-orange-500/10 text-orange-600'
       title={t`Find feeds`}
-      placeholder={t`Search by name, ID, fingerprint, or URL`}
+      placeholder={
+        example
+          ? t`Search by name, ID, fingerprint, URL, or ${example}`
+          : t`Search by name, ID, fingerprint, or URL`
+      }
       emptyMessage={t`No feeds found`}
       recommendations={recommendations}
       isLoadingRecommendations={isLoadingRecommendations}

@@ -952,6 +952,10 @@ const setGenerator = async (
     on: on ? 'true' : 'false',
   })
 
+// The networks the server hosts accounts on, which a search looks people up on.
+const getNetworks = async (): Promise<{ networks: string[] }> =>
+  client.get<{ networks: string[] }>(endpoints.feeds.networks)
+
 // A handle or link looked up from search: a person, a community or a post on
 // another network.
 const lookup = async (query: string): Promise<Lookup> =>
@@ -1440,6 +1444,7 @@ export const feedsApi = {
   revokeRssToken,
   follow,
   getPublish,
+  getNetworks,
   lookup,
   setPublish,
   forgetCopies,
