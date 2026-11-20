@@ -54,9 +54,23 @@ strip_html_breaks = [
 	"header", "footer", "figure", "figcaption", "table",
 ]
 
+# remote_status is the status a far end's refusal is answered with here: its
+# own code when that is an error status, else [code]. A 401 becomes 502: to
+# every client of this server 401 means the caller's own session has ended,
+# and a peer's answer says nothing about that session.
+def remote_status(response, code=502):
+	status = response.get("code", code)
+	if type(status) == "float":
+		status = int(status)
+	if type(status) != "int" or status < 400 or status > 599:
+		return code
+	if status == 401:
+		return 502
+	return status
+
 # remote_error: a core transport failure (marked "transport") becomes a
 # translated generic error with the detail logged; a far-end app answer passes
-# through unchanged.
+# through with its label, under remote_status.
 def remote_error(a, response, code=502):
 	fail(a, remote_failure(response, code))
 
@@ -66,8 +80,8 @@ def remote_error(a, response, code=502):
 def remote_failure(response, code=502):
 	if response.get("transport"):
 		mochi.log.info("Remote transport error: %s", response.get("error", ""))
-		return (response.get("code", code), "errors.remote")
-	return (response.get("code", code), response.get("error", "errors.remote"))
+		return (remote_status(response, code), "errors.remote")
+	return (remote_status(response, code), response.get("error", "errors.remote"))
 
 # fail answers a helper's refusal, (status, label), as an action's error.
 def fail(a, failure):
