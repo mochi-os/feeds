@@ -71,7 +71,7 @@ vi.mock('@mochi/web', async (importOriginal) => {
     ...original,
     useScreenSize: () => ({ isMobile: false }),
     isInShell: () => state.shell,
-    shellNavigateBack: () => state.shellBack(),
+    shellNavigateBack: (otherwise?: () => void) => state.shellBack(otherwise),
   }
 })
 
@@ -171,6 +171,20 @@ describe('the share address', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Cancel' }))
     await waitFor(() => expect(state.shellBack).toHaveBeenCalledTimes(1))
     expect(state.back).not.toHaveBeenCalled()
+    expect(state.navigate).not.toHaveBeenCalled()
+  })
+
+  it("opens Feeds' home when the shell has nowhere to go back to", async () => {
+    // Opened straight into the shell in a tab with history: the window's
+    // history counts other sites' pages, which the shell will not go back to.
+    state.shell = true
+    show()
+    fireEvent.click(await screen.findByRole('button', { name: 'Cancel' }))
+    await waitFor(() => expect(state.shellBack).toHaveBeenCalledTimes(1))
+    // THE POINT: the shell's refusal runs the page's way out, not nothing.
+    const otherwise = state.shellBack.mock.calls[0][0] as () => void
+    otherwise()
+    expect(state.navigate).toHaveBeenCalledWith({ to: '/', replace: true })
   })
 
   it("opens Feeds' home when closed with nowhere to go back to", async () => {
