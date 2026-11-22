@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Disalin"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Disalin ke papan keratan"
@@ -1119,6 +1120,10 @@ msgstr "Disalin ke papan keratan"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Salin"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Salin pautan"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Cipta {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Cipta suapan baharu"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Gagal mengosongkan siaran disimpan"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Gagal mencipta suapan"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Gagal mencipta pautan"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Gagal mencipta catatan"
 
@@ -1949,10 +1956,6 @@ msgstr "Suapan dipadam"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID entiti suapan atau cap jari"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Pautan suapan"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Terang"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Suka"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Pautan"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Hantar"
 msgid "Post content"
 msgstr "Kandungan hantaran"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Hantaran dicipta"
 
@@ -2913,6 +2912,10 @@ msgstr "Hantaran tidak dijumpai"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Hantaran dipin"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Hantar ke suapan"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Hantar semula"
 msgid "Send email"
 msgstr "Hantar e-mel"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Hantar dalam sembang"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Beberapa pilihan"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Kongsi"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Anda tidak mempunyai akses kepada bahagian ini."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Anda belum mempunyai suapan lagi."
 

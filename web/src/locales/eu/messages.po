@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Kopiatuta"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Arbelera kopiatu da"
@@ -1119,6 +1120,10 @@ msgstr "Arbelera kopiatu da"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiatu"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopiatu esteka"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Sortu {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Sortu jario berri bat"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Ezin izan dira gordetako argitalpenak garbitu"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Ezin izan da jarioa sortu"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Ezin izan da esteka sortu"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Ezin izan da argitalpena sortu"
 
@@ -1949,10 +1956,6 @@ msgstr "Jarioa ezabatuta"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Jarioaren entitate IDa edo hatz-marka"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Jarioaren esteka"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Argia"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Atsegin"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Esteka"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Argitaratu"
 msgid "Post content"
 msgstr "Argitalpenaren edukia"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Argitalpena sortu da"
 
@@ -2913,6 +2912,10 @@ msgstr "Ez da argitalpena aurkitu"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Argitalpena finkatu da"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Argitaratu jario batean"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Bidali berriz"
 msgid "Send email"
 msgstr "Bidali emaila"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Bidali txat batean"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Aukera anitz"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Partekatu"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Ez duzu atal honetarako sarbiderik."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Oraindik ez duzu jariorik."
 

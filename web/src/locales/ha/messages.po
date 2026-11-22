@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "An kwafi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "An kwafi zuwa clipboard"
@@ -1119,6 +1120,10 @@ msgstr "An kwafi zuwa clipboard"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kwafi"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kwafi hanyar haɗi"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Ƙirƙiri {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Ƙirƙira sabon feed"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "An kasa share wasiƙun da aka ajiye"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "An gaza ƙirƙirar feed"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "An gaza ƙirƙirar link"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "An gaza ƙirƙirar post"
 
@@ -1949,10 +1956,6 @@ msgstr "An share feed"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID na ciyarwa ko fasalin yatsa"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Hanyar haɗin jerin labarai"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Haske"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "So"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Hanyar haɗi"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Wallafa"
 msgid "Post content"
 msgstr "Abin da ke cikin post"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "An ƙirƙiri post"
 
@@ -2913,6 +2912,10 @@ msgstr "Ba a sami post ba"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "An pin post"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Wallafa zuwa jerin labarai"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Aika kuma"
 msgid "Send email"
 msgstr "Aika email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Aika a cikin chat"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Zaɓuɓɓuka da yawa"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Raba"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Ba ka da damar shiga wannan sashe ba."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Ba ku da feeds tukuna."
 

@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "کۆپی کرا"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "کۆپی کرا بۆ کلیپبۆرد"
@@ -1119,6 +1120,10 @@ msgstr "کۆپی کرا بۆ کلیپبۆرد"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "کۆپیکردن"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "کۆپیکردنی بەستەر"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "دروستکردنی {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "فیدێکی نوێ دروست بکە"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "سڕینەوەی پۆستە پاشەکەوتکراوەکان سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "دروستکردنی فید سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "دروستکردنی بەستەر سەرکەوتوو نەبوو"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "دروستکردنی پۆست سەرکەوتوو نەبوو"
 
@@ -1949,10 +1956,6 @@ msgstr "فید سڕایەوە"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ناسنامەی ئەنتیتی یان فینگەرپرینتی فید"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "بەستەری فید"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "ڕووناک"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "بەدڵبوون"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "بەستەر"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "بڵاوکردنەوە"
 msgid "Post content"
 msgstr "ناوەڕۆکی پۆست"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "پۆست دروستکرا"
 
@@ -2913,6 +2912,10 @@ msgstr "پۆست نەدۆزرایەوە"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "پۆست چەسپێنرا"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "لە فیدێکدا بڵاوی بکەرەوە"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "دیسان بنێرە"
 msgid "Send email"
 msgstr "ئیمەیڵ بنێرە"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "لە گفتوگۆیەکدا بینێرە"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "چەند هەڵبژاردنێک"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "هاوبەش بکە"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "دەستپێگەیشتنت بەم بەشە نییە."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "هێشتا هیچ فیدێکت نییە."
 

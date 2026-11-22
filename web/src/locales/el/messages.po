@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Αντιγράφηκε"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Αντιγράφηκε στο πρόχειρο"
@@ -1119,6 +1120,10 @@ msgstr "Αντιγράφηκε στο πρόχειρο"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Αντιγραφή"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Αντιγραφή συνδέσμου"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Δημιουργία {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Δημιουργία νέας ροής"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Η εκκαθάριση των αποθηκευμένων δημοσιεύσεων απέτυχε"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Αποτυχία δημιουργίας ροής"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Αποτυχία δημιουργίας συνδέσμου"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Αποτυχία δημιουργίας ανάρτησης"
 
@@ -1949,10 +1956,6 @@ msgstr "Η ροή διαγράφηκε"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Αναγνωριστικό οντότητας ροής ή αποτύπωμα"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Σύνδεσμος ροής"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Φωτεινό"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Μου αρέσει"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Σύνδεσμος"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Ανάρτηση"
 msgid "Post content"
 msgstr "Περιεχόμενο ανάρτησης"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Η ανάρτηση δημιουργήθηκε"
 
@@ -2913,6 +2912,10 @@ msgstr "Η ανάρτηση δεν βρέθηκε"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Η ανάρτηση καρφιτσώθηκε"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Ανάρτηση σε ροή"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Αποστολή ξανά"
 msgid "Send email"
 msgstr "Αποστολή email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Αποστολή σε συνομιλία"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Πολλαπλές επιλογές"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Κοινοποίηση"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Δεν έχετε πρόσβαση σε αυτήν την ενότητα."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Δεν έχετε ακόμα ροές."
 

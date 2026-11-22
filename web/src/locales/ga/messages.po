@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Cóipeáilte"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Cóipeáilte chuig an ngearrthaisce"
@@ -1119,6 +1120,10 @@ msgstr "Cóipeáilte chuig an ngearrthaisce"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Cóipeáil"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Cóipeáil an nasc"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Cruthaigh {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Cruthaigh fotha nua"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Theip ar na postálacha sábháilte a ghlanadh"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Theip ar fhotha a chruthú"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Theip ar nasc a chruthú"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Theip ar phostáil a chruthú"
 
@@ -1949,10 +1956,6 @@ msgstr "Fotha scriosta"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID aonáin nó méarlorg an fhotha"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Nasc fotha"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Geal"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Is maith liom"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Nasc"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Postáil"
 msgid "Post content"
 msgstr "Inneachar na postála"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Postáil cruthaithe"
 
@@ -2913,6 +2912,10 @@ msgstr "Níor aimsíodh an phostáil"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Postáil pionnáilte"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Postáil chuig fotha"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Seol arís"
 msgid "Send email"
 msgstr "Seol ríomhphost"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Seol i gcomhrá"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Roghanna iolracha"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Comhroinn"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Níl rochtain agat ar an rannán seo."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Níl aon fhothaí agat fós."
 

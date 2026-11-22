@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "நகலெடுக்கப்பட்டது"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது"
@@ -1119,6 +1120,10 @@ msgstr "கிளிப்போர்டுக்கு நகலெடுக�
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "நகலெடு"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "இணைப்பை நகலெடு"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} உருவாக்கு"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "புதிய ஃபீட் உருவாக்கு"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "சேமித்த இடுகைகளை அழிக்க முடியவில்லை"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "ஃபீடை உருவாக்க முடியவில்லை"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "இணைப்பை உருவாக்க முடியவில்லை"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "பதிவை உருவாக்க முடியவில்லை"
 
@@ -1949,10 +1956,6 @@ msgstr "ஃபீட் நீக்கப்பட்டது"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ஃபீட் பொருள் ஐடி அல்லது கைரேகை"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "ஊட்ட இணைப்பு"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "லைட்"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "லைக்"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "இணைப்பு"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "பதிவிடு"
 msgid "Post content"
 msgstr "பதிவு உள்ளடக்கம்"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "பதிவு உருவாக்கப்பட்டது"
 
@@ -2913,6 +2912,10 @@ msgstr "பதிவு கிடைக்கவில்லை"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "பதிவு pin செய்யப்பட்டது"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "ஊட்டத்தில் பதிவிடு"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "மீண்டும் அனுப்பு"
 msgid "Send email"
 msgstr "மின்னஞ்சல் அனுப்பு"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "அரட்டையில் அனுப்பு"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "பல தேர்வுகள்"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "பகிர்"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "இந்தப் பிரிவுக்கான அணுகல் உங்களுக்கு இல்லை."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "உங்களிடம் இன்னும் ஃபீட்கள் இல்லை."
 

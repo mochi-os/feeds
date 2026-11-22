@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Nukopijuota"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Nukopijuota į iškarpinę"
@@ -1119,6 +1120,10 @@ msgstr "Nukopijuota į iškarpinę"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopijuoti"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopijuoti nuorodą"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Sukurti {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Sukurti naują srautą"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Nepavyko išvalyti išsaugotų įrašų"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Nepavyko sukurti srauto"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Nepavyko sukurti nuorodos"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Nepavyko sukurti įrašo"
 
@@ -1949,10 +1956,6 @@ msgstr "Srautas ištrintas"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Srauto subjekto ID arba pirštų atspaudas"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Srauto nuoroda"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Šviesi"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Patinka"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Nuoroda"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Skelbti"
 msgid "Post content"
 msgstr "Įrašo turinys"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Įrašas sukurtas"
 
@@ -2913,6 +2912,10 @@ msgstr "Įrašas nerastas"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Įrašas prisegtas"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Paskelbti sraute"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Siųsti dar kartą"
 msgid "Send email"
 msgstr "Siųsti el. laišką"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Siųsti pokalbyje"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Keli pasirinkimai"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Bendrinti"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Neturite prieigos prie šios skilties."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Dar neturite jokių kanalų."
 

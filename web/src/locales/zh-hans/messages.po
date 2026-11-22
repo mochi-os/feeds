@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "已复制"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "已复制到剪贴板"
@@ -1119,6 +1120,10 @@ msgstr "已复制到剪贴板"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "复制"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "复制链接"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "创建{entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "创建新的订阅源"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "清除已保存的帖子失败"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "创建信息流失败"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "创建链接失败"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "创建帖子失败"
 
@@ -1949,10 +1956,6 @@ msgstr "已删除信息流"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "源实体 ID 或指纹"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "信息流链接"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "浅色"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "喜欢"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "链接"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "发布"
 msgid "Post content"
 msgstr "帖子内容"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "帖子已创建"
 
@@ -2913,6 +2912,10 @@ msgstr "帖子未找到"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "帖子已置顶"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "发布到信息流"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "再次发送"
 msgid "Send email"
 msgstr "发送邮件"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "发送到聊天"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "多选"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "分享"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "您无权访问此部分。"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "您还没有源。"
 

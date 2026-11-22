@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Copïwyd"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Wedi'i gopïo i'r clipfwrdd"
@@ -1119,6 +1120,10 @@ msgstr "Wedi'i gopïo i'r clipfwrdd"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Copïo"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Copïo'r ddolen"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Creu {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Creu porthiant newydd"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Methwyd clirio'r postiadau cadwedig"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Methwyd creu ffrwd"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Methwyd creu dolen"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Methwyd creu post"
 
@@ -1949,10 +1956,6 @@ msgstr "Ffrwd wedi'i ddileu"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID endid neu olion bysedd y ffrwd"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Dolen ffrwd"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Golau"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Hoffi"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Dolen"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Postio"
 msgid "Post content"
 msgstr "Cynnwys postiad"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Postiad wedi'i greu"
 
@@ -2913,6 +2912,10 @@ msgstr "Heb ddod o hyd i'r postiad"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Postiad wedi'i binio"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Postio i ffrwd"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Anfon eto"
 msgid "Send email"
 msgstr "Anfon e-bost"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Anfon mewn sgwrs"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Sawl dewis"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Rhannu"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Nid oes gennych fynediad i'r adran hon."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Nid oes gennych unrhyw borthiannau eto."
 

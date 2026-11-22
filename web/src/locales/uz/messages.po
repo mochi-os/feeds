@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Nusxalandi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Buferga nusxalandi"
@@ -1119,6 +1120,10 @@ msgstr "Buferga nusxalandi"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Nusxalash"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Havolani nusxalash"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} yaratish"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Yangi feed yaratish"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Saqlangan postlarni tozalab bo'lmadi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Tasma yaratib boʻlmadi"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Havola yaratib boʻlmadi"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Post yaratib boʻlmadi"
 
@@ -1949,10 +1956,6 @@ msgstr "Tasma oʻchirildi"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Tasma obyekt ID yoki barmoq izi"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Tasma havolasi"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Yorugʻ"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Yoqdi"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Havola"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Joylash"
 msgid "Post content"
 msgstr "Post mazmuni"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Post yaratildi"
 
@@ -2913,6 +2912,10 @@ msgstr "Post topilmadi"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Post mahkamlandi"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Tasmaga joylash"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Qayta yuborish"
 msgid "Send email"
 msgstr "Email yuborish"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Suhbatda yuborish"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Bir nechta tanlov"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Ulashish"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Bu boʻlimga kirish huquqingiz yoʻq."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Sizda hali lentalar yoʻq."
 

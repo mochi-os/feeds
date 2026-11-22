@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "קאָפּירט"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "קאָפּירט צו קליפּברעט"
@@ -1119,6 +1120,10 @@ msgstr "קאָפּירט צו קליפּברעט"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "קאָפּירן"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "קאָפּירן לינק"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "שאַף {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "באַשאַפֿן אַ נײַעם פֿיד"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "ניט געלונגען צו רייניקן די געהיטענע אַרײַנשרײַבן"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "ניט געלונגען צו שאַפֿן פֿיד"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "ניט געלונגען צו שאַפֿן לינק"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "ניט געלונגען צו שאַפֿן בײַטראָג"
 
@@ -1949,10 +1956,6 @@ msgstr "פֿיד אויסגעמעקט"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "פֿיד־ענטיטעט־ID אָדער פֿינגער־אָפּדרוק"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "פֿיד לינק"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "ליכטיק"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "געפֿעלט"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "לינק"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "פֿאַרעפֿנטלעך"
 msgid "Post content"
 msgstr "פּאָסט אינהאַלט"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "פּאָסט באַשאַפֿן"
 
@@ -2913,6 +2912,10 @@ msgstr "פּאָסט ניט געפֿונען"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "פּאָסט פֿעסטגעמאַכט"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "פּובליקירן אין אַ פֿיד"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "שיקן ווידער"
 msgid "Send email"
 msgstr "שיק בליצפּאָסט"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "שיקן אין אַ שמועס"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "עטלעכע ברירות"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "טיילן"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "איר האָט נישט קיין צוטריט צו דעם אָפּטייל."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "איר האָט נאָך קיין פֿידס."
 

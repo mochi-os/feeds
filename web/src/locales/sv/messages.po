@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Kopierat"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Kopierat till urklipp"
@@ -1119,6 +1120,10 @@ msgstr "Kopierat till urklipp"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiera"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopiera länk"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Skapa {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Skapa ett nytt flöde"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Det gick inte att rensa sparade inlägg"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Kunde inte skapa flöde"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Kunde inte skapa länk"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Kunde inte skapa inlägg"
 
@@ -1949,10 +1956,6 @@ msgstr "Flöde raderat"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Flödesentitets-ID eller fingeravtryck"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Flödeslänk"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Ljust"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Gilla"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Länk"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Publicera"
 msgid "Post content"
 msgstr "Inläggsinnehåll"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Inlägg skapat"
 
@@ -2913,6 +2912,10 @@ msgstr "Inlägget hittades inte"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Inlägg fäst"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Publicera i ett flöde"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Skicka igen"
 msgid "Send email"
 msgstr "Skicka e-post"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Skicka i en chatt"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Flera val"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Dela"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Du har inte åtkomst till det här avsnittet."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Du har inga flöden ännu."
 

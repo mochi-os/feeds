@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "ਕਾਪੀ ਕੀਤਾ ਗਿਆ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕਾਪੀ ਹੋਇਆ"
@@ -1119,6 +1120,10 @@ msgstr "ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕਾਪੀ ਹੋਇਆ"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "ਕਾਪੀ ਕਰੋ"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "ਲਿੰਕ ਕਾਪੀ ਕਰੋ"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} ਬਣਾਓ"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "ਇੱਕ ਨਵੀਂ ਫੀਡ ਬਣਾਓ"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "ਸੰਭਾਲੀਆਂ ਪੋਸਟਾਂ ਸਾਫ਼ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "ਫੀਡ ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "ਲਿੰਕ ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "ਪੋਸਟ ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ"
 
@@ -1949,10 +1956,6 @@ msgstr "ਫੀਡ ਮਿਟਾਈ ਗਈ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ਫੀਡ ਇਕਾਈ ID ਜਾਂ ਫਿੰਗਰਪ੍ਰਿੰਟ"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "ਫੀਡ ਲਿੰਕ"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "ਲਾਈਟ"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "ਪਸੰਦ"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "ਲਿੰਕ"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "ਪੋਸਟ ਕਰੋ"
 msgid "Post content"
 msgstr "ਪੋਸਟ ਸਮੱਗਰੀ"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "ਪੋਸਟ ਬਣਾਈ ਗਈ"
 
@@ -2913,6 +2912,10 @@ msgstr "ਪੋਸਟ ਨਹੀਂ ਮਿਲੀ"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "ਪੋਸਟ ਪਿਨ ਕੀਤੀ ਗਈ"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "ਫੀਡ 'ਤੇ ਪੋਸਟ ਕਰੋ"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "ਫਿਰ ਭੇਜੋ"
 msgid "Send email"
 msgstr "ਈਮੇਲ ਭੇਜੋ"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "ਚੈਟ ਵਿੱਚ ਭੇਜੋ"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "ਕਈ ਚੋਣਾਂ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "ਸਾਂਝਾ ਕਰੋ"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "ਤੁਹਾਡੇ ਕੋਲ ਇਸ ਭਾਗ ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਹੈ।"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "ਤੁਹਾਡੀਆਂ ਅਜੇ ਕੋਈ ਫੀਡਾਂ ਨਹੀਂ ਹਨ।"
 

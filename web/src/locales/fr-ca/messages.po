@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr ""
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr ""
@@ -1118,6 +1119,10 @@ msgstr ""
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
+msgstr ""
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
 msgstr ""
 
 #: src/features/feeds/components/filters-section.tsx
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr ""
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr ""
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr ""
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr ""
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Échec de la création du lien"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr ""
 
@@ -1949,10 +1956,6 @@ msgstr ""
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr ""
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Lien du flux"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr ""
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr ""
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Lien"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr ""
 msgid "Post content"
 msgstr ""
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr ""
 
@@ -2912,6 +2911,10 @@ msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
+msgstr ""
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
 msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx
@@ -3464,6 +3467,10 @@ msgstr ""
 msgid "Send email"
 msgstr ""
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr ""
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr ""
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr ""
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr ""
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr ""
 

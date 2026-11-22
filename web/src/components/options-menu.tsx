@@ -3,6 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from '@tanstack/react-router'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   DropdownMenuCheckboxItem,
@@ -10,11 +11,13 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   OptionsMenu as SharedOptionsMenu,
+  absoluteRouteUrl,
   handleServerError,
   optimistic,
 } from '@mochi/web'
 import { Bell } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
+import { useShareLabels } from '@/lib/share-labels'
 
 interface OptionsMenuProps {
   entityId?: string
@@ -23,8 +26,10 @@ interface OptionsMenuProps {
   onSettings?: () => void
   onUnsubscribe?: () => void
   unsubscribePending?: boolean
-  /** Show 'Copy invite link' - owner only (the share action is owner-gated). */
+  /** Show Share - owner only (the share action is owner-gated). */
   canShare?: boolean
+  /** The feed's name, which a post of it in a feed starts with. */
+  name?: string
   /** A feed the user holds, whose notification switches the menu offers. */
   notificationsFeed?: string
 }
@@ -51,12 +56,28 @@ function useNotifications(feedId: string | undefined) {
 }
 
 // Binds the feeds api and routing to the shared entity menu.
-export function OptionsMenu({ notificationsFeed, ...props }: OptionsMenuProps) {
+export function OptionsMenu({
+  notificationsFeed,
+  name,
+  ...props
+}: OptionsMenuProps) {
   useNotifications(notificationsFeed)
+  const router = useRouter()
+  const shareLabels = useShareLabels()
+  const { entityId } = props
   return (
     <SharedOptionsMenu
       {...props}
-      linkTitle={<Trans>Feed link</Trans>}
+      shareLabels={shareLabels}
+      shareName={name}
+      shareUrl={() =>
+        entityId
+          ? absoluteRouteUrl(router, {
+              to: '/$feedId',
+              params: { feedId: entityId },
+            })
+          : ''
+      }
       createShareLink={createShareLink}
       createRssToken={createRssToken}
       revokeRssToken={revokeRssToken}

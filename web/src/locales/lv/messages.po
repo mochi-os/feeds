@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Nokopēts"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Nokopēts starpliktuvē"
@@ -1119,6 +1120,10 @@ msgstr "Nokopēts starpliktuvē"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopēt"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopēt saiti"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Izveidot {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Izveidot jaunu plūsmu"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Neizdevās notīrīt saglabātos ierakstus"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Neizdevās izveidot plūsmu"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Neizdevās izveidot saiti"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Neizdevās izveidot ierakstu"
 
@@ -1949,10 +1956,6 @@ msgstr "Plūsma dzēsta"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Plūsmas entītijas ID vai pirkstu nospiedums"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Plūsmas saite"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Gaišs"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Patīk"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Saite"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Publicēt"
 msgid "Post content"
 msgstr "Ieraksta saturs"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Ieraksts izveidots"
 
@@ -2913,6 +2912,10 @@ msgstr "Ieraksts nav atrasts"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Ieraksts piesprausts"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Publicēt plūsmā"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Sūtīt vēlreiz"
 msgid "Send email"
 msgstr "Sūtīt e-pastu"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Sūtīt čatā"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Vairākas izvēles"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Kopīgot"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Jums nav piekļuves šai sadaļai."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Jums vēl nav neviena plūsma."
 

@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Másolva"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "A vágólapra másolva"
@@ -1119,6 +1120,10 @@ msgstr "A vágólapra másolva"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Másolás"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Hivatkozás másolása"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} létrehozása"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Új feed létrehozása"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "A mentett bejegyzések törlése nem sikerült"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Nem sikerült létrehozni a hírcsatornát"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Nem sikerült létrehozni a hivatkozást"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Nem sikerült létrehozni a bejegyzést"
 
@@ -1949,10 +1956,6 @@ msgstr "Hírcsatorna törölve"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Hírfolyam entitás azonosító vagy ujjlenyomat"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Hírfolyam-hivatkozás"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Világos"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Tetszik"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Hivatkozás"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Közzététel"
 msgid "Post content"
 msgstr "Bejegyzés tartalma"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Bejegyzés létrehozva"
 
@@ -2913,6 +2912,10 @@ msgstr "A bejegyzés nem található"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Bejegyzés rögzítve"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Közzététel hírcsatornában"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Újraküldés"
 msgid "Send email"
 msgstr "E-mail küldése"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Küldés csevegésben"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Több választás"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Megosztás"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Nincs hozzáférése ehhez a részhez."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Még nincsenek hírfolyamai."
 

@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Oñekopiáma"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Oñekopiáma clipboard-pe"
@@ -1119,6 +1120,10 @@ msgstr "Oñekopiáma clipboard-pe"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopia"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopia juajuha"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Emoheñói {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Emoheñói peteĩ feed pyahu"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Ndaikatúi oñemboguepa umi marandu ñongatupyre"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Ndaikatúi oñemoheñói feed"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Ndaikatúi oñemoheñói juajuha"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Ndaikatúi oñemoheñói marandu"
 
@@ -1949,10 +1956,6 @@ msgstr "Oñembogue feed"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed entidad ID térã fingerprint"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Feed juajuha"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Hesakã"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Aikose"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Juajuha"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Emoherakuã"
 msgid "Post content"
 msgstr "Marandu contenido"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Marandu oñemoheñói"
 
@@ -2913,6 +2912,10 @@ msgstr "Marandu ndojejuhúi"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Marandu oñembojáma"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Emoherakuã peteĩ marandu syry-pe"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Emondo jey"
 msgid "Send email"
 msgstr "Emondo email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Emondo peteĩ chat-pe"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Heta jeporavo"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Emboja'o"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Ndereguerekói jeike ko vorépe."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Ndereguerekói gueteri feed."
 

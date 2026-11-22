@@ -26,8 +26,16 @@ vi.mock('@/api/feeds', () => ({
           server: 'example.com',
           hosted: true,
         },
+        {
+          id: 'account-2',
+          type: 'bluesky',
+          identifier: 'me.example.com',
+          name: 'Me',
+          server: 'example.com',
+          hosted: true,
+        },
       ],
-      publish: ['account-1'],
+      publish: ['account-1', 'account-2'],
     }),
   },
 }))
@@ -95,6 +103,63 @@ describe('NewPostDialog publishing', () => {
     })
     fireEvent.click(screen.getByRole('button', { name: 'Post' }))
     await vi.waitFor(() => expect(onSubmit).toHaveBeenCalled())
-    expect(onSubmit.mock.calls[0][0].accounts).toEqual([])
+    expect(onSubmit.mock.calls[0][0].accounts).toEqual(['account-2'])
+  })
+
+  it('leaves the accounts to the feed when none was changed', async () => {
+    const onSubmit = open()
+    await screen.findByRole('button', { name: /Also post to/ })
+    fireEvent.change(screen.getByLabelText('Post content'), {
+      target: { value: 'Hello' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Post' }))
+    await vi.waitFor(() => expect(onSubmit).toHaveBeenCalled())
+    expect(onSubmit.mock.calls[0][0].accounts).toBeUndefined()
+  })
+})
+
+describe('NewPostDialog filled in by a share', () => {
+  beforeEach(() => {
+    i18n.load('en', {})
+    i18n.activate('en')
+  })
+
+  const share = (onSubmit = vi.fn()) => {
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    })
+    render(
+      <QueryClientProvider client={client}>
+        <I18nProvider i18n={i18n}>
+          <NewPostDialog
+            feeds={[feed]}
+            onSubmit={onSubmit}
+            open
+            onOpenChange={() => {}}
+            hideTrigger
+            body={'Launch party\n\nhttps://example.org/e1'}
+          />
+        </I18nProvider>
+      </QueryClientProvider>
+    )
+    return onSubmit
+  }
+
+  it('starts with what was shared', async () => {
+    share()
+    expect(await screen.findByLabelText('Post content')).toHaveValue(
+      'Launch party\n\nhttps://example.org/e1'
+    )
+  })
+
+  it('posts what was shared, leaving the accounts to the feed', async () => {
+    const onSubmit = share()
+    await screen.findByRole('button', { name: /Also post to/ })
+    fireEvent.click(screen.getByRole('button', { name: 'Post' }))
+    await vi.waitFor(() => expect(onSubmit).toHaveBeenCalled())
+    expect(onSubmit.mock.calls[0][0].body).toBe(
+      'Launch party\n\nhttps://example.org/e1'
+    )
+    expect(onSubmit.mock.calls[0][0].accounts).toBeUndefined()
   })
 })

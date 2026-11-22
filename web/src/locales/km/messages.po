@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "បានចម្លង"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "បានចម្លងទៅក្ដារតម្បៀតខ្ទាស់"
@@ -1119,6 +1120,10 @@ msgstr "បានចម្លងទៅក្ដារតម្បៀតខ្ទ
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "ចម្លង"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "ចម្លងតំណ"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "បង្កើត {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "បង្កើតមតិព័ត៌មានថ្មី"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "បរាជ័យក្នុងការសម្អាតការបង្ហោះដែលបានរក្សាទុក"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "បរាជ័យក្នុងការបង្កើតព័ត៌មានបង្ហាញ"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "បរាជ័យក្នុងការបង្កើតតំណ"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "បរាជ័យក្នុងការបង្កើតការបង្ហោះ"
 
@@ -1949,10 +1956,6 @@ msgstr "បានលុបព័ត៌មានបង្ហាញ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "លេខសម្គាល់អង្គភាព ឬស្នាមម្រាមដៃព័ត៌មានបង្ហាញ"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "តំណព័ត៌មាន"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "ភ្លឺ"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "ចូលចិត្ត"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "តំណ"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "ប្រកាស"
 msgid "Post content"
 msgstr "មាតិកាប្រកាស"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "បានបង្កើតប្រកាស"
 
@@ -2913,6 +2912,10 @@ msgstr "រកមិនឃើញប្រកាស"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "បានខ្ទាស់ប្រកាស"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "ប្រកាសទៅព័ត៌មានបង្ហាញ"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "ផ្ញើម្តងទៀត"
 msgid "Send email"
 msgstr "ផ្ញើអ៊ីមែល"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "ផ្ញើក្នុងការសន្ទនា"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "ជម្រើសច្រើន"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "ចែករំលែក"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "អ្នកមិនមានសិទ្ធិចូលប្រើផ្នែកនេះទេ។"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "អ្នកមិនទាន់មានព័ត៌មានទេ។"
 

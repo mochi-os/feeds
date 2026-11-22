@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "کاپي شو"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "په کلیپ بورډ کاپي شو"
@@ -1119,6 +1120,10 @@ msgstr "په کلیپ بورډ کاپي شو"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "کاپي کړئ"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "لینک کاپي کړئ"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} جوړ کړئ"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "نوی فیډ جوړ کړئ"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "د خوندي شویو پوستونو پاکول ناکام شو"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "د فیډ جوړولو پاتې راغلل"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "د لینک جوړولو پاتې راغلل"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "د پوسټ جوړولو پاتې راغلل"
 
@@ -1949,10 +1956,6 @@ msgstr "فیډ وشلید"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "د فیډ موجودیت ID یا د ګوتو نښه"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "د فیډ لینک"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "روښانه"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "خوښ"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "لینک"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "خپور کړئ"
 msgid "Post content"
 msgstr "د لیکنې مینځپانګه"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "لیکنه جوړه شوه"
 
@@ -2913,6 +2912,10 @@ msgstr "لیکنه ونه موندل شوه"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "لیکنه پن شوه"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "په فیډ کې خپور کړئ"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "بیا ولیږئ"
 msgid "Send email"
 msgstr "بریښنالیک ولېږئ"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "په چټ کې ولېږئ"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "څو انتخابونه"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "شریکه کړئ"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "تاسو دې برخې ته لاسرسی نه لرئ."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "تاسو لا تر اوسه هیڅ فیډ نه لرئ."
 

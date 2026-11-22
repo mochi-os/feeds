@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Copiatawa"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Clipboard-ru copiata"
@@ -1119,6 +1120,10 @@ msgstr "Clipboard-ru copiata"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Copiaña"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Enlace copiaña"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} luraña"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Mä machaq feed luraña"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Imat qillqatanak q'umachañax pantjawayi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Janiw feed lurañ atkiti"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Janiw enlace lurañ atkiti"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Janiw qillqata lurañ atkiti"
 
@@ -1949,10 +1956,6 @@ msgstr "Feed chhaqtayatawa"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed entidad ID jan ukax fingerprint"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Feed enlace"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Qhana"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Munaña"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Enlace"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Qillqaña"
 msgid "Post content"
 msgstr "Qillqata contenido"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Qillqata luratawa"
 
@@ -2913,6 +2912,10 @@ msgstr "Qillqata jan jikxatasiti"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Qillqata ch'akuntata"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Mä feed ukar qillqaña"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Wasitata apayaña"
 msgid "Send email"
 msgstr "Email apayaña"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Mä chat ukar apayaña"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Walja chhijllawinaka"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Compartiña"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Janiw aka t'aqar mantañ utjktamti."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Janïraw feeds utjkiti."
 

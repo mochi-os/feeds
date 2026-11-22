@@ -52,18 +52,21 @@ import { useQuery } from '@tanstack/react-query'
 import { feedsApi } from '@/api/feeds'
 import { PollEditor, PostFeaturesFields, pollValid } from './post-features'
 
+/** What the dialog posts. */
+export type NewPostInput = {
+  feedId: string
+  body: string
+  data?: PostData
+  files: File[]
+  captions: string[]
+  accounts?: string[]
+  features?: PostFeatures
+  poll?: PostPollInput
+}
+
 type NewPostDialogProps = {
   feeds: FeedSummary[]
-  onSubmit: (input: {
-    feedId: string
-    body: string
-    data?: PostData
-    files: File[]
-    captions: string[]
-    accounts?: string[]
-    features?: PostFeatures
-    poll?: PostPollInput
-  }) => void | Promise<void>
+  onSubmit: (input: NewPostInput) => void | Promise<void>
   /** Controlled open state */
   open?: boolean
   /** Callback when open state changes */
@@ -74,6 +77,8 @@ type NewPostDialogProps = {
   showFeedSelector?: boolean
   /** Byte progress of the submit upload, when the caller tracks it */
   progress?: Upload | null
+  /** What the post says to begin with, as an app's Share hands it over. */
+  body?: string
 }
 
 type NewPostFormState = {
@@ -105,6 +110,7 @@ export function NewPostDialog({
   hideTrigger,
   showFeedSelector,
   progress,
+  body = '',
 }: NewPostDialogProps) {
   const { t } = useLingui()
   // The post's language is the writer's own, as the composer runs in it.
@@ -120,7 +126,7 @@ export function NewPostDialog({
 
   const [form, setForm] = useState<NewPostFormState>(() => ({
     feedId: feeds[0]?.id ?? '',
-    body: '',
+    body,
     data: {},
     files: [],
     captions: {},

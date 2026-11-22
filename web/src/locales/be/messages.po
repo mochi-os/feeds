@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Скапіявана"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Скапіравана ў буфер абмену"
@@ -1119,6 +1120,10 @@ msgstr "Скапіравана ў буфер абмену"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Капіраваць"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Капіраваць спасылку"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Стварыць {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Стварыць новую стужку"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Не ўдалося ачысціць захаваныя допісы"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Не ўдалося стварыць стужку"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Не ўдалося стварыць спасылку"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Не ўдалося стварыць допіс"
 
@@ -1949,10 +1956,6 @@ msgstr "Стужка выдалена"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID сутнасці стужкі або адбітак пальца"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Спасылка на стужку"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Светлая"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Падабаецца"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Спасылка"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Апублікаваць"
 msgid "Post content"
 msgstr "Змест паста"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Пост створаны"
 
@@ -2913,6 +2912,10 @@ msgstr "Пост не знойдзены"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Пост замацаваны"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Апублікаваць у стужцы"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Адправіць яшчэ раз"
 msgid "Send email"
 msgstr "Адправіць эл. пошту"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Адправіць у чаце"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Некалькі варыянтаў"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Падзяліцца"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "У вас няма доступу да гэтага раздзела."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "У вас яшчэ няма стужак."
 

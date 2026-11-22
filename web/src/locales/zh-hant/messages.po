@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "已複製"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "已複製到剪貼簿"
@@ -1119,6 +1120,10 @@ msgstr "已複製到剪貼簿"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "複製"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "複製連結"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "建立{entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "建立新資訊流"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "清除已儲存的貼文失敗"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "建立資訊流失敗"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "建立連結失敗"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "建立貼文失敗"
 
@@ -1949,10 +1956,6 @@ msgstr "資訊流已刪除"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "資訊流實體 ID 或指紋"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "資訊流連結"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "淺色"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "喜歡"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "連結"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "發佈"
 msgid "Post content"
 msgstr "貼文內容"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "已建立貼文"
 
@@ -2913,6 +2912,10 @@ msgstr "找不到貼文"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "貼文已釘選"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "發布到資訊流"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "重新傳送"
 msgid "Send email"
 msgstr "傳送郵件"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "傳送到聊天"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "可複選"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "分享"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "您沒有存取此區段的權限。"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "您尚未擁有任何資訊流。"
 

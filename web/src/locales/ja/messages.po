@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "コピーしました"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "クリップボードにコピーしました"
@@ -1119,6 +1120,10 @@ msgstr "クリップボードにコピーしました"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "コピー"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "リンクをコピー"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel}を作成"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "新しいフィードを作成"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "保存した投稿を消去できませんでした"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "フィードの作成に失敗しました"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "リンクの作成に失敗しました"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "投稿の作成に失敗しました"
 
@@ -1949,10 +1956,6 @@ msgstr "フィードを削除しました"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "フィードのエンティティIDまたはフィンガープリント"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "フィードのリンク"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "ライト"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "いいね"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "リンク"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "投稿"
 msgid "Post content"
 msgstr "投稿内容"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "投稿を作成しました"
 
@@ -2913,6 +2912,10 @@ msgstr "投稿が見つかりません"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "投稿をピン留めしました"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "フィードに投稿"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "再送信"
 msgid "Send email"
 msgstr "メールを送信"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "チャットで送信"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "複数選択"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "共有"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "このセクションへのアクセス権がありません。"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "まだフィードがありません。"
 

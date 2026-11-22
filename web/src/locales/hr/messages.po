@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Kopirano"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Kopirano u međuspremnik"
@@ -1119,6 +1120,10 @@ msgstr "Kopirano u međuspremnik"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiraj"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopiraj poveznicu"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Stvori {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Stvori novi feed"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Spremljene objave nije moguće obrisati"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Stvaranje feeda nije uspjelo"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Stvaranje veze nije uspjelo"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Stvaranje objave nije uspjelo"
 
@@ -1949,10 +1956,6 @@ msgstr "Feed izbrisan"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID entiteta feeda ili otisak"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Poveznica feeda"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Svijetlo"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Sviđa mi se"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Poveznica"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Objavi"
 msgid "Post content"
 msgstr "Sadržaj objave"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Objava kreirana"
 
@@ -2913,6 +2912,10 @@ msgstr "Objava nije pronađena"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Objava pričvršćena"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Objavi u feed"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Pošalji ponovno"
 msgid "Send email"
 msgstr "Pošalji e-poštu"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Pošalji u razgovoru"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Više odgovora"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Podijeli"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Nemate pristup ovom odjeljku."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Još nemate feedova."
 

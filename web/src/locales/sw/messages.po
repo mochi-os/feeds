@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Imenakiliwa"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Imenakiliwa kwenye ubao wa kunakili"
@@ -1119,6 +1120,10 @@ msgstr "Imenakiliwa kwenye ubao wa kunakili"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Nakili"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Nakili kiungo"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Unda {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Unda mlisho mpya"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Imeshindwa kufuta machapisho yaliyohifadhiwa"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Imeshindwa kuunda mlisho"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Imeshindwa kuunda kiungo"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Imeshindwa kuunda chapisho"
 
@@ -1949,10 +1956,6 @@ msgstr "Mlisho umefutwa"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Kitambulisho cha Entiti ya Mlisho au Alama ya Kidole"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Kiungo cha mlisho"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Mwepesi"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Pendezwa"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Kiungo"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Chapisha"
 msgid "Post content"
 msgstr "Maudhui ya chapisho"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Chapisho limeundwa"
 
@@ -2913,6 +2912,10 @@ msgstr "Chapisho halikupatikana"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Chapisho limebandikwa"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Chapisha kwenye mlisho"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Tuma tena"
 msgid "Send email"
 msgstr "Tuma barua pepe"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Tuma kwenye mazungumzo"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Chaguo nyingi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Shiriki"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Huna ruhusa ya kufikia sehemu hii."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Bado huna milisho yoyote."
 

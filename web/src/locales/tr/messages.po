@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Kopyalandı"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Panoya kopyalandı"
@@ -1119,6 +1120,10 @@ msgstr "Panoya kopyalandı"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopyala"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Bağlantıyı kopyala"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} oluştur"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Yeni bir feed oluştur"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Kaydedilen gönderiler temizlenemedi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Akış oluşturulamadı"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Bağlantı oluşturulamadı"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Gönderi oluşturulamadı"
 
@@ -1949,10 +1956,6 @@ msgstr "Akış silindi"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Akış varlık kimliği veya parmak izi"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Akış bağlantısı"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Açık"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Beğen"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Bağlantı"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Paylaş"
 msgid "Post content"
 msgstr "Gönderi içeriği"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Gönderi oluşturuldu"
 
@@ -2913,6 +2912,10 @@ msgstr "Gönderi bulunamadı"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Gönderi sabitlendi"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Bir akışta yayımla"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Tekrar gönder"
 msgid "Send email"
 msgstr "E-posta gönder"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Bir sohbette gönder"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Birden çok seçim"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Paylaş"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Bu bölüme erişiminiz yok."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Henüz akışın yok."
 

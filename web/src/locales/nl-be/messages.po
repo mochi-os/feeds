@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Gekopieerd"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Gekopieerd naar klembord"
@@ -1119,6 +1120,10 @@ msgstr "Gekopieerd naar klembord"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiëren"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Link kopiëren"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} aanmaken"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Een nieuwe feed aanmaken"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Bewaarde berichten wissen mislukt"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Feed aanmaken mislukt"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Link aanmaken mislukt"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Bericht aanmaken mislukt"
 
@@ -1949,10 +1956,6 @@ msgstr "Feed verwijderd"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed-entiteit-ID of vingerafdruk"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Feedlink"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Licht"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Vind ik leuk"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Link"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Plaatsen"
 msgid "Post content"
 msgstr "Berichtinhoud"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Bericht aangemaakt"
 
@@ -2913,6 +2912,10 @@ msgstr "Bericht niet gevonden"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Bericht vastgemaakt"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "In een feed plaatsen"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Opnieuw verzenden"
 msgid "Send email"
 msgstr "E-mail verzenden"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "In een chat versturen"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Meerdere keuzes"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Delen"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Je hebt geen toegang tot dit onderdeel."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "U hebt nog geen feeds."
 

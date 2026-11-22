@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Копирано"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Копирано во клипборд"
@@ -1119,6 +1120,10 @@ msgstr "Копирано во клипборд"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Копирај"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Копирај врска"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Создај {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Создај нов канал"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Чистењето на зачуваните објави не успеа"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Неуспешно креирање на канал"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Неуспешно креирање на врска"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Неуспешно креирање на објава"
 
@@ -1949,10 +1956,6 @@ msgstr "Каналот е избришан"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID на ентитет на канал или отпечаток"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Врска на каналот"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Светло"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Допаѓа"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Врска"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Објави"
 msgid "Post content"
 msgstr "Содржина на објавата"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Објавата е креирана"
 
@@ -2913,6 +2912,10 @@ msgstr "Објавата не е пронајдена"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Објавата е закачена"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Објави во канал"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Испрати повторно"
 msgid "Send email"
 msgstr "Испрати е-пошта"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Испрати во разговор"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Повеќе избори"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Сподели"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Немате пристап до овој дел."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Сè уште немате канали."
 

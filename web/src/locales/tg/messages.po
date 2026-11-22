@@ -1105,6 +1105,7 @@ msgid "Copied"
 msgstr "Нусхабардорӣ шуд"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Ба буфер нусхабардорӣ шуд"
@@ -1119,6 +1120,10 @@ msgstr "Ба буфер нусхабардорӣ шуд"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Нусхабардорӣ"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Нусхабардории пайванд"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1202,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Сохтани {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Эҷоди навори нав"
 
@@ -1639,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Тоза кардани паёмҳои нигоҳдошташуда ноком шуд"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1649,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Эҷоди фид ба анҷом нарасид"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Эҷоди пайванд ба анҷом нарасид"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Эҷоди паём ба анҷом нарасид"
 
@@ -1949,10 +1956,6 @@ msgstr "Фид ҳазф шуд"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID-и объекти фид ё нақши ангушт"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Пайванди навор"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2295,10 +2298,6 @@ msgstr "Равшан"
 #: src/features/feeds/constants.ts
 msgid "Like"
 msgstr "Писандидан"
-
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Пайванд"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -2897,7 +2896,7 @@ msgstr "Нашр кардан"
 msgid "Post content"
 msgstr "Мӯҳтавои пост"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Пост эҷод шуд"
 
@@ -2913,6 +2912,10 @@ msgstr "Пост ёфт нашуд"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Пост часпонда шуд"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Дар фид нашр кардан"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3464,6 +3467,10 @@ msgstr "Бори дигар фиристодан"
 msgid "Send email"
 msgstr "Имейл фиристодан"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Дар чат фиристодан"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3520,6 +3527,8 @@ msgstr "Якчанд интихоб"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Мубодила"
 
@@ -4207,6 +4216,7 @@ msgid "You do not have access to this section."
 msgstr "Шумо ба ин бахш дастрасӣ надоред."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Шумо ҳанӯз навор надоред."
 
