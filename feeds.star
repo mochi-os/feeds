@@ -4790,12 +4790,17 @@ def action_delete(a):
 	for comment in mochi.db.rows("select id from comments where feed=?", feed_id) or []:
 		attachment_clear(comment["id"], kind="comment")
 
+	# Each source goes as a removed one does, so what it follows or reads
+	# outside is ended rather than left delivering to a feed that is gone.
+	for source in mochi.db.rows("select * from sources where feed=?", feed_id) or []:
+		mochi.db.execute("delete from source_posts where source=?", source["id"])
+		mochi.db.execute("delete from sources where id=?", source["id"])
+		source_leave(feed_id, source, user_id)
+
 	# Delete all feed data
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
-	mochi.db.execute("delete from source_posts where source in (select id from sources where feed=?)", feed_id)
 	mochi.db.execute("delete from score_cache where feed=?", feed_id)
 	mochi.db.execute("delete from post_scores where post in (select id from posts where feed=?)", feed_id)
-	mochi.db.execute("delete from sources where feed=?", feed_id)
 	rss_tokens_revoke(feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
@@ -8886,14 +8891,26 @@ def source_remove(feed, source, user_id, delete_posts, unfollow=True):
 	# outlast this one on a large source.
 	if delete_posts or network:
 		copies_withdraw_start()
+	source_leave(feed_id, source, user_id, unfollow)
+
+# source_leave is what a source gone from a feed ends outside it, its row
+# already deleted: its WebSub subscription; the follow of a person followed
+# through a hosted account, unless another feed still follows them through it;
+# another Mochi feed it read, let go of where nothing else reads it; and the
+# feed's polls, once no polled source is left. A feed deleted whole takes each
+# of its sources off this way, or their servers deliver to it for ever.
+def source_leave(feed_id, source, user_id, unfollow=True):
+	source_id = source["id"]
 	if web_protocols():
 		mochi.websub.unsubscribe(source_id)
 
 	# A person followed through a hosted account is unfollowed, unless another
-	# feed still follows them through it (phases 17 and 19).
+	# feed still follows them through it (phases 17 and 19), or the follow has
+	# already ended, refused or dropped on their side, which the account no
+	# longer lists and would refuse to undo.
 	if unfollow and source["type"] == "person/posts" and source.get("account"):
 		acc = publish_account(source["account"])
-		if acc and acc.get("hosted") and not person_followed_elsewhere(acc, source["url"], source_id):
+		if acc and acc.get("hosted") and not person_followed_elsewhere(acc, source["url"], source_id) and mochi.account.following(acc["id"], actor=source["url"]):
 			mochi.account.unfollow(acc["id"], source["url"])
 
 	# For feed/posts type, clean up feed data if no longer needed
