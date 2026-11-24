@@ -58,7 +58,7 @@
 	"require": {"version": {"minimum": "2.0.19"}},
 
 	"database": {
-		"schema": 25,
+		"schema": 27,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -145,7 +145,7 @@
 		":feed/-/generator/set": {"function": "action_generator_set"},
 		":feed/-/import": {"function": "action_import"},
 		":feed/-/backups": {"function": "action_backups", "read": true},
-		":feed/-/backups/file": {"function": "action_backup_file", "read": true},
+		":feed/-/backups/file": {"function": "action_backup_file", "read": true}, // asset-ok: a download the client fetches with its app token
 		":feed/-/attachments/:id": {"function": "action_attachment", "public": true, "asset": true},
 		":feed/-/attachments/:id/thumbnail": {"function": "action_attachment_thumbnail", "public": true, "asset": true},
 		":feed/-/attachments/:id/preview": {"function": "action_attachment_preview", "public": true, "asset": true},
@@ -162,7 +162,7 @@
 		":feed/-/sort/set": {"function": "action_sort_set_feed"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed", "read": true},
-		":feed/-/:post/image": {"function": "action_post_image", "public": true, "asset": true},
+		":feed/-/:post/image": {"function": "action_post_image", "public": true, "read": true},
 		":feed/-/:post/edit": {"function": "action_post_edit"},
 		":feed/-/:post/delete": {"function": "action_post_delete"},
 		":feed/-/:post/react": {"function": "action_post_react"},
@@ -213,6 +213,7 @@
 		"tag/add/submit": {"function": "event_tag_add_submit"},
 		"tag/remove": {"function": "event_tag_remove"},
 		"tag/remove/submit": {"function": "event_tag_remove_submit"},
+		"tag/refused": {"function": "event_tag_refused"},
 		"deleted": {"function": "event_deleted"},
 		"post/create": {"function": "event_post_create"},
 		"post/edit": {"function": "event_post_edit"},

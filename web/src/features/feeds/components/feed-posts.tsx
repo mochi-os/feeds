@@ -209,7 +209,7 @@ type FeedPostsProps = {
   isFetchingNextPage?: boolean
 }
 
-// Lazily fetch og:image for RSS posts that don't have one yet
+// Ask the server for the image of an RSS post whose data names none
 function LazyRssImage({
   feedId,
   postId,
@@ -223,9 +223,9 @@ function LazyRssImage({
   rssHtml?: string
   rssTitle?: string
 }) {
-  // Cache the og:image lookup in the query cache keyed by post id: navigating
-  // away and back must not re-fire the request, since for a logged-in caller
-  // each one can drive a server-side outbound fetch of the article.
+  // The server looks up the article's og:image when it stores the post, and
+  // the route only reads back what it kept, so the answer for a post does not
+  // change: cache it by post id and never ask again.
   const { data: image } = useQuery({
     queryKey: ['post-image', feedId, postId],
     queryFn: () => feedsApi.getPostImage(feedId, postId),

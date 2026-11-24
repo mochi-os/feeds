@@ -243,17 +243,143 @@ def enrich_tags(tags, interest_map):
 # "none" explicitly blocks all access (stored as deny rules for all levels).
 ACCESS_LEVELS = ["view", "react", "comment"]
 
+# access_ceiling sets a subject's level on a resource as a ceiling: an allow
+# for every operation the level includes and a deny for every one above it, so
+# "none" denies all three. A single allow for the level left the operations
+# above it to broader rules - the + comment grant, a group, the implicit
+# subscriber grant - and "View only" commented. action_access_set and the step
+# that rewrites levels stored before this share it. A group's "none" is a
+# single "*" deny instead: core takes a group's "*" deny as a veto over every
+# group's grant on the resource, where its denies of the three levels lost to
+# another of the member's groups allowing one.
+def access_ceiling(subject, resource, level, granter):
+	if subject.startswith("@") and level == "none":
+		# In one write where core offers it, so a failure part way cannot
+		# leave the group with some of its rules or none.
+		if hasattr(mochi.access, "replace"):
+			mochi.access.replace(subject, resource, {"*": False}, granter)
+			return
+		for op in ACCESS_LEVELS + ["*"]:
+			mochi.access.revoke(subject, resource, op)
+		mochi.access.deny(subject, resource, "*", granter)
+		return
+	for op in ACCESS_LEVELS + ["*"]:
+		mochi.access.revoke(subject, resource, op)
+	top = ACCESS_LEVELS.index(level) if level in ACCESS_LEVELS else -1
+	for i in range(len(ACCESS_LEVELS)):
+		if i <= top:
+			mochi.access.allow(subject, resource, ACCESS_LEVELS[i], granter)
+		else:
+			mochi.access.deny(subject, resource, ACCESS_LEVELS[i], granter)
+
+# access_fold turns a resource's rules into one row per subject, the row the
+# access list shows: the subject's widest allow (* above manage above the
+# levels, highest level first), or "none" with grant 0 when it holds no allow,
+# a group's single "*" deny among them. A ceiling is several rows, and the
+# clients show the first row they get for a subject.
+def access_fold(rules):
+	ranks = {"*": 100, "manage": 50}
+	for i in range(len(ACCESS_LEVELS)):
+		ranks[ACCESS_LEVELS[i]] = i
+	chosen = {}
+	order = []
+	for rule in rules or []:
+		subject = rule.get("subject", "")
+		if subject not in chosen:
+			chosen[subject] = rule
+			order.append(subject)
+			continue
+		best = chosen[subject]
+		if not rule.get("grant"):
+			continue
+		if not best.get("grant") or ranks.get(rule.get("operation"), -1) > ranks.get(best.get("operation"), -1):
+			chosen[subject] = rule
+	folded = []
+	for subject in order:
+		rule = chosen[subject]
+		if not rule.get("grant"):
+			rule = dict(rule)
+			rule["operation"] = "none"
+			rule["grant"] = 0
+		folded.append(rule)
+	return folded
+
+# access_veto gives each group holding no allow on a feed this user owns the
+# single "*" deny a group's "none" is (access_ceiling), for the none stored
+# before as a deny of each level.
+def access_veto():
+	for row in mochi.db.rows("select id from feeds") or []:
+		if len(mochi.entity.get(row["id"])) == 0:
+			continue
+		resource = "feed/" + row["id"]
+		groups = {}
+		for rule in mochi.access.list.resource(resource) or []:
+			subject = rule.get("subject", "")
+			if subject.startswith("@"):
+				groups.setdefault(subject, []).append(rule)
+		for subject, rules in groups.items():
+			if any([rule.get("grant") for rule in rules]):
+				continue
+			if len(rules) == 1 and rules[0].get("operation") == "*":
+				continue
+			access_ceiling(subject, resource, "none", rules[0].get("granter", ""))
+
+# access_rewrite re-sets every subject holding an allow on a feed this user
+# owns as a ceiling at the highest level it is allowed, for the levels stored
+# as a single allow before levels were ceilings. A subject holding a * row (the
+# owner) keeps its rules, and so does one holding only denies (already "none").
+def access_rewrite():
+	for row in mochi.db.rows("select id from feeds") or []:
+		if len(mochi.entity.get(row["id"])) == 0:
+			continue
+		resource = "feed/" + row["id"]
+		subjects = {}
+		order = []
+		for rule in mochi.access.list.resource(resource) or []:
+			subject = rule.get("subject", "")
+			if subject not in subjects:
+				subjects[subject] = []
+				order.append(subject)
+			subjects[subject].append(rule)
+		for subject in order:
+			rules = subjects[subject]
+			if any([rule.get("operation") == "*" for rule in rules]):
+				continue
+			top = None
+			for rule in rules:
+				if rule.get("grant") and rule.get("operation") in ACCESS_LEVELS:
+					if top == None or ACCESS_LEVELS.index(rule["operation"]) > ACCESS_LEVELS.index(top["operation"]):
+						top = rule
+			if top == None:
+				continue
+			access_ceiling(subject, resource, top["operation"], top.get("granter", ""))
+
 # Helper: Check if current user has access to perform an operation
 # Uses hierarchical access levels: comment grants react+view, react grants view.
 # Users with "manage" or "*" permission automatically have all permissions.
-# Subscribers get implicit view/react/comment access.
-# A deny row for this subject on this operation, or on every operation. It is
-# what access/set level=none writes, and it must beat the implicit subscriber
-# grant below: without this the rules the owner set were consulted and then
-# overridden by the subscription.
+# Subscribers get implicit view/react/comment access where no rule decides it.
+# access_denied: a deny row naming this subject on this operation, or on every
+# operation - what access/set writes above a level, and what a reply from
+# another network is held to.
 def access_denied(user_id, resource, operation):
     for rule in (mochi.access.list.resource(resource) or []):
         if rule.get("subject") == user_id and rule.get("operation") in (operation, "*") and not rule.get("grant"):
+            return True
+    return False
+
+# access_decided reports whether a rule settles operation for user on the
+# resource: one naming the user, a group they belong to, + or *, for the
+# operation or for every operation - the subjects core's own decision walks.
+# Core answers only allow or deny, so after it refuses, a matching rule means
+# the refusal is the rules' and stands; the implicit subscriber grant is for
+# an operation no rule decides. Reading only the rows naming the user let a
+# subscriber in a group, or anyone signed in, set to view comment anyway.
+def access_decided(user, resource, operation):
+    subjects = {user: True, "+": True, "*": True}
+    for group in mochi.group.memberships(user) or []:
+        subjects["@" + group] = True
+    for rule in mochi.access.list.resource(resource) or []:
+        if subjects.get(rule.get("subject")) and rule.get("operation") in (operation, "*"):
             return True
     return False
 
@@ -262,6 +388,15 @@ def check_access(a, feed_id, operation):
     if a.user and a.user.identity:
         user = a.user.identity.id
     return check_access_user(user, feed_id, operation)
+
+# feed_managed answers whether the caller may manage the routed feed: its owner
+# whatever the access table holds, and anyone the rules give manage. a.owner is
+# core's answer for the routed entity against the authenticated caller, so the
+# owner never depends on a row an access action could delete.
+def feed_managed(a, feed):
+    if a.owner and a.entity and a.entity["id"] == feed["id"]:
+        return True
+    return check_access(a, feed["id"], "manage")
 
 # check_access for a user named by their identity, or None for an anonymous
 # caller: what an app's function, which has no request, checks with.
@@ -284,10 +419,11 @@ def check_access_user(user, feed_id, operation):
     if mochi.access.check.any(user, resource, operations):
         return True
 
-    # Subscribers get implicit access to view/react/comment, unless the owner
-    # wrote a deny for them - the rules win over the subscription.
-    if operation in ["view", "react", "comment"] and user and not access_denied(user, resource, operation):
-        if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user):
+    # Subscribers get implicit access to view/react/comment where no rule
+    # decides it - a deny for them, their group, + or * wins over the
+    # subscription.
+    if operation in ["view", "react", "comment"] and user:
+        if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user) and not access_decided(user, resource, operation):
             return True
 
     return False
@@ -305,10 +441,10 @@ def check_event_access(user_id, feed_id, operation):
     if mochi.access.check.any(user_id, resource, operations):
         return True
 
-    # Subscribers get implicit access to view/react/comment, unless the owner
-    # wrote a deny for them - the rules win over the subscription.
-    if operation in ["view", "react", "comment"] and user_id and not access_denied(user_id, resource, operation):
-        if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user_id):
+    # Subscribers get implicit access to view/react/comment where no rule
+    # decides it (access_decided).
+    if operation in ["view", "react", "comment"] and user_id:
+        if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user_id) and not access_decided(user_id, resource, operation):
             return True
 
     return False
@@ -795,6 +931,27 @@ def clean_post_data(value):
 FEED_FIELDS_PUBLIC = ["id", "name", "privacy", "subscribers", "updated", "fingerprint", "banner", "sort", "populated"]
 FEED_FIELDS_OWNER = ["server", "read", "ai_mode", "ai_account", "ai_prompt_new", "ai_prompt_rank", "synced"]
 
+# Columns of `posts` any viewer may see. read is the storage account's own
+# state - when its user read the post - so it goes only to that user; an
+# anonymous request runs on the owner's storage, where it is the owner's
+# reading history. A whitelist so a column added later is private by default.
+POST_FIELDS_PUBLIC = ["id", "feed", "body", "data", "format", "created", "updated", "edited", "up", "down", "boosts", "mmdd", "author", "novelty", "credibility", "story", "visibility", "warning", "sensitive", "pinned", "language", "remote"]
+POST_FIELDS_READER = ["read"]
+
+# Project a post row down to what the caller is entitled to see: reader when
+# the caller is the storage account's user. The relevance sorts' computed
+# effective_score rides along until action_view drops it.
+def post_projected(post, reader):
+	out = {}
+	for field in POST_FIELDS_PUBLIC + ["effective_score"]:
+		if field in post:
+			out[field] = post[field]
+	if reader:
+		for field in POST_FIELDS_READER:
+			if field in post:
+				out[field] = post[field]
+	return out
+
 # Project a feed row down to what the caller is entitled to see.
 def feed_visible(feed, is_owner):
 	if feed == None:
@@ -1024,8 +1181,10 @@ def filter_tag(label):
 
 # Check if a user can tag a post in a feed
 def can_tag_post(user_id):
-	# Any logged-in user can tag posts (tags are local); the caller has already
-	# resolved the feed and verified the post belongs to it.
+	# Any logged-in user may ask; the caller has already resolved the feed and
+	# verified the post belongs to it. Tags are shared state: on a feed the
+	# caller does not own, the owner's event_tag_add_submit and
+	# event_tag_remove_submit decide, on the comment level and the tag's author.
 	if user_id:
 		return True
 	return False
@@ -1745,10 +1904,10 @@ def action_tags_add(a):
 		if existing_qid:
 			return {"data": existing_qid}
 
-		mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
+		mochi.db.execute("insert into tags (id, object, label, qid, author) values (?, ?, ?, ?, ?)", tag_id, post_id, label, qid, user_id)
 
 		# Broadcast to subscribers
-		broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "source": "manual"})
+		broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "source": "manual", "author": user_id})
 		broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}, "sender": user_id})
 
 		# Update user interests from manual tag
@@ -1775,7 +1934,7 @@ def action_tags_add(a):
 	if existing_qid:
 		return {"data": existing_qid}
 
-	mochi.db.execute("insert into tags (id, object, label, qid, source) values (?, ?, ?, ?, ?)", tag_id, post_id, label, qid, "manual")
+	mochi.db.execute("insert into tags (id, object, label, qid, source, author) values (?, ?, ?, ?, ?, ?)", tag_id, post_id, label, qid, "manual", user_id)
 
 	mochi.message.send(
 		{"from": user_id, "to": feed_data["id"], "service": "feeds", "event": "tag/add/submit"},
@@ -2363,6 +2522,21 @@ def database_upgrade(version):
 		attachment_schema_kind()
 		mochi.db.execute("update attachments set kind='comment' where kind='object' and object in (select id from comments) and object not in (select id from posts)")
 
+	if version == 26:
+		# A tag keeps who added it, so a subscriber removes only their own: a
+		# tag there before is nobody's, and only the owner or a manager
+		# removes it. And an access level is a ceiling: every level stored as
+		# a single allow is written again with a deny above it.
+		if not any([c["name"] == "author" for c in mochi.db.table("tags")]):
+			mochi.db.execute("alter table tags add column author text not null default ''")
+		access_rewrite()
+
+	if version == 27:
+		# A group's "No access" is one "*" deny, which core takes as a veto
+		# over every group's grant on the feed (access_ceiling): a group given
+		# none before, a deny of each level, is written so again.
+		access_veto()
+
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
 # reaction as post/comment/subscriber.
@@ -2458,7 +2632,7 @@ def database_create():
 	mochi.db.execute("create unique index if not exists source_posts_source_guid on source_posts( source, guid )")
 	mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
 
-	mochi.db.execute("create table if not exists tags ( id text not null primary key, object text not null, label text not null, qid text not null default '', relevance real not null default 0.0, source text not null default 'manual' )")
+	mochi.db.execute("create table if not exists tags ( id text not null primary key, object text not null, label text not null, qid text not null default '', relevance real not null default 0.0, source text not null default 'manual', author text not null default '' )")
 	mochi.db.execute("create index if not exists tags_object on tags( object )")
 	mochi.db.execute("create index if not exists tags_label on tags( label )")
 	mochi.db.execute("create index if not exists tags_qid on tags( qid )")
@@ -2875,7 +3049,11 @@ def action_view(a):
 	offset_str = a.input("offset")
 	sort = a.input("sort") or "new"
 	tags = a.inputs("tag")
-	unread = a.input("unread") == "1"
+	# Read state is the storage account's: an anonymous request runs on the
+	# owner's storage, so filtering on it would answer which posts the owner
+	# has read. A signed-in caller always has their own (feeds has no site
+	# actions).
+	unread = a.input("unread") == "1" and user_id != None
 	limit = 20
 	if limit_str and mochi.text.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
@@ -2978,6 +3156,10 @@ def action_view(a):
 		# unread posts or its whole set directly.
 		walk = "+" if not scored and not unread_filter_p else ""
 		posts = mochi.db.rows("select p.* from posts p where " + walk + "p.feed in (select feed from subscribers where id=?)" + unread_filter_p + hidden_filter_p + page_filter_p + " order by " + order_p + " limit ? offset ?", user_id, page_args, limit + 1, position)
+
+	# The rows came from `select *`: the read column is the storage account's
+	# own state, which an anonymous caller is not.
+	posts = [post_projected(p, user_id != None) for p in posts]
 
 	# Check if there are more posts
 	has_more = len(posts) > limit
@@ -3386,9 +3568,11 @@ def feed_create(creator, creator_name, name, privacy, memories):
     # Set up access control
     resource = "feed/" + entity
     if privacy == "public":
-        # Public feeds: anyone can view, authenticated users can comment
-        mochi.access.allow("*", resource, "view", creator)
-        mochi.access.allow("+", resource, "comment", creator)
+        # Public feeds: anyone can view, authenticated users can comment -
+        # levels, as ceilings, the shape access/set and the privacy switch
+        # write.
+        access_ceiling("*", resource, "view", creator)
+        access_ceiling("+", resource, "comment", creator)
     # Creator gets full access
     mochi.access.allow(creator, resource, "*", creator)
 
@@ -4879,12 +5063,16 @@ def action_privacy(a):
 	mochi.entity.update(feed_id, privacy=privacy)
 	mochi.db.execute("update feeds set privacy=? where id=?", privacy, feed_id)
 	resource = "feed/" + feed_id
+	# Levels are ceilings, several rows each, so a private feed takes every
+	# row of the two wildcards: one left behind, + view say, would still
+	# admit anyone signed in.
 	if privacy == "public":
-		mochi.access.allow("*", resource, "view", user_id)
-		mochi.access.allow("+", resource, "comment", user_id)
+		access_ceiling("*", resource, "view", user_id)
+		access_ceiling("+", resource, "comment", user_id)
 	else:
-		mochi.access.revoke("*", resource, "view")
-		mochi.access.revoke("+", resource, "comment")
+		for subject in ["*", "+"]:
+			for op in ACCESS_LEVELS + ["*"]:
+				mochi.access.revoke(subject, resource, op)
 	if owned(feed_id):
 		broadcast_event(feed_id, "update", {"privacy": privacy})
 	return {"data": {"privacy": privacy}}
@@ -5341,8 +5529,8 @@ def action_post_image(a):
 		return a.json({"image": ""})
 
 	# Resolve the feed (id or fingerprint). Owned private feeds require view access
-	# before exposing the image or triggering a server-side link fetch, mirroring
-	# serve_attachment; subscribed feeds carry owner-enforced data locally.
+	# before exposing the image, mirroring serve_attachment; subscribed feeds
+	# carry owner-enforced data locally.
 	feed_row = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
 	if not feed_row:
 		return a.json({"image": ""})
@@ -5357,43 +5545,13 @@ def action_post_image(a):
 		return a.json({"image": ""})
 
 	data = json.decode(post["data"], None) or {} if post["data"] else {}
-	rss = data.get("rss")
-	if not rss:
+	rss = data.get("rss") if type(data) == "dict" else None
+	if type(rss) != "dict":
 		return a.json({"image": ""})
 
-	# The stored image is the feed's <media:thumbnail>, often tiny; fetch the
-	# article's og:image once and keep it if better. After an attempt the stored
-	# image is final, except a post with no image retries daily.
-	# Only a web address: one stored before images were checked may be a path.
-	cached = safe_link(rss.get("image", ""))
-	checked = rss.get("image_checked", 0)
-	if checked and (cached or checked > mochi.time.now() - 86400):
-		return a.json({"image": cached})
-
-	# The route is public, so an anonymous caller reaches here on a public feed.
-	# Serve what is stored, but never let an unidentified caller drive an
-	# outbound fetch and a write into the owner's database.
-	if not a.user:
-		return a.json({"image": cached})
-
-	link = rss.get("link", "")
-	# Nothing to fetch from, or nothing worth fetching: a post from a person
-	# on another network brings its own media, and its link is their page
-	# for it. A host the app may not reach is not asked either, so a missing
-	# grant waits a day like a post with no image rather than failing every
-	# view. The thumbnail (or nothing) is final.
-	if not link or data.get("person") or data.get("record") or not link_reachable(link):
-		rss["image_checked"] = mochi.time.now()
-		data["rss"] = rss
-		mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
-		return a.json({"image": cached})
-
-	image = safe_link(mochi.url.preview(link))
-	if image:
-		rss["image"] = image
-	rss["image_checked"] = mochi.time.now()
-	data["rss"] = rss
-	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
+	# The article's og:image was looked up as the post was stored
+	# (ingest_rss_items); a view only reads it. Only a web address: one stored
+	# before images were checked may be a path.
 	return a.json({"image": safe_link(rss.get("image", ""))})
 
 def link_server(link):
@@ -5626,7 +5784,7 @@ def action_access_list(a):
         a.error.label(404, "errors.feed_not_found")
         return
 
-    if not check_access(a, feed["id"], "manage"):
+    if not feed_managed(a, feed):
         a.error.label(403, "errors.access_denied")
         return
 
@@ -5637,7 +5795,7 @@ def action_access_list(a):
             owner = {"id": a.user.identity.id, "name": a.user.identity.name}
 
     resource = "feed/" + feed["id"]
-    rules = mochi.access.list.resource(resource)
+    rules = access_fold(mochi.access.list.resource(resource))
 
     # Resolve names for rules and mark owner
     filtered_rules = []
@@ -5681,7 +5839,7 @@ def action_access_set(a):
         a.error.label(404, "errors.feed_not_found")
         return
 
-    if not check_access(a, feed["id"], "manage"):
+    if not feed_managed(a, feed):
         a.error.label(403, "errors.access_denied")
         return
 
@@ -5706,28 +5864,25 @@ def action_access_set(a):
     resource = "feed/" + feed["id"]
     granter = a.user.identity.id
 
-    # Whether the grant gives a person something they could not already do,
-    # read before the old rules go: only that is worth telling them.
+    # The owner's rules are not a level: re-levelling them would take away
+    # their * row, and with it every management action that could put it back.
     entity = mochi.entity.info(feed["id"])
     owner = entity.get("creator", "") if entity else ""
-    news = mochi.text.valid(subject, "entity") and subject != owner and level != "none" and not check_event_access(subject, feed["id"], level)
+    if subject == owner:
+        a.error.label(400, "errors.cannot_remove_owner")
+        return
 
-    # First, revoke all existing rules for this subject (including wildcard)
-    for op in ACCESS_LEVELS + ["*"]:
-        mochi.access.revoke(subject, resource, op)
+    # Whether the grant gives a person something they could not already do,
+    # read before the old rules go: only that is worth telling them.
+    news = mochi.text.valid(subject, "entity") and level != "none" and not check_event_access(subject, feed["id"], level)
 
-    # Then set the new level
+    # The level as a ceiling, "none" a deny of every level.
+    access_ceiling(subject, resource, level, granter)
     if level == "none":
-        # Store deny rules for all levels to block access
-        for op in ACCESS_LEVELS:
-            mochi.access.deny(subject, resource, op, granter)
         # The rules bind this server's checks; a subscriber reads their own
         # host's copy, which only a removal reaches.
         if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], subject):
             subscriber_drop(feed["id"], subject)
-    else:
-        # Store a single allow rule for the level
-        mochi.access.allow(subject, resource, level, granter)
 
     # Tell them, on their own server, so an invitee to a private feed can find
     # it: it is not in the directory.
@@ -5767,7 +5922,7 @@ def action_access_revoke(a):
         a.error.label(404, "errors.feed_not_found")
         return
 
-    if not check_access(a, feed["id"], "manage"):
+    if not feed_managed(a, feed):
         a.error.label(403, "errors.access_denied")
         return
 
@@ -5778,6 +5933,12 @@ def action_access_revoke(a):
         return
     if len(subject) > 255:
         a.error.label(400, "errors.subject_too_long")
+        return
+
+    # Never the owner's own rules: see action_access_set.
+    entity = mochi.entity.info(feed["id"])
+    if entity and subject == entity.get("creator", ""):
+        a.error.label(400, "errors.cannot_remove_owner")
         return
 
     resource = "feed/" + feed["id"]
@@ -5870,12 +6031,11 @@ def action_member_remove(a):
         a.error.label(404, "errors.not_a_member")
         return
 
+    # Removing a member ends the subscription: the roster row, the reactions
+    # and the replay record. The rules naming them stay as the access actions
+    # wrote them - revoking them deleted the denies of a capped member's level,
+    # who then came back above it through the + grant.
     subscriber_drop(feed["id"], member_id)
-
-    # Revoke all access for this member
-    resource = "feed/" + feed["id"]
-    for op in ["view", "comment", "react", "manage", "*"]:
-        mochi.access.revoke(member_id, resource, op)
 
     return {"data": {"success": True}}
 
@@ -7551,19 +7711,23 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 		return
 
 	member_id = e.header("from")
+	feed_id = feed_data["id"]
+
+	# Only a subscriber has a subscription to end.
+	if not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, member_id):
+		return
 
 	# Clean up member's reactions
-	mochi.db.execute("delete from reactions where feed=? and subscriber=?", e.header("to"), member_id)
+	mochi.db.execute("delete from reactions where feed=? and subscriber=?", feed_id, member_id)
 
 	# Remove from subscribers
-	mochi.db.execute("delete from subscribers where feed=? and id=?", e.header("to"), member_id)
+	mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, member_id)
 	# Stop serving them replay of this feed's stream as well as new posts.
-	mochi.broadcast.subscriber.remove(e.header("to"), member_id)
+	mochi.broadcast.subscriber.remove(feed_id, member_id)
 
-	# Revoke all access
-	resource = "feed/" + e.header("to")
-	for op in ["view", "comment", "react", "manage", "*"]:
-		mochi.access.revoke(member_id, resource, op)
+	# Leaving changes no access rule. The rules naming the member are the
+	# owner's: a block among them must survive the blocked person's own
+	# unsubscribe, which any server can send, and an invitee can come back.
 
 	feed_update(user_id, feed_data)
 
@@ -7590,7 +7754,8 @@ def event_tag_add_submit(e):
 	if not post:
 		return
 
-	# Verify sender is a subscriber
+	# Verify sender is a subscriber, at the level that adds content: a tag is
+	# shared state every subscriber's copy shows.
 	sub_data = get_feed_subscriber(feed_data, sender_id)
 	if not sub_data:
 		return
@@ -7599,25 +7764,34 @@ def event_tag_add_submit(e):
 	if not label:
 		return
 
+	# The subscriber's copy already holds the tag: any outcome but a new tag
+	# here is answered with what this feed holds (tag_refuse).
+	if not check_event_access(sender_id, feed_id, "comment"):
+		tag_refuse(feed_id, sender_id, post_id, label)
+		return
+
 	# Deduplicate
 	existing = mochi.db.row("select id from tags where object=? and label=?", post_id, label)
 	if existing:
+		tag_refuse(feed_id, sender_id, post_id, label)
 		return
 
 	tag_id = mochi.uid()
 	results = mochi.qid.search(label, "en")
 	if not results:
+		tag_refuse(feed_id, sender_id, post_id, label)
 		return
 	qid = results[0]["qid"]
 
 	# Deduplicate by QID — another tag on this post may already cover the same entity
 	if mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
+		tag_refuse(feed_id, sender_id, post_id, label)
 		return
 
-	mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
+	mochi.db.execute("insert into tags (id, object, label, qid, author) values (?, ?, ?, ?, ?)", tag_id, post_id, label, qid, sender_id)
 
 	# Broadcast to all subscribers
-	broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "source": "manual"})
+	broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "source": "manual", "author": sender_id})
 	broadcast_websocket(feed_id, {"type": "tag/add", "feed": feed_id, "post": post_id, "tag": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}, "sender": sender_id})
 
 # Handle tag remove submit from a subscriber (received by feed owner)
@@ -7637,7 +7811,8 @@ def event_tag_remove_submit(e):
 	if not post_id or not mochi.db.exists("select 1 from posts where id=? and feed=?", post_id, feed_id):
 		return
 
-	# Verify sender is a subscriber
+	# Verify sender is a subscriber, at the level that adds content (see
+	# event_tag_add_submit).
 	sub_data = get_feed_subscriber(feed_data, sender_id)
 	if not sub_data:
 		return
@@ -7646,19 +7821,67 @@ def event_tag_remove_submit(e):
 	# may differ from the owner's canonical ID when add-then-remove happens
 	# before P2P reconciliation completes.
 	label = e.content("label")
-	canonical_id = tag_id
+	canonical = None
 	if label:
-		canonical = mochi.db.row("select id from tags where object=? and label=?", post_id, label)
-		if canonical:
-			canonical_id = canonical["id"]
+		canonical = mochi.db.row("select id, label, author from tags where object=? and label=?", post_id, label)
+	if not canonical:
+		canonical = mochi.db.row("select id, label, author from tags where id=? and object=?", tag_id, post_id)
+	if not canonical:
+		return
+	canonical_id = canonical["id"]
+
+	# A subscriber removes the tags they added, on the level that adds
+	# content; the owner's, the AI's and anyone else's take the owner or a
+	# manager. The subscriber's copy has already dropped the tag, so a refusal
+	# is answered with it (tag_refuse).
+	if not check_event_access(sender_id, feed_id, "comment") or (canonical["author"] != sender_id and not check_event_access(sender_id, feed_id, "manage")):
+		tag_refuse(feed_id, sender_id, post_id, canonical["label"])
+		return
 
 	mochi.db.execute("delete from tags where id=? and object=?", canonical_id, post_id)
-	if label and canonical_id != tag_id:
-		mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
 
 	# Broadcast with canonical ID and label so subscribers can match their local tags
 	broadcast_event(feed_id, "tag/remove", {"id": canonical_id, "object": post_id, "label": label})
 	broadcast_websocket(feed_id, {"type": "tag/remove", "feed": feed_id, "post": post_id, "tag": canonical_id, "sender": sender_id})
+
+# tag_refuse answers a subscriber whose tag change this feed did not take,
+# with the tag as the feed holds it under that label, or none. Their copy
+# applied the change before asking (action_tags_add, action_tags_remove), so
+# without the answer it kept a tag nobody else has, or lost one everyone else
+# still has. Sent only to a subscriber, once per change they sent.
+def tag_refuse(feed_id, sender_id, post_id, label):
+	tag = mochi.db.row("select id, label, qid, relevance, source, author from tags where object=? and label=?", post_id, label)
+	mochi.message.send(headers(feed_id, sender_id, "tag/refused"), {"post": post_id, "label": label, "tag": tag})
+
+# Handle tag/refused from a feed's owner (tag_refuse): the subscriber's copy of
+# the tag under the label becomes the owner's - restored when the owner still
+# holds it, gone when it does not.
+def event_tag_refused(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data or owned(feed_data["id"]):
+		return
+	feed_id = feed_data["id"]
+	post_id = e.content("post")
+	label = validate_tag(e.content("label") or "")
+	if not post_id or not label:
+		return
+	if not mochi.db.exists("select 1 from posts where id=? and feed=?", post_id, feed_id):
+		return
+	tag = e.content("tag")
+	fingerprint = mochi.entity.fingerprint(feed_id)
+	held = mochi.db.row("select id from tags where object=? and label=?", post_id, label)
+	mochi.db.execute("delete from tags where object=? and label=?", post_id, label)
+	if type(tag) == "dict" and tag.get("label") == label and tag.get("id"):
+		source = tag.get("source") or "manual"
+		relevance = tag.get("relevance") or 0
+		author = tag.get("author") or ""
+		mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source, author) values (?, ?, ?, ?, ?, ?, ?)",
+			tag["id"], post_id, label, tag.get("qid") or "", relevance, source, author if type(author) == "string" else "")
+		if fingerprint:
+			websocket_write(fingerprint, {"type": "tag/add", "feed": feed_id, "post": post_id, "tag": {"id": tag["id"], "label": label, "source": source, "relevance": relevance}})
+	elif held and fingerprint:
+		websocket_write(fingerprint, {"type": "tag/remove", "feed": feed_id, "post": post_id, "tag": held["id"]})
 
 # Handle tag add event from feed owner.
 # Kept for backward compatibility with senders that still emit one
@@ -7680,14 +7903,17 @@ def event_tag_add(e):
 	qid = e.content("qid") or ""
 	relevance = e.content("relevance") or 0
 	source = e.content("source") or "manual"
+	author = e.content("author") or ""
+	if type(author) != "string":
+		author = ""
 	# If we already have this tag locally (e.g. subscriber added it before owner broadcast),
 	# update to the owner's canonical ID so removes stay in sync across P2P.
 	existing = mochi.db.row("select id from tags where object=? and label=?", object_id, label)
 	if existing:
 		if existing["id"] != tag_id:
-			mochi.db.execute("update tags set id=?, qid=?, relevance=?, source=? where id=?", tag_id, qid, relevance, source, existing["id"])
+			mochi.db.execute("update tags set id=?, qid=?, relevance=?, source=?, author=? where id=?", tag_id, qid, relevance, source, author, existing["id"])
 	else:
-		mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)", tag_id, object_id, label, qid, relevance, source)
+		mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source, author) values (?, ?, ?, ?, ?, ?, ?)", tag_id, object_id, label, qid, relevance, source, author)
 	# Re-score post when AI tags arrive (tags may come after the post)
 	if source == "ai" and qid:
 		score_posts_for_viewer([object_id], user_id)
@@ -8168,7 +8394,9 @@ def event_view(e):
 	# Format posts with comments and reactions
 	formatted_posts = []
 	for post in posts:
-		post_data = dict(post)
+		# Never the read column: it is this owner's reading history, and the
+		# viewer is someone else.
+		post_data = post_projected(post, False)
 		post_data["feed_fingerprint"] = feed_fingerprint
 		post_data["feed_name"] = feed_name
 		if post.get("format", "markdown") == "markdown":
@@ -8967,6 +9195,14 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 	# The posts whose categories wait to become tags (schedule_rss_tags).
 	tagging = []
 
+	# The article images this run may still look up (rss_preview), and until
+	# when: each is an outbound fetch charged to the budget the sources'
+	# own fetches share, and a source being added waits on them.
+	previews = PREVIEW_COUNT
+	previews_deadline = now + PREVIEW_BUDGET
+	if deadline != None and deadline < previews_deadline:
+		previews_deadline = deadline
+
 	for item in items:
 		# The budget is checked between items, not only between sources, so
 		# one large batch never outlasts the compute limit. Stop here and
@@ -9042,8 +9278,14 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 			# article, so the stored post keeps the item's own link.
 			link = t_link or link
 
-		# Store structured RSS data for rich rendering (og:image fetched lazily)
+		# Store structured RSS data for rich rendering. The feed's own image is
+		# often a tiny thumbnail, and many items carry none, so the article's
+		# og:image is looked up here as the item is stored, and sent on with
+		# it: viewing a post never fetches.
 		image = safe_link(item.get("image", ""))
+		if link and previews > 0 and mochi.time.now() < previews_deadline:
+			previews -= 1
+			image = rss_preview(link) or image
 		rss_data = {"title": title, "link": link, "html": description_html}
 		# The item as the feed gave it, kept where a transform changed it,
 		# for rss_listed to know the item when it is listed again.
@@ -9143,6 +9385,19 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 # How long one run of schedule_rss_tags may spend resolving categories, in
 # seconds: at one lookup a second, well inside the compute limit.
 CATEGORY_BUDGET = 40
+
+# How many article images one ingestion of a source's items may look up, and
+# for how many seconds: each is a fetch of up to ten seconds, out of the
+# hundred a minute the app's fetches share, the sources' own included.
+PREVIEW_COUNT = 5
+PREVIEW_BUDGET = 15
+
+# rss_preview is an item's article's og:image, or "" where there is none, the
+# app may not reach its host, or the fetch fails.
+def rss_preview(link):
+	if not link or not link_reachable(link):
+		return ""
+	return safe_link(mochi.url.preview(link))
 
 def schedule_rss_tags(e):
 	"""Make tags of the categories of the posts a web feed brought, each
