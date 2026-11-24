@@ -4456,10 +4456,12 @@ def listed_feeds(user_id):
 # Edit a post (owner only)
 # post_edit changes a post: on a feed the user owns, as post_revise does; in
 # a feed of someone else's, asked of its owner, whose post/edit/submit checks
-# and applies it the same way and answers. Attachments change only on the
-# owner's own server, where change(post, feed) runs; one asked of the owner
-# leaves them as they are. Answers (result, None) or (None, failure).
-def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=None):
+# and applies it the same way and answers. On the owner's own server
+# change(post, feed) changes the attachments; asked of the owner, attachments
+# describes the change instead: None for none, else the order to keep the
+# post's attachments in (None to leave it), their captions by id, and how
+# many files are added. Answers (result, None) or (None, failure).
+def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=None, attachments=None):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
 		return None, (404, "errors.feed_not_found")
@@ -4478,6 +4480,24 @@ def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=No
 			payload["data"] = data
 		if features:
 			payload.update(features)
+		if attachments:
+			# A file added would have to reach the owner's server, which this
+			# request does not carry, so the edit is refused rather than
+			# answered as though it were added. The owner removes, orders and
+			# captions the attachments the post already has. A placeholder
+			# whose file was never sent is dropped, as the owner's own form
+			# drops it, and an order of nothing but such placeholders leaves
+			# the attachments as they are.
+			if attachments.get("added"):
+				return None, (400, "errors.attachments_remote")
+			order = attachments.get("order")
+			if order != None:
+				kept = [item for item in order if not item.startswith("new:")]
+				if kept or not order:
+					payload["order"] = kept
+			captions = {key: value for key, value in (attachments.get("captions") or {}).items() if not key.startswith("new:")}
+			if captions:
+				payload["captions"] = captions
 		response = mochi.remote.request(info["id"], "feeds", "post/edit/submit", payload, peer)
 		if response.get("error"):
 			return None, remote_failure(response, 403)
@@ -4579,40 +4599,44 @@ def action_post_edit(a):
 		a.error.label(400, "errors.invalid_data")
 		return
 
+	# Order list includes existing IDs and "new:N" placeholders for new files.
+	# The web client sends it as one JSON array, so an empty array - every
+	# attachment removed - still arrives. Older clients send one field per
+	# item, where an empty list cannot be told apart from no change, so none
+	# at all is None.
+	order = a.inputs("order")
+	if len(order) == 1 and order[0].startswith("["):
+		decoded = json.decode(order[0], None)
+		if type(decoded) != "list":
+			a.error.label(400, "errors.invalid_data")
+			return
+		order = [str(item) for item in decoded]
+	elif not order:
+		order = None
+
+	# Optional caption edits: a JSON object keyed by attachment id or
+	# "new:N" placeholder. Applied only to rows this post holds.
+	captions = {}
+	captions_raw = a.input("captions")
+	if captions_raw:
+		decoded = json.decode(captions_raw, None)
+		if type(decoded) != "dict" or len(decoded) > 100:
+			a.error.label(400, "errors.invalid_data")
+			return
+		for key in decoded:
+			caption = str(decoded[key])
+			if len(caption) > 1000:
+				a.error.label(400, "errors.invalid_data")
+				return
+			captions[key] = caption
+
 	def change(post_id, info):
 		"""The attachment changes the form asks for, the answer to a
 		failing one."""
-		# Order list includes existing IDs and "new:N" placeholders for new files.
-		# The web client sends it as one JSON array, so an empty array - every
-		# attachment removed - still arrives. Older clients send one field per
-		# item, where an empty list cannot be told apart from no change.
-		order = a.inputs("order")
-		cleared = False
-		if len(order) == 1 and order[0].startswith("["):
-			decoded = json.decode(order[0], None)
-			if type(decoded) != "list":
-				return (400, "errors.invalid_data")
-			order = [str(item) for item in decoded]
-			cleared = len(order) == 0
-
-		# Optional caption edits: a JSON object keyed by attachment id or
-		# "new:N" placeholder. Applied only to rows this post holds.
-		captions = {}
-		captions_raw = a.input("captions")
-		if captions_raw:
-			decoded = json.decode(captions_raw, None)
-			if type(decoded) != "dict" or len(decoded) > 100:
-				return (400, "errors.invalid_data")
-			for key in decoded:
-				caption = str(decoded[key])
-				if len(caption) > 1000:
-					return (400, "errors.invalid_data")
-				captions[key] = caption
-
 		# Save new attachments first (if any files were uploaded), with their
 		# captions aligned to the placeholders' upload order.
 		new_total = 0
-		for item in order:
+		for item in order or []:
 			if item.startswith("new:"):
 				new_total += 1
 		new_captions = [captions.get("new:" + str(i), "") for i in range(new_total)]
@@ -4620,7 +4644,7 @@ def action_post_edit(a):
 
 		# Build final order by replacing "new:N" placeholders with actual IDs
 		final_order = []
-		for item in order:
+		for item in order or []:
 			if item.startswith("new:"):
 				if not decimal(item[4:]):
 					continue
@@ -4630,26 +4654,31 @@ def action_post_edit(a):
 			else:
 				final_order.append(item)
 
-		if final_order or cleared:
+		if final_order or order == []:
 			attachments_keep(post_id, info["id"], final_order, new_attachments)
 
-		# Caption edits on attachments the post already holds. Bound to this
-		# post's own rows, so an id from another post cannot be annotated
-		# through this route.
-		for att in attachment_list(post_id, info["id"]):
-			if att["id"] in captions and captions[att["id"]] != att.get("caption", ""):
-				attachment_update(att["id"], captions[att["id"]], att.get("description", ""))
+		post_captions(post_id, info["id"], captions)
 		return None
 
 	# What a copy on another network went without, for the client to say.
 	unsent = []
-	result, failure = post_edit(feed_id, post_id, user_id, body, data, features, change, unsent)
+	attachments = {"order": order, "captions": captions, "added": len(a.files("files"))}
+	result, failure = post_edit(feed_id, post_id, user_id, body, data, features, change, unsent, attachments)
 	if failure:
 		fail(a, failure)
 		return
 	result = dict(result)
 	result["unsent"] = unsent
 	return {"data": result}
+
+# post_captions sets the captions given by attachment id on the post's own
+# attachments, so an id from another post cannot be annotated through it.
+def post_captions(post_id, feed_id, captions):
+	if not captions:
+		return
+	for att in attachment_list(post_id, feed_id):
+		if att["id"] in captions and captions[att["id"]] != att.get("caption", ""):
+			attachment_update(att["id"], captions[att["id"]], att.get("description", ""))
 
 # attachments_keep keeps a post's attachments in the order given, its own
 # and those just added, and lets the rest go.
@@ -6685,8 +6714,28 @@ def event_post_edit_submit(e):
 	# A pin is the owner's, made by its own action, not by an edit.
 	features = {key: features[key] for key in features if key != "pinned"}
 
+	# What the edit does to the attachments the post holds, bounded as the
+	# form's own: the order to keep them in, absent to leave them, and their
+	# captions by id. Files are never added this way (post_edit).
+	order = e.content("order")
+	if order != None:
+		if not listlike(order) or len(order) > attachment_object_maximum or any([type(item) != "string" for item in order]):
+			e.stream.write({"error": "errors.invalid_data", "code": 400})
+			return
+		order = list(order)
+	captions = e.content("captions") or {}
+	if type(captions) != "dict" or len(captions) > 100 or any([type(key) != "string" or type(value) != "string" or len(value) > 1000 for key, value in captions.items()]):
+		e.stream.write({"error": "errors.invalid_data", "code": 400})
+		return
+
+	def change(post_id, info):
+		if order != None:
+			attachments_keep(post_id, info["id"], order, [])
+		post_captions(post_id, info["id"], captions)
+		return None
+
 	unsent = []
-	result, failure = post_revise(feed_data, post_id, e.header("from"), body, data, features, lambda post_id, info: None, unsent, "")
+	result, failure = post_revise(feed_data, post_id, e.header("from"), body, data, features, change, unsent, "")
 	if failure:
 		e.stream.write({"error": failure[1], "code": failure[0]})
 		return

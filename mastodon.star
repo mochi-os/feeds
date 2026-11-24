@@ -389,7 +389,13 @@ def function_mastodon_edit(context, account, home, id, text="", media=None, warn
 		mastodon_media_save(media)(post_id)
 		return None
 
-	result, failure = post_edit(post["feed"], post["id"], identity["id"], text, data, features, change)
+	# The same asked of the owner of a feed held elsewhere: every file goes,
+	# and those sent in their place are refused there (post_edit).
+	attachments = None
+	if media != None:
+		attachments = {"order": [], "captions": {}, "added": len([m for m in media if type(m) == "dict" and m.get("data")])}
+
+	result, failure = post_edit(post["feed"], post["id"], identity["id"], text, data, features, change, None, attachments)
 	if failure:
 		return mastodon_failure(failure)
 	mochi.db.execute("update posts set format='text' where id=? and format='markdown' and author=?", post["id"], identity["id"])
