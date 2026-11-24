@@ -19,7 +19,6 @@ import {
   RouteError,
   type Catalogs,
 } from '@mochi/web'
-import { FeedsCommandMenu } from './components/layout/feeds-command-menu'
 // Generated Routes
 import { routeTree } from './routeTree.gen'
 // Styles
@@ -232,7 +231,6 @@ if (!rootElement.innerHTML) {
           <ThemeProvider>
             <SearchProvider>
               <RouterProvider router={router} />
-              <FeedsCommandMenu />
             </SearchProvider>
           </ThemeProvider>
         </I18nProvider>

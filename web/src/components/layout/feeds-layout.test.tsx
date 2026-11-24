@@ -6,7 +6,7 @@ import type { ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
-import { act, render } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -28,6 +28,7 @@ vi.mock('@/features/feeds/components/new-post-dialog', () => ({
 vi.mock('@mochi/web', async (original) => ({
   ...(await original<typeof import('@mochi/web')>()),
   AuthenticatedLayout: () => null,
+  CommandMenu: () => <div data-testid='command-menu' />,
   MapTilesProvider: ({ children }: { children: ReactNode }) => children,
   onShellMessage: (listener: (message: Record<string, unknown>) => void) => {
     state.listeners.push(listener)
@@ -127,5 +128,13 @@ describe('feeds layout', () => {
     await act(async () => request.answer())
 
     await vi.waitFor(() => expect(feedsApi.view).toHaveBeenCalledTimes(2))
+  })
+
+  it('mounts the command menu itself, under the router it navigates with', async () => {
+    useFeedsStore.setState({ loaded: true })
+    show()
+    await act(async () => {})
+
+    expect(screen.getByTestId('command-menu')).toBeInTheDocument()
   })
 })

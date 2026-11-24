@@ -20,6 +20,7 @@ import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { useCreatePost } from '@/hooks/use-create-post'
 import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
+import { FeedsCommandMenu } from './feeds-command-menu'
 
 function FeedsLayoutInner() {
   const { t } = useLingui()
@@ -150,6 +151,8 @@ function FeedsLayoutInner() {
         sidebarData={sidebarData}
         isLoadingSidebar={isLoading && feeds.length === 0}
       />
+      {/* Under the router, which the menu navigates with */}
+      <FeedsCommandMenu />
       {/* NewPostDialog at layout level so it's always available */}
       {dialogFeeds.length > 0 && (
         <NewPostDialog
