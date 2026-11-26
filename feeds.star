@@ -2537,6 +2537,17 @@ def database_upgrade(version):
 		# none before, a deny of each level, is written so again.
 		access_veto()
 
+	if version == 28:
+		# A boost from another network is kept by who made it, so a boost
+		# repeated counts once and only its maker's undoing takes it away. The
+		# counts so far stay as they are.
+		boosts_schema_create()
+
+# boosts_schema_create lays the table of the boosts from other networks of a
+# post the user's accounts published: one row a person, by their id there.
+def boosts_schema_create():
+	mochi.db.execute("create table if not exists boosts ( post text not null, actor text not null, created integer not null, primary key ( post, actor ) )")
+
 # withheld_schema_create lays the table of what an owner removed while this
 # subscriber was still taking the feed's schema: a post, a comment, or a
 # reaction as post/comment/subscriber.
@@ -2595,6 +2606,7 @@ def database_create():
 	mochi.db.execute("create index if not exists posts_story on posts( feed, story )")
 	posts_index_create()
 	withheld_schema_create()
+	boosts_schema_create()
 
 	# Posts waiting to be placed in a story, and the per-feed lock that lets one
 	# pass place them at a time.
@@ -4460,14 +4472,16 @@ def listed_feeds(user_id):
 # change(post, feed) changes the attachments; asked of the owner, attachments
 # describes the change instead: None for none, else the order to keep the
 # post's attachments in (None to leave it), their captions by id, and how
-# many files are added. Answers (result, None) or (None, failure).
-def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=None, attachments=None):
+# many files are added. format is the body's where the edit sets it, "text"
+# for text written in an app of another network; None keeps the post's own.
+# Answers (result, None) or (None, failure).
+def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=None, attachments=None, format=None):
 	info = feed_by_id(user_id, feed_id)
 	if not info:
 		return None, (404, "errors.feed_not_found")
 
 	if owned(info["id"]):
-		return post_revise(info, post_id, user_id, body, data, features, change, unsent, user_id)
+		return post_revise(info, post_id, user_id, body, data, features, change, unsent, user_id, format)
 
 	elif info.get("server"):
 		# Remote feed - ask its owner, who checks the editor may edit the post
@@ -4480,6 +4494,8 @@ def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=No
 			payload["data"] = data
 		if features:
 			payload.update(features)
+		if format:
+			payload["format"] = format
 		if attachments:
 			# A file added would have to reach the owner's server, which this
 			# request does not carry, so the edit is refused rather than
@@ -4515,14 +4531,19 @@ def post_edit(feed_id, post_id, user_id, body, data, features, change, unsent=No
 # data an edit changes the check-in and the travelling pair alone, each taken
 # from data or, absent there, removed; the rest (its article, quote, poll with
 # its votes, media) stays as stored, so a client need not send it back.
+# The body is in format where given ("markdown" or "text"), else in the
+# post's own, and goes out to the networks as that.
 # Answers (result, None) or (None, failure).
-def post_revise(info, post_id, editor, body, data, features, change, unsent, exclude):
+def post_revise(info, post_id, editor, body, data, features, change, unsent, exclude, format=None):
 	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
 	if not post:
 		return None, (404, "errors.post_not_found")
 
 	if post.get("author") != editor and not check_access_user(editor, info["id"], "manage"):
 		return None, (403, "errors.not_allowed_edit_post")
+
+	if format not in ("markdown", "text"):
+		format = post.get("format") or "markdown"
 
 	stored = json.decode(post.get("data", "") or "{}", None)
 	merged = dict(stored) if type(stored) == "dict" else {}
@@ -4536,7 +4557,7 @@ def post_revise(info, post_id, editor, body, data, features, change, unsent, exc
 	now = mochi.time.now()
 	data_value = json.encode(merged) if merged else ""
 	before = mochi.db.row("select body from posts where id=?", post_id)
-	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
+	mochi.db.execute("update posts set body=?, data=?, format=?, updated=?, edited=? where id=?", body, data_value, format, now, now, post_id)
 	if features:
 		clause, values = features_sql(features)
 		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
@@ -4547,12 +4568,12 @@ def post_revise(info, post_id, editor, body, data, features, change, unsent, exc
 		return None, failure
 
 	post = mochi.db.row("select * from posts where id=?", post_id)
-	edit_event = {"post": post_id, "body": body, "edited": now}
+	edit_event = {"post": post_id, "body": body, "format": format, "edited": now}
 	edit_event.update(post_event_features(post))
 	if merged:
 		edit_event["data"] = merged
 	edit_event["attachments"] = attachment_list(post_id, info["id"])
-	edit_event["copies"] = publish_update(info, post_id, body, "markdown", edit_event["attachments"], post, unsent)
+	edit_event["copies"] = publish_update(info, post_id, body, format, edit_event["attachments"], post, unsent)
 	webmention_send(info, post_id, [before["body"] if before else "", body], post)
 	broadcast_event(info["id"], "post/edit", edit_event, exclude)
 
@@ -4745,6 +4766,7 @@ def post_remove(info, post_id, remover, exclude):
 	publish_delete(post_id)
 	mochi.db.execute("delete from tags where object=?", post_id)
 	mochi.db.execute("delete from reactions where post=?", post_id)
+	mochi.db.execute("delete from boosts where post=?", post_id)
 	# The comments' replies on the network go with the post (decision 25),
 	# and so do their attachments.
 	for c in mochi.db.rows("select id from comments where post=?", post_id):
@@ -4937,6 +4959,7 @@ def feed_drop(feed_id):
 	handle.execute("delete from saved where post in (select id from posts where feed=?)", feed_id)
 	handle.execute("delete from attachments where entity!='' and ((kind='object' and object in (select id from posts where feed=?)) or (kind='comment' and object in (select id from comments where feed=?)))", feed_id, feed_id)
 	handle.execute("delete from reactions where feed=?", feed_id)
+	handle.execute("delete from boosts where post in (select id from posts where feed=?)", feed_id)
 	handle.execute("delete from comments where feed=?", feed_id)
 	handle.execute("delete from posts where feed=?", feed_id)
 	handle.execute("delete from follows where feed=?", feed_id)
@@ -5016,6 +5039,7 @@ def action_delete(a):
 	mochi.db.execute("delete from post_scores where post in (select id from posts where feed=?)", feed_id)
 	rss_tokens_revoke(feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
+	mochi.db.execute("delete from boosts where post in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from copies where post in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
@@ -6734,8 +6758,12 @@ def event_post_edit_submit(e):
 		post_captions(post_id, info["id"], captions)
 		return None
 
+	# Text written in an app of another network says so; anything else keeps
+	# the post's own format.
+	format = "text" if e.content("format") == "text" else None
+
 	unsent = []
-	result, failure = post_revise(feed_data, post_id, e.header("from"), body, data, features, change, unsent, "")
+	result, failure = post_revise(feed_data, post_id, e.header("from"), body, data, features, change, unsent, "", format)
 	if failure:
 		e.stream.write({"error": failure[1], "code": failure[0]})
 		return
@@ -6791,6 +6819,11 @@ def event_post_edit(e):
 		return
 
 	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, edited, edited, post_id)
+	# The body's format, where the owner names it: an edit written in an app
+	# of another network turns a post to plain text.
+	format = e.content("format")
+	if format in ("markdown", "text"):
+		mochi.db.execute("update posts set format=? where id=?", format, post_id)
 	if features:
 		clause, values = features_sql(features)
 		mochi.db.execute("update posts set " + clause + " where id=?", *(values + [post_id]))
@@ -6920,6 +6953,7 @@ def event_post_delete(e):
 
 	mochi.db.execute("delete from tags where object=?", post_id)
 	mochi.db.execute("delete from reactions where post=?", post_id)
+	mochi.db.execute("delete from boosts where post=?", post_id)
 	# The comments' replies on the network go with the post (decision 25),
 	# and so do their attachments.
 	for c in mochi.db.rows("select id from comments where post=?", post_id):
@@ -9147,6 +9181,7 @@ def source_remove(feed, source, user_id, delete_posts, unfollow=True):
 			attachment_clear(row["id"], kind="comment")
 		mochi.db.execute("delete from tags where object in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from reactions where post in (select post from source_posts where source=?)", source_id)
+		mochi.db.execute("delete from boosts where post in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from comments where post in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from posts where id in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from follows where post in (select post from source_posts where source=?)", source_id)
@@ -12707,8 +12742,17 @@ def reaction_from_network(kind, target, actor, name, reaction):
 		notify_reaction(feed_id, me["id"] if me else "", post_id, comment_id, actor, name, reaction)
 
 def boost_from_network(acc, post, actor, delta):
-	"""A boost of a post, or its undoing, counted on the post."""
-	mochi.db.execute("update posts set boosts=max(boosts+?, 0) where id=?", delta, post["id"])
+	"""A boost of a post, or its undoing, counted on the post once a person:
+	by the row kept of who boosted it, so a boost repeated counts once and
+	an undoing by someone with no boost here takes nothing away."""
+	if delta > 0:
+		if not mochi.db.execute("insert or ignore into boosts ( post, actor, created ) values ( ?, ?, ? )", post["id"], actor, mochi.time.now()):
+			return
+		mochi.db.execute("update posts set boosts=boosts+1 where id=?", post["id"])
+	else:
+		if not mochi.db.execute("delete from boosts where post=? and actor=?", post["id"], actor):
+			return
+		mochi.db.execute("update posts set boosts=max(boosts-1, 0) where id=?", post["id"])
 	set_post_updated(post["id"])
 	if delta > 0:
 		person = account_person(actor)
@@ -12775,12 +12819,11 @@ def fediverse_created(acc, actor, note):
 	# already, is not stored again (decision 31).
 	if mochi.db.exists("select 1 from replies where remote=?", remote) or mochi.db.exists("select 1 from comments where remote=?", remote):
 		return
-	named = str(note.get("mochi:comment", "") or "")
-	if named and mochi.text.valid(named, "line"):
-		# A Mochi subscriber's reply names the comment it is: recorded against
-		# that comment whether or not the comment's own event has come yet.
-		person = account_person(actor)
-		replies_record(named, "", {"address": person["address"] or actor, "network": "fediverse", "remote": remote, "url": safe_link(str(note.get("url", "") or ""))})
+	# A Mochi subscriber's reply names the comment it is, and is never a
+	# comment of its own. It is recorded against that comment by the
+	# comment's event, which carries it among the comment's copies, never by
+	# what the Note claims: any server could name any comment.
+	if note.get("mochi:comment"):
 		return
 	answered = object_id_of(note.get("inReplyTo"))
 	kind, target = fediverse_target(acc["id"], answered)
@@ -13948,6 +13991,7 @@ def sourced_post_delete(post):
 	publish_delete(post_id)
 	mochi.db.execute("delete from tags where object=?", post_id)
 	mochi.db.execute("delete from reactions where post=?", post_id)
+	mochi.db.execute("delete from boosts where post=?", post_id)
 	for c in mochi.db.rows("select id from comments where post=?", post_id):
 		reply_delete(c["id"])
 		attachment_clear(c["id"], kind="comment")

@@ -395,10 +395,13 @@ def function_mastodon_edit(context, account, home, id, text="", media=None, warn
 	if media != None:
 		attachments = {"order": [], "captions": {}, "added": len([m for m in media if type(m) == "dict" and m.get("data")])}
 
-	result, failure = post_edit(post["feed"], post["id"], identity["id"], text, data, features, change, None, attachments)
+	# The author's text from the app is plain text, and the post is made so
+	# with the edit, before it goes out to the networks again and to the
+	# subscribers.
+	format = "text" if post.get("author") == identity["id"] else None
+	result, failure = post_edit(post["feed"], post["id"], identity["id"], text, data, features, change, None, attachments, format=format)
 	if failure:
 		return mastodon_failure(failure)
-	mochi.db.execute("update posts set format='text' where id=? and format='markdown' and author=?", post["id"], identity["id"])
 	return {"post": mastodon_post_of(post["id"], identity["id"])}
 
 def function_mastodon_delete(context, account, home, id):
@@ -882,7 +885,9 @@ def bluesky_post_written(acc, home, action, uri, record, media, user_id, name):
 		# is edited, so the edit is not written to it again.
 		mochi.db.execute("delete from copies where post=? and account=?", copy["post"], acc["id"])
 		data = json.decode(post.get("data", "") or "{}", None)
-		post_edit(post["feed"], post["id"], user_id, text, data if type(data) == "dict" and data else None, {}, lambda post_id, info: None)
+		# A record's text is plain text, as an edit from a Mastodon app is.
+		format = "text" if post.get("author") == user_id else None
+		post_edit(post["feed"], post["id"], user_id, text, data if type(data) == "dict" and data else None, {}, lambda post_id, info: None, format=format)
 		mochi.db.execute("insert or replace into copies (post, account, address, network, remote, url, created) values (?, ?, ?, ?, ?, ?, ?)",
 			copy["post"], copy["account"], copy["address"], copy["network"], copy["remote"], copy["url"], copy["created"])
 		return {}
