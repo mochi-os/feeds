@@ -709,6 +709,7 @@ msgstr "حظر {name}؟"
 msgid "Blocked"
 msgstr "محظور"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "محظور بواسطة"
 msgid "Blocked navigation to untrusted link"
 msgstr "تم حظر الانتقال إلى رابط غير موثوق"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "يحظر"
@@ -838,6 +840,10 @@ msgstr "تم التغيير"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "تم تغيير {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "تم تغيير الفئة"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "تم النسخ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "تم النسخ إلى الحافظة"
@@ -1113,6 +1120,10 @@ msgstr "تم النسخ إلى الحافظة"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "نسخ"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "نسخ الرابط"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "إنشاء {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "إنشاء تغذية جديدة"
 
@@ -1469,6 +1481,7 @@ msgstr "تنزيل"
 msgid "Download failed"
 msgstr "فشل التنزيل"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "يكرر"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "تعذّر مسح المنشورات المحفوظة"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "فشل إنشاء التغذية"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "فشل إنشاء الرابط"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "فشل إنشاء المنشور"
 
@@ -1942,10 +1956,6 @@ msgstr "تم حذف التغذية"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "معرف كيان التغذية أو البصمة"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "رابط الموجز"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "فاتح"
 msgid "Like"
 msgstr "إعجاب"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "رابط"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "الروابط"
@@ -2443,10 +2450,6 @@ msgstr "خيارات أخرى"
 msgid "Moved"
 msgstr "تم النقل"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "تم نقل {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "الشهر التالي"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "السنة التالية"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "لا"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "نشر"
 msgid "Post content"
 msgstr "محتوى المنشور"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "تم إنشاء المنشور"
 
@@ -2905,6 +2912,10 @@ msgstr "المنشور غير موجود"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "تم تثبيت المنشور"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "النشر في تغذية"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "تقليل الاهتمام"
 msgid "Refresh source"
 msgstr "تحديث المصدر"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "متعلق بـ"
@@ -3366,6 +3378,10 @@ msgstr "بحث"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "البحث بالاسم أو المعرف أو البصمة أو URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "البحث بالاسم أو المعرف أو البصمة أو URL أو {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "ابحث عن أمر لتشغيله..."
@@ -3455,6 +3471,10 @@ msgstr "إرسال مرة أخرى"
 msgid "Send email"
 msgstr "إرسال بريد إلكتروني"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "الإرسال في محادثة"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "انتهت صلاحية الجلسة. يرجى تسجيل الدخول �
 msgid "Set origin and destination"
 msgstr "تعيين المنشأ والوجهة"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "إعداد"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "خيارات متعددة"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "مشاركة"
 
@@ -3899,6 +3925,10 @@ msgstr "طلبات كثيرة جدًا"
 msgid "Top"
 msgstr "الأعلى تقييمًا"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "المستوى الأعلى"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "ترجم إلى الإنجليزية، واعرض كنقاط."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "الولايات المتحدة"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "الأربعاء"
 msgid "Year"
 msgstr "السنة"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "نعم"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "ليس لديك صلاحية الوصول إلى هذا القسم."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "ليس لديك تغذيات بعد."
 

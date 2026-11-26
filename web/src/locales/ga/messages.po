@@ -709,6 +709,7 @@ msgstr "Cuir bac ar {name}?"
 msgid "Blocked"
 msgstr "Blocáilte"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Coiscthe ag"
 msgid "Blocked navigation to untrusted link"
 msgstr "Cuireadh bac le nascleanúint go nasc neamhiontaofa"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Bloic"
@@ -838,6 +840,10 @@ msgstr "Athraithe"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Athraíodh {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Rang athraithe"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Cóipeáilte"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Cóipeáilte chuig an ngearrthaisce"
@@ -1113,6 +1120,10 @@ msgstr "Cóipeáilte chuig an ngearrthaisce"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Cóipeáil"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Cóipeáil an nasc"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Cruthaigh {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Cruthaigh fotha nua"
 
@@ -1469,6 +1481,7 @@ msgstr "Íoslódáil"
 msgid "Download failed"
 msgstr "Theip ar an íoslódáil"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Dúblaigh"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Theip ar na postálacha sábháilte a ghlanadh"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Theip ar fhotha a chruthú"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Theip ar nasc a chruthú"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Theip ar phostáil a chruthú"
 
@@ -1942,10 +1956,6 @@ msgstr "Fotha scriosta"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID aonáin nó méarlorg an fhotha"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Nasc fotha"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Geal"
 msgid "Like"
 msgstr "Is maith liom"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Nasc"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Naisc"
@@ -2443,10 +2450,6 @@ msgstr "Tuilleadh roghanna"
 msgid "Moved"
 msgstr "Bogtha"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Bogadh {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "An mhí seo chugainn"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "An bhliain seo chugainn"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Níl"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Postáil"
 msgid "Post content"
 msgstr "Inneachar na postála"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Postáil cruthaithe"
 
@@ -2905,6 +2912,10 @@ msgstr "Níor aimsíodh an phostáil"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Postáil pionnáilte"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Postáil chuig fotha"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Laghdaigh spéis"
 msgid "Refresh source"
 msgstr "Athnuaigh foinse"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Bainteach"
@@ -3366,6 +3378,10 @@ msgstr "Cuardach"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Cuardaigh de réir ainm, aitheantas, méarlorg, nó URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Cuardaigh de réir ainm, aitheantas, méarlorg, URL, nó {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Cuardaigh ordú le rith..."
@@ -3455,6 +3471,10 @@ msgstr "Seol arís"
 msgid "Send email"
 msgstr "Seol ríomhphost"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Seol i gcomhrá"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Tá an seisiún imithe in éag. Logáil isteach arís, le do thoil."
 msgid "Set origin and destination"
 msgstr "Socraigh an bunús agus an ceann scríbe"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Socraigh"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Roghanna iolracha"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Comhroinn"
 
@@ -3899,6 +3925,10 @@ msgstr "An iomarca iarratas"
 msgid "Top"
 msgstr "Is fearr"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Barrleibhéal"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Aistrigh go Béarla, agus taispeáin mar phointí urchair."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Stáit Aontaithe"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Céadaoin"
 msgid "Year"
 msgstr "Bliain"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Tá"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Níl rochtain agat ar an rannán seo."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Níl aon fhothaí agat fós."
 

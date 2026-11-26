@@ -709,6 +709,7 @@ msgstr "{name} අවහිර කරන්නද?"
 msgid "Blocked"
 msgstr "අවහිර කළා"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "අවහිර කළ"
 msgid "Blocked navigation to untrusted link"
 msgstr "විශ්වාස නොකළ සබැඳියකට සංචාලනය අවහිර කරන ලදී"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "අවහිර කරයි"
@@ -838,6 +840,10 @@ msgstr "වෙනස් කරන ලදී"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} වෙනස් කරන ලදී"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "පංතිය වෙනස් කරන ලදී"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "පිටපත් කළා"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "ක්ලිප්බෝඩ් වෙත පිටපත් කරන ලදී"
@@ -1113,6 +1120,10 @@ msgstr "ක්ලිප්බෝඩ් වෙත පිටපත් කරන �
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "පිටපත් කරන්න"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "සබැඳිය පිටපත් කරන්න"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} සාදන්න"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "නව සංග්‍රහයක් නිර්මාණය කරන්න"
 
@@ -1469,6 +1481,7 @@ msgstr "බාගත කරන්න"
 msgid "Download failed"
 msgstr "බාගත කිරීම අසාර්ථක විය"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "අනුපිටපත්"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "සුරැකූ පළ කිරීම් හිස් කිරීමට අසමත් විය"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "සංග්‍රහයක් සෑදීමට අසමත් විය"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "සබැඳියක් සෑදීමට අසමත් විය"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "පළ කිරීමක් සෑදීමට අසමත් විය"
 
@@ -1942,10 +1956,6 @@ msgstr "සංග්‍රහය මකන ලදී"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "සංග්‍රහ සංස්ථා හැඳුනුම්පත හෝ ඇඟිලි සලකුණ"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "පෝෂක සබැඳිය"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "ලා"
 msgid "Like"
 msgstr "කැමති"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "සබැඳිය"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "සබැඳි"
@@ -2443,10 +2450,6 @@ msgstr "තවත් විකල්ප"
 msgid "Moved"
 msgstr "ගෙන යන ලදී"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} ගෙන යන ලදී"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "ඊළඟ මාසය"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "ඊළඟ වර්ෂය"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "නැත"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "පළ කරන්න"
 msgid "Post content"
 msgstr "පළ කිරීමේ අන්තර්ගතය"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "පළ කිරීම සාදන ලදී"
 
@@ -2905,6 +2912,10 @@ msgstr "පළ කිරීම හමු නොවීය"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "පළ කිරීම pin කරන ලදී"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "සංග්‍රහයකට පළ කරන්න"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "උනන්දුව අඩු කරන්න"
 msgid "Refresh source"
 msgstr "මූලාශ්‍රය නැවුම් කරන්න"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "සම්බන්ධ වේ"
@@ -3366,6 +3378,10 @@ msgstr "සොයන්න"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "නම, ID, ඇඟිලි සලකුණ, හෝ URL අනුව සොයන්න"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "නම, ID, ඇඟිලි සලකුණ, URL, හෝ {example} අනුව සොයන්න"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "ධාවනය කිරීමට විධානයක් සොයන්න..."
@@ -3455,6 +3471,10 @@ msgstr "නැවත යවන්න"
 msgid "Send email"
 msgstr "ඊමේල් යවන්න"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "චැට් එකක යවන්න"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "සැසිය කල් ඉකුත් වී ඇත. කරුණා
 msgid "Set origin and destination"
 msgstr "මූලාරම්භය සහ ගමනාන්තය සකසන්න"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "සකසන්න"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "තේරීම් කිහිපයක්"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "බෙදාගන්න"
 
@@ -3899,6 +3925,10 @@ msgstr "ඉල්ලීම් ඕනෑවට වඩා වැඩියි"
 msgid "Top"
 msgstr "හොඳම"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "ඉහළ මට්ටම"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "ඉංග්‍රීසියට පරිවර්තනය කර, බුලට් ලකුණු ලෙස පෙන්වන්න."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "එක්සත් ජනපදය"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "බදාදා"
 msgid "Year"
 msgstr "වර්ෂය"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "ඔව්"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "ඔබට මෙම කොටසට ප්‍රවේශය නොමැත."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "ඔබට තවමත් සංග්‍රහ නොමැත."
 

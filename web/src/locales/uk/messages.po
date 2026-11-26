@@ -709,6 +709,7 @@ msgstr "Заблокувати {name}?"
 msgid "Blocked"
 msgstr "Заблоковано"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Блокується"
 msgid "Blocked navigation to untrusted link"
 msgstr "Перехід за недовіреним посиланням заблоковано"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Блокує"
@@ -838,6 +840,10 @@ msgstr "Змінено"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Змінено {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Клас змінено"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Скопійовано"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Скопійовано в буфер обміну"
@@ -1113,6 +1120,10 @@ msgstr "Скопійовано в буфер обміну"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Копіювати"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Копіювати посилання"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Створити {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Створити нову стрічку"
 
@@ -1469,6 +1481,7 @@ msgstr "Завантажити"
 msgid "Download failed"
 msgstr "Не вдалося завантажити"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Дублює"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Не вдалося очистити збережені дописи"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Не вдалося створити стрічку"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Не вдалося створити посилання"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Не вдалося створити допис"
 
@@ -1942,10 +1956,6 @@ msgstr "Стрічку видалено"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID сутності стрічки або відбиток"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Посилання на стрічку"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Світла"
 msgid "Like"
 msgstr "Подобається"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Посилання"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Посилання"
@@ -2443,10 +2450,6 @@ msgstr "Більше параметрів"
 msgid "Moved"
 msgstr "Переміщено"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Переміщено {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Наступний місяць"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Наступний рік"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Ні"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Опублікувати"
 msgid "Post content"
 msgstr "Вміст допису"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Допис створено"
 
@@ -2905,6 +2912,10 @@ msgstr "Допис не знайдено"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Допис закріплено"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Опублікувати у стрічці"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Зменшити інтерес"
 msgid "Refresh source"
 msgstr "Оновити джерело"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Стосується"
@@ -3366,6 +3378,10 @@ msgstr "Пошук"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Пошук за назвою, ID, відбитком або URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Пошук за назвою, ID, відбитком, URL або адресою {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Пошук команди для виконання..."
@@ -3455,6 +3471,10 @@ msgstr "Надіслати ще раз"
 msgid "Send email"
 msgstr "Надіслати лист"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Надіслати в чаті"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Термін дії сеансу минув. Увійдіть ще ра�
 msgid "Set origin and destination"
 msgstr "Встановити пункти відправлення та призначення"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Налаштувати"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Кілька варіантів"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Поділитися"
 
@@ -3899,6 +3925,10 @@ msgstr "Забагато запитів"
 msgid "Top"
 msgstr "Найкращі"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Верхній рівень"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Перекласти англійською та показати у вигляді списку."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Сполучені Штати"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Середа"
 msgid "Year"
 msgstr "Рік"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Так"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Ви не маєте доступу до цього розділу."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "У вас поки немає стрічок."
 

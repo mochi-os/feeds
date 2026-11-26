@@ -709,6 +709,7 @@ msgstr "{name} бұғатталсын ба?"
 msgid "Blocked"
 msgstr "Бұғатталған"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Бөгелді"
 msgid "Blocked navigation to untrusted link"
 msgstr "Сенімсіз сілтемеге өту бөгелді"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Бөгейді"
@@ -838,6 +840,10 @@ msgstr "Өзгертілді"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} өзгертілді"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Сынып өзгертілді"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Көшірілді"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Алмасу буферіне көшірілді"
@@ -1113,6 +1120,10 @@ msgstr "Алмасу буферіне көшірілді"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Көшіру"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Сілтемені көшіру"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} жасау"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Жаңа арна құру"
 
@@ -1469,6 +1481,7 @@ msgstr "Жүктеп алу"
 msgid "Download failed"
 msgstr "Жүктеп алу сәтсіз аяқталды"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Қайталанулар"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Сақталған жазбаларды тазалау сәтсіз аяқталды"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Таспа жасау сәтсіз аяқталды"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Сілтеме жасау сәтсіз аяқталды"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Жазба жасау сәтсіз аяқталды"
 
@@ -1942,10 +1956,6 @@ msgstr "Таспа жойылды"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Таспа нысаны идентификаторы немесе қысқа идентификаторы"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Арна сілтемесі"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Ашық"
 msgid "Like"
 msgstr "Ұнайды"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Сілтеме"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Сілтемелер"
@@ -2443,10 +2450,6 @@ msgstr "Қосымша опциялар"
 msgid "Moved"
 msgstr "Жылжытылды"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} жылжытылды"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Келесі ай"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Келесі жыл"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Жоқ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Жариялау"
 msgid "Post content"
 msgstr "Жазба мазмұны"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Жазба жасалды"
 
@@ -2905,6 +2912,10 @@ msgstr "Жазба табылмады"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Жазба бекітілді"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Таспада жариялау"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Қызығушылықты азайту"
 msgid "Refresh source"
 msgstr "Дереккөзді жаңарту"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Байланысты"
@@ -3366,6 +3378,10 @@ msgstr "Іздеу"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Аты, ID, қысқа идентификатор немесе URL бойынша іздеу"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Аты, ID, қысқа идентификатор, URL немесе {example} мекенжайы бойынша іздеу"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Орындалатын пәрменді іздеу..."
@@ -3455,6 +3471,10 @@ msgstr "Қайта жіберу"
 msgid "Send email"
 msgstr "Электрондық пошта жіберу"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Чатта жіберу"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Сеанс мерзімі аяқталды. Қайта кіріңіз."
 msgid "Set origin and destination"
 msgstr "Шығу және бару нүктесін орнату"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Орнату"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Бірнеше нұсқа"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Бөлісу"
 
@@ -3899,6 +3925,10 @@ msgstr "Сұраулар тым көп"
 msgid "Top"
 msgstr "Үздіктер"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Үстіңгі деңгей"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Ағылшын тіліне аудару және маркер тізімі ретінде көрсету."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Америка Құрама Штаттары"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Сәрсенбі"
 msgid "Year"
 msgstr "Жыл"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Иә"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Сізде бұл бөлімге кіру мүмкіндігі жоқ."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Сізде әлі арна жоқ."
 

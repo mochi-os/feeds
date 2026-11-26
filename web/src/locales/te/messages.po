@@ -709,6 +709,7 @@ msgstr "{name}ని బ్లాక్ చేయాలా?"
 msgid "Blocked"
 msgstr "బ్లాక్ చేయబడింది"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "నిరోధించినది"
 msgid "Blocked navigation to untrusted link"
 msgstr "నమ్మదగని లింక్‌కి నావిగేషన్ నిరోధించబడింది"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "నిరోధిస్తుంది"
@@ -838,6 +840,10 @@ msgstr "మార్చబడింది"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} మార్చబడింది"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "తరగతి మార్చబడింది"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "కాపీ అయింది"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "క్లిప్‌బోర్డ్‌కి కాపీ చేయబడింది"
@@ -1113,6 +1120,10 @@ msgstr "క్లిప్‌బోర్డ్‌కి కాపీ చేయ�
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "కాపీ చేయండి"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "లింక్‌ను కాపీ చేయండి"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} సృష్టించు"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "కొత్త ఫీడ్‌ను సృష్టించండి"
 
@@ -1469,6 +1481,7 @@ msgstr "డౌన్‌లోడ్ చేయండి"
 msgid "Download failed"
 msgstr "డౌన్‌లోడ్ విఫలమైంది"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "నకలు చేస్తుంది"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "సేవ్ చేసిన పోస్ట్‌లను క్లియర్ చేయడం విఫలమైంది"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "ఫీడ్‌ను సృష్టించడంలో విఫలమైంది"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "లింక్‌ను సృష్టించడంలో విఫలమైంది"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "పోస్ట్‌ను సృష్టించడంలో విఫలమైంది"
 
@@ -1942,10 +1956,6 @@ msgstr "ఫీడ్ తొలగించబడింది"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ఫీడ్ ఎంటిటీ ID లేదా ఫింగర్‌ప్రింట్"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "ఫీడ్ లింక్"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "లైట్"
 msgid "Like"
 msgstr "ఇష్టం"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "లింక్"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "లింక్‌లు"
@@ -2443,10 +2450,6 @@ msgstr "మరిన్ని ఎంపికలు"
 msgid "Moved"
 msgstr "తరలించబడింది"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} తరలించబడింది"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "తదుపరి నెల"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "తదుపరి సంవత్సరం"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "కాదు"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "పోస్ట్ చేయండి"
 msgid "Post content"
 msgstr "పోస్ట్ కంటెంట్"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "పోస్ట్ సృష్టించబడింది"
 
@@ -2905,6 +2912,10 @@ msgstr "పోస్ట్ కనుగొనబడలేదు"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "పోస్ట్ పిన్ చేయబడింది"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "ఫీడ్‌లో పోస్ట్ చేయండి"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "ఆసక్తిని తగ్గించండి"
 msgid "Refresh source"
 msgstr "మూలాన్ని రిఫ్రెష్ చేయండి"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "సంబంధితం"
@@ -3366,6 +3378,10 @@ msgstr "శోధన"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "పేరు, ID, ఫింగర్‌ప్రింట్ లేదా URL ద్వారా శోధించండి"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "పేరు, ID, ఫింగర్‌ప్రింట్, URL లేదా {example} ద్వారా శోధించండి"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "అమలు చేయడానికి కమాండ్ కోసం వెతకండి..."
@@ -3455,6 +3471,10 @@ msgstr "మళ్ళీ పంపండి"
 msgid "Send email"
 msgstr "ఇమెయిల్ పంపండి"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "చాట్‌లో పంపండి"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "సెషన్ గడువు ముగిసింది. దయచ�
 msgid "Set origin and destination"
 msgstr "మూలం మరియు గమ్యస్థానాన్ని సెట్ చేయండి"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "సెటప్ చేయండి"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "అనేక ఎంపికలు"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "పంచుకోండి"
 
@@ -3899,6 +3925,10 @@ msgstr "చాలా ఎక్కువ అభ్యర్థనలు"
 msgid "Top"
 msgstr "ఉత్తమమైనవి"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "టాప్ లెవల్"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "ఇంగ్లీషుకు అనువదించండి మరియు బుల్లెట్ పాయింట్లుగా చూపించండి."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "యునైటెడ్ స్టేట్స్"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "బుధవారం"
 msgid "Year"
 msgstr "సంవత్సరం"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "అవును"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "ఈ విభాగానికి మీకు యాక్సెస్ లేదు."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "మీకు ఇంకా ఫీడ్‌లు లేవు."
 

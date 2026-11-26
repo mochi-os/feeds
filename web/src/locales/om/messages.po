@@ -709,6 +709,7 @@ msgstr "{name} ugguruu?"
 msgid "Blocked"
 msgstr "Uggurameera"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Kan dhorkame"
 msgid "Blocked navigation to untrusted link"
 msgstr "Karaa hin amanamne irraa qajeelfamni dhorkame"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Bloka"
@@ -838,6 +840,10 @@ msgstr "Jijjiirameera"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} jijjiirameera"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Kilaasiin jijjiirameera"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Garagalfame"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Garagalfamee gara saanduqa garagalchaa"
@@ -1113,6 +1120,10 @@ msgstr "Garagalfamee gara saanduqa garagalchaa"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Garagalchi"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Hidhaa garagalchi"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} uumi"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Feed haaraa uumi"
 
@@ -1469,6 +1481,7 @@ msgstr "Buufadhu"
 msgid "Download failed"
 msgstr "Buufachuun hin milkoofne"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Lameetfamtoota"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Maxxansaalee olkaa'aman haquun hin milkoofne"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Feed uumuu hin dandeenye"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Hidhaa uumuu hin dandeenye"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Maxxansa uumuu hin dandeenye"
 
@@ -1942,10 +1956,6 @@ msgstr "Feed haqame"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID qaama Feed yookiin maxxansa quba"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Hidhaa feed"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Ifaa"
 msgid "Like"
 msgstr "Jaalladha"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Hidhaa"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Hidhaalee"
@@ -2443,10 +2450,6 @@ msgstr "Filannoo dabalataa"
 msgid "Moved"
 msgstr "Sochoofameera"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} sochoofameera"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Ji'a itti aanu"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Waggaa itti aanu"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Lakki"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Maxxansi"
 msgid "Post content"
 msgstr "Qabiyyee maxxansaa"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Maxxansi uumame"
 
@@ -2905,6 +2912,10 @@ msgstr "Maxxansi hin argamne"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Maxxansi maxxanfame"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Feed tokkotti maxxansi"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Dantaa hir'isi"
 msgid "Refresh source"
 msgstr "Madda haaressuu"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Walqabata"
@@ -3366,6 +3378,10 @@ msgstr "Barbaadi"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Maqaa, ID, fingerprintii, ykn URL barbaadi"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Maqaa, ID, fingerprintii, URL, ykn {example} barbaadi"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Ajaja fiigsiisuuf barbaadi..."
@@ -3455,6 +3471,10 @@ msgstr "Ammas erguu"
 msgid "Send email"
 msgstr "Imeelii ergi"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Haasawa keessatti ergi"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Seeshinichi dhumateera. Maaloo irra deebi'ii seeni."
 msgid "Set origin and destination"
 msgstr "Madda fi galma qindeessi"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Qophaa'i"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Filannoowwan hedduu"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Qoodi"
 
@@ -3899,6 +3925,10 @@ msgstr "Gaaffiiwwan baay'ee garmalee"
 msgid "Top"
 msgstr "Kan caalan"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Sadarkaa olaanaa"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Gara Ingilizii hiiki, akka qabxiitti agarsiisi."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Yunaaytid Isteeths"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Roobii"
 msgid "Year"
 msgstr "Waggaa"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Eeyyee"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Kutaa kanaaf dhaqqabummaa hin qabdu."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Feed-iiwwan ammallee hin qabdu."
 

@@ -709,6 +709,7 @@ msgstr "Blockera {name}?"
 msgid "Blocked"
 msgstr "Blockerad"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Blockerad av"
 msgid "Blocked navigation to untrusted link"
 msgstr "Blockerade navigering till opålitlig länk"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Blockerar"
@@ -838,6 +840,10 @@ msgstr "Ändrade"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Ändrade {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Klass ändrad"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Kopierat"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Kopierat till urklipp"
@@ -1113,6 +1120,10 @@ msgstr "Kopierat till urklipp"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiera"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopiera länk"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Skapa {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Skapa ett nytt flöde"
 
@@ -1469,6 +1481,7 @@ msgstr "Ladda ner"
 msgid "Download failed"
 msgstr "Nedladdningen misslyckades"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Duplicerar"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Det gick inte att rensa sparade inlägg"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Kunde inte skapa flöde"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Kunde inte skapa länk"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Kunde inte skapa inlägg"
 
@@ -1942,10 +1956,6 @@ msgstr "Flöde raderat"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Flödesentitets-ID eller fingeravtryck"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Flödeslänk"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Ljust"
 msgid "Like"
 msgstr "Gilla"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Länk"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Länkar"
@@ -2443,10 +2450,6 @@ msgstr "Fler alternativ"
 msgid "Moved"
 msgstr "Flyttade"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Flyttade {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Nästa månad"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Nästa år"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Nej"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Publicera"
 msgid "Post content"
 msgstr "Inläggsinnehåll"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Inlägg skapat"
 
@@ -2905,6 +2912,10 @@ msgstr "Inlägget hittades inte"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Inlägg fäst"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Publicera i ett flöde"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Minska intresse"
 msgid "Refresh source"
 msgstr "Uppdatera källa"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Relaterar"
@@ -3366,6 +3378,10 @@ msgstr "Sök"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Sök efter namn, ID, fingeravtryck eller URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Sök efter namn, ID, fingeravtryck, URL eller {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Sök efter ett kommando att köra..."
@@ -3455,6 +3471,10 @@ msgstr "Skicka igen"
 msgid "Send email"
 msgstr "Skicka e-post"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Skicka i en chatt"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Sessionen har gått ut. Logga in igen."
 msgid "Set origin and destination"
 msgstr "Ange ursprung och destination"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Konfigurera"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Flera val"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Dela"
 
@@ -3899,6 +3925,10 @@ msgstr "För många förfrågningar"
 msgid "Top"
 msgstr "Topp"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Toppnivå"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Översätt till engelska och visa som punktlista."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "USA"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Onsdag"
 msgid "Year"
 msgstr "År"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Ja"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Du har inte åtkomst till det här avsnittet."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Du har inga flöden ännu."
 

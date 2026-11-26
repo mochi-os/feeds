@@ -9,3 +9,11 @@
 def action_accounts_list(a):
     capability = a.input("capability")
     a.json(mochi.account.list(capability))
+
+def action_networks(a):
+    """The networks the server hosts accounts on, which Find looks people up
+    on."""
+    if not a.user:
+        a.error.label(401, "errors.not_logged_in")
+        return
+    a.json({"networks": mochi.account.networks() or []})

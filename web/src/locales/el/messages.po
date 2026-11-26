@@ -709,6 +709,7 @@ msgstr "Αποκλεισμός {name};"
 msgid "Blocked"
 msgstr "Αποκλεισμένο"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Αποκλείεται από"
 msgid "Blocked navigation to untrusted link"
 msgstr "Αποκλείστηκε η πλοήγηση σε μη αξιόπιστο σύνδεσμο"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Αποκλείει"
@@ -838,6 +840,10 @@ msgstr "Άλλαξε"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Άλλαξε {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Η κλάση άλλαξε"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Αντιγράφηκε"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Αντιγράφηκε στο πρόχειρο"
@@ -1113,6 +1120,10 @@ msgstr "Αντιγράφηκε στο πρόχειρο"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Αντιγραφή"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Αντιγραφή συνδέσμου"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Δημιουργία {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Δημιουργία νέας ροής"
 
@@ -1469,6 +1481,7 @@ msgstr "Λήψη"
 msgid "Download failed"
 msgstr "Η λήψη απέτυχε"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Διπλότυπο"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Η εκκαθάριση των αποθηκευμένων δημοσιεύσεων απέτυχε"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Αποτυχία δημιουργίας ροής"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Αποτυχία δημιουργίας συνδέσμου"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Αποτυχία δημιουργίας ανάρτησης"
 
@@ -1942,10 +1956,6 @@ msgstr "Η ροή διαγράφηκε"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Αναγνωριστικό οντότητας ροής ή αποτύπωμα"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Σύνδεσμος ροής"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Φωτεινό"
 msgid "Like"
 msgstr "Μου αρέσει"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Σύνδεσμος"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Σύνδεσμοι"
@@ -2443,10 +2450,6 @@ msgstr "Περισσότερες επιλογές"
 msgid "Moved"
 msgstr "Μετακινήθηκε"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Μετακινήθηκε {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Επόμενος μήνας"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Επόμενο έτος"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Όχι"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Ανάρτηση"
 msgid "Post content"
 msgstr "Περιεχόμενο ανάρτησης"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Η ανάρτηση δημιουργήθηκε"
 
@@ -2905,6 +2912,10 @@ msgstr "Η ανάρτηση δεν βρέθηκε"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Η ανάρτηση καρφιτσώθηκε"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Ανάρτηση σε ροή"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Μείωση ενδιαφέροντος"
 msgid "Refresh source"
 msgstr "Ανανέωση πηγής"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Σχετίζεται"
@@ -3366,6 +3378,10 @@ msgstr "Αναζήτηση"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Αναζήτηση κατά όνομα, ID, αποτύπωμα ή URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Αναζήτηση κατά όνομα, ID, αποτύπωμα, URL ή {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Αναζήτηση εντολής προς εκτέλεση..."
@@ -3455,6 +3471,10 @@ msgstr "Αποστολή ξανά"
 msgid "Send email"
 msgstr "Αποστολή email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Αποστολή σε συνομιλία"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Η συνεδρία έληξε. Συνδεθείτε ξανά."
 msgid "Set origin and destination"
 msgstr "Ορίστε αφετηρία και προορισμό"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Ρύθμιση"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Πολλαπλές επιλογές"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Κοινοποίηση"
 
@@ -3899,6 +3925,10 @@ msgstr "Πάρα πολλά αιτήματα"
 msgid "Top"
 msgstr "Κορυφαία"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Ανώτατο επίπεδο"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Μεταφράστε στα Αγγλικά και εμφανίστε ως κουκκίδες."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Ηνωμένες Πολιτείες"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Τετάρτη"
 msgid "Year"
 msgstr "Έτος"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Ναι"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Δεν έχετε πρόσβαση σε αυτήν την ενότητα."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Δεν έχετε ακόμα ροές."
 

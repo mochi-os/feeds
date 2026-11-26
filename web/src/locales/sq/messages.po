@@ -709,6 +709,7 @@ msgstr "Të bllokohet {name}?"
 msgid "Blocked"
 msgstr "I bllokuar"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Bllokuar nga"
 msgid "Blocked navigation to untrusted link"
 msgstr "Lundrimi te lidhja e pabesueshme u bllokua"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Blloqe"
@@ -838,6 +840,10 @@ msgstr "U ndryshua"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "U ndryshua {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Klasa u ndryshua"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "U kopjua"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "U kopjua në kujtesën e fragmenteve"
@@ -1113,6 +1120,10 @@ msgstr "U kopjua në kujtesën e fragmenteve"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopjo"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopjo lidhjen"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Krijo {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Krijo një feed të ri"
 
@@ -1469,6 +1481,7 @@ msgstr "Shkarko"
 msgid "Download failed"
 msgstr "Shkarkimi dështoi"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Dublikatat"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Pastrimi i postimeve të ruajtura dështoi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Krijimi i feed dështoi"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Krijimi i lidhjes dështoi"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Krijimi i postimit dështoi"
 
@@ -1942,10 +1956,6 @@ msgstr "Feed u fshi"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID ose gjurmë e entitetit të feed"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Lidhja e feed-it"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "E çelët"
 msgid "Like"
 msgstr "Pëlqej"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Lidhje"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Lidhjet"
@@ -2443,10 +2450,6 @@ msgstr "Më shumë opsione"
 msgid "Moved"
 msgstr "U zhvendos"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "U zhvendos {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Muaji tjetër"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Viti tjetër"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Jo"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Posto"
 msgid "Post content"
 msgstr "Përmbajtja e postimit"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Postimi u krijua"
 
@@ -2905,6 +2912,10 @@ msgstr "Postimi s'u gjet"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Postimi u fiksua"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Posto në një feed"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Zvogëlo interesin"
 msgid "Refresh source"
 msgstr "Rifresko burimin"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Lidhet"
@@ -3366,6 +3378,10 @@ msgstr "Kërko"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Kërko sipas emrit, ID-së, gjurmës ose URL-së"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Kërko sipas emrit, ID-së, gjurmës, URL-së ose adresës {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Kërko një komandë për të ekzekutuar..."
@@ -3455,6 +3471,10 @@ msgstr "Dërgo përsëri"
 msgid "Send email"
 msgstr "Dërgo email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Dërgo në një bisedë"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Sesioni ka skaduar. Ju lutemi identifikohuni sërish."
 msgid "Set origin and destination"
 msgstr "Vendos origjinën dhe destinacionin"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Konfiguro"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Zgjedhje të shumta"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Shpërndaj"
 
@@ -3899,6 +3925,10 @@ msgstr "Shumë kërkesa"
 msgid "Top"
 msgstr "Më të mirat"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Niveli i lartë"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Përkthe në anglisht dhe shfaq si pika me yje."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Shtetet e Bashkuara"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "E mërkurë"
 msgid "Year"
 msgstr "Viti"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Po"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Nuk keni qasje në këtë seksion."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Nuk ke ende feed-e."
 

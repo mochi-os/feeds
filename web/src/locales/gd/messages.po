@@ -709,6 +709,7 @@ msgstr "Bac {name}?"
 msgid "Blocked"
 msgstr "Air a bhacadh"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Bacte le"
 msgid "Blocked navigation to untrusted link"
 msgstr "Chaidh seòladaireachd gu ceangal neo-earbsach a bhacadh"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Blocaichean"
@@ -838,6 +840,10 @@ msgstr "Air atharrachadh"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Chaidh {field} atharrachadh"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Clas air atharrachadh"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Chaidh lethbhreac a dhèanamh"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Air a chopaigeadh chun a' chliopaboird"
@@ -1113,6 +1120,10 @@ msgstr "Air a chopaigeadh chun a' chliopaboird"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Dèan lethbhreac"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Dèan lethbhreac den cheangal"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Cruthaich {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Cruthaich inbhir ùr"
 
@@ -1469,6 +1481,7 @@ msgstr "Luchdaich a-nuas"
 msgid "Download failed"
 msgstr "Dh’fhàillig an luchdadh a-nuas"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Dùblaichean"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Cha b' urrainn na postaichean sàbhailte fhalamhachadh"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Cha b' urrainn inbhir a chruthachadh"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Cha b' urrainn ceangal a chruthachadh"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Cha b' urrainn post a chruthachadh"
 
@@ -1942,10 +1956,6 @@ msgstr "Chaidh an inbhir a sguabadh às"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID no meur-lorg an inbhir"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Ceangal inbhir"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Soilleir"
 msgid "Like"
 msgstr "Toil"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Ceangal"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Ceanglaichean"
@@ -2443,10 +2450,6 @@ msgstr "Barrachd roghainnean"
 msgid "Moved"
 msgstr "Air a ghluasad"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Chaidh {field} a ghluasad"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "An ath-mhìos"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "An ath-bhliadhna"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Chan eil"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Postaich"
 msgid "Post content"
 msgstr "Susbaint a' phuist"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Chaidh am post a chruthachadh"
 
@@ -2905,6 +2912,10 @@ msgstr "Cha deach am post a lorg"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Chaidh am post a phrìneachadh"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Postaich gu inbhir"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Lùghdaich an ùidh"
 msgid "Refresh source"
 msgstr "Ath-nuadhaich an stòr"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "A' buntainn"
@@ -3366,6 +3378,10 @@ msgstr "Lorg"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Lorg le ainm, ID, lorg-meòir, no URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Lorg le ainm, ID, lorg-meòir, URL, no {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Lorg àithne ri ruith..."
@@ -3455,6 +3471,10 @@ msgstr "Cuir a-rithist"
 msgid "Send email"
 msgstr "Cuir post-d"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Cuir ann an cabadaich"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Dh'fhalbh an ùine air an t-seisean. Log a-steach a-rithist."
 msgid "Set origin and destination"
 msgstr "Suidhich tùs is ceann-uidhe"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Suidhich"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Iomadh roghainn"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Co-roinn"
 
@@ -3899,6 +3925,10 @@ msgstr "Cus iarrtasan"
 msgid "Top"
 msgstr "As fheàrr"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Ìre àrd"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Eadar-theangaich gu Beurla, agus seall mar phuingean."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Stàitean Aonaichte"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Diciadain"
 msgid "Year"
 msgstr "Bliadhna"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Tha"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Chan eil cead-inntrigidh agad dhan earrann seo."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Chan eil inbhirean agad fhathast."
 

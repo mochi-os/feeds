@@ -709,6 +709,7 @@ msgstr "Dènà {name}?"
 msgid "Blocked"
 msgstr "Ti dínà"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Dídènà nípasẹ̀"
 msgid "Blocked navigation to untrusted link"
 msgstr "A dí ìrìnnà sí ọ̀nà tí a kò gbẹ́kẹ̀lé"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Dí"
@@ -838,6 +840,10 @@ msgstr "A yí padà"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "A yí {field} padà"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "A yí kilaasi padà"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Ti dàkọ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "A ti ṣe àdàkọ sí clipboard"
@@ -1113,6 +1120,10 @@ msgstr "A ti ṣe àdàkọ sí clipboard"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Ṣe àdàkọ"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Ṣe àdàkọ ìjápọ̀"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Ṣẹ̀dá {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Dá feed tuntun"
 
@@ -1469,6 +1481,7 @@ msgstr "Gbà sílẹ̀"
 msgid "Download failed"
 msgstr "Ìgbàsílẹ̀ kùnà"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Ẹ̀dà"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Kò ṣàṣeyọrí láti pa àwọn ìfìwéránṣẹ́ tí a fipamọ́ rẹ́"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Kò lè dá feed"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Kò lè dá ìjápọ̀"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Kò lè dá ìfìránṣẹ́"
 
@@ -1942,10 +1956,6 @@ msgstr "A ti pa feed rẹ́"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID nkankan fidi tabi ẹsẹ ẹsẹ ìka"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Ọ̀nà àsopọ̀ fíìdì"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Ìmọ́lẹ̀"
 msgid "Like"
 msgstr "Fẹran"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Ọna asopọ"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Àwọn ìjápọ̀"
@@ -2443,10 +2450,6 @@ msgstr "Àwọn àṣàyàn síwájú sí i"
 msgid "Moved"
 msgstr "A gbé lọ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "A gbé {field} lọ"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Oṣù tó ń bọ̀"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Ọdún tó ń bọ̀"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Bẹ́ẹ̀ kọ́"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Fi ránṣẹ́"
 msgid "Post content"
 msgstr "Àkóónú ìfìránṣẹ́"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "A ti dá ìfìránṣẹ́"
 
@@ -2905,6 +2912,10 @@ msgstr "A kò rí ìfìránṣẹ́"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "A ti tẹ̀ ìfìránṣẹ́"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Fi ránṣẹ́ sí feed kan"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Dín ìfẹ́ kù"
 msgid "Refresh source"
 msgstr "Tún orísun ṣe"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Ṣe pẹ̀lú"
@@ -3366,6 +3378,10 @@ msgstr "Wá"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Wá nípa orúkọ, ID, fingerprint, tàbí URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Wá nípa orúkọ, ID, fingerprint, URL, tàbí {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Wá àṣẹ láti ṣiṣẹ́..."
@@ -3455,6 +3471,10 @@ msgstr "Fi ránṣẹ́ lẹ́ẹ̀kan sí i"
 msgid "Send email"
 msgstr "Fi ímeèlì ránṣẹ́"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Fi ránṣẹ́ nínú chat"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Sáà náà ti parí. Jọ̀wọ́ tún wọlé lẹ́ẹ̀kansí."
 msgid "Set origin and destination"
 msgstr "Ṣètò ibi tí o ti wá àti ibi tí o ń lọ"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Ṣètò"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Àṣàyàn púpọ̀"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Pín"
 
@@ -3899,6 +3925,10 @@ msgstr "Àwọn ìbéèrè ti pọ̀ jù"
 msgid "Top"
 msgstr "Tó dára jùlọ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Ipele òkè"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Túmọ̀ sí Gẹ̀ẹ́sì, kí o sì fihàn gẹ́gẹ́ bí àwọn àmì òòlu."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Orílẹ̀-èdè Amẹ́ríkà"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Ọjọ́rú"
 msgid "Year"
 msgstr "Ọdún"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Bẹ́ẹ̀ ni"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "O kò ní ààyè sí abala yìí."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "O kò ní feeds kankan síbẹ̀."
 

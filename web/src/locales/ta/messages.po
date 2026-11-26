@@ -709,6 +709,7 @@ msgstr "{name} ஐத் தடுக்கவா?"
 msgid "Blocked"
 msgstr "தடுக்கப்பட்டது"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "தடுக்கப்பட்டது"
 msgid "Blocked navigation to untrusted link"
 msgstr "நம்பகமற்ற இணைப்புக்கு வழிசெலுத்தல் தடுக்கப்பட்டது"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "தடுக்கிறது"
@@ -838,6 +840,10 @@ msgstr "மாற்றப்பட்டது"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} மாற்றப்பட்டது"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "வகுப்பு மாற்றப்பட்டது"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "நகலெடுக்கப்பட்டது"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது"
@@ -1113,6 +1120,10 @@ msgstr "கிளிப்போர்டுக்கு நகலெடுக�
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "நகலெடு"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "இணைப்பை நகலெடு"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} உருவாக்கு"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "புதிய ஃபீட் உருவாக்கு"
 
@@ -1469,6 +1481,7 @@ msgstr "பதிவிறக்கு"
 msgid "Download failed"
 msgstr "பதிவிறக்கம் தோல்வியடைந்தது"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "நகலெடுக்கிறது"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "சேமித்த இடுகைகளை அழிக்க முடியவில்லை"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "ஃபீடை உருவாக்க முடியவில்லை"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "இணைப்பை உருவாக்க முடியவில்லை"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "பதிவை உருவாக்க முடியவில்லை"
 
@@ -1942,10 +1956,6 @@ msgstr "ஃபீட் நீக்கப்பட்டது"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ஃபீட் பொருள் ஐடி அல்லது கைரேகை"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "ஊட்ட இணைப்பு"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "லைட்"
 msgid "Like"
 msgstr "லைக்"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "இணைப்பு"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "இணைப்புகள்"
@@ -2443,10 +2450,6 @@ msgstr "மேலும் விருப்பங்கள்"
 msgid "Moved"
 msgstr "நகர்த்தப்பட்டது"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} நகர்த்தப்பட்டது"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "அடுத்த மாதம்"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "அடுத்த ஆண்டு"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "இல்லை"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "பதிவிடு"
 msgid "Post content"
 msgstr "பதிவு உள்ளடக்கம்"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "பதிவு உருவாக்கப்பட்டது"
 
@@ -2905,6 +2912,10 @@ msgstr "பதிவு கிடைக்கவில்லை"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "பதிவு pin செய்யப்பட்டது"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "ஊட்டத்தில் பதிவிடு"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "ஆர்வத்தைக் குறைக்கவும்"
 msgid "Refresh source"
 msgstr "மூலத்தை புதுப்பி"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "தொடர்புடையது"
@@ -3366,6 +3378,10 @@ msgstr "தேடு"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "பெயர், ID, ஃபிங்கர்பிரிண்ட் அல்லது URL மூலம் தேடு"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "பெயர், ID, ஃபிங்கர்பிரிண்ட், URL அல்லது {example} மூலம் தேடு"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "இயக்க ஒரு கட்டளையைத் தேடு..."
@@ -3455,6 +3471,10 @@ msgstr "மீண்டும் அனுப்பு"
 msgid "Send email"
 msgstr "மின்னஞ்சல் அனுப்பு"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "அரட்டையில் அனுப்பு"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "அமர்வு காலாவதியானது. மீண்ட
 msgid "Set origin and destination"
 msgstr "துவக்கம் மற்றும் சேருமிடத்தை அமை"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "அமைக்க"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "பல தேர்வுகள்"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "பகிர்"
 
@@ -3899,6 +3925,10 @@ msgstr "மிக அதிகமான கோரிக்கைகள்"
 msgid "Top"
 msgstr "சிறந்தவை"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "உச்ச நிலை"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "ஆங்கிலத்திற்கு மொழிபெயர்த்து, புள்ளிகளாக காட்டு."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "ஐக்கிய அமெரிக்கா"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "புதன்கிழமை"
 msgid "Year"
 msgstr "ஆண்டு"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "ஆம்"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "இந்தப் பிரிவுக்கான அணுகல் உங்களுக்கு இல்லை."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "உங்களிடம் இன்னும் ஃபீட்கள் இல்லை."
 

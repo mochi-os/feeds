@@ -709,6 +709,7 @@ msgstr "Zablokować {name}?"
 msgid "Blocked"
 msgstr "Zablokowano"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Zablokowane przez"
 msgid "Blocked navigation to untrusted link"
 msgstr "Zablokowano nawigację do niezaufanego linku"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Blokuje"
@@ -838,6 +840,10 @@ msgstr "Zmieniono"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Zmieniono {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Zmieniono klasę"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Skopiowano"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Skopiowano do schowka"
@@ -1113,6 +1120,10 @@ msgstr "Skopiowano do schowka"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiuj"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopiuj link"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Utwórz {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Utwórz nowy kanał"
 
@@ -1469,6 +1481,7 @@ msgstr "Pobierz"
 msgid "Download failed"
 msgstr "Pobieranie nie powiodło się"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Duplikuje"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Nie udało się wyczyścić zapisanych postów"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Nie udało się utworzyć kanału"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Nie udało się utworzyć linku"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Nie udało się utworzyć wpisu"
 
@@ -1942,10 +1956,6 @@ msgstr "Kanał usunięty"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID podmiotu kanału lub odcisk palca"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Link do kanału"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Jasny"
 msgid "Like"
 msgstr "Lubię to"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Link"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Linki"
@@ -2443,10 +2450,6 @@ msgstr "Więcej opcji"
 msgid "Moved"
 msgstr "Przeniesiono"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Przeniesiono {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Następny miesiąc"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Następny rok"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Nie"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Opublikuj"
 msgid "Post content"
 msgstr "Treść wpisu"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Utworzono wpis"
 
@@ -2905,6 +2912,10 @@ msgstr "Nie znaleziono wpisu"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Przypięto wpis"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Opublikuj w kanale"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Zmniejsz zainteresowanie"
 msgid "Refresh source"
 msgstr "Odśwież źródło"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Dotyczy"
@@ -3366,6 +3378,10 @@ msgstr "Szukaj"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Szukaj według nazwy, ID, identyfikatora lub adresu URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Szukaj według nazwy, ID, identyfikatora, adresu URL lub adresu {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Szukaj polecenia do uruchomienia..."
@@ -3455,6 +3471,10 @@ msgstr "Wyślij ponownie"
 msgid "Send email"
 msgstr "Wyślij e-mail"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Wyślij na czacie"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Sesja wygasła. Zaloguj się ponownie."
 msgid "Set origin and destination"
 msgstr "Ustaw źródło i cel"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Skonfiguruj"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Wielokrotny wybór"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Udostępnij"
 
@@ -3899,6 +3925,10 @@ msgstr "Zbyt wiele żądań"
 msgid "Top"
 msgstr "Najlepsze"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Najwyższy poziom"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Przetłumacz na angielski i pokaż jako punkty."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Stany Zjednoczone"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Środa"
 msgid "Year"
 msgstr "Rok"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Tak"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Nie masz dostępu do tej sekcji."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Nie masz jeszcze żadnych kanałów."
 

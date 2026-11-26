@@ -709,6 +709,7 @@ msgstr "{name} بلاک کړئ؟"
 msgid "Blocked"
 msgstr "بند شوی"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "بند شوی لخوا"
 msgid "Blocked navigation to untrusted link"
 msgstr "نه باور لرونکي لینک ته نیویګیشن بنده شوه"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "بلاکونه"
@@ -838,6 +840,10 @@ msgstr "بدل شو"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} بدل شو"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "ټولګی بدل شو"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "کاپي شو"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "په کلیپ بورډ کاپي شو"
@@ -1113,6 +1120,10 @@ msgstr "په کلیپ بورډ کاپي شو"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "کاپي کړئ"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "لینک کاپي کړئ"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} جوړ کړئ"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "نوی فیډ جوړ کړئ"
 
@@ -1469,6 +1481,7 @@ msgstr "ډاونلوډ"
 msgid "Download failed"
 msgstr "ډاونلوډ ناکام شو"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "نقلونه"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "د خوندي شویو پوستونو پاکول ناکام شو"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "د فیډ جوړولو پاتې راغلل"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "د لینک جوړولو پاتې راغلل"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "د پوسټ جوړولو پاتې راغلل"
 
@@ -1942,10 +1956,6 @@ msgstr "فیډ وشلید"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "د فیډ موجودیت ID یا د ګوتو نښه"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "د فیډ لینک"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "روښانه"
 msgid "Like"
 msgstr "خوښ"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "لینک"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "لینکونه"
@@ -2443,10 +2450,6 @@ msgstr "نور انتخابونه"
 msgid "Moved"
 msgstr "لېږدول شو"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} لېږدول شو"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "راتلونکې میاشت"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "راتلونکی کال"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "نه"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "خپور کړئ"
 msgid "Post content"
 msgstr "د لیکنې مینځپانګه"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "لیکنه جوړه شوه"
 
@@ -2905,6 +2912,10 @@ msgstr "لیکنه ونه موندل شوه"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "لیکنه پن شوه"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "په فیډ کې خپور کړئ"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "د علاقې کمول"
 msgid "Refresh source"
 msgstr "سرچینه تازه کړئ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "اړیکه لري"
@@ -3366,6 +3378,10 @@ msgstr "لټون"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "د نوم، ID، فنګر پرنټ، یا URL له مخې وپلټئ"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "د نوم، ID، فنګر پرنټ، URL، یا {example} له مخې وپلټئ"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "د پرمخ وړلو لپاره کمانډ ولټوئ..."
@@ -3455,6 +3471,10 @@ msgstr "بیا ولیږئ"
 msgid "Send email"
 msgstr "بریښنالیک ولېږئ"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "په چټ کې ولېږئ"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "سیشن پای ته ورسېد. مهرباني وکړئ بیا ننوځ
 msgid "Set origin and destination"
 msgstr "سرچینه او منزل وټاکئ"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "تنظیم"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "څو انتخابونه"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "شریکه کړئ"
 
@@ -3899,6 +3925,10 @@ msgstr "ډېرې زیاتې غوښتنې"
 msgid "Top"
 msgstr "غوره"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "لومړۍ کچه"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "انګلیسي ته وژباړئ، او د نښه شویو ټکو په توګه وښیه."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "متحده ایالات"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "چهارشنبه"
 msgid "Year"
 msgstr "کال"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "هو"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "تاسو دې برخې ته لاسرسی نه لرئ."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "تاسو لا تر اوسه هیڅ فیډ نه لرئ."
 

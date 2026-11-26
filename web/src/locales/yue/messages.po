@@ -709,6 +709,7 @@ msgstr ""
 msgid "Blocked"
 msgstr ""
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr ""
 msgid "Blocked navigation to untrusted link"
 msgstr ""
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr ""
@@ -837,6 +839,10 @@ msgstr ""
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
+msgstr ""
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
 msgstr ""
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr ""
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr ""
@@ -1112,6 +1119,10 @@ msgstr ""
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
+msgstr ""
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
 msgstr ""
 
 #: src/features/feeds/components/filters-section.tsx
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr ""
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr ""
 
@@ -1469,6 +1481,7 @@ msgstr ""
 msgid "Download failed"
 msgstr ""
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr ""
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr ""
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr ""
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "建立連結失敗"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr ""
 
@@ -1941,10 +1955,6 @@ msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
-msgstr ""
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
 msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -2289,10 +2299,7 @@ msgstr ""
 msgid "Like"
 msgstr ""
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "連結"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr ""
@@ -2443,10 +2450,6 @@ msgstr ""
 msgid "Moved"
 msgstr ""
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr ""
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2540,6 +2543,10 @@ msgstr ""
 
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
+msgstr ""
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
 msgstr ""
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
@@ -2889,7 +2896,7 @@ msgstr ""
 msgid "Post content"
 msgstr ""
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr ""
 
@@ -2904,6 +2911,10 @@ msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
+msgstr ""
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
 msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx
@@ -3046,6 +3057,7 @@ msgstr ""
 msgid "Refresh source"
 msgstr ""
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr ""
@@ -3366,6 +3378,10 @@ msgstr ""
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr ""
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr ""
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr ""
@@ -3455,6 +3471,10 @@ msgstr ""
 msgid "Send email"
 msgstr ""
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr ""
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr ""
 msgid "Set origin and destination"
 msgstr ""
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr ""
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr ""
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr ""
 
@@ -3899,6 +3925,10 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr ""
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr ""
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr ""
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr ""
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "你仲未有任何資訊流。"
 

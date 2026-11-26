@@ -709,6 +709,7 @@ msgstr "¿{name} jark'ama?"
 msgid "Blocked"
 msgstr "Jark'ata"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Jark'iri"
 msgid "Blocked navigation to untrusted link"
 msgstr "Jan iyawsat enlacer mantañ jark'ata"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Jark'i"
@@ -838,6 +840,10 @@ msgstr "Mayjt'ayata"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} mayjt'ayata"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Clase mayjt'ayata"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Copiatawa"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Clipboard-ru copiata"
@@ -1113,6 +1120,10 @@ msgstr "Clipboard-ru copiata"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Copiaña"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Enlace copiaña"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} luraña"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Mä machaq feed luraña"
 
@@ -1469,6 +1481,7 @@ msgstr "Apaqaña"
 msgid "Download failed"
 msgstr "Apaqañax pantjatawa"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Paypachayatanaka"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Imat qillqatanak q'umachañax pantjawayi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Janiw feed lurañ atkiti"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Janiw enlace lurañ atkiti"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Janiw qillqata lurañ atkiti"
 
@@ -1942,10 +1956,6 @@ msgstr "Feed chhaqtayatawa"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed entidad ID jan ukax fingerprint"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Feed enlace"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Qhana"
 msgid "Like"
 msgstr "Munaña"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Enlace"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Enlacenaka"
@@ -2443,10 +2450,6 @@ msgstr "Juk'ampi ajlliñanaka"
 msgid "Moved"
 msgstr "Astata"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} astata"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Arkiri phaxsi"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Arkiri mara"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Janiwa"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Qillqaña"
 msgid "Post content"
 msgstr "Qillqata contenido"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Qillqata luratawa"
 
@@ -2905,6 +2912,10 @@ msgstr "Qillqata jan jikxatasiti"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Qillqata ch'akuntata"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Mä feed ukar qillqaña"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Munaña juk'achaña"
 msgid "Refresh source"
 msgstr "Jalsu machaqachaña"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Chikt'ata"
@@ -3366,6 +3378,10 @@ msgstr "Thaqhama"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Suti, ID, fingerprint, jan ukax URL ukamp thaqhama"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Suti, ID, fingerprint, URL, jan ukax {example} ukamp thaqhama"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Mä kamachi lurañataki thaqhaña..."
@@ -3455,6 +3471,10 @@ msgstr "Wasitata apayaña"
 msgid "Send email"
 msgstr "Email apayaña"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Mä chat ukar apayaña"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Sesionax tukusiwa. Wasitat mantam."
 msgid "Set origin and destination"
 msgstr "Mistuñ chiqa ukat destino uchaña"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Wakichaña"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Walja chhijllawinaka"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Compartiña"
 
@@ -3899,6 +3925,10 @@ msgstr "Walja mayiwinaka"
 msgid "Top"
 msgstr "Wali suma"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Patxa nivel"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Inglés arur jaqukipam, ukat chimpu listjam uñacht'ayam."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Estados Unidos"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Miércoles"
 msgid "Year"
 msgstr "Mara"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Jisa"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Janiw aka t'aqar mantañ utjktamti."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Janïraw feeds utjkiti."
 

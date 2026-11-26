@@ -709,6 +709,7 @@ msgstr "{name} को ब्लॉक करें?"
 msgid "Blocked"
 msgstr "ब्लॉक किया गया"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "द्वारा अवरुद्ध"
 msgid "Blocked navigation to untrusted link"
 msgstr "अविश्वसनीय लिंक पर नेविगेशन ब्लॉक किया गया"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "अवरुद्ध करता है"
@@ -838,6 +840,10 @@ msgstr "बदला गया"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} बदला गया"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "वर्ग बदला गया"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "कॉपी किया गया"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "क्लिपबोर्ड पर कॉपी किया गया"
@@ -1113,6 +1120,10 @@ msgstr "क्लिपबोर्ड पर कॉपी किया गय�
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "कॉपी करें"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "लिंक कॉपी करें"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} बनाएँ"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "नया फ़ीड बनाएँ"
 
@@ -1469,6 +1481,7 @@ msgstr "डाउनलोड करें"
 msgid "Download failed"
 msgstr "डाउनलोड विफल"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "डुप्लिकेट"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "सहेजी गई पोस्ट साफ़ करने में विफल"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "फीड बनाने में विफल"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "लिंक बनाने में विफल"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "पोस्ट बनाने में विफल"
 
@@ -1942,10 +1956,6 @@ msgstr "फीड हटाया गया"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "फ़ीड एंटिटी ID या फ़िंगरप्रिंट"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "फ़ीड लिंक"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "लाइट"
 msgid "Like"
 msgstr "पसंद"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "लिंक"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "लिंक"
@@ -2443,10 +2450,6 @@ msgstr "अधिक विकल्प"
 msgid "Moved"
 msgstr "स्थानांतरित किया गया"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} स्थानांतरित किया गया"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "अगला महीना"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "अगला वर्ष"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "नहीं"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "पोस्ट करें"
 msgid "Post content"
 msgstr "पोस्ट सामग्री"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "पोस्ट बनाई गई"
 
@@ -2905,6 +2912,10 @@ msgstr "पोस्ट नहीं मिली"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "पोस्ट पिन की गई"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "फीड पर पोस्ट करें"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "रुचि कम करें"
 msgid "Refresh source"
 msgstr "स्रोत ताज़ा करें"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "संबंधित"
@@ -3366,6 +3378,10 @@ msgstr "खोजें"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "नाम, ID, फ़िंगरप्रिंट, या URL से खोजें"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "नाम, ID, फ़िंगरप्रिंट, URL, या {example} से खोजें"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "चलाने के लिए कमांड खोजें..."
@@ -3455,6 +3471,10 @@ msgstr "फिर से भेजें"
 msgid "Send email"
 msgstr "ईमेल भेजें"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "चैट में भेजें"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "सत्र समाप्त हो गया है। कृपय�
 msgid "Set origin and destination"
 msgstr "स्रोत और गंतव्य सेट करें"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "सेट अप करें"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "एक से अधिक विकल्प"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "साझा करें"
 
@@ -3899,6 +3925,10 @@ msgstr "बहुत अधिक अनुरोध"
 msgid "Top"
 msgstr "टॉप"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "टॉप लेवल"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "अंग्रेज़ी में अनुवाद करें, और बुलेट पॉइंट के रूप में दिखाएँ।"
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "संयुक्त राज्य अमेरिका"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "बुधवार"
 msgid "Year"
 msgstr "वर्ष"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "हाँ"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "आपके पास इस अनुभाग तक पहुँच नहीं है।"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "अभी आपके पास कोई फ़ीड नहीं है।"
 

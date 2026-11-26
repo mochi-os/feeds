@@ -709,6 +709,7 @@ msgstr "{name} blokkolása?"
 msgid "Blocked"
 msgstr "Letiltva"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Blokkolja"
 msgid "Blocked navigation to untrusted link"
 msgstr "Megbízhatatlan hivatkozásra való navigáció letiltva"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Blokkolja"
@@ -838,6 +840,10 @@ msgstr "Módosítva"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} módosítva"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Osztály módosítva"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Másolva"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "A vágólapra másolva"
@@ -1113,6 +1120,10 @@ msgstr "A vágólapra másolva"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Másolás"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Hivatkozás másolása"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} létrehozása"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Új feed létrehozása"
 
@@ -1469,6 +1481,7 @@ msgstr "Letöltés"
 msgid "Download failed"
 msgstr "A letöltés sikertelen"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Duplikálja"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "A mentett bejegyzések törlése nem sikerült"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Nem sikerült létrehozni a hírcsatornát"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Nem sikerült létrehozni a hivatkozást"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Nem sikerült létrehozni a bejegyzést"
 
@@ -1942,10 +1956,6 @@ msgstr "Hírcsatorna törölve"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Hírfolyam entitás azonosító vagy ujjlenyomat"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Hírfolyam-hivatkozás"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Világos"
 msgid "Like"
 msgstr "Tetszik"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Hivatkozás"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Hivatkozások"
@@ -2443,10 +2450,6 @@ msgstr "További lehetőségek"
 msgid "Moved"
 msgstr "Áthelyezve"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} áthelyezve"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Következő hónap"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Következő év"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Nem"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Közzététel"
 msgid "Post content"
 msgstr "Bejegyzés tartalma"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Bejegyzés létrehozva"
 
@@ -2905,6 +2912,10 @@ msgstr "A bejegyzés nem található"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Bejegyzés rögzítve"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Közzététel hírcsatornában"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Érdeklődés csökkentése"
 msgid "Refresh source"
 msgstr "Forrás frissítése"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Kapcsolódik"
@@ -3366,6 +3378,10 @@ msgstr "Keresés"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Keresés név, azonosító, ujjlenyomat vagy URL alapján"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Keresés név, azonosító, ujjlenyomat, URL vagy {example} alapján"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Keressen futtatandó parancsot…"
@@ -3455,6 +3471,10 @@ msgstr "Újraküldés"
 msgid "Send email"
 msgstr "E-mail küldése"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Küldés csevegésben"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "A munkamenet lejárt. Kérjük, jelentkezzen be újra."
 msgid "Set origin and destination"
 msgstr "Kiindulási és úti cél beállítása"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Beállítás"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Több választás"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Megosztás"
 
@@ -3899,6 +3925,10 @@ msgstr "Túl sok kérés"
 msgid "Top"
 msgstr "Legjobbak"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Legfelső szint"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Fordítsa angolra, és jelenítse meg felsorolásként."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Egyesült Államok"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Szerda"
 msgid "Year"
 msgstr "Év"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Igen"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Nincs hozzáférése ehhez a részhez."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Még nincsenek hírfolyamai."
 

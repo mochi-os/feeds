@@ -709,6 +709,7 @@ msgstr "{name} blokeatu?"
 msgid "Blocked"
 msgstr "Blokeatuta"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Blokeatzailea"
 msgid "Blocked navigation to untrusted link"
 msgstr "Konfiantzazkoa ez den estekarako nabigazioa blokeatu da"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Blokeak"
@@ -838,6 +840,10 @@ msgstr "Aldatuta"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} aldatu da"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Klasea aldatuta"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Kopiatuta"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Arbelera kopiatu da"
@@ -1113,6 +1120,10 @@ msgstr "Arbelera kopiatu da"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiatu"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopiatu esteka"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Sortu {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Sortu jario berri bat"
 
@@ -1469,6 +1481,7 @@ msgstr "Deskargatu"
 msgid "Download failed"
 msgstr "Deskargak huts egin du"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Bikoiztuak"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Ezin izan dira gordetako argitalpenak garbitu"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Ezin izan da jarioa sortu"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Ezin izan da esteka sortu"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Ezin izan da argitalpena sortu"
 
@@ -1942,10 +1956,6 @@ msgstr "Jarioa ezabatuta"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Jarioaren entitate IDa edo hatz-marka"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Jarioaren esteka"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Argia"
 msgid "Like"
 msgstr "Atsegin"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Esteka"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Estekak"
@@ -2443,10 +2450,6 @@ msgstr "Aukera gehiago"
 msgid "Moved"
 msgstr "Lekuz aldatuta"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} lekuz aldatu da"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Hurrengo hilabetea"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Hurrengo urtea"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Ez"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Argitaratu"
 msgid "Post content"
 msgstr "Argitalpenaren edukia"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Argitalpena sortu da"
 
@@ -2905,6 +2912,10 @@ msgstr "Ez da argitalpena aurkitu"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Argitalpena finkatu da"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Argitaratu jario batean"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Murriztu interesa"
 msgid "Refresh source"
 msgstr "Eguneratu iturria"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Erlazionatuta dago"
@@ -3366,6 +3378,10 @@ msgstr "Bilatu"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Bilatu izenez, IDz, hatz-markaz edo URLz"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Bilatu izenez, IDz, hatz-markaz, URLz edo {example} helbidez"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Bilatu exekutatzeko komando bat..."
@@ -3455,6 +3471,10 @@ msgstr "Bidali berriz"
 msgid "Send email"
 msgstr "Bidali emaila"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Bidali txat batean"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Saioa iraungi da. Hasi saioa berriro."
 msgid "Set origin and destination"
 msgstr "Ezarri jatorria eta helmuga"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Konfiguratu"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Aukera anitz"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Partekatu"
 
@@ -3899,6 +3925,10 @@ msgstr "Eskaera gehiegi"
 msgid "Top"
 msgstr "Onenak"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Goi-maila"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Itzuli ingelesera, eta erakutsi puntu gisa."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Estatu Batuak"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Asteazkena"
 msgid "Year"
 msgstr "Urtea"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Bai"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Ez duzu atal honetarako sarbiderik."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Oraindik ez duzu jariorik."
 

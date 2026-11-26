@@ -709,6 +709,7 @@ msgstr "Արգելափակե՞լ {name}-ին։"
 msgid "Blocked"
 msgstr "Արգելափակված"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Արգելափակված է՝"
 msgid "Blocked navigation to untrusted link"
 msgstr "Արգելափակվեց անցումը անվստահելի հղման"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Արգելափակումներ"
@@ -838,6 +840,10 @@ msgstr "Փոփոխվել է"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Փոփոխվել է {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Դասը փոխվել է"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Պատճենվեց"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Պատճենվեց սեղմատախտակին"
@@ -1113,6 +1120,10 @@ msgstr "Պատճենվեց սեղմատախտակին"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Պատճենել"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Պատճենել հղումը"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Ստեղծել {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Ստեղծել նոր հոսք"
 
@@ -1469,6 +1481,7 @@ msgstr "Ներբեռնել"
 msgid "Download failed"
 msgstr "Ներբեռնումը ձախողվեց"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Կրկնօրինակներ"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Չհաջողվեց մաքրել պահված գրառումները"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Չհաջողվեց ստեղծել հոսքը"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Չհաջողվեց ստեղծել հղումը"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Չհաջողվեց ստեղծել գրառումը"
 
@@ -1942,10 +1956,6 @@ msgstr "Հոսքը ջնջվեց"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Հոսքի անձի ID կամ մատնահետք"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Հոսքի հղում"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Լուսավոր"
 msgid "Like"
 msgstr "Հավանել"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Հղում"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Հղումներ"
@@ -2443,10 +2450,6 @@ msgstr "Լրացուցիչ ընտրանքներ"
 msgid "Moved"
 msgstr "Տեղափոխվել է"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Տեղափոխվել է {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Հաջորդ ամիս"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Հաջորդ տարի"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Ոչ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Հրապարակել"
 msgid "Post content"
 msgstr "Գրառման բովանդակություն"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Գրառումը ստեղծվեց"
 
@@ -2905,6 +2912,10 @@ msgstr "Գրառումը չի գտնվել"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Գրառումը ամրացվեց"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Հրապարակել հոսքում"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Նվազեցնել հետաքրքրությունը"
 msgid "Refresh source"
 msgstr "Թարմացնել աղբյուրը"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Կապված է"
@@ -3366,6 +3378,10 @@ msgstr "Որոնել"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Որոնել ըստ անվան, ID-ի, մատնահետքի կամ URL-ի"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Որոնել ըստ անվան, ID-ի, մատնահետքի, URL-ի կամ {example} հասցեի"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Որոնել կատարվող հրաման..."
@@ -3455,6 +3471,10 @@ msgstr "Ուղարկել կրկին"
 msgid "Send email"
 msgstr "Ուղարկել էլ. փոստ"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Ուղարկել զրույցում"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Աշխատաշրջանի ժամկետը սպառվել է։ Խնդրու
 msgid "Set origin and destination"
 msgstr "Սահմանել ծագումը և նպատակակետը"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Կարգավորել"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Մի քանի ընտրություն"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Կիսվել"
 
@@ -3899,6 +3925,10 @@ msgstr "Չափազանց շատ հարցումներ"
 msgid "Top"
 msgstr "Լավագույն"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Վերին մակարդակ"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Թարգմանել անգլերեն և ցույց տալ որպես կետեր:"
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Միացյալ Նահանգներ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Չորեքշաբթի"
 msgid "Year"
 msgstr "Տարի"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Այո"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Այս բաժինը ձեզ հասանելի չէ։"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Դուք դեռ չունեք ֆիդեր:"
 

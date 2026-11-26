@@ -709,6 +709,7 @@ msgstr "{name} ကို ပိတ်ဆို့မလား?"
 msgid "Blocked"
 msgstr "ပိတ်ဆို့ထားသည်"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "ပိတ်ဆို့သူ"
 msgid "Blocked navigation to untrusted link"
 msgstr "မယုံကြည်ရသော လင့်ခ်သို့ သွားရောက်ခြင်းကို ပိတ်ဆို့ထားသည်"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "ပိတ်ဆို့မှုများ"
@@ -838,6 +840,10 @@ msgstr "ပြောင်းလဲခဲ့သည်"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} ကို ပြောင်းလဲခဲ့သည်"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "အတန်းအစား ပြောင်းထားသည်"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "ကူးယူပြီးပါပြီ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "ကလစ်ဘုတ်သို့ ကူးပြီး"
@@ -1113,6 +1120,10 @@ msgstr "ကလစ်ဘုတ်သို့ ကူးပြီး"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "ကူးမည်"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "လင့်ခ် ကူးမည်"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} ဖန်တီးရန်"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "ဖိဒ် အသစ်တစ်ခု ဖန်တီးမည်"
 
@@ -1469,6 +1481,7 @@ msgstr "ဒေါင်းလုဒ်"
 msgid "Download failed"
 msgstr "ဒေါင်းလုဒ် မအောင်မြင်ပါ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "ထပ်နေသော"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "သိမ်းထားသောပို့စ်များကို ရှင်းရန် မအောင်မြင်ပါ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "ဖိဒ် ဖန်တီး၍ မရပါ"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "လင့် ဖန်တီး၍ မရပါ"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "ပို့စ် ဖန်တီး၍ မရပါ"
 
@@ -1942,10 +1956,6 @@ msgstr "ဖိဒ် ဖျက်ပြီးပါပြီ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ဖိဒ် အရာ ID သို့မဟုတ် လက်ဗွေ"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "ဖိဒ်လင့်ခ်"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "အလင်း"
 msgid "Like"
 msgstr "နှစ်သက်"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "လင့်ခ်"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "လင့်များ"
@@ -2443,10 +2450,6 @@ msgstr "နောက်ထပ် ရွေးချယ်စရာများ"
 msgid "Moved"
 msgstr "ရွှေ့ခဲ့သည်"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} ကို ရွှေ့ခဲ့သည်"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "နောက်လ"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "နောက်နှစ်"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "မဟုတ်"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "ပို့စ်တင်ရန်"
 msgid "Post content"
 msgstr "ပို့စ် အကြောင်းအရာ"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "ပို့စ် ဖန်တီးပြီးပါပြီ"
 
@@ -2905,6 +2912,10 @@ msgstr "ပို့စ် မတွေ့ပါ"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "ပို့စ် pin လုပ်ပြီးပါပြီ"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "ဖိဒ်သို့ ပို့စ်တင်ရန်"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "စိတ်ဝင်စားမှု လျှော့ချ"
 msgid "Refresh source"
 msgstr "ရင်းမြစ်ကို ပြန်ဖွင့်ပါ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "ဆက်စပ်"
@@ -3366,6 +3378,10 @@ msgstr "ရှာဖွေ"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "အမည်၊ ID၊ လက်ဗွေ၊ သို့မဟုတ် URL ဖြင့် ရှာဖွေ"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "အမည်၊ ID၊ လက်ဗွေ၊ URL၊ သို့မဟုတ် {example} ဖြင့် ရှာဖွေ"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "လုပ်ဆောင်ရန် အမိန့်ရှာပါ..."
@@ -3455,6 +3471,10 @@ msgstr "ထပ်ပို့ပါ"
 msgid "Send email"
 msgstr "အီးမေးလ်ပို့ရန်"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "ချတ်တွင် ပို့ရန်"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "စက်ရှင်သက်တမ်း ကုန်သွားပ�
 msgid "Set origin and destination"
 msgstr "မူရင်းနှင့် ဦးတည်ရာ သတ်မှတ်မည်"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "ပြင်ဆင်မည်"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "ရွေးချယ်မှု အများအပြား"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "မျှဝေရန်"
 
@@ -3899,6 +3925,10 @@ msgstr "တောင်းဆိုမှု များလွန်းနေ�
 msgid "Top"
 msgstr "ထိပ်တန်း"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "ထိပ်တန်း"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "အင်္ဂလိပ်ဘာသာသို့ ဘာသာပြန်ပြီး အချက်ကောက်များဖြင့် ပြသမည်။"
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "အမေရိကန်ပြည်ထောင်စု"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "ဗုဒ္ဓဟူး"
 msgid "Year"
 msgstr "နှစ်"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "ဟုတ်"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "ဤအပိုင်းသို့ သင့်တွင် ဝင်ရောက်ခွင့်မရှိပါ။"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "သင့်တွင် feed များ မရှိသေးပါ။"
 

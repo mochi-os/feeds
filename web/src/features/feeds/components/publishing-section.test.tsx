@@ -135,6 +135,44 @@ describe('Publishing section', () => {
     expect(switches[1]).toHaveAttribute('aria-checked', 'false')
   })
 
+  it('lists a network the server offers that no account is on, to set one up', async () => {
+    state.getPublish.mockResolvedValue({
+      accounts: accounts.slice(1),
+      publish: [],
+      copies: {},
+      offered: ['fediverse', 'bluesky'],
+    })
+    show()
+    expect(await screen.findByText('alice.bsky.social')).toBeTruthy()
+    expect(screen.getByText('ActivityPub')).toBeTruthy()
+    expect(screen.getAllByRole('button', { name: 'Set up' })).toHaveLength(1)
+  })
+
+  it('counts a linked Mastodon account as being on the fediverse', async () => {
+    state.getPublish.mockResolvedValue({
+      accounts,
+      publish: [],
+      copies: {},
+      offered: ['fediverse', 'bluesky'],
+    })
+    show()
+    expect(await screen.findByText('@alice@mastodon.social')).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Set up' })).toBeNull()
+  })
+
+  it('shows the networks to set up where there is no account at all', async () => {
+    state.getPublish.mockResolvedValue({
+      accounts: [],
+      publish: [],
+      copies: {},
+      offered: ['fediverse', 'bluesky'],
+    })
+    show()
+    expect(await screen.findByText('ActivityPub')).toBeTruthy()
+    expect(screen.getByText('Bluesky')).toBeTruthy()
+    expect(screen.getAllByRole('button', { name: 'Set up' })).toHaveLength(2)
+  })
+
   it('publishes the feed as a Bluesky feed from a hosted Bluesky account only', async () => {
     state.setGenerator.mockResolvedValue({ generators: { b2: 'at://x' } })
     const user = userEvent.setup()
@@ -413,6 +451,17 @@ describe('usePublishOffered', () => {
     })
     const result = offered(true)
     await waitFor(() => expect(result.current).toBe(false))
+  })
+
+  it('offers the tab where the server offers a network to set an account up on', async () => {
+    state.getPublish.mockResolvedValue({
+      accounts: [],
+      publish: [],
+      copies: {},
+      offered: ['bluesky'],
+    })
+    const result = offered(true)
+    await waitFor(() => expect(result.current).toBe(true))
   })
 
   it('offers the tab where the answer failed, so the error shows', async () => {

@@ -709,6 +709,7 @@ msgstr "{name} bloklanadimi?"
 msgid "Blocked"
 msgstr "Bloklangan"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Bloklagan"
 msgid "Blocked navigation to untrusted link"
 msgstr "Ishonchsiz havolaga oʻtish bloklandi"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Bloklar"
@@ -838,6 +840,10 @@ msgstr "Oʻzgartirildi"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} oʻzgartirildi"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Sinf oʻzgartirildi"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Nusxalandi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Buferga nusxalandi"
@@ -1113,6 +1120,10 @@ msgstr "Buferga nusxalandi"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Nusxalash"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Havolani nusxalash"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} yaratish"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Yangi feed yaratish"
 
@@ -1469,6 +1481,7 @@ msgstr "Yuklab olish"
 msgid "Download failed"
 msgstr "Yuklab olib boʻlmadi"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Dublikatlar"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Saqlangan postlarni tozalab bo'lmadi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Tasma yaratib boʻlmadi"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Havola yaratib boʻlmadi"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Post yaratib boʻlmadi"
 
@@ -1942,10 +1956,6 @@ msgstr "Tasma oʻchirildi"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Tasma obyekt ID yoki barmoq izi"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Tasma havolasi"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Yorugʻ"
 msgid "Like"
 msgstr "Yoqdi"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Havola"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Havolalar"
@@ -2443,10 +2450,6 @@ msgstr "Boshqa variantlar"
 msgid "Moved"
 msgstr "Koʻchirildi"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} koʻchirildi"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Keyingi oy"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Keyingi yil"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Yoʻq"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Joylash"
 msgid "Post content"
 msgstr "Post mazmuni"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Post yaratildi"
 
@@ -2905,6 +2912,10 @@ msgstr "Post topilmadi"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Post mahkamlandi"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Tasmaga joylash"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Qiziqishni kamaytirish"
 msgid "Refresh source"
 msgstr "Manbani yangilash"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Aloqador"
@@ -3366,6 +3378,10 @@ msgstr "Qidirish"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Nomi, IDsi, fingerprinti yoki URL boʻyicha qidirish"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Nomi, IDsi, fingerprinti, URL yoki {example} manzili boʻyicha qidirish"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Bajarish uchun buyruq qidirish..."
@@ -3455,6 +3471,10 @@ msgstr "Qayta yuborish"
 msgid "Send email"
 msgstr "Email yuborish"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Suhbatda yuborish"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Seans muddati tugadi. Qaytadan tizimga kiring."
 msgid "Set origin and destination"
 msgstr "Boshlang‘ich va manzilni belgilash"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Sozlash"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Bir nechta tanlov"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Ulashish"
 
@@ -3899,6 +3925,10 @@ msgstr "Juda koʻp soʻrovlar"
 msgid "Top"
 msgstr "Eng yaxshi"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Yuqori daraja"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Inglizchaga tarjima qiling va punktlar sifatida koʻrsating."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Amerika Qoʻshma Shtatlari"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Chorshanba"
 msgid "Year"
 msgstr "Yil"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Ha"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Bu boʻlimga kirish huquqingiz yoʻq."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Sizda hali lentalar yoʻq."
 

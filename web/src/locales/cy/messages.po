@@ -709,6 +709,7 @@ msgstr "Blocio {name}?"
 msgid "Blocked"
 msgstr "Wedi'i rwystro"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Wedi'i flocio gan"
 msgid "Blocked navigation to untrusted link"
 msgstr "Llywio at ddolen heb ymddiriedaeth wedi'i blocio"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Blociau"
@@ -838,6 +840,10 @@ msgstr "Newidiwyd"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Newidiwyd {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Newidiwyd y dosbarth"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Copïwyd"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Wedi'i gopïo i'r clipfwrdd"
@@ -1113,6 +1120,10 @@ msgstr "Wedi'i gopïo i'r clipfwrdd"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Copïo"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Copïo'r ddolen"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Creu {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Creu porthiant newydd"
 
@@ -1469,6 +1481,7 @@ msgstr "Lawrlwytho"
 msgid "Download failed"
 msgstr "Methwyd â lawrlwytho"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Dyblygion"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Methwyd clirio'r postiadau cadwedig"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Methwyd creu ffrwd"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Methwyd creu dolen"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Methwyd creu post"
 
@@ -1942,10 +1956,6 @@ msgstr "Ffrwd wedi'i ddileu"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID endid neu olion bysedd y ffrwd"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Dolen ffrwd"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Golau"
 msgid "Like"
 msgstr "Hoffi"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Dolen"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Dolenni"
@@ -2443,10 +2450,6 @@ msgstr "Rhagor o opsiynau"
 msgid "Moved"
 msgstr "Symudwyd"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Symudwyd {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Mis nesaf"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Blwyddyn nesaf"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Na"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Postio"
 msgid "Post content"
 msgstr "Cynnwys postiad"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Postiad wedi'i greu"
 
@@ -2905,6 +2912,10 @@ msgstr "Heb ddod o hyd i'r postiad"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Postiad wedi'i binio"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Postio i ffrwd"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Lleihau diddordeb"
 msgid "Refresh source"
 msgstr "Adnewyddu’r ffynhonnell"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Yn ymwneud"
@@ -3366,6 +3378,10 @@ msgstr "Chwilio"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Chwilio yn ôl enw, ID, ôl bys, neu URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Chwilio yn ôl enw, ID, ôl bys, URL, neu {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Chwilio am orchymyn i'w redeg..."
@@ -3455,6 +3471,10 @@ msgstr "Anfon eto"
 msgid "Send email"
 msgstr "Anfon e-bost"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Anfon mewn sgwrs"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Mae'r sesiwn wedi dod i ben. Mewngofnodwch eto."
 msgid "Set origin and destination"
 msgstr "Gosod tarddiad a chyrchfan"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Gosod"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Sawl dewis"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Rhannu"
 
@@ -3899,6 +3925,10 @@ msgstr "Gormod o geisiadau"
 msgid "Top"
 msgstr "Gorau"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Lefel uchaf"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Cyfieithwch i'r Saesneg, a dangos fel pwyntiau bwled."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Yr Unol Daleithiau"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Dydd Mercher"
 msgid "Year"
 msgstr "Blwyddyn"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Iawn"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Nid oes gennych fynediad i'r adran hon."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Nid oes gennych unrhyw borthiannau eto."
 

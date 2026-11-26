@@ -709,6 +709,7 @@ msgstr "Bloķēt {name}?"
 msgid "Blocked"
 msgstr "Bloķēts"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Bloķēja"
 msgid "Blocked navigation to untrusted link"
 msgstr "Navigācija uz neuzticamu saiti bloķēta"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Bloki"
@@ -838,6 +840,10 @@ msgstr "Mainīts"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Mainīts {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Klase mainīta"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Nokopēts"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Nokopēts starpliktuvē"
@@ -1113,6 +1120,10 @@ msgstr "Nokopēts starpliktuvē"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopēt"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopēt saiti"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Izveidot {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Izveidot jaunu plūsmu"
 
@@ -1469,6 +1481,7 @@ msgstr "Lejupielādēt"
 msgid "Download failed"
 msgstr "Lejupielāde neizdevās"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Dublikāti"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Neizdevās notīrīt saglabātos ierakstus"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Neizdevās izveidot plūsmu"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Neizdevās izveidot saiti"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Neizdevās izveidot ierakstu"
 
@@ -1942,10 +1956,6 @@ msgstr "Plūsma dzēsta"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Plūsmas entītijas ID vai pirkstu nospiedums"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Plūsmas saite"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Gaišs"
 msgid "Like"
 msgstr "Patīk"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Saite"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Saites"
@@ -2443,10 +2450,6 @@ msgstr "Vairāk opciju"
 msgid "Moved"
 msgstr "Pārvietots"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Pārvietots {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Nākamais mēnesis"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Nākamais gads"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Nē"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Publicēt"
 msgid "Post content"
 msgstr "Ieraksta saturs"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Ieraksts izveidots"
 
@@ -2905,6 +2912,10 @@ msgstr "Ieraksts nav atrasts"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Ieraksts piesprausts"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Publicēt plūsmā"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Samazināt interesi"
 msgid "Refresh source"
 msgstr "Atsvaidzināt avotu"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Saistīts"
@@ -3366,6 +3378,10 @@ msgstr "Meklēt"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Meklēt pēc nosaukuma, ID, pirkstu nospieduma vai URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Meklēt pēc nosaukuma, ID, pirkstu nospieduma, URL vai adreses {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Meklēt izpildāmu komandu..."
@@ -3455,6 +3471,10 @@ msgstr "Sūtīt vēlreiz"
 msgid "Send email"
 msgstr "Sūtīt e-pastu"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Sūtīt čatā"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Sesija ir beigusies. Lūdzu, piesakieties vēlreiz."
 msgid "Set origin and destination"
 msgstr "Iestatīt sākuma un galapunktu"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Iestatīt"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Vairākas izvēles"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Kopīgot"
 
@@ -3899,6 +3925,10 @@ msgstr "Pārāk daudz pieprasījumu"
 msgid "Top"
 msgstr "Labākie"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Augšējais līmenis"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Tulkot uz angļu valodu un parādīt kā aizzīmes punktus."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Amerikas Savienotās Valstis"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Trešdiena"
 msgid "Year"
 msgstr "Gads"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Jā"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Jums nav piekļuves šai sadaļai."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Jums vēl nav neviena plūsma."
 

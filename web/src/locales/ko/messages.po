@@ -709,6 +709,7 @@ msgstr "{name}님을 차단할까요?"
 msgid "Blocked"
 msgstr "차단됨"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "차단됨"
 msgid "Blocked navigation to untrusted link"
 msgstr "신뢰할 수 없는 링크로의 이동이 차단되었어요"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "차단"
@@ -838,6 +840,10 @@ msgstr "변경됨"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} 변경됨"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "클래스 변경됨"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "복사됨"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "클립보드에 복사되었어요"
@@ -1113,6 +1120,10 @@ msgstr "클립보드에 복사되었어요"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "복사"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "링크 복사"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} 만들기"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "새 피드 생성"
 
@@ -1469,6 +1481,7 @@ msgstr "다운로드"
 msgid "Download failed"
 msgstr "다운로드 실패"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "중복"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "저장된 게시물을 지우지 못했습니다"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "피드 생성에 실패했어요"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "링크 생성에 실패했어요"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "게시물 생성에 실패했어요"
 
@@ -1942,10 +1956,6 @@ msgstr "피드가 삭제되었어요"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "피드 엔티티 ID 또는 지문"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "피드 링크"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "라이트"
 msgid "Like"
 msgstr "좋아요"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "링크"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "링크"
@@ -2443,10 +2450,6 @@ msgstr "추가 옵션"
 msgid "Moved"
 msgstr "이동됨"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} 이동됨"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "다음 달"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "다음 연도"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "아니요"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "게시"
 msgid "Post content"
 msgstr "게시물 내용"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "게시물이 만들어졌어요"
 
@@ -2905,6 +2912,10 @@ msgstr "게시물을 찾을 수 없어요"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "게시물이 고정되었어요"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "피드에 게시"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "관심사 줄이기"
 msgid "Refresh source"
 msgstr "소스 새로 고침"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "관련"
@@ -3366,6 +3378,10 @@ msgstr "검색"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "이름, ID, 지문 또는 URL로 검색"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "이름, ID, 지문, URL 또는 {example} 형식의 주소로 검색"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "실행할 명령 검색..."
@@ -3455,6 +3471,10 @@ msgstr "다시 보내기"
 msgid "Send email"
 msgstr "이메일 보내기"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "채팅으로 보내기"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "세션이 만료되었습니다. 다시 로그인해 주세요."
 msgid "Set origin and destination"
 msgstr "출발지와 도착지 설정"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "설정"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "복수 선택"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "공유"
 
@@ -3899,6 +3925,10 @@ msgstr "요청이 너무 많음"
 msgid "Top"
 msgstr "최고"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "최상위"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "영어로 번역하여 글머리 기호로 표시해 주세요."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "미국"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "수요일"
 msgid "Year"
 msgstr "연도"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "예"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "이 섹션에 대한 접근 권한이 없습니다."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "아직 피드가 없어요."
 

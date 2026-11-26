@@ -709,6 +709,7 @@ msgstr "Chặn {name}?"
 msgid "Blocked"
 msgstr "Đã chặn"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Bị chặn bởi"
 msgid "Blocked navigation to untrusted link"
 msgstr "Đã chặn điều hướng tới liên kết không tin cậy"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Chặn"
@@ -838,6 +840,10 @@ msgstr "Đã thay đổi"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Đã thay đổi {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Đã thay đổi lớp"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Đã sao chép"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Đã sao chép vào bộ nhớ tạm"
@@ -1113,6 +1120,10 @@ msgstr "Đã sao chép vào bộ nhớ tạm"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Sao chép"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Sao chép liên kết"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Tạo {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Tạo feed mới"
 
@@ -1469,6 +1481,7 @@ msgstr "Tải xuống"
 msgid "Download failed"
 msgstr "Tải xuống thất bại"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Trùng lặp"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Không xóa được các bài viết đã lưu"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Không tạo nguồn cấp được"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Không tạo liên kết được"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Không tạo bài đăng được"
 
@@ -1942,10 +1956,6 @@ msgstr "Đã xoá nguồn cấp"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID thực thể nguồn cấp hoặc dấu vân tay"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Liên kết nguồn cấp"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Sáng"
 msgid "Like"
 msgstr "Thích"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Liên kết"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Liên kết"
@@ -2443,10 +2450,6 @@ msgstr "Tùy chọn khác"
 msgid "Moved"
 msgstr "Đã di chuyển"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Đã di chuyển {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Tháng sau"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Năm sau"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Không"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Đăng"
 msgid "Post content"
 msgstr "Nội dung bài viết"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Đã tạo bài viết"
 
@@ -2905,6 +2912,10 @@ msgstr "Không tìm thấy bài viết"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Đã ghim bài viết"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Đăng lên một nguồn cấp"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Giảm sự quan tâm"
 msgid "Refresh source"
 msgstr "Làm mới nguồn"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Liên quan đến"
@@ -3366,6 +3378,10 @@ msgstr "Tìm kiếm"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Tìm kiếm theo tên, ID, dấu vân tay hoặc URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Tìm kiếm theo tên, ID, dấu vân tay, URL hoặc {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Tìm lệnh để chạy..."
@@ -3455,6 +3471,10 @@ msgstr "Gửi lại"
 msgid "Send email"
 msgstr "Gửi email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Gửi trong cuộc trò chuyện"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Phiên đã hết hạn. Vui lòng đăng nhập lại."
 msgid "Set origin and destination"
 msgstr "Đặt điểm xuất phát và điểm đến"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Thiết lập"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Nhiều lựa chọn"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Chia sẻ"
 
@@ -3899,6 +3925,10 @@ msgstr "Quá nhiều yêu cầu"
 msgid "Top"
 msgstr "Hàng đầu"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Cấp cao nhất"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Dịch sang tiếng Anh và hiển thị dưới dạng các điểm đánh dấu."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Hoa Kỳ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Thứ tư"
 msgid "Year"
 msgstr "Năm"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Có"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Bạn không có quyền truy cập vào phần này."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Bạn chưa có nguồn cấp nào."
 

@@ -709,6 +709,7 @@ msgstr "封鎖{name}？"
 msgid "Blocked"
 msgstr "已封鎖"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "被以下阻擋"
 msgid "Blocked navigation to untrusted link"
 msgstr "已封鎖前往不受信任連結的導航"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "阻擋"
@@ -838,6 +840,10 @@ msgstr "已變更"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "已變更{field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "已變更類別"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "已複製"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "已複製到剪貼簿"
@@ -1113,6 +1120,10 @@ msgstr "已複製到剪貼簿"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "複製"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "複製連結"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "建立{entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "建立新資訊流"
 
@@ -1469,6 +1481,7 @@ msgstr "下載"
 msgid "Download failed"
 msgstr "下載失敗"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "重複"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "清除已儲存的貼文失敗"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "建立資訊流失敗"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "建立連結失敗"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "建立貼文失敗"
 
@@ -1942,10 +1956,6 @@ msgstr "資訊流已刪除"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "資訊流實體 ID 或指紋"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "資訊流連結"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "淺色"
 msgid "Like"
 msgstr "喜歡"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "連結"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "連結"
@@ -2443,10 +2450,6 @@ msgstr "更多選項"
 msgid "Moved"
 msgstr "已移動"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "已移動{field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "下個月"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "下一年"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "否"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "發佈"
 msgid "Post content"
 msgstr "貼文內容"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "已建立貼文"
 
@@ -2905,6 +2912,10 @@ msgstr "找不到貼文"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "貼文已釘選"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "發布到資訊流"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "降低興趣"
 msgid "Refresh source"
 msgstr "重新整理來源"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "關聯"
@@ -3366,6 +3378,10 @@ msgstr "搜尋"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "依名稱、ID、指紋或網址搜尋"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "依名稱、ID、指紋、網址或 {example} 搜尋"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "搜尋要執行的命令..."
@@ -3455,6 +3471,10 @@ msgstr "重新傳送"
 msgid "Send email"
 msgstr "傳送郵件"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "傳送到聊天"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "工作階段已過期，請重新登入。"
 msgid "Set origin and destination"
 msgstr "設定出發地與目的地"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "設定"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "可複選"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "分享"
 
@@ -3899,6 +3925,10 @@ msgstr "要求次數過多"
 msgid "Top"
 msgstr "最佳"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "頂層"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "翻譯成英文,並以項目符號顯示。"
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "美國"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "星期三"
 msgid "Year"
 msgstr "年"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "是"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "您沒有存取此區段的權限。"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "您尚未擁有任何資訊流。"
 

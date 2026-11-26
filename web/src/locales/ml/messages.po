@@ -709,6 +709,7 @@ msgstr "{name} ബ്ലോക്ക് ചെയ്യണോ?"
 msgid "Blocked"
 msgstr "ബ്ലോക്ക് ചെയ്തു"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "തടഞ്ഞത്"
 msgid "Blocked navigation to untrusted link"
 msgstr "വിശ്വസനീയമല്ലാത്ത ലിങ്കിലേക്കുള്ള നാവിഗേഷൻ തടഞ്ഞു"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "തടയുന്നു"
@@ -838,6 +840,10 @@ msgstr "മാറ്റി"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} മാറ്റി"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "ക്ലാസ് മാറ്റി"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "പകർത്തി"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി"
@@ -1113,6 +1120,10 @@ msgstr "ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത�
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "പകർത്തുക"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "ലിങ്ക് പകർത്തുക"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} സൃഷ്ടിക്കുക"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "ഒരു പുതിയ ഫീഡ് സൃഷ്ടിക്കുക"
 
@@ -1469,6 +1481,7 @@ msgstr "ഡൗൺലോഡ് ചെയ്യുക"
 msgid "Download failed"
 msgstr "ഡൗൺലോഡ് പരാജയപ്പെട്ടു"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "ഡ്യൂപ്ലിക്കേറ്റ്"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "സംരക്ഷിച്ച പോസ്റ്റുകൾ മായ്ക്കാനായില്ല"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "ഫീഡ് സൃഷ്ടിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "ലിങ്ക് സൃഷ്ടിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "പോസ്റ്റ് സൃഷ്ടിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
@@ -1942,10 +1956,6 @@ msgstr "ഫീഡ് ഇല്ലാതാക്കി"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ഫീഡ് എന്റിറ്റി ഐഡി അല്ലെങ്കിൽ ഫിംഗർപ്രിന്റ്"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "ഫീഡ് ലിങ്ക്"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "ലൈറ്റ്"
 msgid "Like"
 msgstr "ഇഷ്ടം"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "ലിങ്ക്"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "ലിങ്കുകൾ"
@@ -2443,10 +2450,6 @@ msgstr "കൂടുതൽ ഓപ്ഷനുകൾ"
 msgid "Moved"
 msgstr "നീക്കി"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} നീക്കി"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "അടുത്ത മാസം"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "അടുത്ത വർഷം"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "ഇല്ല"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "പോസ്റ്റ് ചെയ്യുക"
 msgid "Post content"
 msgstr "പോസ്റ്റ് ഉള്ളടക്കം"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "പോസ്റ്റ് സൃഷ്ടിച്ചു"
 
@@ -2905,6 +2912,10 @@ msgstr "പോസ്റ്റ് കണ്ടെത്തിയില്ല"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "പോസ്റ്റ് പിൻ ചെയ്തു"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "ഫീഡിലേക്ക് പോസ്റ്റ് ചെയ്യുക"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "താൽപ്പര്യം കുറയ്ക്കുക"
 msgid "Refresh source"
 msgstr "ഉറവിടം പുതുക്കുക"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "ബന്ധപ്പെട്ടത്"
@@ -3366,6 +3378,10 @@ msgstr "തിരയുക"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "പേര്, ID, ഫിംഗർപ്രിന്റ് അല്ലെങ്കിൽ URL ഉപയോഗിച്ച് തിരയുക"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "പേര്, ID, ഫിംഗർപ്രിന്റ്, URL അല്ലെങ്കിൽ {example} ഉപയോഗിച്ച് തിരയുക"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "പ്രവർത്തിപ്പിക്കാൻ കമാൻഡ് തിരയുക..."
@@ -3455,6 +3471,10 @@ msgstr "വീണ്ടും അയയ്ക്കുക"
 msgid "Send email"
 msgstr "ഇമെയിൽ അയയ്ക്കുക"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "ചാറ്റിൽ അയയ്ക്കുക"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "സെഷൻ കാലഹരണപ്പെട്ടു. വീണ്ട
 msgid "Set origin and destination"
 msgstr "ഉത്ഭവവും ലക്ഷ്യസ്ഥാനവും സജ്ജമാക്കുക"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "സജ്ജമാക്കുക"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "ഒന്നിലധികം തിരഞ്ഞെടുപ്പു�
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "പങ്കിടുക"
 
@@ -3899,6 +3925,10 @@ msgstr "വളരെയധികം അഭ്യർത്ഥനകൾ"
 msgid "Top"
 msgstr "മികച്ചവ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "ഏറ്റവും മുകളിലുള്ള ലെവൽ"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "ഇംഗ്ലീഷിലേക്ക് വിവർത്തനം ചെയ്യുക, ബുള്ളറ്റ് പോയിന്റുകളായി കാണിക്കുക."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "യുണൈറ്റഡ് സ്റ്റേറ്റ്സ്"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "ബുധനാഴ്ച"
 msgid "Year"
 msgstr "വർഷം"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "അതെ"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "ഈ വിഭാഗത്തിലേക്ക് നിങ്ങൾക്ക് പ്രവേശനമില്ല."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "നിങ്ങൾക്ക് ഇതുവരെ ഫീഡുകൾ ഇല്ല."
 

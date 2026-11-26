@@ -2,28 +2,22 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import { useCallback, useEffect, useMemo } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useEffect, useMemo } from 'react'
 import { APP_ROUTES } from '@/config/routes'
-import type { PostFeatures, PostPollInput } from '@/types'
 import { useLingui } from '@lingui/react/macro'
 import {
   AuthenticatedLayout,
   MapTilesProvider,
-  type PostData,
-  toast,
   type SidebarData,
   type NavItem,
   onShellMessage,
   naturalCompare,
-  useUploadProgress,
-  useAttachmentError,
 } from '@mochi/web'
 import { Bookmark, Plus, Rss, Search } from 'lucide-react'
-import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { loadSaved } from '@/lib/saved'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
+import { useCreatePost } from '@/hooks/use-create-post'
 import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 
@@ -38,12 +32,10 @@ function FeedsLayoutInner() {
     newPostDialogOpen,
     newPostFeedId,
     closeNewPostDialog,
-    postRefreshHandler,
     createFeedDialogOpen,
     openCreateFeedDialog,
     closeCreateFeedDialog,
   } = useSidebarContext()
-  const queryClient = useQueryClient()
 
   useEffect(() => {
     // Load the feeds list for the sidebar, unless the route loader already
@@ -96,54 +88,7 @@ function FeedsLayoutInner() {
   }, [feeds, newPostFeedId])
 
   // Handle new post submission
-  const { progress: createProgress, upload } = useUploadProgress()
-  const attachmentError = useAttachmentError()
-  const handleNewPost = useCallback(
-    async (input: {
-      feedId: string
-      body: string
-      data?: PostData
-      files: File[]
-      captions: string[]
-      accounts?: string[]
-      features?: PostFeatures
-      poll?: PostPollInput
-    }) => {
-      try {
-        const payload = {
-          feed: input.feedId,
-          body: input.body,
-          data: input.data,
-          files: input.files,
-          captions: input.captions,
-          accounts: input.accounts,
-          features: input.features,
-          poll: input.poll,
-        }
-        if (input.files.length) {
-          await upload(
-            (onProgress) => feedsApi.createPost(payload, onProgress),
-            {
-              sizes: input.files.map((file) => file.size),
-            }
-          )
-        } else {
-          await feedsApi.createPost(payload)
-        }
-        // Invalidate TanStack Query cache (for individual feed pages)
-        await queryClient.invalidateQueries({
-          queryKey: ['posts', input.feedId],
-        })
-        // Call the home page refresh handler if registered
-        postRefreshHandler.current?.(input.feedId)
-        toast.success(t`Post created`)
-      } catch (error) {
-        toast.error(attachmentError(error, t`Failed to create post`))
-        throw error
-      }
-    },
-    [queryClient, postRefreshHandler, upload, t, attachmentError]
-  )
+  const { submit: handleNewPost, progress: createProgress } = useCreatePost()
 
   const sidebarData: SidebarData = useMemo(() => {
     // Show full feed navigation regardless of context

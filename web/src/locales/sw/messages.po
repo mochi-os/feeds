@@ -709,6 +709,7 @@ msgstr "Zuia {name}?"
 msgid "Blocked"
 msgstr "Amezuiwa"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Imezuiwa na"
 msgid "Blocked navigation to untrusted link"
 msgstr "Imezuia urambazaji kwenda kiungo kisichoaminika"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Inazuia"
@@ -838,6 +840,10 @@ msgstr "Imebadilishwa"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Imebadilisha {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Darasa limebadilishwa"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Imenakiliwa"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Imenakiliwa kwenye ubao wa kunakili"
@@ -1113,6 +1120,10 @@ msgstr "Imenakiliwa kwenye ubao wa kunakili"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Nakili"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Nakili kiungo"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Unda {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Unda mlisho mpya"
 
@@ -1469,6 +1481,7 @@ msgstr "Pakua"
 msgid "Download failed"
 msgstr "Upakuaji umeshindwa"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Inarudia"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Imeshindwa kufuta machapisho yaliyohifadhiwa"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Imeshindwa kuunda mlisho"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Imeshindwa kuunda kiungo"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Imeshindwa kuunda chapisho"
 
@@ -1942,10 +1956,6 @@ msgstr "Mlisho umefutwa"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Kitambulisho cha Entiti ya Mlisho au Alama ya Kidole"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Kiungo cha mlisho"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Mwepesi"
 msgid "Like"
 msgstr "Pendezwa"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Kiungo"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Viungo"
@@ -2443,10 +2450,6 @@ msgstr "Chaguo zaidi"
 msgid "Moved"
 msgstr "Imehamishwa"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Imehamisha {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Mwezi ujao"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Mwaka ujao"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Hapana"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Chapisha"
 msgid "Post content"
 msgstr "Maudhui ya chapisho"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Chapisho limeundwa"
 
@@ -2905,6 +2912,10 @@ msgstr "Chapisho halikupatikana"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Chapisho limebandikwa"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Chapisha kwenye mlisho"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Punguza shauku"
 msgid "Refresh source"
 msgstr "Onyesha upya chanzo"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Inahusiana"
@@ -3366,6 +3378,10 @@ msgstr "Tafuta"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Tafuta kwa jina, ID, alama ya kidole, au URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Tafuta kwa jina, ID, alama ya kidole, URL, au {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Tafuta amri ya kuendesha..."
@@ -3455,6 +3471,10 @@ msgstr "Tuma tena"
 msgid "Send email"
 msgstr "Tuma barua pepe"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Tuma kwenye mazungumzo"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Kipindi kimeisha. Tafadhali ingia tena."
 msgid "Set origin and destination"
 msgstr "Weka chanzo na marudio"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Sanidi"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Chaguo nyingi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Shiriki"
 
@@ -3899,6 +3925,10 @@ msgstr "Maombi mengi mno"
 msgid "Top"
 msgstr "Bora zaidi"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Kiwango cha juu"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Tafsiri kwa Kiingereza, na onyesha kama vidokezo."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Marekani"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Jumatano"
 msgid "Year"
 msgstr "Mwaka"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Ndiyo"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Huna ruhusa ya kufikia sehemu hii."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Bado huna milisho yoyote."
 

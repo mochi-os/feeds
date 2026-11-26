@@ -14,6 +14,7 @@ import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedFeedIdRouteImport } from './routes/_authenticated/$feedId'
 import { Route as AuthenticatedFindRouteImport } from './routes/_authenticated/find'
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
+import { Route as AuthenticatedShareRouteImport } from './routes/_authenticated/share'
 import { Route as AuthenticatedFeedIdPostIdRouteImport } from './routes/_authenticated/$feedId_.$postId'
 import { Route as AuthenticatedFeedIdSettingsRouteImport } from './routes/_authenticated/$feedId_.settings'
 import { Route as AuthenticatedFeedIdSourcesRouteImport } from './routes/_authenticated/$feedId_.sources'
@@ -42,6 +43,11 @@ const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
   path: '/saved',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedShareRoute = AuthenticatedShareRouteImport.update({
+  id: '/share',
+  path: '/share',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedFeedIdPostIdRoute =
   AuthenticatedFeedIdPostIdRouteImport.update({
     id: '/$feedId_/$postId',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/$feedId': typeof AuthenticatedFeedIdRoute
   '/find': typeof AuthenticatedFindRoute
   '/saved': typeof AuthenticatedSavedRoute
+  '/share': typeof AuthenticatedShareRoute
   '/$feedId/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
   '/$feedId/sources': typeof AuthenticatedFeedIdSourcesRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/$feedId': typeof AuthenticatedFeedIdRoute
   '/find': typeof AuthenticatedFindRoute
   '/saved': typeof AuthenticatedSavedRoute
+  '/share': typeof AuthenticatedShareRoute
   '/': typeof AuthenticatedIndexRoute
   '/$feedId/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/_authenticated/$feedId': typeof AuthenticatedFeedIdRoute
   '/_authenticated/find': typeof AuthenticatedFindRoute
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
+  '/_authenticated/share': typeof AuthenticatedShareRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/$feedId_/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/_authenticated/$feedId_/settings': typeof AuthenticatedFeedIdSettingsRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/$feedId'
     | '/find'
     | '/saved'
+    | '/share'
     | '/$feedId/$postId'
     | '/$feedId/settings'
     | '/$feedId/sources'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/$feedId'
     | '/find'
     | '/saved'
+    | '/share'
     | '/'
     | '/$feedId/$postId'
     | '/$feedId/settings'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/_authenticated/$feedId'
     | '/_authenticated/find'
     | '/_authenticated/saved'
+    | '/_authenticated/share'
     | '/_authenticated/'
     | '/_authenticated/$feedId_/$postId'
     | '/_authenticated/$feedId_/settings'
@@ -162,6 +174,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSavedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/share': {
+      id: '/_authenticated/share'
+      path: '/share'
+      fullPath: '/share'
+      preLoaderRoute: typeof AuthenticatedShareRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/$feedId_/$postId': {
       id: '/_authenticated/$feedId_/$postId'
       path: '/$feedId/$postId'
@@ -190,6 +209,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeedIdRoute: typeof AuthenticatedFeedIdRoute
   AuthenticatedFindRoute: typeof AuthenticatedFindRoute
   AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
+  AuthenticatedShareRoute: typeof AuthenticatedShareRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedFeedIdPostIdRoute: typeof AuthenticatedFeedIdPostIdRoute
   AuthenticatedFeedIdSettingsRoute: typeof AuthenticatedFeedIdSettingsRoute
@@ -200,6 +220,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeedIdRoute: AuthenticatedFeedIdRoute,
   AuthenticatedFindRoute: AuthenticatedFindRoute,
   AuthenticatedSavedRoute: AuthenticatedSavedRoute,
+  AuthenticatedShareRoute: AuthenticatedShareRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedFeedIdPostIdRoute: AuthenticatedFeedIdPostIdRoute,
   AuthenticatedFeedIdSettingsRoute: AuthenticatedFeedIdSettingsRoute,

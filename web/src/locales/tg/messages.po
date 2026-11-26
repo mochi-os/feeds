@@ -709,6 +709,7 @@ msgstr "{name}-ро манъ мекунед?"
 msgid "Blocked"
 msgstr "Баста шуд"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Манъ карда шуд аз ҷониби"
 msgid "Blocked navigation to untrusted link"
 msgstr "Гузариш ба пайванди беэътимод манъ шуд"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Блокҳо"
@@ -838,6 +840,10 @@ msgstr "Тағйир дода шуд"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} тағйир дода шуд"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Синф иваз шуд"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Нусхабардорӣ шуд"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Ба буфер нусхабардорӣ шуд"
@@ -1113,6 +1120,10 @@ msgstr "Ба буфер нусхабардорӣ шуд"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Нусхабардорӣ"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Нусхабардории пайванд"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Сохтани {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Эҷоди навори нав"
 
@@ -1469,6 +1481,7 @@ msgstr "Боргирӣ"
 msgid "Download failed"
 msgstr "Боргирӣ ноком шуд"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Такрорҳо"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Тоза кардани паёмҳои нигоҳдошташуда ноком шуд"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Эҷоди фид ба анҷом нарасид"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Эҷоди пайванд ба анҷом нарасид"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Эҷоди паём ба анҷом нарасид"
 
@@ -1942,10 +1956,6 @@ msgstr "Фид ҳазф шуд"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID-и объекти фид ё нақши ангушт"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Пайванди навор"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Равшан"
 msgid "Like"
 msgstr "Писандидан"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Пайванд"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Пайвандҳо"
@@ -2443,10 +2450,6 @@ msgstr "Имконоти бештар"
 msgid "Moved"
 msgstr "Кӯчонида шуд"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} кӯчонида шуд"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Моҳи оянда"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Соли оянда"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Не"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Нашр кардан"
 msgid "Post content"
 msgstr "Мӯҳтавои пост"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Пост эҷод шуд"
 
@@ -2905,6 +2912,10 @@ msgstr "Пост ёфт нашуд"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Пост часпонда шуд"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Дар фид нашр кардан"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Кам кардани шавқу ҳавас"
 msgid "Refresh source"
 msgstr "Манбаъро навсозӣ кардан"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Алоқа дорад"
@@ -3366,6 +3378,10 @@ msgstr "Ҷустуҷӯ"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Ҷустуҷӯ аз рӯи ном, ID, изи ангушт ё URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Ҷустуҷӯ аз рӯи ном, ID, изи ангушт, URL ё {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Ҷустуҷӯи фармон барои иҷро..."
@@ -3455,6 +3471,10 @@ msgstr "Бори дигар фиристодан"
 msgid "Send email"
 msgstr "Имейл фиристодан"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Дар чат фиристодан"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Мӯҳлати сессия гузашт. Лутфан аз нав во�
 msgid "Set origin and destination"
 msgstr "Сарчашма ва таъиноти манзилро таъин кунед"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Танзим кардан"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Якчанд интихоб"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Мубодила"
 
@@ -3899,6 +3925,10 @@ msgstr "Дархостҳои аз ҳад зиёд"
 msgid "Top"
 msgstr "Беҳтарин"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Сатҳи болоӣ"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Ба англисӣ тарҷума кунед ва ҳамчун нуқтаҳо нишон диҳед."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Иёлоти Муттаҳида"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Чоршанбе"
 msgid "Year"
 msgstr "Сол"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Бале"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Шумо ба ин бахш дастрасӣ надоред."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Шумо ҳанӯз навор надоред."
 

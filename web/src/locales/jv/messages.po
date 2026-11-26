@@ -709,6 +709,7 @@ msgstr "Blokir {name}?"
 msgid "Blocked"
 msgstr "Diblokir"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Diblokir déning"
 msgid "Blocked navigation to untrusted link"
 msgstr "Navigasi diblokir menyang link sing ora dipercaya"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Blok"
@@ -838,6 +840,10 @@ msgstr "Diowahi"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} diowahi"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Kelas diganti"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Wis disalin"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Disalin menyang clipboard"
@@ -1113,6 +1120,10 @@ msgstr "Disalin menyang clipboard"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Salin"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Salin pranala"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Gawé {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Gawé feed anyar"
 
@@ -1469,6 +1481,7 @@ msgstr "Undhuh"
 msgid "Download failed"
 msgstr "Gagal ngundhuh"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Duplikat"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Gagal ngresiki kiriman sing kasimpen"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Gagal nggawé feed"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Gagal nggawé link"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Gagal nggawé postingan"
 
@@ -1942,10 +1956,6 @@ msgstr "Feed dibusak"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID entitas utawa fingerprint feed"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Tautan feed"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Padhang"
 msgid "Like"
 msgstr "Seneng"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Tautan"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Tautan"
@@ -2443,10 +2450,6 @@ msgstr "Pilihan liyane"
 msgid "Moved"
 msgstr "Dipindhah"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} dipindhah"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Sasi ngarep"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Taun ngarep"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Ora"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Kirim"
 msgid "Post content"
 msgstr "Isi postingan"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Postingan digawé"
 
@@ -2905,6 +2912,10 @@ msgstr "Postingan ora ditemokaké"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Postingan dipin"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Kirim menyang feed"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Kurangi minat"
 msgid "Refresh source"
 msgstr "Segerake sumber"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Magepokan"
@@ -3366,6 +3378,10 @@ msgstr "Goleki"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Goleki miturut jeneng, ID, fingerprint, utawa URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Goleki miturut jeneng, ID, fingerprint, URL, utawa {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Golek printah kanggo mlaku..."
@@ -3455,6 +3471,10 @@ msgstr "Kirim maneh"
 msgid "Send email"
 msgstr "Kirim email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Kirim ing chat"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Sesi wis kadaluwarsa. Mangga mlebu maneh."
 msgid "Set origin and destination"
 msgstr "Atur asal lan tujuan"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Setel"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Pirang-pirang pilihan"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Bagekake"
 
@@ -3899,6 +3925,10 @@ msgstr "Kakehan panjalukan"
 msgid "Top"
 msgstr "Paling apik"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Tingkat ndhuwur"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Terjemahaké menyang Inggris, lan tampilake minangka poin-poin."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Amerika Serikat"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Rebo"
 msgid "Year"
 msgstr "Taun"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Iya"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Sampeyan ora duwe akses menyang bagean iki."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Sampéyan durung duwé feed."
 

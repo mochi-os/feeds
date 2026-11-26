@@ -709,6 +709,7 @@ msgstr "บล็อก {name} หรือไม่"
 msgid "Blocked"
 msgstr "ถูกบล็อก"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "ถูกบล็อกโดย"
 msgid "Blocked navigation to untrusted link"
 msgstr "บล็อกการนำทางไปยังลิงก์ที่ไม่น่าเชื่อถือ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "บล็อก"
@@ -838,6 +840,10 @@ msgstr "เปลี่ยนแล้ว"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "เปลี่ยน {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "เปลี่ยนคลาสแล้ว"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "คัดลอกแล้ว"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "คัดลอกไปยังคลิปบอร์ดแล้ว"
@@ -1113,6 +1120,10 @@ msgstr "คัดลอกไปยังคลิปบอร์ดแล้ว
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "คัดลอก"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "คัดลอกลิงก์"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "สร้าง{entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "สร้างฟีดใหม่"
 
@@ -1469,6 +1481,7 @@ msgstr "ดาวน์โหลด"
 msgid "Download failed"
 msgstr "ดาวน์โหลดไม่สำเร็จ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "ทำซ้ำ"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "ล้างโพสต์ที่บันทึกไม่สำเร็จ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "ไม่สามารถสร้างฟีดได้"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "ไม่สามารถสร้างลิงก์ได้"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "ไม่สามารถสร้างโพสต์ได้"
 
@@ -1942,10 +1956,6 @@ msgstr "ลบฟีดแล้ว"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "รหัสเอนทิตีฟีดหรือลายนิ้วมือ"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "ลิงก์ฟีด"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "สว่าง"
 msgid "Like"
 msgstr "ถูกใจ"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "ลิงก์"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "ลิงก์"
@@ -2443,10 +2450,6 @@ msgstr "ตัวเลือกเพิ่มเติม"
 msgid "Moved"
 msgstr "ย้ายแล้ว"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "ย้าย {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "เดือนถัดไป"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "ปีถัดไป"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "ไม่"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "โพสต์"
 msgid "Post content"
 msgstr "เนื้อหาโพสต์"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "สร้างโพสต์แล้ว"
 
@@ -2905,6 +2912,10 @@ msgstr "ไม่พบโพสต์"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "ปักหมุดโพสต์แล้ว"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "โพสต์ไปยังฟีด"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "ลดความสนใจ"
 msgid "Refresh source"
 msgstr "รีเฟรชแหล่งที่มา"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "เกี่ยวข้อง"
@@ -3366,6 +3378,10 @@ msgstr "ค้นหา"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "ค้นหาตามชื่อ ID ลายนิ้วมือ หรือ URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "ค้นหาตามชื่อ ID ลายนิ้วมือ URL หรือ {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "ค้นหาคำสั่งที่จะเรียกใช้..."
@@ -3455,6 +3471,10 @@ msgstr "ส่งอีกครั้ง"
 msgid "Send email"
 msgstr "ส่งอีเมล"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "ส่งในแชต"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "เซสชันหมดอายุ โปรดเข้าสู�
 msgid "Set origin and destination"
 msgstr "ตั้งค่าต้นทางและปลายทาง"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "ตั้งค่า"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "เลือกได้หลายข้อ"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "แชร์"
 
@@ -3899,6 +3925,10 @@ msgstr "คำขอมากเกินไป"
 msgid "Top"
 msgstr "คะแนนสูงสุด"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "ระดับบนสุด"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "แปลเป็นภาษาอังกฤษและแสดงเป็นรายการบุลเล็ต"
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "สหรัฐอเมริกา"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "วันพุธ"
 msgid "Year"
 msgstr "ปี"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "ใช่"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "คุณไม่มีสิทธิ์เข้าถึงส่วนนี้"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "คุณยังไม่มีฟีด"
 

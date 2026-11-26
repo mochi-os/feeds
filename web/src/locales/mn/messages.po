@@ -709,6 +709,7 @@ msgstr "{name}-г блоклох уу?"
 msgid "Blocked"
 msgstr "Хориглосон"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Блоклосон"
 msgid "Blocked navigation to untrusted link"
 msgstr "Найдвартай биш холбоос руу шилжихийг блоклосон"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Блокууд"
@@ -838,6 +840,10 @@ msgstr "Өөрчилсөн"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} өөрчилсөн"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Анги өөрчлөгдсөн"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Хуулагдлаа"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Хуулбарласан"
@@ -1113,6 +1120,10 @@ msgstr "Хуулбарласан"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Хуулах"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Холбоос хуулах"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "{entityLabel} үүсгэх"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Шинэ фийд үүсгэх"
 
@@ -1469,6 +1481,7 @@ msgstr "Татах"
 msgid "Download failed"
 msgstr "Татаж чадсангүй"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Давхардлууд"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Хадгалсан нийтлэлүүдийг цэвэрлэж чадсангүй"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Фийд үүсгэж чадсангүй"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Холбоос үүсгэж чадсангүй"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Бичлэг үүсгэж чадсангүй"
 
@@ -1942,10 +1956,6 @@ msgstr "Фийд устгагдсан"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Фийдийн нэгжийн ID эсвэл хурууны хээ"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Хангамжийн холбоос"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Цайвар"
 msgid "Like"
 msgstr "Таалагдсан"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Холбоос"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Холбоосууд"
@@ -2443,10 +2450,6 @@ msgstr "Бусад сонголтууд"
 msgid "Moved"
 msgstr "Зөөсөн"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} зөөсөн"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Дараа сар"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Дараа жил"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Үгүй"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Нийтлэх"
 msgid "Post content"
 msgstr "Нийтлэлийн агуулга"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Нийтлэл үүсгэгдсэн"
 
@@ -2905,6 +2912,10 @@ msgstr "Нийтлэл олдсонгүй"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Нийтлэл бэхлэгдсэн"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Фийдэд нийтлэх"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Сонирхлыг бууруулах"
 msgid "Refresh source"
 msgstr "Эх сурвалжийг сэргээх"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Холбоотой"
@@ -3366,6 +3378,10 @@ msgstr "Хайх"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Нэр, ID, хурууны хээ, эсвэл URL-аар хайх"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Нэр, ID, хурууны хээ, URL, эсвэл {example} хаягаар хайх"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Ажиллуулах команд хайх..."
@@ -3455,6 +3471,10 @@ msgstr "Дахин илгээх"
 msgid "Send email"
 msgstr "Имэйл илгээх"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Чатад илгээх"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Сессийн хугацаа дууссан. Дахин нэвтэрн�
 msgid "Set origin and destination"
 msgstr "Эхлэл, очих газрыг тогтоох"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Тохируулах"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Олон сонголт"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Хуваалцах"
 
@@ -3899,6 +3925,10 @@ msgstr "Хэт олон хүсэлт"
 msgid "Top"
 msgstr "Шилдэг"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Дээд түвшин"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Англи руу орчуулж, цэг бүхий жагсаалтаар харуул."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "АНУ"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Лхагва гараг"
 msgid "Year"
 msgstr "Жил"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Тийм"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Та энэ хэсэгт хандах эрхгүй байна."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Танд одоохондоо feed байхгүй байна."
 

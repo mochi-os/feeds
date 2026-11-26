@@ -6,7 +6,9 @@
 // Where a public feed publishes: the owner's accounts on other networks,
 // each switched on or off for the feed. Removing an account offers to delete
 // the copies already there, keeping them by default. Each account's history
-// can be imported into the feed, and its archive downloaded.
+// can be imported into the feed, and its archive downloaded. A network the
+// server offers that the owner has no account on is listed with a way to set
+// one up.
 import { useState } from 'react'
 import { allowServers } from '@/lib/waiting'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -21,6 +23,7 @@ import {
   DropdownMenuTrigger,
   GeneralError,
   ListSkeleton,
+  NetworkSetup,
   Section,
   Switch,
   getErrorMessage,
@@ -33,9 +36,23 @@ import { Archive, Download, MoreHorizontal, Rss, X } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import type { PublishAccount } from '@/types/feeds'
 
+// The network an account publishes on: a linked Mastodon account's is the
+// fediverse, as a hosted one's is.
+function networkOf(account: PublishAccount): string {
+  return account.type === 'mastodon' ? 'fediverse' : account.type
+}
+
+// The networks the server offers that none of the owner's accounts is on.
+export function unset(offered: string[], accounts: PublishAccount[]): string[] {
+  return offered.filter(
+    (network) => !accounts.some((account) => networkOf(account) === network)
+  )
+}
+
 // Whether a feed's Publish to tab is offered: an owner's feed with an account
-// to publish to, or whose answer failed and shows why - a private feed's says
-// that only a public feed publishes. Undefined while it is asked.
+// to publish to or a network to set one up on, or whose answer failed and
+// shows why - a private feed's says that only a public feed publishes.
+// Undefined while it is asked.
 export function usePublishOffered(
   feedId: string,
   owner: boolean
@@ -49,7 +66,11 @@ export function usePublishOffered(
   })
   if (!enabled) return false
   if (isLoading) return undefined
-  return !!error || (data?.accounts ?? []).length > 0
+  return (
+    !!error ||
+    (data?.accounts ?? []).length > 0 ||
+    (data?.offered ?? []).length > 0
+  )
 }
 
 export function PublishingSection({
@@ -80,8 +101,9 @@ export function PublishingSection({
     naturalCompare(a.identifier, b.identifier)
   )
   const publish = data?.publish ?? []
+  const missing = unset(data?.offered ?? [], accounts)
 
-  if (!isLoading && !error && accounts.length === 0) {
+  if (!isLoading && !error && accounts.length === 0 && missing.length === 0) {
     return null
   }
 
@@ -290,6 +312,9 @@ export function PublishingSection({
                 />
               </div>
             </div>
+          ))}
+          {missing.map((network) => (
+            <NetworkSetup key={network} network={network} label={t`Set up`} />
           ))}
         </div>
       )}

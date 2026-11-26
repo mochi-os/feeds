@@ -12,15 +12,25 @@ import { feedsApi } from '@/api/feeds'
 import { OptionsMenu } from './options-menu'
 
 const serverError = vi.hoisted(() => vi.fn())
+// What the app hands lib/web's menu.
+const shared = vi.hoisted(() => ({ props: {} as Record<string, unknown> }))
 
 vi.mock('@/api/feeds', () => ({
   feedsApi: { getNotifications: vi.fn(), setNotification: vi.fn() },
 }))
 // The dropdown is lib/web's; here the submenu is drawn open, with the tick as
 // a plain checkbox.
+vi.mock('@tanstack/react-router', () => ({ useRouter: () => ({}) }))
 vi.mock('@mochi/web', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@mochi/web')>()),
-  OptionsMenu: ({ children }: { children: ReactNode }) => <>{children}</>,
+  absoluteRouteUrl: (
+    _router: unknown,
+    location: { to: string; params: Record<string, string> }
+  ) => `https://example.org${location.to}=${Object.values(location.params)}`,
+  OptionsMenu: (props: { children: ReactNode }) => {
+    shared.props = props
+    return <>{props.children}</>
+  },
   DropdownMenuSub: ({ children }: { children: ReactNode }) => <>{children}</>,
   DropdownMenuSubTrigger: ({ children }: { children: ReactNode }) => (
     <>{children}</>
@@ -94,5 +104,30 @@ describe('OptionsMenu notifications', () => {
     refuse({ response: { status: 500 } })
     await waitFor(() => expect(tick).not.toBeChecked())
     expect(serverError).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('OptionsMenu Share', () => {
+  it("hands the shared menu Share's words and the feed's name", () => {
+    i18n.load('en', {})
+    i18n.activate('en')
+    render(
+      <I18nProvider i18n={i18n}>
+        <QueryClientProvider client={new QueryClient()}>
+          <OptionsMenu entityId='abcdefghi' canShare name='Garden notes' />
+        </QueryClientProvider>
+      </I18nProvider>
+    )
+    expect(shared.props.shareLabels).toEqual({
+      feed: 'Post to a feed',
+      chat: 'Send in a chat',
+      copy: 'Copy link',
+    })
+    expect(shared.props.shareName).toBe('Garden notes')
+    expect(shared.props.canShare).toBe(true)
+    expect((shared.props.shareUrl as () => string)()).toBe(
+      'https://example.org/$feedId=abcdefghi'
+    )
+    expect(shared.props).not.toHaveProperty('linkTitle')
   })
 })

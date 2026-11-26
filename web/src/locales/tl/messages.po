@@ -709,6 +709,7 @@ msgstr "I-block si {name}?"
 msgid "Blocked"
 msgstr "Naka-block"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Hinarang ng"
 msgid "Blocked navigation to untrusted link"
 msgstr "Hinarang ang pag-navigate sa di-pinagkakatiwalaang link"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Hinaharangan"
@@ -838,6 +840,10 @@ msgstr "Binago"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "Binago ang {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Binago ang klase"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Nakopya"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Nakopya sa clipboard"
@@ -1113,6 +1120,10 @@ msgstr "Nakopya sa clipboard"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopyahin"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopyahin ang link"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Gumawa ng {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Gumawa ng bagong feed"
 
@@ -1469,6 +1481,7 @@ msgstr "I-download"
 msgid "Download failed"
 msgstr "Nabigo ang pag-download"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Duplicate"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Hindi nabura ang mga naka-save na post"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Nabigong gumawa ng feed"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Nabigong gumawa ng link"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Nabigong gumawa ng post"
 
@@ -1942,10 +1956,6 @@ msgstr "Nadelete ang feed"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed entity ID o fingerprint"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Link ng feed"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Maliwanag"
 msgid "Like"
 msgstr "Gusto"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Link"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Mga link"
@@ -2443,10 +2450,6 @@ msgstr "Iba pang opsyon"
 msgid "Moved"
 msgstr "Inilipat"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "Inilipat ang {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Susunod na buwan"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Susunod na taon"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Hindi"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "I-post"
 msgid "Post content"
 msgstr "Nilalaman ng post"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Nagawa ang post"
 
@@ -2905,6 +2912,10 @@ msgstr "Hindi nahanap ang post"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Naka-pin ang post"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "I-post sa isang feed"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Bawasan ang interes"
 msgid "Refresh source"
 msgstr "I-refresh ang pinagmulan"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "May kaugnayan"
@@ -3366,6 +3378,10 @@ msgstr "Maghanap"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Maghanap ayon sa pangalan, ID, fingerprint, o URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Maghanap ayon sa pangalan, ID, fingerprint, URL, o {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Maghanap ng command na patatakbuhin..."
@@ -3455,6 +3471,10 @@ msgstr "Ipadala muli"
 msgid "Send email"
 msgstr "Magpadala ng email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Ipadala sa isang chat"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Nag-expire na ang session. Mag-log in muli."
 msgid "Set origin and destination"
 msgstr "Itakda ang origin at destination"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "I-set up"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Maraming pagpipilian"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Ibahagi"
 
@@ -3899,6 +3925,10 @@ msgstr "Masyadong maraming request"
 msgid "Top"
 msgstr "Pinakamahusay"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Pinakamataas na antas"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Isalin sa English, at ipakita bilang bullet points."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Estados Unidos"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Miyerkules"
 msgid "Year"
 msgstr "Taon"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Oo"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Wala kang access sa seksyong ito."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Wala ka pang feed."
 

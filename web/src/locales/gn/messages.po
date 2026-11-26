@@ -709,6 +709,7 @@ msgstr "¿Ejoko {name}?"
 msgid "Blocked"
 msgstr "Ojejokóva"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "Ojokóva"
 msgid "Blocked navigation to untrusted link"
 msgstr "Tape ojejokóma juajuha jerovia'ỹvape"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Ojoko"
@@ -838,6 +840,10 @@ msgstr "Oñemoambue"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "{field} oñemoambue"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "Clase oñemoambue"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "Oñekopiáma"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "Oñekopiáma clipboard-pe"
@@ -1113,6 +1120,10 @@ msgstr "Oñekopiáma clipboard-pe"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopia"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kopia juajuha"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Emoheñói {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Emoheñói peteĩ feed pyahu"
 
@@ -1469,6 +1481,7 @@ msgstr "Emboguejy"
 msgid "Download failed"
 msgstr "Ndaikatúi oñemboguejy"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Ojejapojeýva"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "Ndaikatúi oñemboguepa umi marandu ñongatupyre"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "Ndaikatúi oñemoheñói feed"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "Ndaikatúi oñemoheñói juajuha"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "Ndaikatúi oñemoheñói marandu"
 
@@ -1942,10 +1956,6 @@ msgstr "Oñembogue feed"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed entidad ID térã fingerprint"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Feed juajuha"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Hesakã"
 msgid "Like"
 msgstr "Aikose"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Juajuha"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Juajuhakuéra"
@@ -2443,10 +2450,6 @@ msgstr "Jeporavorã hetave"
 msgid "Moved"
 msgstr "Oñemongu'e"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "{field} oñemongu'e"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Jasy oúva"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Ary oúva"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "Nahániri"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Emoherakuã"
 msgid "Post content"
 msgstr "Marandu contenido"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "Marandu oñemoheñói"
 
@@ -2905,6 +2912,10 @@ msgstr "Marandu ndojejuhúi"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "Marandu oñembojáma"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Emoherakuã peteĩ marandu syry-pe"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Emomichĩ interés"
 msgid "Refresh source"
 msgstr "Embohekopyahu heñoiha"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Ojoaju"
@@ -3366,6 +3378,10 @@ msgstr "Eheka"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Eheka téra, ID, fingerprint, térã URL rupive"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Eheka téra, ID, fingerprint, URL, térã {example} rupive"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Eheka tembiapoukapy rejapo hag̃ua..."
@@ -3455,6 +3471,10 @@ msgstr "Emondo jey"
 msgid "Send email"
 msgstr "Emondo email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Emondo peteĩ chat-pe"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Sesión opáma. Eike jey."
 msgid "Set origin and destination"
 msgstr "Emoĩ origen ha destino"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Emboheko"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Heta jeporavo"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Emboja'o"
 
@@ -3899,6 +3925,10 @@ msgstr "Hetaiterei jerure"
 msgid "Top"
 msgstr "Iporãvéva"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Yvateve"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Embohasa inglés-pe, ha ehechauka lista punto reheve."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Estados Unidos"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Araapy"
 msgid "Year"
 msgstr "Ary"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Heẽ"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Ndereguerekói jeike ko vorépe."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Ndereguerekói gueteri feed."
 

@@ -590,6 +590,7 @@ export function EntityFeedPage({
         menuAction={
           <OptionsMenu
             entityId={feed.fingerprint}
+            name={feed.name}
             onSources={
               isLoggedIn && canManage
                 ? () =>

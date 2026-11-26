@@ -709,6 +709,7 @@ msgstr "រារាំង {name}?"
 msgid "Blocked"
 msgstr "បានរារាំង"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "ត្រូវបានរារាំងដោយ"
 msgid "Blocked navigation to untrusted link"
 msgstr "បានរារាំងការរុករកទៅតំណមិនគួរឱ្យទុកចិត្ត"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "ប្លុក"
@@ -838,6 +840,10 @@ msgstr "បានផ្លាស់ប្ដូរ"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "បានផ្លាស់ប្ដូរ {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "បានប្ដូរថ្នាក់"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "បានចម្លង"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "បានចម្លងទៅក្ដារតម្បៀតខ្ទាស់"
@@ -1113,6 +1120,10 @@ msgstr "បានចម្លងទៅក្ដារតម្បៀតខ្ទ
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "ចម្លង"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "ចម្លងតំណ"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "បង្កើត {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "បង្កើតមតិព័ត៌មានថ្មី"
 
@@ -1469,6 +1481,7 @@ msgstr "ទាញយក"
 msgid "Download failed"
 msgstr "ការទាញយកបានបរាជ័យ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "ស្ទួន"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "បរាជ័យក្នុងការសម្អាតការបង្ហោះដែលបានរក្សាទុក"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "បរាជ័យក្នុងការបង្កើតព័ត៌មានបង្ហាញ"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "បរាជ័យក្នុងការបង្កើតតំណ"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "បរាជ័យក្នុងការបង្កើតការបង្ហោះ"
 
@@ -1942,10 +1956,6 @@ msgstr "បានលុបព័ត៌មានបង្ហាញ"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "លេខសម្គាល់អង្គភាព ឬស្នាមម្រាមដៃព័ត៌មានបង្ហាញ"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "តំណព័ត៌មាន"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "ភ្លឺ"
 msgid "Like"
 msgstr "ចូលចិត្ត"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "តំណ"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "តំណ"
@@ -2443,10 +2450,6 @@ msgstr "ជម្រើសច្រើនទៀត"
 msgid "Moved"
 msgstr "បានផ្លាស់ទី"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "បានផ្លាស់ទី {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "ខែក្រោយ"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "ឆ្នាំក្រោយ"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "ទេ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "ប្រកាស"
 msgid "Post content"
 msgstr "មាតិកាប្រកាស"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "បានបង្កើតប្រកាស"
 
@@ -2905,6 +2912,10 @@ msgstr "រកមិនឃើញប្រកាស"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "បានខ្ទាស់ប្រកាស"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "ប្រកាសទៅព័ត៌មានបង្ហាញ"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "កាត់បន្ថយចំណាប់អារម្មណ៍"
 msgid "Refresh source"
 msgstr "ផ្ទុកប្រភពឡើងវិញ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "ទាក់ទង"
@@ -3366,6 +3378,10 @@ msgstr "ស្វែងរក"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "ស្វែងរកតាមឈ្មោះ ID ស្នាមម្រាមដៃ ឬ URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "ស្វែងរកតាមឈ្មោះ ID ស្នាមម្រាមដៃ URL ឬ {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "ស្វែងរកពាក្យបញ្ជាដើម្បីដំណើរការ..."
@@ -3455,6 +3471,10 @@ msgstr "ផ្ញើម្តងទៀត"
 msgid "Send email"
 msgstr "ផ្ញើអ៊ីមែល"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "ផ្ញើក្នុងការសន្ទនា"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "សម័យប្រើប្រាស់បានផុតកំណត
 msgid "Set origin and destination"
 msgstr "កំណត់ចំណុចចេញដំណើរ និងគោលដៅ"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "រៀបចំ"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "ជម្រើសច្រើន"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "ចែករំលែក"
 
@@ -3899,6 +3925,10 @@ msgstr "សំណើច្រើនពេក"
 msgid "Top"
 msgstr "កំពូល"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "កម្រិតកំពូល"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "បកប្រែទៅជាភាសាអង់គ្លេស និងបង្ហាញជាចំណុចសំខាន់ៗ។"
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "សហរដ្ឋអាមេរិក"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "ថ្ងៃពុធ"
 msgid "Year"
 msgstr "ឆ្នាំ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "បាទ/ចាស"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "អ្នកមិនមានសិទ្ធិចូលប្រើផ្នែកនេះទេ។"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "អ្នកមិនទាន់មានព័ត៌មានទេ។"
 

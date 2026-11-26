@@ -709,6 +709,7 @@ msgstr "Toshe {name}?"
 msgid "Blocked"
 msgstr "An toshe"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocked by"
@@ -719,6 +720,7 @@ msgstr "An toshe ta"
 msgid "Blocked navigation to untrusted link"
 msgstr "An toshe motsi zuwa ga link da ba a amince da shi ba"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
 msgstr "Yana toshe"
@@ -838,6 +840,10 @@ msgstr "An canza"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed {field}"
 msgstr "An canza {field}"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Changed class"
+msgstr "An canza aji"
 
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
@@ -1099,6 +1105,7 @@ msgid "Copied"
 msgstr "An kwafi"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copied to clipboard"
 msgstr "An kwafi zuwa clipboard"
@@ -1113,6 +1120,10 @@ msgstr "An kwafi zuwa clipboard"
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kwafi"
+
+#: src/lib/share-labels.ts
+msgid "Copy link"
+msgstr "Kwafi hanyar haɗi"
 
 #: src/features/feeds/components/filters-section.tsx
 msgid "Could not add the filter"
@@ -1196,6 +1207,7 @@ msgid "Create {entityLabel}"
 msgstr "Ƙirƙiri {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Create a new feed"
 msgstr "Ƙirƙira sabon feed"
 
@@ -1469,6 +1481,7 @@ msgstr "Sauke"
 msgid "Download failed"
 msgstr "Saukarwa ta gaza"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Duplicates"
 msgstr "Yana ninkawa"
@@ -1632,6 +1645,7 @@ msgid "Failed to clear saved posts"
 msgstr "An kasa share wasiƙun da aka ajiye"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Failed to copy"
@@ -1642,11 +1656,11 @@ msgid "Failed to create feed"
 msgstr "An gaza ƙirƙirar feed"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
-#: ../../../lib/web/src/components/options-menu.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
 msgid "Failed to create link"
 msgstr "An gaza ƙirƙirar link"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Failed to create post"
 msgstr "An gaza ƙirƙirar post"
 
@@ -1942,10 +1956,6 @@ msgstr "An share feed"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
 msgstr "ID na ciyarwa ko fasalin yatsa"
-
-#: src/components/options-menu.tsx
-msgid "Feed link"
-msgstr "Hanyar haɗin jerin labarai"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -2289,10 +2299,7 @@ msgstr "Haske"
 msgid "Like"
 msgstr "So"
 
-#: ../../../lib/web/src/components/options-menu.tsx
-msgid "Link"
-msgstr "Hanyar haɗi"
-
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
 msgstr "Hanyoyin haɗi"
@@ -2443,10 +2450,6 @@ msgstr "Ƙarin zaɓuɓɓuka"
 msgid "Moved"
 msgstr "An matsar"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
-msgid "Moved {field}"
-msgstr "An matsar da {field}"
-
 #. placeholder {0}: dayName(dragging.day)
 #. placeholder {0}: dayName(opening(current, format.zonedDay))
 #: ../../../lib/web/src/components/calendar/month-grid.tsx
@@ -2541,6 +2544,10 @@ msgstr "Wata mai zuwa"
 #: ../../../lib/web/src/components/calendar/date-header.tsx
 msgid "Next year"
 msgstr "Shekara mai zuwa"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "No"
+msgstr "A'a"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2889,7 +2896,7 @@ msgstr "Wallafa"
 msgid "Post content"
 msgstr "Abin da ke cikin post"
 
-#: src/components/layout/feeds-layout.tsx
+#: src/hooks/use-create-post.ts
 msgid "Post created"
 msgstr "An ƙirƙiri post"
 
@@ -2905,6 +2912,10 @@ msgstr "Ba a sami post ba"
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post pinned"
 msgstr "An pin post"
+
+#: src/lib/share-labels.ts
+msgid "Post to a feed"
+msgstr "Wallafa zuwa jerin labarai"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Post unpinned"
@@ -3046,6 +3057,7 @@ msgstr "Rage sha'awa"
 msgid "Refresh source"
 msgstr "Sabunta tushen"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Relates"
 msgstr "Yana da alaƙa"
@@ -3366,6 +3378,10 @@ msgstr "Bincika"
 msgid "Search by name, ID, fingerprint, or URL"
 msgstr "Bincika ta suna, ID, fingerprint, ko URL"
 
+#: src/routes/_authenticated/find.tsx
+msgid "Search by name, ID, fingerprint, URL, or {example}"
+msgstr "Bincika ta suna, ID, fingerprint, URL, ko {example}"
+
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
 msgstr "Nemo umarnin da za a gudanar..."
@@ -3455,6 +3471,10 @@ msgstr "Aika kuma"
 msgid "Send email"
 msgstr "Aika email"
 
+#: src/lib/share-labels.ts
+msgid "Send in a chat"
+msgstr "Aika a cikin chat"
+
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Send message"
@@ -3491,6 +3511,10 @@ msgstr "Lokacin zaman ya ƙare. Da fatan za a sake shiga."
 msgid "Set origin and destination"
 msgstr "Saita tushe da makoma"
 
+#: src/features/feeds/components/publishing-section.tsx
+msgid "Set up"
+msgstr "Saitawa"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -3507,6 +3531,8 @@ msgstr "Zaɓuɓɓuka da yawa"
 
 #: ../../../lib/web/src/components/comment-share-button.tsx
 #: ../../../lib/web/src/components/comment-share-button.tsx
+#: ../../../lib/web/src/components/share-menu.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "Share"
 msgstr "Raba"
 
@@ -3899,6 +3925,10 @@ msgstr "Buƙatu sun yi yawa"
 msgid "Top"
 msgstr "Mafi kyau"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Top level"
+msgstr "Matakin sama"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
 msgstr "Fassara zuwa Ingilishi, kuma a nuna a matsayin bullet points."
@@ -3979,6 +4009,11 @@ msgid "United States"
 msgstr "Amurka"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
@@ -4169,6 +4204,10 @@ msgstr "Laraba"
 msgid "Year"
 msgstr "Shekara"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx
+msgid "Yes"
+msgstr "Ee"
+
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/hooks/use-comment-actions.ts
@@ -4181,6 +4220,7 @@ msgid "You do not have access to this section."
 msgstr "Ba ka da damar shiga wannan sashe ba."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
+#: src/features/feeds/pages/share-page.tsx
 msgid "You have no feeds yet."
 msgstr "Ba ku da feeds tukuna."
 
