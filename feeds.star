@@ -5328,7 +5328,7 @@ def comment_create(feed_id, post_id, parent_id, user_id, user_name, body, anchor
 	submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": user_name, "attachment": anchor_input}
 	if attachments:
 		submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
-	copies = reply_publish(post_id, parent_id, uid, body, account, made, writer)
+	copies = reply_publish(post_id, parent_id, uid, body, account, made, writer, named=True)
 	if copies:
 		submit_data["copies"] = copies
 
@@ -12383,15 +12383,20 @@ def reply_plan(post_id, parent_id, preferred="", writer="", answered=""):
 		plan.append((acc, place))
 	return plan
 
-def reply_note(acc, comment_id, place, body):
+def reply_note(acc, comment_id, place, body, named=False):
 	"""A comment as a hosted fediverse account's reply: a Note in reply to the
 	place by its id on the fediverse - a status a linked account holds by its
-	page - mentioning whose it is, and naming the comment it is so the
-	owner's server knows it when it arrives by the network."""
+	page - mentioning whose it is. With named, a comment on another server's
+	feed, which reaches that feed by its own event, the Note names the
+	comment it is, so that server takes it as a copy of the comment and not
+	as a second one. A comment in a feed of the user's own reaches the place
+	by this Note alone, so it names nothing."""
 	target = place["remote"] if place["network"] == "fediverse" else place.get("url", "")
 	if not target or not target.startswith("http"):
 		return None
-	note = {"type": "Note", "content": mochi.text.fediverse(fediverse_plain(body), tags=fediverse_tags_base())["html"], "inReplyTo": target, "sensitive": False, "mochi:comment": comment_id}
+	note = {"type": "Note", "content": mochi.text.fediverse(fediverse_plain(body), tags=fediverse_tags_base())["html"], "inReplyTo": target, "sensitive": False}
+	if named:
+		note["mochi:comment"] = comment_id
 	found = mochi.account.resolve(place["address"]) if place.get("address") else None
 	if found and found.get("id") and acc.get("url"):
 		note["to"] = [FEDIVERSE_PUBLIC]
@@ -12467,15 +12472,16 @@ def reply_record(acc, place, body):
 		record["facets"] = facets
 	return record
 
-def reply_object(acc, comment_id, place, body):
+def reply_object(acc, comment_id, place, body, named=False):
 	"""A comment as the reply an account publishes to a place, in the
-	account's own form, or None where the account cannot answer it."""
+	account's own form, or None where the account cannot answer it; named as
+	reply_note takes it."""
 	if acc["type"] == "bluesky":
 		return reply_record(acc, place, body)
 	if acc["type"] == "mastodon":
 		return reply_status(acc, place, body)
 	if hosted_fediverse(acc):
-		return reply_note(acc, comment_id, place, body)
+		return reply_note(acc, comment_id, place, body, named)
 	return None
 
 def reply_made(acc, comment, body):
@@ -12485,25 +12491,29 @@ def reply_made(acc, comment, body):
 	answer is placed as the plan has it."""
 	row = mochi.db.row("select parent from replies where comment=? and account=?", comment["id"], acc["id"])
 	answered = str(row["parent"] or "") if row else ""
+	# Named as it was when it went: a comment on another server's feed.
+	post = mochi.db.row("select feed from posts where id=?", comment["post"])
+	named = bool(post) and not owned(post["feed"])
 	if answered:
 		for place in reply_places(comment["post"], comment.get("parent", "") or ""):
 			if place["remote"] == answered:
-				return reply_object(acc, comment["id"], place, body)
+				return reply_object(acc, comment["id"], place, body, named)
 		return None
 	for chosen, place in reply_plan(comment["post"], comment.get("parent", "") or "", acc["id"]):
 		if chosen["id"] == acc["id"]:
-			return reply_object(acc, comment["id"], place, body)
+			return reply_object(acc, comment["id"], place, body, named)
 	return None
 
-def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None, writer=""):
+def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None, writer="", named=False):
 	"""Publish a comment wherever the post, or the comment it answers, is on
 	another network (decision 31, as changed 2026-10-30): a reply from each
 	account the plan names, the account named first where the plan leaves
 	the choice, and the writer, the account an app wrote the comment as,
 	answering on its network. A reply the commenter already made there, as a
 	Bluesky app writes one, is recorded and not made again, its account the
-	writer of the place it answers (its parent). Answers the copies, for the
-	comment's event."""
+	writer of the place it answers (its parent). named is a comment sent to
+	another server's feed, as reply_note takes it. Answers the copies, for
+	the comment's event."""
 	entries = []
 	done = {}
 	answered = ""
@@ -12515,7 +12525,7 @@ def reply_publish(post_id, parent_id, comment_id, body, preferred="", made=None,
 	for acc, place in reply_plan(post_id, parent_id, preferred, writer, answered):
 		if acc["id"] in done:
 			continue
-		object = reply_object(acc, comment_id, place, body)
+		object = reply_object(acc, comment_id, place, body, named)
 		if not object:
 			mochi.log.info("Feeds comment %s: %s cannot answer %s", comment_id, acc.get("identifier", acc["id"]), place["remote"])
 			continue
@@ -12822,7 +12832,9 @@ def fediverse_created(acc, actor, note):
 	# A Mochi subscriber's reply names the comment it is, and is never a
 	# comment of its own. It is recorded against that comment by the
 	# comment's event, which carries it among the comment's copies, never by
-	# what the Note claims: any server could name any comment.
+	# what the Note claims: any server could name any comment. A comment
+	# that reaches the feed by no event of its own, made in a feed of its
+	# writer's, names none (reply_note), and is taken below as any reply is.
 	if note.get("mochi:comment"):
 		return
 	answered = object_id_of(note.get("inReplyTo"))
